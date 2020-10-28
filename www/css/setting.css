@@ -1,0 +1,33 @@
+.common-style {
+    text-align: center;
+    padding: 30px;
+    color: white;
+    font-size: 25px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.my-profile {
+    background: #e9d65d;
+    border: 1px solid #e9d65d;
+}
+
+.my-meds {
+    background: #ff8033;
+    border: 1px solid #ff8033;
+}
+
+.gps-check {
+    background: #7ccb70;
+    border: 1px solid #7ccb70;
+}
+
+.video-check {
+    background: #db79ce;
+    border: 1px solid #db79ce;
+}
+
+.shelters {
+    background: #fc5e5d;
+    border: 1px solid #fc5e5d;
+}

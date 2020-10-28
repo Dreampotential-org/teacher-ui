@@ -1,0 +1,127 @@
+<div class="container my-4">
+    <h2>
+        <b>Users</b>
+    </h2>
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Joined</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="body-data">
+            <!-- <tr>
+
+                <td>2020/04/25</td>
+                <td>Tiger Nixon</td>
+                <td>25</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+
+                <td>2020/07/15</td>
+                <td>Timothy Mooney</td>
+                <td>28</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+
+                <td>2020/04/10</td>
+                <td>Vivian Harrell</td>
+                <td>32</td>
+                <td>No</td>
+            </tr>
+            <tr>
+
+                <td>2020/08/17</td>
+                <td>Unity Butler</td>
+                <td>27</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+
+                <td>2020/09/25</td>
+                <td>Zorita Serrano</td>
+                <td>34</td>
+                <td>No</td>
+            </tr>
+            <tr>
+
+                <td>2020/05/4</td>
+                <td>Michelle House</td>
+                <td>45</td>
+                <td>No</td>
+            </tr>
+            <tr>
+
+                <td>2020/03/25</td>
+                <td>Olivia Liang</td>
+                <td>41</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+
+                <td>2020/10/25</td>
+                <td>Lael Greer</td>
+                <td>50</td>
+                <td>No</td>
+            </tr>
+            <tr>
+
+                <td>2020/03/13</td>
+                <td>Michelle House</td>
+                <td>37</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+
+                <td>2020/07/19</td>
+                <td>Caesar Vance</td>
+                <td>39</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+
+                <td>2020/07/20</td>
+                <td>Brielle Williamson</td>
+                <td>40</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+
+                <td>2020/09/15</td>
+                <td>Cara Stevens</td>
+                <td>34</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+
+                <td>2020/04/25</td>
+                <td>Bradley Greer</td>
+                <td>22</td>
+                <td>No</td>
+            </tr> -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        var json_data = [{ date: "2020/04/25", name: "Tiger Nixon", age: "25", yesno: "Yes" }, { date: "2020/04/10", name: "Vivian Harrell", age: "32", yesno: "No" }, { date: "2020/07/15", name: "Timothy Mooney", age: "28", yesno: "Yes" }, { date: "2020/08/17", name: "Unity Butler", age: "27", yesno: "Yes" }, { date: "2020/09/25", name: "Zorita Serrano", age: "45", yesno: "No" }, { date: "2020/03/13", name: "Michelle House", age: "37", yesno: "Yes" }, { date: "2020/07/19", name: "Caesar Vance", age: "39", yesno: "Yes" }, { date: "2020/07/20", name: "Brielle Williamson", age: "40", yesno: "Yes" }, { date: "2020/09/15", name: "Cara Stevens", age: "34", yesno: "Yes" }, { date: "2020/04/25", name: "Bradley Greer", age: "22", yesno: "No" }, { date: "2020/09/15", name: "Olivia Liang", age: "29", yesno: "No" }, { date: "2020/08/14", name: "Lorem Ipsum", age: "34", yesno: "Yes" }];
+
+        json_data.forEach((item) => {
+            $('#body-data').append(`<tr>
+            <td>${item.date}</td>
+            <td>${item.name}</td>
+            <td>${item.age}</td>
+            <td>${item.yesno}</td>
+            </tr>`);
+        });
+
+        $('#example').DataTable();
+    });
+</script>

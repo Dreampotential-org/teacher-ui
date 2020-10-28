@@ -1,0 +1,121 @@
+<div class="container">
+    <div class="row" id="screen1">
+        <div class="col-xs-6 col-sm-3">
+            <div class="common-style my-profile" id="my-profile">
+                <span class="glyphicon glyphicon-user"></span>
+                <p>My Profile</p>
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-3">
+            <div class="common-style my-meds" onclick="showDiv(this)" id="my-meds">
+                <i class="fas fa-capsules"></i>
+                <p>My Med</p>
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-3">
+            <div class="common-style gps-check" onclick="showDiv(this)" id="gps-check">
+                <span class="glyphicon glyphicon-map-marker"></span>
+                <p>GPS Journal</p>
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-3">
+            <div class="common-style video-check">
+                <span class="glyphicon glyphicon-facetime-video"></span>
+                <p>Video Journal</p>
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-3">
+            <div class="common-style shelters" id="shelters">
+                <span class="glyphicon glyphicon-home"></span>
+                <p>Shelters</p>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="screen2" style="display: none">
+        <div class="col-xs-12">
+            <h1> Profile</h1>
+            <div>
+                <div class="input-group name-input" style='display:none'>
+                    <span class="input-group-addon">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                    </span>
+                    <input id="name" type="text" class="form-control" name="name" placeholder="Name">
+                </div>
+                <br>
+                <div class="input-group phone-code-input" style='display:none;'>
+                    <span class="input-group-addon">
+                        <i class="fa" aria-hidden="true"></i>
+                    </span>
+                    <input id="phone-code" type="tel" class="form-control" name="phone-code" placeholder="Text Code">
+                </div>
+                <div class="input-group phone-input">
+                    <span class="input-group-addon">
+                        <i class="fa fa-phone" aria-hidden="true"></i>
+                    </span>
+                    <input id="phone" type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" class="form-control" name="phone" placeholder="Phone Number">
+                </div>
+                <!--
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-birthday-cake" aria-hidden="true"></i></span>
+                            <input id="phone" type="text" class="form-control" name="age" placeholder="Age">
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-users" aria-hidden="true"></i></span>
+                            <input id="phone" type="text" class="form-control" name="ethnicity" placeholder="Ethnicity">
+                        </div>-->
+                <br>
+                <button id="login_number" type="button" class="btn btn-primary btn-lg btn-block">Next</button>
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="map-check" style="display: none">
+        <div class="col-xs-12">
+            <h1> GPS Check-In</h1>
+            <form>
+                <textarea class="form-control" rows="10" name="note"> Note</textarea>
+                <br>
+                <button type="button" class="btn btn-primary btn-lg btn-block">Submit</button>
+                <br>
+                <br>
+            </form>
+        </div>
+    </div>
+    <div class="row" id="shelters-screen" style="display: none">
+        <h3> Shelters </h3>
+        Populate:
+        <select id='filter_services'>
+            <option>adults</option>
+            <option>young adults</option>
+            <option>seniors</option>
+            <option>hiv/aids</option>
+        </select> TOGGLE FOR MAP View (On / Off)
+        <div class="col-xs-12" id='shelters-list'>
+        </div>
+    </div>
+    <div class="row" id="shelters-map" style="display: none">
+        <div id='map' style='width: 400px; height: 300px;'></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function showDiv(obj) {
+        var selctID = obj.id;
+        if (selctID == 'gps-check') {
+            document.getElementById('screen1').style.display = "none";
+            document.getElementById('screen2').style.display = "none";
+            document.getElementById('shelters-screen').style.display = "none";
+            document.getElementById('map-check').style.display = "block";
+        }
+        if (selctID == 'shelters') {
+            document.getElementById('screen1').style.display = "none";
+            document.getElementById('screen2').style.display = "none";
+            document.getElementById('map-check').style.display = "none";
+            document.getElementById('shelters-screen').style.display = "block";
+        }
+    }
+</script>

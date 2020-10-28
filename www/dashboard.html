@@ -1,0 +1,150 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xl-8 col-sm-6 mb-8">
+            <h2>
+                <b>Dashboard</b>
+            </h2>
+        </div>
+    </div>
+    <!-- Icon Cards-->
+    <div class="row">
+        <div class="col-xl-3 col-sm-6 mb-3">
+            <div class="card text-white bg-info o-hidden h-100">
+                <div class="card-body">
+                    <div class="card-body-icon">
+                        <i class="fa fa-fw fa-user"></i>
+                    </div>
+                    <h5 class="analyticTitle">Users</h5>
+                    <p class="analyticCount">4</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-3">
+            <div class="card text-white bg-success o-hidden h-100">
+                <div class="card-body">
+                    <div class="card-body-icon">
+                        <i class="fa fa-phone"></i>
+                    </div>
+                    <h5 class="analyticTitle">Calls</h5>
+                    <p class="analyticCount">12</p>
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="col-xl-3 col-sm-6 mb-3">
+              <div class="card text-white bg-gray o-hidden h-100">
+                <div>
+                  <h5 class="analyticTitle">Partnered Agents</h5>
+                  <p class="analyticCount">214</p>
+                </div>
+              </div>
+            </div>-->
+        <!-- <div class="col-xl-3 col-sm-6 mb-3">
+                <div class="card text-white bg-success o-hidden h-100">
+                    <div class="card-body">
+                        <div class="card-body-icon">
+                            <i class="fa fa-handshake-o"></i>
+                        </div>
+                        <h5 class="analyticTitle">Partnered Agents</h5>
+                        <p class="analyticCount">214</p>
+                    </div>
+                </div>
+            </div> -->
+        <!--<div class="col-xl-3 col-sm-6 mb-3">
+              <div class="card text-white bg-gray o-hidden h-100">
+                <div>
+                  <h5 class="analyticTitle">Our Referrals</h5>
+                  <p class="analyticCount">238</p>
+                </div>
+              </div>
+            </div>
+          -->
+        <!-- <div class="col-xl-3 col-sm-6 mb-3">
+                <div class="card text-white bg-warning o-hidden h-100">
+                    <div class="card-body">
+                        <div class="card-body-icon">
+                            <i class="fa fa-user-plus"></i>
+                        </div>
+                        <h5 class="analyticTitle">Our Referrals</h5>
+                        <p class="analyticCount">238</p>
+                    </div>
+                </div>
+            </div> -->
+        <!--<div class="col-xl-3 col-sm-6 mb-3">
+              <div class="card text-white bg-gray o-hidden h-100">
+                <h5 class="analyticTitle">Agent Referrals</h5>
+                <p class="analyticCount">189</p>
+              </div>
+            </div>-->
+        <!-- <div class="col-xl-3 col-sm-6 mb-3">
+                <div class="card text-white bg-danger o-hidden h-100">
+                    <div class="card-body">
+                        <div class="card-body-icon">
+                            <i class="fa fa-users"></i>
+                        </div>
+                        <h5 class="analyticTitle">Agent Referrals</h5>
+                        <p class="analyticCount">189</p>
+                    </div>
+                </div>
+            </div> -->
+    </div>
+
+
+    <div class="row chartRow">
+        <div class="col-xl-6 col-sm-12 mb-6">
+            <div class="">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        By Race</div>
+                    <div class="card-body">
+                        <canvas id="myPieChart" width="50%"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-xl-6 col-sm-12 mb-6">
+                <div class="">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            New Users Over Time</div>
+                        <div class="card-body">
+                            <canvas id="myBarChart" width="50%"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+    </div>
+</div>
+<!-- /.container-fluid -->
+
+<script>
+    var ctx = document.getElementById("myPieChart");
+
+    var myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ["White", "Black", "Lation", "Indian"],
+            datasets: [{
+                data: [20, 15, 5, 10],
+                backgroundColor: ['#f73378', "#9c27b0", "#ee99fc", "#3d5afe"],
+            }]
+        },
+        options: {
+            legend: {
+                display: true,
+                labels: {
+                    fontColor: '#000',
+                    //boxWidth:50,
+                    fontSize: 14
+                    //fontSize:'26px'
+                    //fontWeight:700
+                }
+            },
+            elements: {
+                arc: {
+                    borderWidth: 0
+                }
+            }
+        }
+    });
+</script>
