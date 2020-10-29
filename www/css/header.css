@@ -1,0 +1,19 @@
+@media (max-width: 768px) {
+    #navbarNav{
+        display: flex;
+    }
+
+    .navbar-expand-md .navbar-nav .dropdown-menu-right{
+        right: 0;
+        left: auto;
+    }
+
+    .navbar-expand-md .navbar-nav .dropdown-menu{
+        position: absolute;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+}
