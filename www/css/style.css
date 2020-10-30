@@ -92,3 +92,9 @@
 body {
 	background-color: grey;
 }
+.visible-xs{
+  display:block;
+}
+.hidden-md{
+    display:none;
+  }

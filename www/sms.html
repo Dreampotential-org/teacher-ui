@@ -29,7 +29,7 @@
                     </div>
                     <div class="col-lg-12 col-sm-12 col-md-12 col-12 user-chats">
 
-                        <div class="single-contact row" id="1" onclick="open_chat(this)">
+                        <!-- <div class="single-contact row" id="1" onclick="open_chat(this)">
                             <div class="col-md-3 col-4">
                                 <img src="img/profile_user.jpg" class="contact-img" alt="" />
                             </div>
@@ -47,7 +47,7 @@
                                 <p class="contact-name">Mike Rose</p>
                                 <p class="contact-last-message">This is a sample text</p>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
                     <!-- <div class="bottom-bar row d-none-856 ">
@@ -81,10 +81,10 @@
                                         <i class="fa fa-angle-left d-lg-none font-30 "></i>
                                     </a>
 
-                                    <img src="img/1.jpg" class="contact-img" alt="" />
+                                    <!-- <img src="img/1.jpg" class="contact-img" alt="" /> -->
                                 </div>
                                 <div class="col-md-8 col-9 d-table p-0 m-auto ">
-                                    <div class="d-table-cell font-20">&nbsp;Mike Rose</div>
+                                    <div class="d-table-cell font-20" id="user-name"></div>
                                     <!-- <div class=" d-table-cell text-right">
                                         <div class="dropdown">
                                             <button class="dropbtn">
@@ -103,7 +103,7 @@
                         </div>
                         <div class="col-md-12 col-12 col-lg-12 col12 message-box" id="message-box">
 
-                            <div class="message sent col-md-9 col-11">
+                            <!-- <div class="message sent col-md-9 col-11">
                                 <p class="col-md-12 col-12">Sed ac cursus tortor, id dictum velit. Nullam laoreet eros eu lectus mollis tempor. Sed at
                                     luctus nunc, at ullamcorper diam.</p>
                                 <span>2:30pm</span>
@@ -112,7 +112,7 @@
                                 <p class="col-md-12 col-12">Nullam laoreet eros eu lectus mollis tempor. Sed ac cursus tortor, id dictum velit. Nullam
                                     laoreet eros eu lectus mollis tempor. Sed at luctus nunc, at ullamcorper diam.</p>
                                 <span>2:38pm</span>
-                            </div>
+                            </div> -->
 
                         </div>
                         <div class="chat-footer">
@@ -140,6 +140,25 @@
 </div>
 
 <script>
+
+    $(document).ready(function () {
+        get_user_list(function (users) {
+            var html = "";
+            for (var user of users) {
+                /// XXX @santosh add to users list section
+                console.log(user)
+
+                html += `<div class="single-contact row" id="${user.id}" onclick="open_chat(this, '${user.phone}', '${user.name}')">
+                            <div class="col-md-9 col-8 contact-message-box">
+                                <p class="contact-name">${user.name}</p>
+                                <p class="contact-last-message">${user.phone}</p>
+                            </div>
+                        </div>`
+            }
+
+            $(".user-chats").append(html);
+        });
+    });
 
 
     /*IF NOT SCROLLED SHOW SCROLL BUTTON*/
@@ -173,23 +192,35 @@
 
         //save message to database here.
 
-        var div = document.createElement("div");
-        div.className = "message sent col-md-9 col-11";
-        var p = document.createElement("p");
-        p.className = "col-md-12 col-12";
-        var message = document.createTextNode(msg);
-        var t = today.getHours() + ":" + today.getMinutes();
-        var time = document.createTextNode(t);
-        var span = document.createElement("span");
-        p.appendChild(message);
-        span.appendChild(time);
-        div.appendChild(p);
-        div.appendChild(span);
-        objDiv.appendChild(div);
+        if (msg.trim() != '') {
+            var div = document.createElement("div");
+            div.className = "message sent col-md-9 col-11";
+            var p = document.createElement("p");
+            p.className = "col-md-12 col-12";
+            var message = document.createTextNode(msg);
+            var t = today.getHours() + ":" + today.getMinutes();
+            var time = document.createTextNode(t);
+            var span = document.createElement("span");
+            p.appendChild(message);
+            span.appendChild(time);
+            div.appendChild(p);
+            div.appendChild(span);
+            objDiv.appendChild(div);
 
-        document.getElementById("message").value = '';
+            console.log(user_phone);
+            debugger
 
-        scroll_to_bottom();
+            send_user_sms(user_phone, msg, function (response) {
+                console.log(response);
+            });
+
+            document.getElementById("message").value = '';
+            scroll_to_bottom();
+        }
+
+
+
+
     }
 
     /*WHEN BACK ICON IS CLICKED*/
@@ -209,9 +240,16 @@
         console.log("clicked");
     }
 
+    var user_phone = "";
+
     /*ON CLICKING USER CHAT*/
-    function open_chat(chat) {
+    function open_chat(chat, phonenum, user_name) {
         //using chat id extract messages here.
+
+        $("#message-box").empty();
+        $("#user-name").empty();
+        $("#user-name").text(user_name);
+        user_phone = phonenum;
 
         //removing any active class in chats
         var elements = document.querySelectorAll('.single-contact');
@@ -236,6 +274,43 @@
             //get messages and display here.
         }
 
+        var html = "";
+        get_sms_to_number(phonenum, function (res) {
+
+            console.log(res);
+            var filtered_data = res.filter(item => (item.to == "+1" + phonenum && item.from == "+15102885469") || (item.to == "+15102885469" && item.from == "+1" + phonenum));
+            console.log(filtered_data);
+
+            filtered_data.sort(function (a, b) {
+                // Turn your strings into dates, and then subtract them
+                // to get a value that is either negative, positive, or zero.
+                if (a.date_created < b.date_created) return -1;
+                if (a.date_created > b.date_created) return 1;
+                return 0;
+            });
+
+            for (var msg of filtered_data) {
+
+                if (msg.to == "+1" + phonenum) {
+
+                    html += `<div class="message sent col-md-9 col-11">
+                                <p class="col-md-12 col-12">${msg.body}</p>
+                                <span>${msg.date_created}</span>
+                            </div>`
+
+                } else {
+
+                    html += `<div class="message received col-md-9 col-11">
+                                <p class="col-md-12 col-12">${msg.body}</p>
+                                <span>${msg.date_created}</span>
+                            </div>`
+
+                }
+            }
+
+            $("#message-box").append(html);
+
+        });
 
     }
 
