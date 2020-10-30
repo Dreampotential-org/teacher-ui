@@ -1,3 +1,4 @@
+
 @media (max-width: 768px) {
     #navbarNav{
         display: flex;
@@ -16,4 +17,95 @@
         position: relative;
         display: inline-block;
     }
+
+    
+    
 }
+@media (max-width: 768px) {
+    .visible-xs{
+            display:block !important;
+          }
+    .mobile_navigation_navbar_sec{
+            background-color:#132644 !important;
+    }
+    #page-header .user_icon_header{
+        text-align:right;
+      display:none !important;
+    }
+        
+        
+    }
+
+ @media (min-width: 768px) {
+        .visible-xs{
+                display:none !important;
+         }
+         .mobile_navigation_navbar_sec {
+            background-color:none !important;
+            
+        }
+            
+}	
+@media (max-width: 495px){
+.navbar-expand-md .navbar-nav .dropdown-menu-right {
+    right: -57px;
+    left: auto;
+}
+}
+
+
+
+.mobile_navigtion_bar{
+    width:100%;
+}
+.mobile_navigtion_bar ul.list-group a{
+    color:white;
+}
+.mobile_navigtion_bar .topnav a.active{
+background-color: #132644;
+}
+.mobile_navigtion_bar .topnav a.icon{
+    background: transparent;
+    color: white;
+}
+.header_setting_navbar{
+    background-color: #132644  !important;
+}	
+	
+	
+	
+	
+.mobile_navigation_ul{
+    display: inline-block;
+    width: 100%;
+}
+.mobile_navigation_ul li{
+    float: left;
+    display: block;
+    width: 33%;
+}
+.mobile_navigation_ul li a.active{
+    margin: 0 auto;
+    text-align: center;
+    display: block;
+    background: transparent;
+}
+.mobile_navigation_ul li a.icon{
+    float: right;
+    margin-top: 10px;
+    color: #fff;
+}
+.user_icon_header{
+    text-align:right;
+    background-color: #343a40 !important;
+}
+#page-header .user_icon_header a.dropdown-toggle{
+   position: relative;
+   right: 17px !important;
+   color:rgba(255,255,255,.5);
+   padding-top: 0;
+   
+}
+
+
+

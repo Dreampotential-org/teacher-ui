@@ -253,6 +253,7 @@ height: 100%;
     overflow-y: auto;
     height: 70vh;
     padding: 2%;
+    margin-bottom: 40px;
 }
 
 .message {
@@ -446,7 +447,7 @@ height: 100%;
     }
 } */
 
-@media (max-width: 426px) {
+@media (max-width: 768px) {
     .back-icon-div{
         display: flex;
         justify-content: center;
