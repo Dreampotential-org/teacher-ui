@@ -76,14 +76,14 @@
                     <div class="contact-chat row">
                         <div class="chat-header container-fluid">
                             <div class="row p-1">
-                                <div class="col-3 col-md-4 p-0 text-center back-icon-div">
+                                <div class="col-1 col-md-1 p-0 text-center back-icon-div">
                                     <a class="back-icon" id="back-icon" href="javascript:go_to_chats()">
                                         <i class="fa fa-angle-left d-lg-none font-30 "></i>
                                     </a>
 
                                     <!-- <img src="img/1.jpg" class="contact-img" alt="" /> -->
                                 </div>
-                                <div class="col-md-8 col-9 d-table p-0 m-auto ">
+                                <div class="col-md-11 col-11 d-table p-0 m-auto ">
                                     <div class="d-table-cell font-20" id="user-name"></div>
                                     <!-- <div class=" d-table-cell text-right">
                                         <div class="dropdown">
@@ -149,7 +149,7 @@
                 console.log(user)
 
                 html += `<div class="single-contact row" id="${user.id}" onclick="open_chat(this, '${user.phone}', '${user.name}')">
-                            <div class="col-md-9 col-8 contact-message-box">
+                            <div class="col-md-12 col-12 contact-message-box">
                                 <p class="contact-name">${user.name}</p>
                                 <p class="contact-last-message">${user.phone}</p>
                             </div>
@@ -208,7 +208,7 @@
             objDiv.appendChild(div);
 
             console.log(user_phone);
-            debugger
+
 
             send_user_sms(user_phone, msg, function (response) {
                 console.log(response);
@@ -309,6 +309,8 @@
             }
 
             $("#message-box").append(html);
+
+            scroll_to_bottom();
 
         });
 
