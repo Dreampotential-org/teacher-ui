@@ -1,4 +1,4 @@
-<div class="container my-4">
+<div class="container my-2">
     <h2>
         <b>Users</b>
     </h2>
@@ -7,8 +7,7 @@
             <tr>
                 <th>Joined</th>
                 <th>Name</th>
-                <th>Age</th>
-                <th></th>
+                <th>Phone</th>
             </tr>
         </thead>
         <tbody id="body-data">
@@ -111,17 +110,19 @@
 
     $(document).ready(function () {
 
-        var json_data = [{ date: "2020/04/25", name: "Tiger Nixon", age: "25", yesno: "Yes" }, { date: "2020/04/10", name: "Vivian Harrell", age: "32", yesno: "No" }, { date: "2020/07/15", name: "Timothy Mooney", age: "28", yesno: "Yes" }, { date: "2020/08/17", name: "Unity Butler", age: "27", yesno: "Yes" }, { date: "2020/09/25", name: "Zorita Serrano", age: "45", yesno: "No" }, { date: "2020/03/13", name: "Michelle House", age: "37", yesno: "Yes" }, { date: "2020/07/19", name: "Caesar Vance", age: "39", yesno: "Yes" }, { date: "2020/07/20", name: "Brielle Williamson", age: "40", yesno: "Yes" }, { date: "2020/09/15", name: "Cara Stevens", age: "34", yesno: "Yes" }, { date: "2020/04/25", name: "Bradley Greer", age: "22", yesno: "No" }, { date: "2020/09/15", name: "Olivia Liang", age: "29", yesno: "No" }, { date: "2020/08/14", name: "Lorem Ipsum", age: "34", yesno: "Yes" }];
+        // var json_data = [{ date: "2020/04/25", name: "Tiger Nixon", age: "25", yesno: "Yes" }, { date: "2020/04/10", name: "Vivian Harrell", age: "32", yesno: "No" }, { date: "2020/07/15", name: "Timothy Mooney", age: "28", yesno: "Yes" }, { date: "2020/08/17", name: "Unity Butler", age: "27", yesno: "Yes" }, { date: "2020/09/25", name: "Zorita Serrano", age: "45", yesno: "No" }, { date: "2020/03/13", name: "Michelle House", age: "37", yesno: "Yes" }, { date: "2020/07/19", name: "Caesar Vance", age: "39", yesno: "Yes" }, { date: "2020/07/20", name: "Brielle Williamson", age: "40", yesno: "Yes" }, { date: "2020/09/15", name: "Cara Stevens", age: "34", yesno: "Yes" }, { date: "2020/04/25", name: "Bradley Greer", age: "22", yesno: "No" }, { date: "2020/09/15", name: "Olivia Liang", age: "29", yesno: "No" }, { date: "2020/08/14", name: "Lorem Ipsum", age: "34", yesno: "Yes" }];
 
-        json_data.forEach((item) => {
-            $('#body-data').append(`<tr>
-            <td>${item.date}</td>
-            <td>${item.name}</td>
-            <td>${item.age}</td>
-            <td>${item.yesno}</td>
-            </tr>`);
+        get_user_list(function (users) {
+
+            users.forEach((item) => {
+                $('#body-data').append(`<tr>
+                <td>${item.created_at}</td>
+                <td>${item.name}</td>
+                <td>${item.phone}</td>
+                </tr>`);
+            });
+
+            $('#example').DataTable();
         });
-
-        $('#example').DataTable();
     });
 </script>
