@@ -117,7 +117,7 @@
                             <span class="menu-collapsed">Users</span>
                         </div>
                     </a>
-                    <a href="javascript:void(0);" page="users" class="bg-dark list-group-item list-group-item-action">
+                    <a href="javascript:void(0);" page="calls" class="bg-dark list-group-item list-group-item-action">
                         <div class="d-flex w-100 justify-content-start align-items-center">
                             <span class="fa fa-phone fa-fw mr-3"></span>
                             <span class="menu-collapsed">Calls</span>
@@ -127,6 +127,12 @@
                         <div class="d-flex w-100 justify-content-start align-items-center">
                             <span class="fa fa-comments-o fa-fw mr-3"></span>
                             <span class="menu-collapsed">SMS</span>
+                        </div>
+                    </a>
+                    <a href="javascript:void(0);" page="places" class="bg-dark list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-start align-items-center">
+                            <span class="fa fa-map-marker fa-fw mr-3"></span>
+                            <span class="menu-collapsed">Places</span>
                         </div>
                     </a>
                     <a href="javascript:void(0);" class="bg-dark list-group-item list-group-item-action">
@@ -207,9 +213,6 @@
 
 
             $(".list-group-item-action").on("click touch", function () {
-
-                debugger
-
                 if ($(this).attr('page') != undefined) {
 
                     if (typeof (history.pushState) != "undefined") {
