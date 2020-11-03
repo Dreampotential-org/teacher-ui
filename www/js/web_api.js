@@ -38,7 +38,7 @@ function list_services(callback) {
 
     }
     $.ajax(settings).done(function (response) {
-        callback(JSON.parse(response).places)
+        callback(JSON.parse(response))
     }).fail(function (err) {
       alert("ERROR")
     })
