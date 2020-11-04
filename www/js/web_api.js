@@ -7,6 +7,28 @@ function get_users() {
     });
 }
 
+function list_question_counters(callback) {
+
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": SERVER + "admin_backend/api_admin/question_counters",
+        "method": "GET",
+        "processData": false,
+        "contentType": false,
+        "mimeType": "multipart/form-data",
+
+    }
+    $.ajax(settings).done(function (response) {
+        callback(JSON.parse(response).questions)
+    }).fail(function (err) {
+      alert("ERROR")
+    })
+}
+
+
+
+
 function list_inbound_calls(callback) {
 
     var settings = {
