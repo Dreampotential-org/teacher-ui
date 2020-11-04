@@ -3,7 +3,12 @@
         <h2>
             <b>Places</b>
         </h2>
-        <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <div class="text-right mb-2">
+            <button onclick="add()" class="btn btn-primary btn-add">
+                <i class="fa fa-plus"></i> Add Place
+            </button>
+        </div>
+        <table id="placeTable" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
                     <th>Title</th>
@@ -20,7 +25,14 @@
         <!-- <form id="placeForm">
          
         </form> -->
-        <button onclick="goBack()" class="btn"><i class="fa fa-chevron-left"></i> Back</button>
+        <div>
+            <button onclick="goBack()" class="btn">
+                <i class="fa fa-chevron-left"></i> Back
+            </button>
+            <button onclick="goBack()" class="btn btn-danger float-right">
+                <i class="fa fa-trash"></i> Delete
+            </button>
+        </div>
         <h2 class="text-center">
             <b>Update Place</b>
         </h2>
@@ -56,10 +68,10 @@
                     <input type="text" class="form-control" id="longitude" placeholder="Longitude">
                 </div>
             </div>
-            
+
             <div class="form-group">
                 <label>Population List</label>
-                <div id="populationList" class="form-group">
+                <div id="populationList" class="form-group row m-0">
                     <!-- <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" id="gridCheck">
                         <label class="form-check-label" for="gridCheck">
@@ -70,7 +82,7 @@
             </div>
             <div class="form-group">
                 <label>Services</label>
-                <div id="services" class="form-group">
+                <div id="services" class="form-group row m-0">
                 </div>
             </div>
             <div class="form-group">
@@ -86,7 +98,7 @@
 
 <script>
 
-var places = [];
+    var places = [];
     $(document).ready(function () {
 
 
@@ -101,17 +113,21 @@ var places = [];
                 </tr>`);
             });
 
-            $('#example').DataTable();
-        });  
+            $('#placeTable').DataTable();
+        });
 
     });
 
-    function goBack(){
+    function goBack() {
         $("#pacesListData").show();
         $("#showEditForm").hide();
     }
-    
-    function edit(i){
+
+    function add() {
+
+    }
+
+    function edit(i) {
         console.log(places[i]);
         var edit = document.getElementById("showEditForm");
         var tableData = document.getElementById("pacesListData");
@@ -134,12 +150,15 @@ var places = [];
         $("#phone").val(places[i].phone);
         $("#other").val(places[i].other_info);
 
+        $("#populationList").empty();
+        $("#services").empty();
+
 
         var populationItems = '';
 
         places[i].population_list.forEach(populationItem => {
-           
-        populationItems +=`<div class="form-check form-check-inline">
+
+            populationItems += `<div class="form-check form-check-inline col-md-2">
                     <input class="form-check-input" type="checkbox" id="${populationItem}">
                     <label class="form-check-label" for="${populationItem}">
                         ${populationItem}
@@ -151,16 +170,16 @@ var places = [];
         $("#populationList").append(populationItems);
 
 
-         var service = '';
-         places[i].services_list.forEach(serviceListItem => {
-           
-            service += `<div class="form-check form-check-inline">
+        var service = '';
+        places[i].services_list.forEach(serviceListItem => {
+
+            service += `<div class="form-check form-check-inline col-md-2">
                     <input class="form-check-input" type="checkbox" id="${serviceListItem}">
                     <label class="form-check-label" for="${serviceListItem}">
                         ${serviceListItem}
                     </label>
                 </div>`
-            });
+        });
 
         $("#services").append(service);
     }
