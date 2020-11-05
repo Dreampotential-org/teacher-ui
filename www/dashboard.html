@@ -90,18 +90,17 @@
     </div>
 
 
-    <div class="row chartRow">
-        <div class="col-xl-6 col-sm-12 mb-6">
-            <div class="">
-                <div class="card mb-3">
-                    <div class="card-header">
-                        By Race</div>
-                    <div class="card-body">
-                        <canvas id="myPieChart" width="50%"></canvas>
-                    </div>
+    <div id="customChart" class="row chartRow">
+        <!-- <div class="col-xl-6 col-sm-12 mb-6">
+
+            <div class="card mb-3">
+                <div id="chart-header" class="card-header">
+                </div>
+                <div id="chart-body" class="card-body">
                 </div>
             </div>
-        </div>
+
+        </div> -->
         <!-- <div class="col-xl-6 col-sm-12 mb-6">
                 <div class="">
                     <div class="card mb-3">
@@ -118,33 +117,156 @@
 <!-- /.container-fluid -->
 
 <script>
-    var ctx = document.getElementById("myPieChart");
+    // var ctx = document.getElementById("myPieChart");
 
-    var myPieChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: ["White", "Black", "Lation", "Indian"],
-            datasets: [{
-                data: [20, 15, 5, 10],
-                backgroundColor: ['#f73378', "#9c27b0", "#ee99fc", "#3d5afe"],
-            }]
-        },
-        options: {
-            legend: {
-                display: true,
-                labels: {
-                    fontColor: '#000',
-                    //boxWidth:50,
-                    fontSize: 14
-                    //fontSize:'26px'
-                    //fontWeight:700
-                }
-            },
-            elements: {
-                arc: {
-                    borderWidth: 0
-                }
-            }
-        }
+    // var myPieChart = new Chart(ctx, {
+    //     type: 'pie',
+    //     data: {
+    //         labels: ["White", "Black", "Lation", "Indian"],
+    //         datasets: [{
+    //             data: [20, 15, 5, 10],
+    //             backgroundColor: ['#f73378', "#9c27b0", "#ee99fc", "#3d5afe"],
+    //         }]
+    //     },
+    //     options: {
+    //         legend: {
+    //             display: true,
+    //             labels: {
+    //                 fontColor: '#000',
+    //                 //boxWidth:50,
+    //                 fontSize: 14
+    //                 //fontSize:'26px'
+    //                 //fontWeight:700
+    //             }
+    //         },
+    //         elements: {
+    //             arc: {
+    //                 borderWidth: 0
+    //             }
+    //         }
+    //     }
+    // });
+
+    $(document).ready(function () {
+        list_question_counters(function (questions) {
+            console.log(questions);
+
+            getChart(questions)
+        });
     });
+
+
+    function getChart(item) {
+
+        item.forEach((ele, i) => {
+            console.log(ele);
+
+            var html = `<div class="col-xl-6 col-sm-12 mb-6">
+
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                ${ele.question}
+                            </div>
+                            <div id="chart-body${i}" class="card-body">
+                            </div>
+                        </div>
+
+                        </div>`;
+
+            $("#customChart").append(html);
+
+            var canvas = document.createElement('canvas');
+
+            canvas.id = "canavs" + i;
+            //canvas.width = "50%";
+
+
+            var body = document.getElementById("chart-body" + i);
+            body.appendChild(canvas);
+
+            var ctx = document.getElementById("canavs" + i);
+
+            var custom_labels = [];
+            var counter = [];
+
+            ele.answers.forEach(element => {
+                custom_labels.push(element.answer)
+                counter.push(element.count);
+            });
+
+            var myPieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: custom_labels,
+                    datasets: [{
+                        data: counter,
+                        backgroundColor: ['#f73378', "#9c27b0", "#ee99fc", "#3d5afe"],
+                    }]
+                },
+                options: {
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                        labels: {
+                            fontColor: '#000',
+                            //boxWidth:50,
+                            fontSize: 14
+                            //fontSize:'26px'
+                            //fontWeight:700
+                        }
+                    },
+                    elements: {
+                        arc: {
+                            borderWidth: 0
+                        }
+                    }
+                }
+            });
+
+        })
+
+
+
+
+
+        // var ctx = document.getElementById("myPieChart");
+
+        // var custom_labels = [];
+        // var counter = [];
+
+        // item.answers.forEach(element => {
+        //     custom_labels.push(element.answer)
+        //     counter.push(element.count);
+        // });
+
+        // var myPieChart = new Chart(ctx, {
+        //     type: 'pie',
+        //     data: {
+        //         labels: custom_labels,
+        //         datasets: [{
+        //             data: counter,
+        //             backgroundColor: ['#f73378', "#9c27b0", "#ee99fc", "#3d5afe"],
+        //         }]
+        //     },
+        //     options: {
+        //         legend: {
+        //             display: true,
+        //             labels: {
+        //                 fontColor: '#000',
+        //                 //boxWidth:50,
+        //                 fontSize: 14
+        //                 //fontSize:'26px'
+        //                 //fontWeight:700
+        //             }
+        //         },
+        //         elements: {
+        //             arc: {
+        //                 borderWidth: 0
+        //             }
+        //         }
+        //     }
+        // });
+
+    }
+
 </script>
