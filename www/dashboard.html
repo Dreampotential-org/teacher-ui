@@ -169,6 +169,7 @@
                             </div>
                             <div id="chart-body${i}" class="card-body">
                             </div>
+                            <div id="legend${i}" class="custom-legend"></div>
                         </div>
 
                         </div>`;
@@ -205,7 +206,7 @@
                 },
                 options: {
                     legend: {
-                        display: true,
+                        display: false,
                         position: 'bottom',
                         labels: {
                             fontColor: '#000',
@@ -215,6 +216,20 @@
                             //fontWeight:700
                         }
                     },
+                    legendCallback: function (chart) {
+                        var text = [];
+                        text.push('<ul class="0-legend">');
+                        var ds = chart.data.datasets[0];
+                        var sum = ds.data.reduce(function add(a, b) { return a + b; }, 0);
+                        for (var i = 0; i < ds.data.length; i++) {
+                            text.push('<li>');
+                            var perc = Math.round(100 * ds.data[i] / sum, 0);
+                            text.push('<span style="background-color:' + ds.backgroundColor[i] + '">' + '</span>' + chart.data.labels[i]);
+                            text.push('</li>');
+                        }
+                        text.push('</ul>');
+                        return text.join("");
+                    },
                     elements: {
                         arc: {
                             borderWidth: 0
@@ -223,49 +238,10 @@
                 }
             });
 
+
+            $(`#legend${i}`).html(myPieChart.generateLegend());
+
         })
-
-
-
-
-
-        // var ctx = document.getElementById("myPieChart");
-
-        // var custom_labels = [];
-        // var counter = [];
-
-        // item.answers.forEach(element => {
-        //     custom_labels.push(element.answer)
-        //     counter.push(element.count);
-        // });
-
-        // var myPieChart = new Chart(ctx, {
-        //     type: 'pie',
-        //     data: {
-        //         labels: custom_labels,
-        //         datasets: [{
-        //             data: counter,
-        //             backgroundColor: ['#f73378', "#9c27b0", "#ee99fc", "#3d5afe"],
-        //         }]
-        //     },
-        //     options: {
-        //         legend: {
-        //             display: true,
-        //             labels: {
-        //                 fontColor: '#000',
-        //                 //boxWidth:50,
-        //                 fontSize: 14
-        //                 //fontSize:'26px'
-        //                 //fontWeight:700
-        //             }
-        //         },
-        //         elements: {
-        //             arc: {
-        //                 borderWidth: 0
-        //             }
-        //         }
-        //     }
-        // });
 
     }
 

@@ -193,7 +193,7 @@
             <!-- sidebar-container END -->
 
             <!-- MAIN -->
-            <div class="col p-0">
+            <div class="col p-0 content-div">
 
                 <div id="page-header">
 
@@ -217,26 +217,7 @@
 
         $(document).ready(function () {
             $("#page-header").load('header.html');
-            $("#page-container").load('sms.html');
-
-
-            $(".list-group-item-action").on("click touch", function () {
-                if ($(this).attr('page') != undefined) {
-
-                    if (typeof (history.pushState) != "undefined") {
-                        var obj = { Page: $(this).attr('page'), Url: $(this).attr('page') + ".html" };
-                        history.pushState(obj, obj.Page, obj.Page);
-                    }
-
-                    var page = $(this).attr('page') + ".html";
-                    $("#page-container").load(page);
-                    $(".sidebar").find(".active").removeClass("active");
-                    $(this).parent().addClass("active");
-                }
-
-            })
-
-
+            $("#page-container").load('dashboard.html');
 
         });
 
