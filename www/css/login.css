@@ -1,0 +1,15 @@
+body {
+  height: 100vh;
+  background-color: #132644;
+}
+.loginForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin: 0 auto;
+}
+.card {
+  width: 380px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
