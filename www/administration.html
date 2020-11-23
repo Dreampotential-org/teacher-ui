@@ -2,7 +2,7 @@
 
     <section id="tabs" class="administration-tab">
         <div class="container">
-            <div class="row">
+            <div id="tabDiv" class="row">
                 <div class="col-md-12">
                     <nav>
                         <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
@@ -10,6 +10,8 @@
                                 aria-selected="true">System Users</a>
                             <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile"
                                 aria-selected="false">Voip Numbers</a>
+                            <a class="nav-item nav-link" id="nav-groups-tab" data-toggle="tab" href="#nav-groups" role="tab" aria-controls="nav-groups"
+                                aria-selected="false">Groups</a>
                             <!-- <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact"
                                 aria-selected="false">Project Tab 3</a> -->
                         </div>
@@ -24,30 +26,10 @@
                                             <th>Created At</th>
                                             <th>Name</th>
                                             <th>Email</th>
+                                            <th>Edit</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                2020-11-04T04:46:05.662Z
-                                            </td>
-                                            <td>Doe</td>
-                                            <td>john@example.com</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                2020-11-04T08:38:58.603Z
-                                            </td>
-                                            <td>Moe</td>
-                                            <td>mary@example.com</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                2020-11-04T04:46:05.662Z
-                                            </td>
-                                            <td>Dooley</td>
-                                            <td>july@example.com</td>
-                                        </tr>
+                                    <tbody id="users-data">
                                     </tbody>
                                 </table>
                             </div>
@@ -89,9 +71,78 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="tab-pane fade" id="nav-groups" role="tabpanel" aria-labelledby="nav-groups-tab">
+
+                            <div class="table-div">
+                                <table class="table table-striped table-bordered" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Created At</th>
+                                            <th>Group Name</th>
+                                            <th>Edit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="group-data">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="text-right mt-2">
+                                <button type="button" onclick="openModal(-1)" class="btn btn-primary">
+                                    <i class="fa fa-plus"></i> Add
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <div id="systemUserDetail">
+                <div>
+                    <button onclick="goBack()" class="btn">
+                        <i class="fa fa-chevron-left"></i> Back
+                    </button>
+                    <button onclick="goBack()" class="btn btn-danger float-right" id="showDelete">
+                        <i class="fa fa-trash"></i> Delete
+                    </button>
+                </div>
+
+                <h2 class="text-center">
+                    <b id="userTitle">Update User</b>
+                </h2>
+
+                <form class="pt-2 pt-3">
+                    <div class="form-group">
+                        <label for="ename">Name</label>
+                        <input type="text" class="form-control" id="ename" placeholder="Name" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eemail">Email</label>
+                        <input type="text" class="form-control" id="eemail" placeholder="Email" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="epass">Password</label>
+                        <input type="password" class="form-control" id="epass" placeholder="Password" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="group-list">Select Group:</label>
+                        <select class="form-control">
+                            <option>group1</option>
+                            <option>group2</option>
+                            <option>group3</option>
+                        </select>
+                    </div>
+
+                    <button type="button" class="btn btn-primary">Submit</button>
+                </form>
+
+
+            </div>
+
+
         </div>
     </section>
 
@@ -150,7 +201,7 @@
 
                         <div class="form-group">
                             <label for="phone">Phone</label>
-                            <input type="number" class="form-control" id="uname" placeholder="Phone">
+                            <input type="number" class="form-control" id="phone" placeholder="Phone">
                         </div>
 
                         <button type="button" onclick="addPhone()" class="btn btn-primary float-right">Submit</button>
@@ -159,15 +210,105 @@
             </div>
         </div>
     </div>
+    <!-- End phone number modal -->
 
+    <!-- Add Group Modal -->
+    <div class="modal fade" id="groupModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 id="groupTitle" class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <form class="px-2">
+
+                        <div class="form-group">
+                            <label for="grouplist">Select Group:</label>
+                            <select class="form-control" id="grouplist">
+                                <option>group1</option>
+                                <option>group2</option>
+                                <option>group3</option>
+                            </select>
+                        </div>
+
+                        <button type="button" onclick="addGroup()" class="btn btn-primary float-right">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Group modal -->
 
 
 </div>
 <script>
+
+    var system_users = [{ created_at: "2020-11-04T04:46:05.662Z", name: "Doe", email: "john@example.com" }, { created_at: "2020-11-04T08:38:58.603Z", name: "Moe", email: "mary@example.com" }, { created_at: "2020-11-04T04:46:05.662Z", name: "Dooley", email: "july@example.com" }];
+
+    var group_data = [{ created_at: "2020-10-08T20:47:22Z", group_name: "group1" }, { created_at: "2020-11-02T20:55:04Z", group_name: "group1" }, { created_at: "2020-11-02T20:56:50Z", group_name: "group3" }, { created_at: "2020-11-13T04:12:40Z", group_name: "group1" }, { created_at: "2020-11-13T04:12:40Z", group_name: "group2" }]
+
+    $(document).ready(function () {
+        $("#tabDiv").show();
+        $("#systemUserDetail").hide();
+
+        system_users.forEach((item, i) => {
+            $("#users-data").append(`<tr>
+                <td>${item.created_at}</td>
+                <td>${item.name}</td>
+                <td>${item.email}</td>
+                <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
+                </tr>`);
+        });
+
+        group_data.forEach((item, i) => {
+            $("#group-data").append(`<tr>
+                <td>${item.created_at}</td>
+                <td>${item.group_name}</td>
+                <td><button onclick="openModal('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
+                </tr>`);
+        });
+
+
+    });
+
     function addUser() {
         console.log("Add User");
     }
     function addPhone() {
         console.log("Add Phone");
+    }
+    function addGroup() {
+        console.log("Add Group ", $("#grouplist").val());
+
+    }
+    function editSystemUser(i) {
+        $("#tabDiv").hide();
+        $("#systemUserDetail").show();
+
+        $("#ename").val(system_users[i].name);
+        $("#eemail").val(system_users[i].email);
+
+    }
+    function goBack() {
+        $("#tabDiv").show();
+        $("#systemUserDetail").hide();
+    }
+
+    function openModal(i) {
+        if (i != -1) {
+            $("#groupTitle").text("Update Group");
+            $("#grouplist").val(group_data[i].group_name);
+        }
+        else {
+            $("#groupTitle").text("Add Group");
+            $("#grouplist").val("group1");
+        }
+
+        $("#groupModal").modal();
     }
 </script>
