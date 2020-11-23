@@ -70,9 +70,9 @@ height: 100%;
 }
 
 .sms-box {
-    box-shadow: #e5e5e5 0 0 10px;
-    width: 95%;
-    margin: 7px auto;
+    /* box-shadow: #e5e5e5 0 0 10px; */
+    width: 99%;
+    margin: 0px auto;
 }
 
 .contacts-box {
