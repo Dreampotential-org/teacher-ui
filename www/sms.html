@@ -19,6 +19,8 @@
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
         <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+        
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <!-- user.html JS, CSS end -->
 
         <link rel="stylesheet" href="css/dashboard.css">
@@ -75,6 +77,7 @@
                                             <div class="row conversation-header">
                                                 <div class="col-md-8 col-9 ">
                                                     <p class="font-20">Messages</p>
+                                                   
                                                 </div>
                                                 <!-- <div class="col-md-4 col-3 d-table p-0 m-auto">
                                                     <div class=" d-table-cell text-right">
@@ -185,13 +188,25 @@
                                             </div>
                                             <div class="chat-footer">
                                                 <form class="p-1 w-100" id="message-form" onsubmit="return false;">
+                                              
                                                     <div class="input-group">
                                                         <input type="text" class="form-control" placeholder="Compose ..." id="message">
+                                                        <div class="input-group-append">
+                                                            <form id="fileinfo" enctype="multipart/form-data" name="fileinfo">
+                                                                <label>Select File:</label>
+                                                                <input type="file" name="file" required/>
+                                                                <button type="submit" value="Stash the file!" class="btn btn-primary" style="margin-left:-5%" onclick="send_image_twilio()">Upload</button>
+
+                                                            </form>
+                                                            
+
+                                                        </div>
                                                         <div class="input-group-append">
                                                             <button class="btn btn-primary" type="button" onclick="send_message()">
                                                                 <span class="fa fa-paper-plane"></span>
                                                             </button>
                                                         </div>
+                                                        
                                                     </div>
                                                 </form>
                                             </div>
@@ -211,7 +226,8 @@
         </div>
 
         <script>
-            $(document).ready(function () {
+      $(document).ready(function () {
+
                 $("#left-sidebar").load('sidebar.html');
                 $("#page-header").load('header.html');
                 //                        $("#page-container").load('dashboard.html');
