@@ -1,0 +1,120 @@
+.main-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background: gray;
+}
+
+.container-fluid {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.main-div {
+  /* background-image: url(../img/bg-img2.jpg) !important; */
+  background: white;
+}
+
+/* .customCard {
+  background: rgba(188, 193, 216, 0.9);
+  text-align: center;
+  font-weight: 600;
+  font-size: large;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-family: "Poppins", sans-serif;
+  margin: 0 0 50px;
+  -webkit-box-shadow: 3px 4px 5px 0px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 3px 4px 5px 0px rgba(0, 0, 0, 0.4);
+  box-shadow: 3px 4px 5px 0px rgba(0, 0, 0, 0.4);
+  margin-top: 50px;
+} */
+
+.row {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+.action-btns button {
+  margin: 0px;
+  padding: 9px 38px;
+  font-size: 14px;
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  /* background: #283190; */
+  background: #4cae4c;
+  border: none;
+  /* min-width: 155px; */
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.column {
+  /* flex: 50%; */
+  padding: 0 10px;
+}
+
+.column.btn3.reset-button {
+  padding: 30px 0px;
+  text-align: center;
+}
+
+.modal.is-visible {
+  visibility: visible;
+  display: block;
+}
+
+.modal.is-visible .modal-overlay {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.modal.is-visible .modal-transition {
+  /* // transform: translateY(0); */
+  opacity: 1;
+}
+
+.modal.is-visible .modal-overlay {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.modal-content {
+  /* height: 100%; */
+  /* justify-content: center; */
+  width: 50%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  vertical-align: center;
+}
+
+h3.locAuthTitle.textCenter {
+  text-align: center;
+}
+
+input#signup-email {
+  margin-top: 5%;
+}
+
+.singup-input {
+  margin-top: 5%;
+}
+
+.text-center.signup-button {
+  margin-top: 5%;
+}
+
+.modal-header.modal-signup-main {
+  display: block;
+}
+
+.modal-footer.footer-main {
+  display: block;
+  text-align: center;
+}
