@@ -14,4 +14,4 @@ services:
         depends_on:
             - web
         ports:
-            - 8085:8085
+            - 8086:8085
