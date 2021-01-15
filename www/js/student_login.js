@@ -6,6 +6,10 @@ var userToken = localStorage.getItem("user-token");
 
 console.log("MODE: PASSWORD_RESET, Token - " + passwordResetToken);
 
+if (userToken != null) {
+  window.location.replace("student_dashboard.html");
+}
+
 function getParam(sParam) {
   var sPageURL = window.location.search.substring(1);
   var sURLVariables = sPageURL.split("&");
@@ -58,7 +62,7 @@ $(document).ready(function () {
     });
   });
 
-  $("#signInForm").on("submit", function (ev) {
+  $("#loginForm").on("submit", function (ev) {
     ev.preventDefault();
     swal({
       title: "Signing In!",
@@ -83,7 +87,9 @@ $(document).ready(function () {
           timer: 1000,
         });
 
-        displayPage("dashboard");
+        // displayPage("dashboard");
+
+        window.location.replace("student_dashboard.html");
       },
       error: function () {
         swal({
