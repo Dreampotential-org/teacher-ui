@@ -29,7 +29,7 @@
                         <a class="dropdown-item" href="#">Settings</a>
                         <a class="dropdown-item" href="#">Activity Log</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
+                        <a class="dropdown-item logoutid" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
                     </div>
                 </li>
                 <li>
@@ -42,8 +42,6 @@
                         <i class="fa fa-bars"></i>
                     </a>
                 </li>
-
-
             </ul>
 
             <!-- Top Navigation Menu -->
@@ -93,7 +91,7 @@
                             <span class="menu-collapsed">Password</span>
                         </a>
                     </div> -->
-                        <a href="dashboard.html" class="bg-dark list-group-item list-group-item-action">
+                        <a href="student_dashboard.html" class="bg-dark list-group-item list-group-item-action">
                             <div class="d-flex w-100 justify-content-start align-items-center">
                                 <span class="fa fa-dashboard fa-fw mr-3"></span>
                                 <span class="menu-collapsed">Dashboard</span>
@@ -174,8 +172,6 @@
 
             </div>
 
-
-
         </div>
 </nav>
 
@@ -190,13 +186,24 @@
                 <a class="dropdown-item" href="#">Settings</a>
                 <a class="dropdown-item" href="#">Activity Log</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
+                <a class="dropdown-item logoutid" href="javascript:void(0)" data-toggle="modal" data-target="#logoutModal">Logout</a>
             </div>
         </li>
     </ul>
 </div>
 
 <script>
+
+    $(document).ready(function(){
+
+        $(".logoutid").on("click touch", function (e) {
+            localStorage.removeItem("user-token");
+            location.reload();
+        });
+
+    });
+
+    
     $(".list-group-item-action").on("click touch", function () {
         if ($(this).attr('page') != undefined) {
 
