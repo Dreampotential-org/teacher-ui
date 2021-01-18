@@ -1,0 +1,30 @@
+.list-of-classes {
+  font-size: 22px;
+  padding: 20px 0px;
+  font-weight: 600;
+}
+
+.modal-dialog {
+  top: 10%;
+}
+
+div#userModal {
+  background: rgba(0, 0, 0, 0.64);
+}
+
+div#studentModal {
+  background: rgba(0, 0, 0, 0.64);
+}
+
+b#userTitle {
+  font-size: 22px;
+}
+
+.button-add-student {
+  text-align: right;
+  width: 60%;
+}
+
+div#add-student-Modal {
+  background: rgba(0, 0, 0, 0.64);
+}
