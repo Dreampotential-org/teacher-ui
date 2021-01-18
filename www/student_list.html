@@ -45,6 +45,7 @@
     <link rel="stylesheet" href="css/sms.css" />
     <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/administration.css" />
+    <link rel="stylesheet" href="css/student_list.css" />
 
     <script src="js/main.js"></script>
     <script src="js/web_api.js"></script>
@@ -80,46 +81,8 @@
               <div class="container">
                 <div id="tabDiv" class="row">
                   <div class="col-md-12">
-                    <nav>
-                      <div
-                        class="nav nav-tabs nav-fill"
-                        id="nav-tab"
-                        role="tablist"
-                      >
-                        <a
-                          class="nav-item nav-link active"
-                          id="nav-home-tab"
-                          data-toggle="tab"
-                          href="#nav-home"
-                          role="tab"
-                          aria-controls="nav-home"
-                          aria-selected="true"
-                          >System Users</a
-                        >
-                        <a
-                          class="nav-item nav-link"
-                          id="nav-profile-tab"
-                          data-toggle="tab"
-                          href="#nav-profile"
-                          role="tab"
-                          aria-controls="nav-profile"
-                          aria-selected="false"
-                          >Voip Numbers</a
-                        >
-                        <a
-                          class="nav-item nav-link"
-                          id="nav-groups-tab"
-                          data-toggle="tab"
-                          href="#nav-groups"
-                          role="tab"
-                          aria-controls="nav-groups"
-                          aria-selected="false"
-                          >Groups</a
-                        >
-                        <!-- <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact"
-                                                    aria-selected="false">Project Tab 3</a> -->
-                      </div>
-                    </nav>
+                    <p class="list-of-students">List of students</p>
+
                     <div class="tab-content" id="nav-tabContent">
                       <div
                         class="tab-pane fade show active"
@@ -134,9 +97,9 @@
                           >
                             <thead>
                               <tr>
-                                <th>Created At</th>
                                 <th>Name</th>
                                 <th>Email</th>
+                                <th>Phone</th>
                                 <th>Edit</th>
                               </tr>
                             </thead>
@@ -247,7 +210,7 @@
                   </div>
 
                   <h2 class="text-center">
-                    <b id="userTitle">Update User</b>
+                    <b id="userTitle">Update Student</b>
                   </h2>
 
                   <form class="pt-2 pt-3">
@@ -272,23 +235,23 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="epass">Password</label>
+                      <label for="ephone">Phone</label>
                       <input
-                        type="password"
+                        type="phone"
                         class="form-control"
-                        id="epass"
-                        placeholder="Password"
+                        id="ephone"
+                        placeholder="Phone"
                       />
                     </div>
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <label for="group-list">Select Group:</label>
                       <select class="form-control">
                         <option>group1</option>
                         <option>group2</option>
                         <option>group3</option>
                       </select>
-                    </div>
+                    </div> -->
 
                     <button type="button" class="btn btn-primary">
                       Submit
@@ -309,7 +272,7 @@
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title">Add User</h5>
+                    <h5 class="modal-title">Add Student</h5>
                     <button
                       type="button"
                       class="close"
@@ -342,12 +305,12 @@
                       </div>
 
                       <div class="form-group">
-                        <label for="pass">Password</label>
+                        <label for="phone">Phone</label>
                         <input
-                          type="password"
+                          type="phone"
                           class="form-control"
-                          id="pass"
-                          placeholder="Password"
+                          id="phone"
+                          placeholder="Phone"
                         />
                       </div>
 
@@ -496,19 +459,19 @@
       }
       var system_users = [
         {
-          created_at: "2020-11-04T04:46:05.662Z",
           name: "Doe",
           email: "john@example.com",
+          phone: "+1813671367",
         },
         {
-          created_at: "2020-11-04T08:38:58.603Z",
           name: "Moe",
           email: "mary@example.com",
+          phone: "+18741271367",
         },
         {
-          created_at: "2020-11-04T04:46:05.662Z",
           name: "Dooley",
           email: "july@example.com",
+          phone: "+18741279437",
         },
       ];
 
@@ -526,9 +489,9 @@
 
         system_users.forEach((item, i) => {
           $("#users-data").append(`<tr>
-                        <td>${item.created_at}</td>
                         <td>${item.name}</td>
                         <td>${item.email}</td>
+                        <td>${item.phone}</td>
                         <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
                         </tr>`);
         });
@@ -557,6 +520,7 @@
 
         $("#ename").val(system_users[i].name);
         $("#eemail").val(system_users[i].email);
+        $("#ephone").val(system_users[i].phone);
       }
       function goBack() {
         $("#tabDiv").show();

@@ -45,6 +45,7 @@
     <link rel="stylesheet" href="css/sms.css" />
     <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/administration.css" />
+    <link rel="stylesheet" href="css/class_list.css" />
 
     <script src="js/main.js"></script>
     <script src="js/web_api.js"></script>
@@ -80,46 +81,8 @@
               <div class="container">
                 <div id="tabDiv" class="row">
                   <div class="col-md-12">
-                    <nav>
-                      <div
-                        class="nav nav-tabs nav-fill"
-                        id="nav-tab"
-                        role="tablist"
-                      >
-                        <a
-                          class="nav-item nav-link active"
-                          id="nav-home-tab"
-                          data-toggle="tab"
-                          href="#nav-home"
-                          role="tab"
-                          aria-controls="nav-home"
-                          aria-selected="true"
-                          >System Users</a
-                        >
-                        <a
-                          class="nav-item nav-link"
-                          id="nav-profile-tab"
-                          data-toggle="tab"
-                          href="#nav-profile"
-                          role="tab"
-                          aria-controls="nav-profile"
-                          aria-selected="false"
-                          >Voip Numbers</a
-                        >
-                        <a
-                          class="nav-item nav-link"
-                          id="nav-groups-tab"
-                          data-toggle="tab"
-                          href="#nav-groups"
-                          role="tab"
-                          aria-controls="nav-groups"
-                          aria-selected="false"
-                          >Groups</a
-                        >
-                        <!-- <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact"
-                                                    aria-selected="false">Project Tab 3</a> -->
-                      </div>
-                    </nav>
+                    <p class="list-of-classes">List of classes</p>
+
                     <div class="tab-content" id="nav-tabContent">
                       <div
                         class="tab-pane fade show active"
@@ -134,9 +97,9 @@
                           >
                             <thead>
                               <tr>
-                                <th>Created At</th>
-                                <th>Name</th>
-                                <th>Email</th>
+                                <th>Class Id</th>
+                                <th>Class Name</th>
+                                <!-- <th>Student Name</th> -->
                                 <th>Edit</th>
                               </tr>
                             </thead>
@@ -247,48 +210,49 @@
                   </div>
 
                   <h2 class="text-center">
-                    <b id="userTitle">Update User</b>
+                    <b id="userTitle">Update Class</b>
                   </h2>
 
                   <form class="pt-2 pt-3">
                     <div class="form-group">
-                      <label for="ename">Name</label>
+                      <label for="classid">Class Id</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="ename"
-                        placeholder="Name"
+                        id="classid"
+                        placeholder="Class Id"
+                        disabled
                       />
                     </div>
 
                     <div class="form-group">
-                      <label for="eemail">Email</label>
+                      <label for="classname">Class Name</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="eemail"
-                        placeholder="Email"
+                        id="classname"
+                        placeholder="Class Name"
                       />
                     </div>
 
-                    <div class="form-group">
-                      <label for="epass">Password</label>
+                    <!-- <div class="form-group">
+                      <label for="ephone">Student Name</label>
                       <input
-                        type="password"
+                        type="text"
                         class="form-control"
-                        id="epass"
-                        placeholder="Password"
+                        id="studentname"
+                        placeholder="Student Name"
                       />
-                    </div>
+                    </div> -->
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <label for="group-list">Select Group:</label>
                       <select class="form-control">
                         <option>group1</option>
                         <option>group2</option>
                         <option>group3</option>
                       </select>
-                    </div>
+                    </div> -->
 
                     <button type="button" class="btn btn-primary">
                       Submit
@@ -298,7 +262,7 @@
               </div>
             </section>
 
-            <!-- Add User Modal -->
+            <!-- Add Class Modal -->
             <div
               class="modal fade"
               id="userModal"
@@ -309,7 +273,7 @@
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title">Add User</h5>
+                    <h5 class="modal-title">Add Class</h5>
                     <button
                       type="button"
                       class="close"
@@ -322,34 +286,34 @@
                   <div class="modal-body">
                     <form class="px-2">
                       <div class="form-group">
-                        <label for="uname">Name</label>
+                        <label for="classid">Class Id</label>
                         <input
                           type="text"
                           class="form-control"
-                          id="uname"
-                          placeholder="Name"
+                          id="classid"
+                          placeholder="Class Id"
+                          value="CLS6"
+                          disabled
                         />
                       </div>
-
                       <div class="form-group">
-                        <label for="email">Email</label>
+                        <label for="classname">Class Name</label>
                         <input
                           type="text"
                           class="form-control"
-                          id="email"
-                          placeholder="Email"
+                          id="classname"
+                          placeholder="Class Name"
                         />
                       </div>
-
-                      <div class="form-group">
-                        <label for="pass">Password</label>
+                      <!-- <div class="form-group">
+                        <label for="studentname">Student Name</label>
                         <input
-                          type="password"
+                          type="text"
                           class="form-control"
-                          id="pass"
-                          placeholder="Password"
+                          id="studentname"
+                          placeholder="Student Name"
                         />
-                      </div>
+                      </div> -->
 
                       <button
                         type="button"
@@ -359,6 +323,120 @@
                         Submit
                       </button>
                     </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Add Student Modal -->
+
+            <div
+              class="modal fade"
+              id="add-student-Modal"
+              tabindex="-1"
+              role="dialog"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Add Student</h5>
+
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="form-group">
+                      <label for="classid">Class Id</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="classid"
+                        placeholder="Class Id"
+                        value="CLS6"
+                        disabled
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="grouplist">Select Student:</label>
+                      <select class="form-control" id="grouplist">
+                        <option>Doe</option>
+                        <option>Moe</option>
+                        <option>Dooley</option>
+                      </select>
+                    </div>
+
+                    <div class="add-student float-right">
+                      <button
+                        type="button"
+                        onclick=""
+                        class="btn btn-primary"
+                      >
+                        <i class=""></i> Add Student
+                      </button>
+                    </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- List Student Modal -->
+            <div
+              class="modal fade"
+              id="studentModal"
+              tabindex="-1"
+              role="dialog"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Student List</h5>
+
+                    <div class="button-add-student">
+                      <button
+                        type="button"
+                        onclick="openStudentModal()"
+                        class="btn btn-primary"
+                      >
+                        <i class=""></i> Add Student
+                      </button>
+                    </div>
+
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="table-div">
+                      <table
+                        class="table table-striped table-bordered"
+                        cellspacing="0"
+                      >
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Delete</th>
+                          </tr>
+                        </thead>
+                        <tbody id="student-data"></tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -496,28 +574,44 @@
       }
       var system_users = [
         {
-          created_at: "2020-11-04T04:46:05.662Z",
-          name: "Doe",
-          email: "john@example.com",
+          class_id: "CLS1",
+          class_name: "Class A",
+          // student_name: "John",
         },
         {
-          created_at: "2020-11-04T08:38:58.603Z",
-          name: "Moe",
-          email: "mary@example.com",
+          class_id: "CLS2",
+          class_name: "Class B",
+          // student_name: "Moe",
         },
         {
-          created_at: "2020-11-04T04:46:05.662Z",
-          name: "Dooley",
-          email: "july@example.com",
+          class_id: "CLS3",
+          class_name: "Class C",
+          // student_name: "Dooley",
+        },
+      ];
+
+      var system_students = [
+        {
+          student_name: "John",
+          student_email: "john@gmail.com",
+          student_phone: "+123252522",
+        },
+        {
+          student_name: "Moe",
+          student_email: "mary@example.com",
+          student_phone: "+18741271367",
+        },
+        {
+          student_name: "Dooley",
+          student_email: "july@example.com",
+          student_phone: "+18741279437",
         },
       ];
 
       var group_data = [
-        { created_at: "2020-10-08T20:47:22Z", group_name: "group1" },
-        { created_at: "2020-11-02T20:55:04Z", group_name: "group1" },
-        { created_at: "2020-11-02T20:56:50Z", group_name: "group3" },
-        { created_at: "2020-11-13T04:12:40Z", group_name: "group1" },
-        { created_at: "2020-11-13T04:12:40Z", group_name: "group2" },
+        { class_id: "CLS1", group_name: "group1" },
+        { class_id: "CLS2", group_name: "group2" },
+        { class_id: "CLS3", group_name: "group3" },
       ];
 
       $(document).ready(function () {
@@ -526,12 +620,33 @@
 
         system_users.forEach((item, i) => {
           $("#users-data").append(`<tr>
-                        <td>${item.created_at}</td>
-                        <td>${item.name}</td>
-                        <td>${item.email}</td>
-                        <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
+                        <td>${item.class_id}</td>
+                        <td>${item.class_name}</td>
+                        <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
+                          &nbsp
+                          <button onclick="editSystemStudent('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-list"></i></button></td>
                         </tr>`);
         });
+
+        system_students.forEach((item, i) => {
+          $("#student-data").append(`<tr>
+                        <td>${item.student_name}</td>
+                        <td>${item.student_email}</td>
+                        <td>${item.student_phone}</td>
+                        <td><button onclick="" class="btn btn-primary btn-edit"><i class="fa fa-trash"></i></button>
+                        </tr>`);
+        });
+
+        // system_users.forEach((item, i) => {
+        //   $("#users-data").append(`<tr>
+        //                 <td>${item.class_id}</td>
+        //                 <td>${item.class_name}</td>
+        //                 <td>${item.student_name}</td>
+        //                 <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
+        //                   &nbsp
+        //                   <button onclick="editSystemStudent('${i}')" class="btn btn-primary btn-edit"><i class="fa fa fa-plus"> Add</i></button></td>
+        //                 </tr>`);
+        // });
 
         group_data.forEach((item, i) => {
           $("#group-data").append(`<tr>
@@ -555,9 +670,18 @@
         $("#tabDiv").hide();
         $("#systemUserDetail").show();
 
-        $("#ename").val(system_users[i].name);
-        $("#eemail").val(system_users[i].email);
+        $("#classid").val(system_users[i].class_id);
+        $("#classname").val(system_users[i].class_name);
+        // $("#studentname").val(system_users[i].student_name);
       }
+
+      function editSystemStudent(i) {
+        $("#studentModal").modal();
+        $("#stud-class-id").val(system_users[i].class_id);
+        $("#stud-class-name").val(system_users[i].class_name);
+        // $("#stud-student-name").val(system_users[i].student_name);
+      }
+
       function goBack() {
         $("#tabDiv").show();
         $("#systemUserDetail").hide();
@@ -573,6 +697,11 @@
         }
 
         $("#groupModal").modal();
+      }
+
+      function openStudentModal() {
+        $('#studentModal').modal('toggle');
+        $("#add-student-Modal").modal();
       }
     </script>
   </body>

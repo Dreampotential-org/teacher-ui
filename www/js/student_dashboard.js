@@ -33,6 +33,13 @@ $(document).ready(function () {
     window.location.replace("student_lesson.html");
   });
 
+  $(".card-add-student").on("click", function (e) {
+    window.location.replace("student_list.html");
+  });
+  $(".card-add-class").on("click", function (e) {
+    window.location.replace("class_list.html");
+  });
+
   // $(".logoutid").on("click", function (e) {
   //   alert("hii");
   //   localStorage.removeItem("user-token");
