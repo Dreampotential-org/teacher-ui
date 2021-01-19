@@ -201,7 +201,6 @@
                       <i class="fa fa-chevron-left"></i> Back
                     </button>
                     <button
-                      onclick="goBack()"
                       class="btn btn-danger float-right"
                       id="showDelete"
                     >
@@ -243,6 +242,13 @@
                         placeholder="Phone"
                       />
                     </div>
+                    <div class="form-group">
+                      <input
+                        type="hidden"
+                        class="form-control"
+                        id="eid"
+                      />
+                    </div>
 
                     <!-- <div class="form-group">
                       <label for="group-list">Select Group:</label>
@@ -253,7 +259,7 @@
                       </select>
                     </div> -->
 
-                    <button type="button" class="btn btn-primary">
+                    <button type="button" id="updateStudent" class="btn btn-primary">
                       Submit
                     </button>
                   </form>
@@ -316,7 +322,7 @@
 
                       <button
                         type="button"
-                        onclick="addUser()"
+                        id="addStudent"
                         class="btn btn-primary float-right"
                       >
                         Submit
@@ -423,7 +429,8 @@
         </div>
       </div>
     </div>
-    <script>
+    <script src='js/student_list.js'></script>
+    <!-- <script>
       $(document).ready(function () {
         $("#left-sidebar").load("sidebar.html");
         $("#page-header").load("header.html");
@@ -457,23 +464,6 @@
         // Collapse/Expand icon
         //$('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
       }
-      var system_users = [
-        {
-          name: "Doe",
-          email: "john@example.com",
-          phone: "+1813671367",
-        },
-        {
-          name: "Moe",
-          email: "mary@example.com",
-          phone: "+18741271367",
-        },
-        {
-          name: "Dooley",
-          email: "july@example.com",
-          phone: "+18741279437",
-        },
-      ];
 
       var group_data = [
         { created_at: "2020-10-08T20:47:22Z", group_name: "group1" },
@@ -483,18 +473,35 @@
         { created_at: "2020-11-13T04:12:40Z", group_name: "group2" },
       ];
 
+      var system_users;
       $(document).ready(function () {
+        
         $("#tabDiv").show();
         $("#systemUserDetail").hide();
+        
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "http://127.0.0.1:8000/students_list/get/students",
+            "method": "GET",
+            "processData": false,
+            "contentType": false,
+            "mimeType": "multipart/form-data",
 
-        system_users.forEach((item, i) => {
-          $("#users-data").append(`<tr>
-                        <td>${item.name}</td>
-                        <td>${item.email}</td>
-                        <td>${item.phone}</td>
-                        <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
-                        </tr>`);
-        });
+        }
+        $.ajax(settings).done((response) => {
+          system_users = JSON.parse(response)
+          system_users.forEach((item,i) => {
+              $("#users-data").append(`<tr>
+                                <td>${item.name}</td>
+                                <td>${item.email}</td>
+                                <td>${item.phone}</td>
+                                <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
+                                </tr>`);
+            })
+        }).fail(function (err) {
+          alert("ERROR")
+        })
 
         group_data.forEach((item, i) => {
           $("#group-data").append(`<tr>
@@ -514,6 +521,49 @@
       function addGroup() {
         console.log("Add Group ", $("#grouplist").val());
       }
+
+      $("#addStudent").on('click', () => {
+        $.ajax({
+          type: 'POST',
+          url: 'http://127.0.0.1:8000/students_list/get/students',
+          data: {
+            "name":$("#uname").val(),
+            "phone":$("#phone").val(),
+            "email":$("#email").val(),
+          },
+          success: () => {
+            location.reload()
+          }
+        })
+      })
+
+      $("#showDelete").on('click', () => {
+          $.ajax({
+            type: 'DELETE',
+            url:'http://127.0.0.1:8000/students_list/get/students' + '?' + $.param({'id': $("#eid").val() }),
+            success: (response) => {
+                location.reload();
+              
+            }
+          })
+      })
+
+      $("#updateStudent").on('click',() => {
+        $.ajax({
+          type: 'PUT',
+          url: 'http://127.0.0.1:8000/students_list/get/students' + '?' + $.param({'id': $("#eid").val() }),
+          data: {
+            "id":$("#eid").val(),
+            "name":$("#ename").val(),
+            "phone":$("#ephone").val(),
+            "email":$("#eemail").val(),
+          },
+          success: () => {
+            location.reload()
+          }
+        })
+      })
+    
       function editSystemUser(i) {
         $("#tabDiv").hide();
         $("#systemUserDetail").show();
@@ -521,6 +571,7 @@
         $("#ename").val(system_users[i].name);
         $("#eemail").val(system_users[i].email);
         $("#ephone").val(system_users[i].phone);
+        $("#eid").val(system_users[i].id)
       }
       function goBack() {
         $("#tabDiv").show();
@@ -538,6 +589,6 @@
 
         $("#groupModal").modal();
       }
-    </script>
+    </script> -->
   </body>
 </html>

@@ -201,7 +201,6 @@
                       <i class="fa fa-chevron-left"></i> Back
                     </button>
                     <button
-                      onclick="goBack()"
                       class="btn btn-danger float-right"
                       id="showDelete"
                     >
@@ -234,6 +233,13 @@
                         placeholder="Class Name"
                       />
                     </div>
+                    <div class="form-group">
+                      <input
+                        type="hidden"
+                        class="form-control"
+                        id="cid"
+                      />
+                    </div>
 
                     <!-- <div class="form-group">
                       <label for="ephone">Student Name</label>
@@ -254,7 +260,7 @@
                       </select>
                     </div> -->
 
-                    <button type="button" class="btn btn-primary">
+                    <button type="button" id="updateClass" class="btn btn-primary">
                       Submit
                     </button>
                   </form>
@@ -290,10 +296,9 @@
                         <input
                           type="text"
                           class="form-control"
-                          id="classid"
+                          id="class_id"
                           placeholder="Class Id"
-                          value="CLS6"
-                          disabled
+                          required
                         />
                       </div>
                       <div class="form-group">
@@ -301,8 +306,9 @@
                         <input
                           type="text"
                           class="form-control"
-                          id="classname"
+                          id="class_name"
                           placeholder="Class Name"
+                          required
                         />
                       </div>
                       <!-- <div class="form-group">
@@ -317,7 +323,7 @@
 
                       <button
                         type="button"
-                        onclick="addUser()"
+                        id = "addClass"
                         class="btn btn-primary float-right"
                       >
                         Submit
@@ -538,7 +544,8 @@
         </div>
       </div>
     </div>
-    <script>
+    <script src="js/class_list.js"></script>
+    <!-- <script>
       $(document).ready(function () {
         $("#left-sidebar").load("sidebar.html");
         $("#page-header").load("header.html");
@@ -703,6 +710,6 @@
         $('#studentModal').modal('toggle');
         $("#add-student-Modal").modal();
       }
-    </script>
+    </script> -->
   </body>
 </html>
