@@ -291,7 +291,7 @@
                   </div>
                   <div class="modal-body">
                     <form class="px-2">
-                      <div class="form-group">
+                      <!-- <div class="form-group">
                         <label for="classid">Class Id</label>
                         <input
                           type="text"
@@ -300,7 +300,7 @@
                           placeholder="Class Id"
                           required
                         />
-                      </div>
+                      </div> -->
                       <div class="form-group">
                         <label for="classname">Class Name</label>
                         <input
@@ -544,8 +544,28 @@
         </div>
       </div>
     </div>
-    <script src="js/class_list.js"></script>
-    <!-- <script>
+    <script>
+
+    var passwordResetToken = getParam("token");
+      var userToken = localStorage.getItem("user-token");
+
+      console.log("MODE: PASSWORD_RESET, Token - " + passwordResetToken);
+
+      if (userToken == null) {
+        window.location.replace("student_login.html");
+      }
+
+      function getParam(sParam) {
+        var sPageURL = window.location.search.substring(1);
+        var sURLVariables = sPageURL.split("&");
+        for (var i = 0; i < sURLVariables.length; i++) {
+          var sParameterName = sURLVariables[i].split("=");
+          if (sParameterName[0] == sParam) {
+            return sParameterName[1];
+          }
+        }
+      }
+
       $(document).ready(function () {
         $("#left-sidebar").load("sidebar.html");
         $("#page-header").load("header.html");
