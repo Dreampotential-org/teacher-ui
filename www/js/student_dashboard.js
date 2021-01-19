@@ -30,7 +30,7 @@ $(document).ready(function () {
   }
 
   $("#lesson-card-body").on("click", function (e) {
-    window.location.replace("student_lesson.html");
+    window.location.replace("lesson_list.html");
   });
 
   $(".card-add-student").on("click", function (e) {

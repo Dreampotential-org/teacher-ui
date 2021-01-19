@@ -81,7 +81,7 @@
               <div class="container">
                 <div id="tabDiv" class="row">
                   <div class="col-md-12">
-                    <p class="list-of-students">List of students</p>
+                    <p class="list-of-students">List of Lessons</p>
 
                     <div class="tab-content" id="nav-tabContent">
                       <div
@@ -97,9 +97,8 @@
                           >
                             <thead>
                               <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
+                                <th>Course Id</th>
+                                <th>Course Name</th>
                                 <th>Edit</th>
                               </tr>
                             </thead>
@@ -215,26 +214,27 @@
 
                   <form class="pt-2 pt-3">
                     <div class="form-group">
-                      <label for="ename">Name</label>
+                      <label for="courseid">Couse Id</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="ename"
-                        placeholder="Name"
+                        id="courseid"
+                        placeholder="Course Id"
+                        disabled
                       />
                     </div>
 
                     <div class="form-group">
-                      <label for="eemail">Email</label>
+                      <label for="coursename">Course Name</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="eemail"
-                        placeholder="Email"
+                        id="coursename"
+                        placeholder="Course Name"
                       />
                     </div>
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <label for="ephone">Phone</label>
                       <input
                         type="phone"
@@ -242,7 +242,7 @@
                         id="ephone"
                         placeholder="Phone"
                       />
-                    </div>
+                    </div> -->
 
                     <!-- <div class="form-group">
                       <label for="group-list">Select Group:</label>
@@ -272,7 +272,7 @@
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title">Add Student</h5>
+                    <h5 class="modal-title">Add Lesson</h5>
                     <button
                       type="button"
                       class="close"
@@ -284,27 +284,29 @@
                   </div>
                   <div class="modal-body">
                     <form class="px-2">
-                      <div class="form-group">
-                        <label for="uname">Name</label>
+                      <!-- <div class="form-group">
+                        <label for="courseid">Course Id</label>
                         <input
                           type="text"
                           class="form-control"
-                          id="uname"
-                          placeholder="Name"
+                          id="courseid"
+                          placeholder="Course Id"
+                          value="CRS6"
+                          disabled
                         />
-                      </div>
+                      </div> -->
 
                       <div class="form-group">
-                        <label for="email">Email</label>
+                        <label for="coursename">Course Name</label>
                         <input
                           type="text"
                           class="form-control"
-                          id="email"
-                          placeholder="Email"
+                          id="coursename"
+                          placeholder="Course Name"
                         />
                       </div>
 
-                      <div class="form-group">
+                      <!-- <div class="form-group">
                         <label for="phone">Phone</label>
                         <input
                           type="phone"
@@ -312,7 +314,7 @@
                           id="phone"
                           placeholder="Phone"
                         />
-                      </div>
+                      </div> -->
 
                       <button
                         type="button"
@@ -479,19 +481,16 @@
       }
       var system_users = [
         {
-          name: "Doe",
-          email: "john@example.com",
-          phone: "+1813671367",
+          courseid: "CRS1",
+          coursename: "Course One",
         },
         {
-          name: "Moe",
-          email: "mary@example.com",
-          phone: "+18741271367",
+          courseid: "CRS2",
+          coursename: "Course Two",
         },
         {
-          name: "Dooley",
-          email: "july@example.com",
-          phone: "+18741279437",
+          courseid: "CRS3",
+          coursename: "Course Three",
         },
       ];
 
@@ -509,10 +508,10 @@
 
         system_users.forEach((item, i) => {
           $("#users-data").append(`<tr>
-                        <td>${item.name}</td>
-                        <td>${item.email}</td>
-                        <td>${item.phone}</td>
-                        <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
+                        <td>${item.courseid}</td>
+                        <td>${item.coursename}</td>
+                        <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
+                            <button onclick="openStudentLesson('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-eye"></i></button></td>
                         </tr>`);
         });
 
@@ -520,7 +519,8 @@
           $("#group-data").append(`<tr>
                         <td>${item.created_at}</td>
                         <td>${item.group_name}</td>
-                        <td><button onclick="openModal('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
+                        <td><button onclick="openModal('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
+                            </td>
                         </tr>`);
         });
       });
@@ -538,10 +538,10 @@
         $("#tabDiv").hide();
         $("#systemUserDetail").show();
 
-        $("#ename").val(system_users[i].name);
-        $("#eemail").val(system_users[i].email);
-        $("#ephone").val(system_users[i].phone);
+        $("#courseid").val(system_users[i].courseid);
+        $("#coursename").val(system_users[i].coursename);
       }
+
       function goBack() {
         $("#tabDiv").show();
         $("#systemUserDetail").hide();
@@ -557,6 +557,10 @@
         }
 
         $("#groupModal").modal();
+      }
+
+      function openStudentLesson(i) {
+        window.location.replace("student_lesson.html");
       }
     </script>
   </body>
