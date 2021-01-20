@@ -1,0 +1,19 @@
+.list-of-students {
+  padding: 20px 0px;
+  font-weight: 600;
+  font-size: 22px;
+}
+
+#userModal {
+  background: rgba(0, 0, 0, 0.64);
+}
+
+.modal-dialog {
+  top: 10%;
+}
+
+.h2,
+h2 {
+  font-size: 22px;
+  padding-top: 20px;
+}
