@@ -82,26 +82,7 @@ $("#body-row .collapse").collapse("hide");
       $(document).ready(function () {
         $("#tabDiv").show();
         $("#systemUserDetail").hide();
-        var class_settings = {
-            "async": true,
-            "crossDomain": true,
-            "url": "http://127.0.0.1:8000/students_list/get/class",
-            "method": "GET",
-            "processData": false,
-            "contentType": false,
-            "mimeType": "multipart/form-data",
-        
-        }
-        // var getData = function(url,place) {
-        //     $.ajax(url).done((res) => {
-    
-        //         place = res
-        //     }).fail(function (err){
-        //         alert(err)
-        //     })
-        // }
-    
-        $.get("http://127.0.0.1:8000/students_list/get/class").done((response) => {
+        $.get( SERVER + "students_list/get/class").done((response) => {
             system_users = response
             system_users.forEach((item,i) => {
                 $("#users-data").append(`<tr>
@@ -112,22 +93,18 @@ $("#body-row .collapse").collapse("hide");
                                   <button onclick="editSystemStudent('${i}','${item.class_id}')" class="btn btn-primary btn-edit"><i class="fa fa-list"></i></button></td>
                                 </tr>`);
             })
-            $.get("http://127.0.0.1:8000/students_list/get/classenrolled").done((res) => {
-                console.log(res)
-                system_students = res 
-                
-            }).fail(function (err){
-                alert(err)
-            })
-            }).fail(function (err) {
-            alert(err)
-        })
-        // $.get("http://127.0.0.1:8000/students_list/get/students").done((data) => {
-        //             console.log(data)
-        //                 all_students = data
-        //             }).fail(function (err) {
-        //                 alert(err)
-        //             })
+            $.get( SERVER + "students_list/get/classenrolled").done((res) => {
+              system_students = res 
+
+                $.get( SERVER + "students_list/get/students").done((data) => {
+                  all_students = data  
+
+                }).fail(function (err){alert(err)})
+
+              }).fail(function (err) {alert(err)})
+
+            }).fail(function (err) {(err) })
+       
 
 
         group_data.forEach((item, i) => {
@@ -153,7 +130,7 @@ $("#body-row .collapse").collapse("hide");
       $("#addClass").on('click', () => {
         $.ajax({
           type: 'POST',
-          url: 'http://127.0.0.1:8000/students_list/get/class',
+          url:  SERVER + 'students_list/get/class',
           data: {
             "class_name":$("#class_name").val(),
             "class_id":$("#class_id").val(),
@@ -167,28 +144,27 @@ $("#body-row .collapse").collapse("hide");
       $("#showDelete").on('click', () => {
         $.ajax({
           type: 'DELETE',
-          url:'http://127.0.0.1:8000/students_list/get/class' + '?' + $.param({'id': $("#cid").val() }),
+          url: SERVER + 'students_list/get/class' + '?' + $.param({'id': $("#cid").val() }),
           success: () => {
               location.reload();
-            
           }
         })
         })
 
-        $("#updateClass").on('click',() => {
-            $.ajax({
-              type: 'PUT',
-              url: 'http://127.0.0.1:8000/students_list/get/class' + '?' + $.param({'id': $("#cid").val() }),
-              data: {
-                "id":$("#cid").val(),
-                "class_name":$("#classname").val(),
-                "class_id":$("#classid").val(),
-              },
-              success: () => {
-                location.reload()
-              }
-            })
+      $("#updateClass").on('click',() => {
+          $.ajax({
+            type: 'PUT',
+            url:  SERVER + 'students_list/get/class' + '?' + $.param({'id': $("#cid").val() }),
+            data: {
+              "id":$("#cid").val(),
+              "class_name":$("#classname").val(),
+              "class_id":$("#classid").val(),
+            },
+            success: () => {
+              location.reload()
+            }
           })
+        })
 
       function editSystemUser(i) {
         $("#tabDiv").hide();
@@ -197,7 +173,6 @@ $("#body-row .collapse").collapse("hide");
         $("#classid").val(system_users[i].class_id);
         $("#classname").val(system_users[i].class_name);
         $("#cid").val(system_users[i].id)
-        // $("#studentname").val(system_users[i].student_name);
       }
 
       function editSystemStudent(i,id) {
@@ -230,63 +205,63 @@ $("#body-row .collapse").collapse("hide");
           $("#groupTitle").text("Add Group");
           $("#grouplist").val("group1");
         }
-
         $("#groupModal").modal();
       }
-      let option_length;
+      
       function openStudentModal() {
         $('#studentModal').modal('toggle');
         $("#add-student-Modal").modal();
         $('#add_classid').val( $("#AddStudent").val())
-        // option_length = $("#studentlist option").length
-        // console.log(option_length)
-      }
-   
+        }
+      
       $("#AddStudent").click(() => {
+          let class_student = []
           student = $("#studentlist option:selected").val()
           class_ = $("#add_classid").val()
-          $.ajax({
-            type: 'POST',
-            url: 'http://127.0.0.1:8000/students_list/get/classenrolled',
-            data: {
-              "student":student,
-              "class":class_,
-            },
-            success: () => {
-              location.reload()
-            }
+          
+          var filteredStudent = system_students.filter((el) => {
+            return el.class_enrolled.class_id === $("#AddStudent").val()
           })
-      })
-       
+          filteredStudent.forEach((item,i) => {
+            class_student.push(item.student.name)
+          })
+          if (class_student.indexOf(student) === -1){
+            $.ajax({
+              type: 'POST',
+              url:  SERVER + 'students_list/get/classenrolled',
+              data: {
+                "student":student,
+                "class":class_,
+              },
+              success: () => {
+                location.reload()
+              }
+            })
+          } else{
+            alert(`${student} is already in your class`)
+          }
+        })
+      
       $("#studentlist").click(() => {
           option_length = ($("#studentlist option").length)
-          
           if ($("#studentlist option:selected").val() != "Select Student") {
             $("#AddStudent").attr("disabled", false)
           } else{
             $("#AddStudent").attr("disabled", true)
           }
+        
         if (option_length === 1) {
-                system_students.forEach((item,i) =>{
-                    if ($("#AddStudent").val() !== item.class_enrolled.class_id) {
-                        
-                       $("#studentlist").append($('<option>').val(item.student.name).text(item.student.name))
-                    }
-                })
-                // all_students.foreach((item,i) => {
-                //     $("#studentlist").append($('<option>').val(item.name).text(item.name))
-                // })
-
-            }
-        })
+                all_students.forEach((item,i) => {
+                 $("#studentlist").append($('<option>').val(item.name).text(item.name))
+                })}
+          })
     
         function deleteStudent(sid,cid){
             $.ajax({
                 type: 'DELETE',
-                url:'http://127.0.0.1:8000/students_list/get/classenrolled' + '?' + $.param({'sid': sid , 'cid': cid }),
+                url: SERVER + 'students_list/get/classenrolled' + '?' + $.param({'sid': sid , 'cid': cid }),
                 success: () => {
-                    location.reload();
-                  
+                    location.reload();  
                 }
               })
-        }
+          }
