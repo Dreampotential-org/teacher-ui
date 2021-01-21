@@ -1,5 +1,5 @@
-var SERVER = "https://sfapp-api.dreamstate-4-all.org/";
-//var SERVER = 'http://localhost:8001/'
+// var SERVER = "https://sfapp-api.dreamstate-4-all.org/";
+var SERVER = 'http://localhost:8000/'
 
 var passwordResetToken = getParam("token");
 var userToken = localStorage.getItem("user-token");
@@ -53,10 +53,9 @@ $(document).ready(function () {
         displayPage("dashboard");
       },
       error: function (err) {
-        console.log("sign up error is : ",err)
         swal({
           title: "Error",
-          text: err,
+          text: "Username is already exists",
           icon: "error",
         });
       },
