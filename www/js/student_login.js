@@ -52,10 +52,11 @@ $(document).ready(function () {
 
         displayPage("dashboard");
       },
-      error: function () {
+      error: function (err) {
+        console.log("sign up error is : ",err)
         swal({
           title: "Error",
-          text: "",
+          text: err,
           icon: "error",
         });
       },
