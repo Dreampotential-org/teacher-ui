@@ -49,7 +49,7 @@ $(document).ready(function () {
   var settings = {
       "async": true,
       "crossDomain": true,
-      "url": "http://127.0.0.1:8000/students_list/get/students",
+      "url":  SERVER + "students_list/get/students",
       "method": "GET",
       "processData": false,
       "contentType": false,
@@ -92,7 +92,7 @@ function addGroup() {
 $("#addStudent").on('click', () => {
   $.ajax({
     type: 'POST',
-    url: 'http://127.0.0.1:8000/students_list/get/students',
+    url:  SERVER + 'students_list/get/students',
     data: {
       "name":$("#uname").val(),
       "phone":$("#phone").val(),
@@ -107,7 +107,7 @@ $("#addStudent").on('click', () => {
 $("#showDelete").on('click', () => {
     $.ajax({
       type: 'DELETE',
-      url:'http://127.0.0.1:8000/students_list/get/students' + '?' + $.param({'id': $("#eid").val() }),
+      url: SERVER + 'students_list/get/students' + '?' + $.param({'id': $("#eid").val() }),
       success: () => {
           location.reload();
         
@@ -118,7 +118,7 @@ $("#showDelete").on('click', () => {
 $("#updateStudent").on('click',() => {
   $.ajax({
     type: 'PUT',
-    url: 'http://127.0.0.1:8000/students_list/get/students' + '?' + $.param({'id': $("#eid").val() }),
+    url:  SERVER + 'students_list/get/students' + '?' + $.param({'id': $("#eid").val() }),
     data: {
       "id":$("#eid").val(),
       "name":$("#ename").val(),

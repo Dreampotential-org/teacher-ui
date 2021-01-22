@@ -220,7 +220,6 @@
                         class="form-control"
                         id="classid"
                         placeholder="Class Id"
-                        disabled
                       />
                     </div>
 
@@ -291,7 +290,7 @@
                   </div>
                   <div class="modal-body">
                     <form class="px-2">
-                      <!-- <div class="form-group">
+                      <div class="form-group">
                         <label for="classid">Class Id</label>
                         <input
                           type="text"
@@ -300,7 +299,7 @@
                           placeholder="Class Id"
                           required
                         />
-                      </div> -->
+                      </div>
                       <div class="form-group">
                         <label for="classname">Class Name</label>
                         <input
@@ -363,18 +362,15 @@
                       <input
                         type="text"
                         class="form-control"
-                        id="classid"
+                        id="add_classid"
                         placeholder="Class Id"
-                        value="CLS6"
                         disabled
                       />
                     </div>
                     <div class="form-group">
-                      <label for="grouplist">Select Student:</label>
-                      <select class="form-control" id="grouplist">
-                        <option>Doe</option>
-                        <option>Moe</option>
-                        <option>Dooley</option>
+                      <label for="studentlist">Select Student:</label>
+                      <select class="form-control" id="studentlist">
+                        <option selected>Select Student</option>
                       </select>
                     </div>
 
@@ -383,6 +379,8 @@
                         type="button"
                         onclick=""
                         class="btn btn-primary"
+                        id="AddStudent"
+                        disabled
                       >
                         <i class=""></i> Add Student
                       </button>
@@ -544,7 +542,9 @@
         </div>
       </div>
     </div>
-    <script>
+    <script src="js/class_list.js"></script>
+    <!-- Update this script to in js/class_list.js file -->
+    <!-- <script>
 
     var passwordResetToken = getParam("token");
       var userToken = localStorage.getItem("user-token");
