@@ -85,13 +85,16 @@ $("#body-row .collapse").collapse("hide");
         $.get( SERVER + "students_list/get/class").done((response) => {
             system_users = response
             system_users.forEach((item,i) => {
+              if (item.user.username === localStorage.getItem('username')){
+
                 $("#users-data").append(`<tr>
-                                <td>${item.class_id}</td>
-                                <td>${item.class_name}</td>
-                                <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
-                                  &nbsp
-                                  <button onclick="editSystemStudent('${i}','${item.class_id}')" class="btn btn-primary btn-edit"><i class="fa fa-list"></i></button></td>
-                                </tr>`);
+                <td>${item.class_id}</td>
+                <td>${item.class_name}</td>
+                <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
+                &nbsp
+                <button onclick="editSystemStudent('${i}','${item.class_id}')" class="btn btn-primary btn-edit"><i class="fa fa-list"></i></button></td>
+                </tr>`);
+              }
             })
             $.get( SERVER + "students_list/get/classenrolled").done((res) => {
               system_students = res 

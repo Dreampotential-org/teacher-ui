@@ -59,12 +59,15 @@ $(document).ready(function () {
   $.ajax(settings).done((response) => {
     system_users = JSON.parse(response)
     system_users.forEach((item,i) => {
+      if (item.user.username === localStorage.getItem("username")){
+
         $("#users-data").append(`<tr>
-                          <td>${item.name}</td>
-                          <td>${item.email}</td>
-                          <td>${item.phone}</td>
-                          <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
-                          </tr>`);
+        <td>${item.name}</td>
+        <td>${item.email}</td>
+        <td>${item.phone}</td>
+        <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
+        </tr>`);
+      }
       })
   }).fail(function (err) {
     alert("ERROR")
@@ -97,6 +100,7 @@ $("#addStudent").on('click', () => {
       "name":$("#uname").val(),
       "phone":$("#phone").val(),
       "email":$("#email").val(),
+      'user': localStorage.getItem("username")
     },
     success: () => {
       location.reload()
@@ -124,6 +128,7 @@ $("#updateStudent").on('click',() => {
       "name":$("#ename").val(),
       "phone":$("#ephone").val(),
       "email":$("#eemail").val(),
+      "user" : localStorage.getItem("username")
     },
     success: () => {
       location.reload()

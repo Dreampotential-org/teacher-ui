@@ -76,8 +76,9 @@ $(document).ready(function () {
       data: $(this).serialize(),
       success: function (response) {
         // Whatever you want to do after the form is successfully submitted
-        console.log(response);
+        loginResponse = response;
         localStorage.setItem("user-token", response.token);
+        localStorage.setItem("username",response.user.email)
 
         swal({
           title: "Welcome " + response.user.name + "!",
@@ -276,6 +277,7 @@ function clickEvents() {
     });
 
     localStorage.removeItem("user-token");
+    localStorage.removeItem("username")
     displayPage("landing-page");
   });
 }
