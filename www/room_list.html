@@ -358,8 +358,9 @@
             { created_at: "2020-11-13T04:12:40Z", group_name: "group1" },
             { created_at: "2020-11-13T04:12:40Z", group_name: "group2" },
         ];
+        var SERVER = 'https://sfapp-api.dreamstate-4-all.org/';
         function loadRoomList(){
-            var SERVER = 'http://localhost:8040/';
+            // var SERVER = 'http://localhost:8040/';
             var settings = {
                 "async": true,
                 "crossDomain": true,
@@ -394,7 +395,7 @@
                 console.log("Logo Uploading Failed!");
                 swal({
                     title: "Error!",
-                    text: "File upload failed!",
+                    text: "Loading failed!",
                     icon: "warning",
                 });
             });
@@ -429,7 +430,7 @@
             // document.getElementById("userModal").style.display = "none";
             // var file = document.getElementById('file').files[0];
             // console.log(document.getElementById("file").files[0])
-            var SERVER = 'https://sfapp-api.dreamstate-4-all.org/';
+            // var SERVER = 'https://sfapp-api.dreamstate-4-all.org/';
             // var SERVER = 'http://localhost:8040/';
             var form = new FormData();
             form.append("file", document.getElementById("file").files[0])
@@ -494,7 +495,7 @@
                     console.log("Room Info Insertion Failed!");
                     swal({
                         title: "Error!",
-                        text: "File upload failed!",
+                        text: "Room Info Insertion Failed!",
                         icon: "warning",
                     });
                 });
@@ -502,7 +503,7 @@
                 console.log("Logo Uploading Failed!");
                 swal({
                     title: "Error!",
-                    text: "File upload failed!",
+                    text: "Loading failed!",
                     icon: "warning",
                 });
             });
