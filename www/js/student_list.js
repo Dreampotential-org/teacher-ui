@@ -18,7 +18,7 @@ var passwordResetToken = getParam("token");
         }
       }
 
-      
+
 $(document).ready(function () {
   $("#left-sidebar").load("sidebar.html");
   $("#page-header").load("header.html");
@@ -80,7 +80,7 @@ $(document).ready(function () {
   $.ajax(settings).done((response) => {
     system_users = JSON.parse(response)
     system_users.forEach((item,i) => {
-      if (item.user.username === localStorage.getItem("username")){
+      if (item.user.username === localStorage.getItem("user-name")){
 
         $("#users-data").append(`<tr>
         <td>${item.name}</td>
@@ -121,7 +121,7 @@ $("#addStudent").on('click', () => {
       "name":$("#uname").val(),
       "phone":$("#phone").val(),
       "email":$("#email").val(),
-      'user': localStorage.getItem("username")
+      'user': localStorage.getItem("user-name")
     },
     success: () => {
       location.reload()
@@ -149,7 +149,7 @@ $("#updateStudent").on('click',() => {
       "name":$("#ename").val(),
       "phone":$("#ephone").val(),
       "email":$("#eemail").val(),
-      "user" : localStorage.getItem("username")
+      "user" : localStorage.getItem("user-name")
     },
     success: () => {
       location.reload()

@@ -106,7 +106,7 @@ $("#body-row .collapse").collapse("hide");
         $.get( SERVER + "students_list/get/class").done((response) => {
             system_users = response
             system_users.forEach((item,i) => {
-              if (item.user.username === localStorage.getItem('username')){
+              if (item.user.username === localStorage.getItem('user-name')){
 
                 $("#users-data").append(`<tr>
                 <td>${item.class_id}</td>
@@ -158,7 +158,7 @@ $("#body-row .collapse").collapse("hide");
           data: {
             "class_name":$("#class_name").val(),
             "class_id":$("#class_id").val(),
-            "user" : localStorage.getItem("username")
+            "user" : localStorage.getItem("user-name")
           },
           success: () => {
             location.reload()
@@ -184,7 +184,7 @@ $("#body-row .collapse").collapse("hide");
               "id":$("#cid").val(),
               "class_name":$("#classname").val(),
               "class_id":$("#classid").val(),
-              "user" : localStorage.getItem("username")
+              "user" : localStorage.getItem("user-name")
             },
             success: () => {
               location.reload()

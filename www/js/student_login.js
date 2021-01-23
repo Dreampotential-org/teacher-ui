@@ -78,7 +78,7 @@ $(document).ready(function () {
         // Whatever you want to do after the form is successfully submitted
         loginResponse = response;
         localStorage.setItem("user-token", response.token);
-        localStorage.setItem("username",response.user.email)
+        localStorage.setItem("user-name",response.user.email)
 
         swal({
           title: "Welcome " + response.user.name + "!",
@@ -266,7 +266,8 @@ function clickEvents() {
 
   $("#logoutBtn").on("click", function (e) {
     e.preventDefault();
-    // localStorage.removeItem("username");
+    localStorage.clear()
+    
     console.log("Logout");
 
     swal({
@@ -277,8 +278,8 @@ function clickEvents() {
       timer: 1000,
     });
     
-    // localStorage.removeItem("user-token");
-    localStorage.clear()
+    localStorage.removeItem("user-token");
+    localStorage.removeItem("user-name");
     displayPage("landing-page");
   });
 }
