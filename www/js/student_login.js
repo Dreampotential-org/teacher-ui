@@ -275,9 +275,8 @@ function clickEvents() {
       buttons: false,
       timer: 1000,
     });
-
+    localStorage.removeItem("username");
     localStorage.removeItem("user-token");
-    localStorage.removeItem("username")
     displayPage("landing-page");
   });
 }
