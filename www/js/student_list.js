@@ -1,3 +1,24 @@
+var passwordResetToken = getParam("token");
+      var userToken = localStorage.getItem("user-token");
+
+      console.log("MODE: PASSWORD_RESET, Token - " + passwordResetToken);
+
+      if (userToken == null) {
+        window.location.replace("student_login.html");
+      }
+
+      function getParam(sParam) {
+        var sPageURL = window.location.search.substring(1);
+        var sURLVariables = sPageURL.split("&");
+        for (var i = 0; i < sURLVariables.length; i++) {
+          var sParameterName = sURLVariables[i].split("=");
+          if (sParameterName[0] == sParam) {
+            return sParameterName[1];
+          }
+        }
+      }
+
+      
 $(document).ready(function () {
   $("#left-sidebar").load("sidebar.html");
   $("#page-header").load("header.html");

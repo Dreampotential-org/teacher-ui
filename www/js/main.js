@@ -1,7 +1,6 @@
 var SERVER = 'https://sfapp-api.dreamstate-4-all.org/'
 // var SERVER = 'http://localhost:8000/'
 
-
 function init() {
 }
 

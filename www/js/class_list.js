@@ -1,3 +1,24 @@
+var passwordResetToken = getParam("token");
+var userToken = localStorage.getItem("user-token");
+
+console.log("MODE: PASSWORD_RESET, Token - " + passwordResetToken);
+
+if (userToken == null) {
+  window.location.replace("student_login.html");
+}
+
+function getParam(sParam) {
+  var sPageURL = window.location.search.substring(1);
+  var sURLVariables = sPageURL.split("&");
+  for (var i = 0; i < sURLVariables.length; i++) {
+    var sParameterName = sURLVariables[i].split("=");
+    if (sParameterName[0] == sParam) {
+      return sParameterName[1];
+    }
+  }
+}
+
+
 
 $(document).ready(function () {
 
@@ -137,6 +158,7 @@ $("#body-row .collapse").collapse("hide");
           data: {
             "class_name":$("#class_name").val(),
             "class_id":$("#class_id").val(),
+            "user" : localStorage.getItem("username")
           },
           success: () => {
             location.reload()
@@ -162,6 +184,7 @@ $("#body-row .collapse").collapse("hide");
               "id":$("#cid").val(),
               "class_name":$("#classname").val(),
               "class_id":$("#classid").val(),
+              "user" : localStorage.getItem("username")
             },
             success: () => {
               location.reload()
