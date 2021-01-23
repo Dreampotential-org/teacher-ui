@@ -266,8 +266,7 @@ function clickEvents() {
 
   $("#logoutBtn").on("click", function (e) {
     e.preventDefault();
-    localStorage.clear()
-    
+    window.localStorage.clear()
     console.log("Logout");
 
     swal({
