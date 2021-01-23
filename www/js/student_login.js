@@ -266,6 +266,7 @@ function clickEvents() {
 
   $("#logoutBtn").on("click", function (e) {
     e.preventDefault();
+    // localStorage.removeItem("username");
     console.log("Logout");
 
     swal({
@@ -275,8 +276,9 @@ function clickEvents() {
       buttons: false,
       timer: 1000,
     });
-    localStorage.removeItem("username");
-    localStorage.removeItem("user-token");
+    
+    // localStorage.removeItem("user-token");
+    localStorage.clear()
     displayPage("landing-page");
   });
 }
