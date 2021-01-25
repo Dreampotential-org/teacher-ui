@@ -22,6 +22,7 @@ function getParam(sParam) {
 }
 
 $(document).ready(function () {
+  window.localStorage.clear()
   let MODE = "WELCOME_PAGE";
 
   if (passwordResetToken) {
@@ -266,7 +267,6 @@ function clickEvents() {
 
   $("#logoutBtn").on("click", function (e) {
     e.preventDefault();
-    window.localStorage.clear()
     console.log("Logout");
 
     swal({
@@ -278,7 +278,6 @@ function clickEvents() {
     });
     
     localStorage.removeItem("user-token");
-    localStorage.removeItem("user-name");
     displayPage("landing-page");
   });
 }
