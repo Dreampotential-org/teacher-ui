@@ -113,7 +113,12 @@ $("#body-row .collapse").collapse("hide");
                 <td>${item.class_name}</td>
                 <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
                 &nbsp
-                <button onclick="editSystemStudent('${i}','${item.class_id}')" class="btn btn-primary btn-edit"><i class="fa fa-list"></i></button></td>
+                <button onclick="editSystemStudent('${i}','${item.class_id}')" class="btn btn-primary btn-edit"><i class="fa fa-list"></i></button>
+                &nbsp
+                <button class="btn btn-primary btn-edit" onclick="showEmail('${i}')"><i class="fa fa-envelope"></i></button>
+                &nbsp
+                <button class="btn btn-primary btn-edit"><i class="fa fa-comment"></i></button>
+                </td>
                 </tr>`);
               }
             })
@@ -149,6 +154,21 @@ $("#body-row .collapse").collapse("hide");
       }
       function addGroup() {
         console.log("Add Group ", $("#grouplist").val());
+      }
+      function showEmail(i){
+        $("#show-email").show()
+        $("#list-class").hide()
+        $("#class-id").val(system_users[i].id)
+      }
+      function showClass(type){
+        
+        if (type === 'email')
+        {
+          $("#show-email").hide()
+        } else{
+          $("#show-text").hide()
+        }
+        $("#list-class").show()
       }
 
       $("#addClass").on('click', () => {
@@ -278,7 +298,10 @@ $("#body-row .collapse").collapse("hide");
         
         if (option_length === 1) {
                 all_students.forEach((item,i) => {
-                 $("#studentlist").append($('<option>').val(item.name).text(item.name))
+                  if (localStorage.getItem('user-name') === item.user.username){
+
+                    $("#studentlist").append($('<option>').val(item.name).text(item.name))
+                  }
                 })}
           })
     
@@ -291,3 +314,18 @@ $("#body-row .collapse").collapse("hide");
                 }
               })
           }
+
+        $("#emailForm").submit( (event) => {
+          event.preventDefault();
+          $.ajax({
+            type: 'POST',
+            url: SERVER + 'students_list/send/mail',
+            data: {
+              "message" : $("#email-subject").val() +"\n"+ $("#email-body").val(),
+              "class_enrolled_id": $("#class-id").val()
+            },
+            success: () => {
+              location.reload()
+            }
+          })
+        })
