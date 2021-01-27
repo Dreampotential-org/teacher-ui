@@ -284,7 +284,12 @@ $("#body-row .collapse").collapse("hide");
               }
             })
           } else{
-            alert(`${student} is already in your class`)
+            swal({
+              title: "Warning",
+              text: `${student} is already in your class`,
+              icon: "warning",
+              timer:1500
+            });
           }
         })
       
