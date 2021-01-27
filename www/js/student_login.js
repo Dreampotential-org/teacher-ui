@@ -22,7 +22,7 @@ function getParam(sParam) {
 }
 
 $(document).ready(function () {
-  window.localStorage.clear()
+  window.localStorage.clear();
   let MODE = "WELCOME_PAGE";
 
   if (passwordResetToken) {
@@ -41,7 +41,9 @@ $(document).ready(function () {
       success: function (response) {
         // Whatever you want to do after the form is successfully submitted
         console.log(response);
+        loginResponse = response;
         localStorage.setItem("user-token", response.token);
+        localStorage.setItem("user-name", response.user.email);
 
         swal({
           title: "Welcome " + response.user.name + "!",
@@ -51,7 +53,8 @@ $(document).ready(function () {
           timer: 1000,
         });
 
-        displayPage("dashboard");
+        // displayPage("dashboard");
+        window.location.replace("student_dashboard.html");
       },
       error: function (err) {
         swal({
@@ -79,7 +82,7 @@ $(document).ready(function () {
         // Whatever you want to do after the form is successfully submitted
         loginResponse = response;
         localStorage.setItem("user-token", response.token);
-        localStorage.setItem("user-name",response.user.email)
+        localStorage.setItem("user-name", response.user.email);
 
         swal({
           title: "Welcome " + response.user.name + "!",
@@ -276,7 +279,7 @@ function clickEvents() {
       buttons: false,
       timer: 1000,
     });
-    
+
     localStorage.removeItem("user-token");
     displayPage("landing-page");
   });
