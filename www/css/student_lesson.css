@@ -2,9 +2,9 @@
   /* border: 1px solid lightgray; */
   padding: 25px;
 }
-.row {
+/* .row {
   padding-top: 10px;
-}
+} */
 
 .row {
   margin-right: -15px;
@@ -55,9 +55,11 @@ a {
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #337ab7;
-  border-color: #2e6da4;
+  color: #fff !important;
+  /* background-color: #337ab7;
+  border-color: #2e6da4; */
+  background-color: #88c3e6;
+  border-color: #64b3e6;
 }
 
 span.glyphicon.glyphicon-wrench {
@@ -107,4 +109,8 @@ button#add {
   margin: 0 auto;
   text-align: center;
   /* width: 450px; */
+}
+
+.div-student-builder {
+  padding-top: 10px;
 }
