@@ -84,166 +84,169 @@
           <div class="container">
           
             <div class="container start-container">
+              <div>
                 <div class="row">
                     
-                    <div class="col-xs-6 col-sm-6">
-                        <p>Segment Builder</p>
-                        <select class="form-control" id="select_lesson" onchange="selectLesson()" >
-    
-                        </select>
-                        <div class="row anchor">
-                            <a id="lesson_slide" class="col-lg-12 col-sm-12 col-md-12">View Lesson</a>
-                        </div>
-    
-                        <div class="row anchor">
-                            <a id="lesson_responses" class="col-lg-12 col-sm-12 col-md-12">View Responses</a>
-                        </div>
-                    </div>
-                    <div class="col-xs-6 col-sm-6" style="margin-top: 20px;margin-bottom: 10px;">
-    
-                        <div class="col-xs-12 col-sm-12" align="right"><a href="settings.html" class="btn btn-primary">
-                            <span style="font-size: 25px;" class="fa fa-wrench"></span></a></div>
-                            <!-- <i class="fas fa-wrench"></i> -->
-                        <select class="form-control " id="selectsegment">
-                            <option selected value="select_type">Select Segment Type</option>
-                            <option value="speed_read">Speed Read</option>
-                            <option value="title_text">Title Text</option>
-                            <option value="question_choices">Question Choices</option>
-                            <option value="iframe_link">Iframe Link</option>
-                            <option value="video_file">Video File</option>
-                            <option value="question_text">Question Text</option>
-                            <option value="sign_b64">Signature Image</option>
-                        </select>
-                        <button class="btn form-control btn-success" style="margin-top: 20px;margin-bottom: 10px;" id="add">Add</button>
-                        <input type="text" class="form-control" name="lesson_name" id="lesson_name" placeholder="Lesson Name">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12" id="sortable">
-    
-                    </div>
-                    <div class="col-xs-12">
-                        <form id="lesson_form">
-                            <div class="speed_read" id="speed_read" style="display: none; padding-top: 15px">
-                                <div class="ui-sortable-handle" style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
-                                    <div class="row">
-                                        <h4 class="col-xs-10 col-lg-10">Speed Read</h4>
-                                        <a class="remove_flashcard col-xs-2 col-lg-2" style="color:red;font-weight:bold;font-size:23px;text-align:right;"> X </a>
-                                    </div>
-    
-                                    <div class="form-group">
-                                        <textarea class="form-control" name="speed_read" rows="7" placeholder=""></textarea>
-                                    </div>
-                                </div>
-                            </div>
-    
-                            <div class="speed_read" id="question_text" style="display: none; padding-top: 15px">
-                                <div style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
-                                    <div class="row">
-                                        <h4 class="col-xs-10 col-lg-10">Question Text</h4>
-                                        <a class="remove_flashcard col-xs-2 col-lg-2" style="color:red;font-weight:bold;font-size:23px;text-align:right;"> X </a>
-                                    </div>
-    
-                                    <div class="form-group">
-                                        <textarea class="form-control" name="speed_read" rows="7" placeholder=""></textarea>
-                                    </div>
-                                </div>
-                            </div>
-    
-                            <div class="speed_read" id="title_text" style="display: none; padding-top: 15px">
-                                <div style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
-                                    <div class="row">
-                                        <h4 class="col-xs-10 col-lg-10">Title Text</h4>
-                                        <a class="remove_flashcard col-xs-2 col-lg-2" style="color:red;font-weight:bold;font-size:23px;text-align:right;"> X </a>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="title"  placeholder="Title">
-                                    </div>
-                                    <div class="form-group">
-                                        <textarea class="form-control" id="text" rows="7" placeholder=""></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="speed_read" id="question_choices" style="display: none; padding-top: 15px">
-                                <div style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
-                                    <div class="row">
-                                        <h4 class="col-xs-10 col-lg-10">Question Choices</h4>
-                                        <a class="remove_flashcard col-xs-2 col-lg-2" style="color:red;font-weight:bold;font-size:23px;text-align:right;"> X </a>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="question"  placeholder="Question">
-                                    </div>
-                                    <div class="form-group" id="choices">
-                                        <div>
-                                            <input type="text" class="form-control" rows="7" placeholder="Choices"><button onclick="$(this).parent().remove()">Remove Choice</button>
-                                        </div>
-                                    </div>
-                                    <button>Add Choice</button>
-                                    <div class="form-group">
-                                        <hr>
-                                        <input type="button" id="upload-img-btn" onclick="handleImageUpload()" value="Upload Image"/>
-                                        <input type="text" class="form-control" id="image" placeholder="Image Link" />
-                                        <div id="output"></div>
-                                    </div>
-    
-                                </div>
-                                <div class="speed_read" id="video_file" style="display: none; padding-top: 15px">
-                                    <div style="margin-top:50px">
-                                        <div class="row">
-                                            <h4 class="col-xs-10 col-lg-10">Video File</h4>
-                                            <a class="remove_flashcard col-xs-2 col-lg-2" style="color:red;font-weight:bold;font-size:23px;text-align:right;"> X </a>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" id="video_title"  placeholder="Title">
-                                        </div>
-    
-                                        <div class="form-group">
-                                            <input type="button" id="upload-vid-btn" onclick="handleVideoUpload()" value="Upload Video"/>
-                                            <input type="text" class="form-control" id="video" placeholder="Video Link" />
-                                        </div>
-                                        <div id="video-output" style="display: none">
-                                            <video  id="videoplayer" controls preload="none" height="360" style="width: 100%;">
-                                            </video>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-    
-                            <div class="speed_read" id="iframe_link" style="display: none; ping-top: 15px">
-                                <div style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
-                                    <div class="row">
-                                        <h4 class="col-xs-10 col-lg-10">Iframe Link</h4>
-                                        <a class="remove_flashcard col-xs-2 col-lg-2" style="color:red;font-weight:bold;font-size:23px;text-align:right;"> X </a>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="title_iframe"  placeholder="Title">
-                                    </div>
-    
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="iframe" placeholder="IFrame Link" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="speed_read" id="sign_b64" style="display: none; padding-top: 15px">
-                                <div style="margin-top:50px">
-                                    <div class="row">
-                                        <h4 class="col-xs-10 col-lg-10">Signature</h4>
-                                        <a class="remove_flashcard col-xs-2 col-lg-2" style="color:red;font-weight:bold;font-size:23px;text-align:right;"> X </a>
-                                    </div>
-    
-                                    <div class="form-group">
-                                        <input type="text" hidden name="input_signature" id="signInput">
-                                        <button class="btn btn-primary" type="button" onclick="signLesson(event, 'lesson_signature', 'signInput')"> Click To Sign</button>
-                                        <img id="lesson_signature" hidden src="">
-                                    </div>
-                                </div>
-                            </div>
-                    </div>
-                    <div class="col-xs-12 save-button">
-                        <button type="submit" class="form-control btn btn-primary save-button" style="margin-top: 50px;">Save</button>
-                    </div>
-                    </form>
-                </div>
+                  <div class="col-xs-6 col-sm-6">
+                      <p>Segment Builder</p>
+                      <select class="form-control" id="select_lesson" onchange="selectLesson()" >
+  
+                      </select>
+                      <div class="row anchor">
+                          <a id="lesson_slide" class="col-lg-12 col-sm-12 col-md-12">View Lesson</a>
+                      </div>
+  
+                      <div class="row anchor">
+                          <a id="lesson_responses" class="col-lg-12 col-sm-12 col-md-12">View Responses</a>
+                      </div>
+                  </div>
+                  <div class="col-xs-6 col-sm-6" style="margin-top: 20px;margin-bottom: 10px;">
+  
+                      <div class="col-xs-12 col-sm-12" align="right"><a href="settings.html" class="btn btn-primary">
+                          <span style="font-size: 25px;" class="fa fa-wrench"></span></a></div>
+                          <!-- <i class="fas fa-wrench"></i> -->
+                      <select class="form-control " id="selectsegment">
+                          <option selected value="select_type">Select Segment Type</option>
+                          <option value="speed_read">Speed Read</option>
+                          <option value="title_text">Title Text</option>
+                          <option value="question_choices">Question Choices</option>
+                          <option value="iframe_link">Iframe Link</option>
+                          <option value="video_file">Video File</option>
+                          <option value="question_text">Question Text</option>
+                          <option value="sign_b64">Signature Image</option>
+                      </select>
+                      <button class="btn form-control btn-success" style="margin-top: 20px;margin-bottom: 10px;" id="add">Add</button>
+                      <input type="text" class="form-control" name="lesson_name" id="lesson_name" placeholder="Lesson Name">
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-xs-12" id="sortable">
+  
+                  </div>
+                  <div class="col-xs-12">
+                      <form id="lesson_form">
+                          <div class="speed_read" id="speed_read" style="display: none; padding-top: 15px">
+                              <div class="ui-sortable-handle" style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                  <div class="row">
+                                      <h4 class="col-xs-10 col-lg-10">Speed Read</h4>
+                                      <a class="remove_flashcard col-xs-2 col-lg-2" style="color:red;font-weight:bold;font-size:23px;text-align:right;"> X </a>
+                                  </div>
+  
+                                  <div class="form-group">
+                                      <textarea class="form-control" name="speed_read" rows="7" placeholder=""></textarea>
+                                  </div>
+                              </div>
+                          </div>
+  
+                          <div class="speed_read" id="question_text" style="display: none; padding-top: 15px">
+                              <div style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                  <div class="row">
+                                      <h4 class="col-xs-10 col-lg-10">Question Text</h4>
+                                      <a class="remove_flashcard col-xs-2 col-lg-2" style="color:red;font-weight:bold;font-size:23px;text-align:right;"> X </a>
+                                  </div>
+  
+                                  <div class="form-group">
+                                      <textarea class="form-control" name="speed_read" rows="7" placeholder=""></textarea>
+                                  </div>
+                              </div>
+                          </div>
+  
+                          <div class="speed_read" id="title_text" style="display: none; padding-top: 15px">
+                              <div style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                  <div class="row">
+                                      <h4 class="col-xs-10 col-lg-10">Title Text</h4>
+                                      <a class="remove_flashcard col-xs-2 col-lg-2" style="color:red;font-weight:bold;font-size:23px;text-align:right;"> X </a>
+                                  </div>
+                                  <div class="form-group">
+                                      <input type="text" class="form-control" id="title"  placeholder="Title">
+                                  </div>
+                                  <div class="form-group">
+                                      <textarea class="form-control" id="text" rows="7" placeholder=""></textarea>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="speed_read" id="question_choices" style="display: none; padding-top: 15px">
+                              <div style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                  <div class="row">
+                                      <h4 class="col-xs-10 col-lg-10">Question Choices</h4>
+                                      <a class="remove_flashcard col-xs-2 col-lg-2" style="color:red;font-weight:bold;font-size:23px;text-align:right;"> X </a>
+                                  </div>
+                                  <div class="form-group">
+                                      <input type="text" class="form-control" id="question"  placeholder="Question">
+                                  </div>
+                                  <div class="form-group" id="choices">
+                                      <div>
+                                          <input type="text" class="form-control" rows="7" placeholder="Choices"><button onclick="$(this).parent().remove()">Remove Choice</button>
+                                      </div>
+                                  </div>
+                                  <button>Add Choice</button>
+                                  <div class="form-group">
+                                      <hr>
+                                      <input type="button" id="upload-img-btn" onclick="handleImageUpload()" value="Upload Image"/>
+                                      <input type="text" class="form-control" id="image" placeholder="Image Link" />
+                                      <div id="output"></div>
+                                  </div>
+  
+                              </div>
+                              <div class="speed_read" id="video_file" style="display: none; padding-top: 15px">
+                                  <div style="margin-top:50px">
+                                      <div class="row">
+                                          <h4 class="col-xs-10 col-lg-10">Video File</h4>
+                                          <a class="remove_flashcard col-xs-2 col-lg-2" style="color:red;font-weight:bold;font-size:23px;text-align:right;"> X </a>
+                                      </div>
+                                      <div class="form-group">
+                                          <input type="text" class="form-control" id="video_title"  placeholder="Title">
+                                      </div>
+  
+                                      <div class="form-group">
+                                          <input type="button" id="upload-vid-btn" onclick="handleVideoUpload()" value="Upload Video"/>
+                                          <input type="text" class="form-control" id="video" placeholder="Video Link" />
+                                      </div>
+                                      <div id="video-output" style="display: none">
+                                          <video  id="videoplayer" controls preload="none" height="360" style="width: 100%;">
+                                          </video>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+  
+                          <div class="speed_read" id="iframe_link" style="display: none; ping-top: 15px">
+                              <div style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                  <div class="row">
+                                      <h4 class="col-xs-10 col-lg-10">Iframe Link</h4>
+                                      <a class="remove_flashcard col-xs-2 col-lg-2" style="color:red;font-weight:bold;font-size:23px;text-align:right;"> X </a>
+                                  </div>
+                                  <div class="form-group">
+                                      <input type="text" class="form-control" id="title_iframe"  placeholder="Title">
+                                  </div>
+  
+                                  <div class="form-group">
+                                      <input type="text" class="form-control" id="iframe" placeholder="IFrame Link" />
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="speed_read" id="sign_b64" style="display: none; padding-top: 15px">
+                              <div style="margin-top:50px">
+                                  <div class="row">
+                                      <h4 class="col-xs-10 col-lg-10">Signature</h4>
+                                      <a class="remove_flashcard col-xs-2 col-lg-2" style="color:red;font-weight:bold;font-size:23px;text-align:right;"> X </a>
+                                  </div>
+  
+                                  <div class="form-group">
+                                      <input type="text" hidden name="input_signature" id="signInput">
+                                      <button class="btn btn-primary" type="button" onclick="signLesson(event, 'lesson_signature', 'signInput')"> Click To Sign</button>
+                                      <img id="lesson_signature" hidden src="">
+                                  </div>
+                              </div>
+                          </div>
+                  </div>
+                  <div class="col-xs-12 save-button">
+                      <button type="submit" class="form-control btn btn-primary save-button" style="margin-top: 50px;">Save</button>
+                  </div>
+                  </form>
+              </div>
+              </div>
+               
             </div>
     
             <form id="imageUploadForm" enctype="multipart/form-data" name="imageUploadForm" >
