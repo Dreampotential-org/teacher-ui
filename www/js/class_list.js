@@ -117,7 +117,7 @@ $("#body-row .collapse").collapse("hide");
                 &nbsp
                 <button class="btn btn-primary btn-edit" onclick="showEmail('${i}')"><i class="fa fa-envelope"></i></button>
                 &nbsp
-                <button class="btn btn-primary btn-edit"><i class="fa fa-comment"></i></button>
+                <button class="btn btn-primary btn-edit" onclick="showText('${i}')"><i class="fa fa-comment"></i></button>
                 </td>
                 </tr>`);
               }
@@ -158,20 +158,25 @@ $("#body-row .collapse").collapse("hide");
       function showEmail(i){
         $("#show-email").show()
         $("#list-class").hide()
-        $("#class-id").val(system_users[i].id)
+        $("#class-email-id").val(system_users[i].id)
+       
       }
-      function showClass(type){
-        
-        if (type === 'email')
-        {
-          $("#show-email").hide()
-        } else{
-          $("#show-text").hide()
-        }
+      function showText(i){
+        $("#show-text").show()
+        $("#list-class").hide()
+        $("#text-msg").val('')
+        $("#class-text-id").val(system_users[i].id)
+      }
+    
+
+      function showClass(){
+        $("#show-email").hide()
+        $("#show-text").hide()
         $("#list-class").show()
       }
 
-      $("#addClass").on('click', () => {
+      $("#addClass").submit((event) => {
+        event.preventDefault()
         $.ajax({
           type: 'POST',
           url:  SERVER + 'students_list/get/class',
@@ -328,6 +333,20 @@ $("#body-row .collapse").collapse("hide");
             data: {
               "message" : $("#email-subject").val() +"\n"+ $("#email-body").val(),
               "class_enrolled_id": $("#class-id").val()
+            },
+            success: () => {
+              location.reload()
+            }
+          })
+        })
+        $("#textForm").submit( (event) => {
+          event.preventDefault();
+          $.ajax({
+            type: 'POST',
+            url: SERVER + 'students_list/send/text/class',
+            data: {
+              "message" : $("#text-msg").val(),
+              "class_enrolled_id": $("#class-text-id").val()
             },
             success: () => {
               location.reload()
