@@ -40,6 +40,7 @@
     <!-- user.html JS, CSS end -->
 
     <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/sidebar.css" />
     <link rel="stylesheet" href="css/setting.css" />
     <link rel="stylesheet" href="css/sms.css" />
@@ -54,6 +55,9 @@
         padding-left: 0px !important;
         padding-right: 0px !important;
       }
+      .video_entry, .gps-entry{
+            background-color: #80808040;
+        }
     </style>
 
     <script>
@@ -158,6 +162,14 @@
                   </label>
                   <div id="answerList"></div>
                 </div>
+                <div class="form-group">
+                  <label>
+                      <b>Activities</b>
+                  </label>
+                  <div id="activityList">
+                      
+                  </div>
+              </div>
               </form>
             </div>
 
@@ -289,6 +301,35 @@
       }
 
       function info(ind) {
+        get_activity_list(user_list[ind].phone,function(activities){
+            console.log(activities)
+            $('#activityList').empty();
+            html="";
+            activities.user_activities.forEach((item, i) => {
+                if (item.type == 'video') {
+                    var html =
+                    '<div class="video_entry p-3 rounded mb-2" video_url="' +
+                    item.video_url +
+                    '"><a href="#"><span class="glyphicon glyphicon-facetime-video pr-2"></span></a><span>' +
+                        format_date(item.created_at) +
+                        '</span></div>'
+                    } else if (item.type == 'gps') {
+                        var html =
+                        "<div class='gps-entry p-3 rounded mb-2' lat='" +
+                        item.lat +
+                        "' lng='" +
+                        item.lng +
+                        "'><a href='#'><span class='glyphicon glyphicon-map-marker pr-2'></span></a><span>" +
+                            format_date(item.created_at) +
+                            '</span>&nbsp - &nbsp' +
+                            '<span>' +
+                                item.msg +
+                                '</span></div>'
+                            }
+                            $('#activityList').append(html);
+                        });
+                    });
+
         console.log(user_list[ind]);
         $("#userListData").hide();
         $("#showUserInfo").show();
