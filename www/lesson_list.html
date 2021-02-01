@@ -1,41 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <title>SF Social Service</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.min.js"
-      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
     <!-- user.html JS, CSS start -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"
-    />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
     <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
     <!-- user.html JS, CSS end -->
@@ -53,190 +31,137 @@
     <script src="js/student_lesson.js"></script>
 
     <style>
-      .p-0 .container-fluid {
-        padding-left: 0px !important;
-        padding-right: 0px !important;
-      }
+        .p-0 .container-fluid {
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+        }
     </style>
 
     <script>
-      function myFunction() {
-        var x = document.getElementById("myLinks");
-        if (x.style.display === "block") {
-          x.style.display = "none";
-        } else {
-          x.style.display = "block";
+        function myFunction() {
+            var x = document.getElementById("myLinks");
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "block";
+            }
         }
-      }
     </script>
-  </head>
+</head>
 
-  <body>
+<body>
     <div class="container-fluid p-0">
-      <!-- Bootstrap row -->
-      <div class="row" id="body-row">
-        <div id="left-sidebar"></div>
-        <div class="col p-0 content-div">
-          <div id="page-header"></div>
-          <div class="container my-2">
-            <section id="tabs" class="administration-tab">
-              <div class="container">
-                <div id="tabDiv" class="row">
-                  <div class="col-md-12">
-                    <p class="list-of-students">List of Lessons</p>
+        <!-- Bootstrap row -->
+        <div class="row" id="body-row">
+            <div id="left-sidebar"></div>
+            <div class="col p-0 content-div">
+                <div id="page-header"></div>
+                <div class="container my-2">
+                    <section id="tabs" class="administration-tab">
+                        <div class="container">
+                            <div id="tabDiv" class="row">
+                                <div class="col-md-12">
+                                    <p class="list-of-students">List of Lessons</p>
 
-                    <div class="tab-content" id="nav-tabContent">
-                      <div
-                        class="tab-pane fade show active"
-                        id="nav-home"
-                        role="tabpanel"
-                        aria-labelledby="nav-home-tab"
-                      >
-                        <div class="table-div">
-                          <table
-                            class="table table-striped table-bordered"
-                            cellspacing="0"
-                          >
-                            <thead>
-                              <tr>
-                                <th>Course Id</th>
-                                <th>Course Name</th>
-                                <th>Edit</th>
-                              </tr>
-                            </thead>
-                            <tbody id="users-data"></tbody>
-                          </table>
-                        </div>
+                                    <div class="tab-content" id="nav-tabContent">
+                                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                            <div class="table-div">
+                                                <table class="table table-striped table-bordered" cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Course Id</th>
+                                                            <th>Course Name</th>
+                                                            <th>Edit</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="users-data"></tbody>
+                                                </table>
+                                            </div>
 
-                        <div class="text-right mt-2">
-                          <button
-                            type="button"
-                            data-toggle="modal"
-                            data-target="#userModal"
-                            class="btn btn-primary"
-                          >
+                                            <div class="text-right mt-2">
+                                                <button type="button" data-toggle="modal" data-target="#userModal" class="btn btn-primary">
                             <i class="fa fa-plus"></i> Add
                           </button>
-                        </div>
-                      </div>
-                      <div
-                        class="tab-pane fade"
-                        id="nav-profile"
-                        role="tabpanel"
-                        aria-labelledby="nav-profile-tab"
-                      >
-                        <div class="table-div">
-                          <table
-                            class="table table-striped table-bordered"
-                            cellspacing="0"
-                          >
-                            <thead>
-                              <tr>
-                                <th>Phone Number</th>
-                                <!-- <th>Employer</th>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                            <div class="table-div">
+                                                <table class="table table-striped table-bordered" cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Phone Number</th>
+                                                            <!-- <th>Employer</th>
                                                             <th>Time</th> -->
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>+18434259777</td>
-                              </tr>
-                              <tr>
-                                <td>+14255785798</td>
-                              </tr>
-                              <tr>
-                                <td>+15102885469</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                        <div class="text-right mt-2">
-                          <button
-                            type="button"
-                            data-toggle="modal"
-                            data-target="#phoneModal"
-                            class="btn btn-primary"
-                          >
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>+18434259777</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>+14255785798</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>+15102885469</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="text-right mt-2">
+                                                <button type="button" data-toggle="modal" data-target="#phoneModal" class="btn btn-primary">
                             <i class="fa fa-plus"></i> Add
                           </button>
-                        </div>
-                      </div>
-                      <div
-                        class="tab-pane fade"
-                        id="nav-groups"
-                        role="tabpanel"
-                        aria-labelledby="nav-groups-tab"
-                      >
-                        <div class="table-div">
-                          <table
-                            class="table table-striped table-bordered"
-                            cellspacing="0"
-                          >
-                            <thead>
-                              <tr>
-                                <th>Created At</th>
-                                <th>Group Name</th>
-                                <th>Edit</th>
-                              </tr>
-                            </thead>
-                            <tbody id="group-data"></tbody>
-                          </table>
-                        </div>
-                        <div class="text-right mt-2">
-                          <button
-                            type="button"
-                            onclick="openModal(-1)"
-                            class="btn btn-primary"
-                          >
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="nav-groups" role="tabpanel" aria-labelledby="nav-groups-tab">
+                                            <div class="table-div">
+                                                <table class="table table-striped table-bordered" cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Created At</th>
+                                                            <th>Group Name</th>
+                                                            <th>Edit</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="group-data"></tbody>
+                                                </table>
+                                            </div>
+                                            <div class="text-right mt-2">
+                                                <button type="button" onclick="openModal(-1)" class="btn btn-primary">
                             <i class="fa fa-plus"></i> Add
                           </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                <div id="systemUserDetail" style='display:none'>
-                  <div>
-                    <button onclick="goBack()" class="btn">
+                            <div id="systemUserDetail" style='display:none'>
+                                <div>
+                                    <button onclick="goBack()" class="btn">
                       <i class="fa fa-chevron-left"></i> Back
                     </button>
-                    <button
-                      onclick="goBack()"
-                      class="btn btn-danger float-right"
-                      id="showDelete"
-                    >
+                                    <button onclick="goBack()" class="btn btn-danger float-right" id="showDelete">
                       <i class="fa fa-trash"></i> Delete
                     </button>
-                  </div>
+                                </div>
 
-                  <h2 class="text-center">
-                    <b id="userTitle">Update Student</b>
-                  </h2>
+                                <h2 class="text-center">
+                                    <b id="userTitle">Update Student</b>
+                                </h2>
 
-                  <form class="pt-2 pt-3">
-                    <div class="form-group">
-                      <label for="courseid">Couse Id</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="courseid"
-                        placeholder="Course Id"
-                        disabled
-                      />
-                    </div>
+                                <form class="pt-2 pt-3">
+                                    <div class="form-group">
+                                        <label for="courseid">Couse Id</label>
+                                        <input type="text" class="form-control" id="courseid" placeholder="Course Id" disabled />
+                                    </div>
 
-                    <div class="form-group">
-                      <label for="coursename">Course Name</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="coursename"
-                        placeholder="Course Name"
-                      />
-                    </div>
+                                    <div class="form-group">
+                                        <label for="coursename">Course Name</label>
+                                        <input type="text" class="form-control" id="coursename" placeholder="Course Name" />
+                                    </div>
 
-                    <!-- <div class="form-group">
+                                    <!-- <div class="form-group">
                       <label for="ephone">Phone</label>
                       <input
                         type="phone"
@@ -246,7 +171,7 @@
                       />
                     </div> -->
 
-                    <!-- <div class="form-group">
+                                    <!-- <div class="form-group">
                       <label for="group-list">Select Group:</label>
                       <select class="form-control">
                         <option>group1</option>
@@ -255,51 +180,40 @@
                       </select>
                     </div> -->
 
-                    <button type="button" class="btn btn-primary">
+                                    <button type="button" class="btn btn-primary">
                       Submit
                     </button>
-                  </form>
-                </div>
+                                </form>
+                            </div>
 
-            </section>
+                    </section>
 
-            <div class="div-go-back">
-              <button onclick="goBack()" class="btn">
+                    <div class="div-go-back">
+                        <button onclick="goBack()" class="btn">
                 <i class="fa fa-chevron-left"></i> Back
               </button>
-            </div>
+                    </div>
 
-            <!-- student builder -->
-            <div class="div-student-builder">
-            </div>
-            <!-- End student builder -->
-          </div>
+                    <!-- student builder -->
+                    <div class="div-student-builder">
+                    </div>
+                    <!-- End student builder -->
+                    </div>
 
 
-            <!-- Add User Modal -->
-            <div
-              class="modal fade"
-              id="userModal"
-              tabindex="-1"
-              role="dialog"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Add Lesson</h5>
-                    <button
-                      type="button"
-                      class="close"
-                      data-dismiss="modal"
-                      aria-label="Close"
-                    >
+                    <!-- Add User Modal -->
+                    <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Add Lesson</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
-                  </div>
-                  <div class="modal-body">
-                    <form class="px-2">
-                      <!-- <div class="form-group">
+                                </div>
+                                <div class="modal-body">
+                                    <form class="px-2">
+                                        <!-- <div class="form-group">
                         <label for="courseid">Course Id</label>
                         <input
                           type="text"
@@ -311,17 +225,12 @@
                         />
                       </div> -->
 
-                      <div class="form-group">
-                        <label for="coursename">Course Name</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="coursename"
-                          placeholder="Course Name"
-                        />
-                      </div>
+                                        <div class="form-group">
+                                            <label for="coursename">Course Name</label>
+                                            <input type="text" class="form-control" id="coursename" placeholder="Course Name" />
+                                        </div>
 
-                      <!-- <div class="form-group">
+                                        <!-- <div class="form-group">
                         <label for="phone">Phone</label>
                         <input
                           type="phone"
@@ -331,320 +240,320 @@
                         />
                       </div> -->
 
-                      <button
-                        type="button"
-                        onclick="addUser()"
-                        class="btn btn-primary float-right"
-                      >
+                                        <button type="button" onclick="addUser()" class="btn btn-primary float-right">
                         Submit
                       </button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-            <!-- Add Phone number Modal -->
-            <div
-              class="modal fade"
-              id="phoneModal"
-              tabindex="-1"
-              role="dialog"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Add Phone Number</h5>
-                    <button
-                      type="button"
-                      class="close"
-                      data-dismiss="modal"
-                      aria-label="Close"
-                    >
+                    <!-- Add Phone number Modal -->
+                    <div class="modal fade" id="phoneModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Add Phone Number</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
-                  </div>
-                  <div class="modal-body">
-                    <form class="px-2">
-                      <div class="form-group">
-                        <label for="phone">Phone</label>
-                        <input
-                          type="number"
-                          class="form-control"
-                          id="phone"
-                          placeholder="Phone"
-                        />
-                      </div>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="px-2">
+                                        <div class="form-group">
+                                            <label for="phone">Phone</label>
+                                            <input type="number" class="form-control" id="phone" placeholder="Phone" />
+                                        </div>
 
-                      <button
-                        type="button"
-                        onclick="addPhone()"
-                        class="btn btn-primary float-right"
-                      >
+                                        <button type="button" onclick="addPhone()" class="btn btn-primary float-right">
                         Submit
                       </button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- End phone number modal -->
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End phone number modal -->
 
-            <!-- Add Group Modal -->
-            <div
-              class="modal fade"
-              id="groupModal"
-              tabindex="-1"
-              role="dialog"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 id="groupTitle" class="modal-title"></h5>
-                    <button
-                      type="button"
-                      class="close"
-                      data-dismiss="modal"
-                      aria-label="Close"
-                    >
+                    <!-- Add Group Modal -->
+                    <div class="modal fade" id="groupModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 id="groupTitle" class="modal-title"></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
-                  </div>
-                  <div class="modal-body">
-                    <form class="px-2">
-                      <div class="form-group">
-                        <label for="grouplist">Select Group:</label>
-                        <select class="form-control" id="grouplist">
+                                </div>
+                                <div class="modal-body">
+                                    <form class="px-2">
+                                        <div class="form-group">
+                                            <label for="grouplist">Select Group:</label>
+                                            <select class="form-control" id="grouplist">
                           <option>group1</option>
                           <option>group2</option>
                           <option>group3</option>
                         </select>
-                      </div>
+                                        </div>
 
-                      <button
-                        type="button"
-                        onclick="addGroup()"
-                        class="btn btn-primary float-right"
-                      >
+                                        <button type="button" onclick="addGroup()" class="btn btn-primary float-right">
                         Submit
                       </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Group modal -->
+
+                    <form id="imageUploadForm" enctype="multipart/form-data" name="imageUploadForm">
+                        <input type="file" name="imageUpload" id="imageUpload" style="display: none" onchange="handleImageSelect(this)" required />
                     </form>
-                  </div>
+
+                    <form id="videoUploadForm" enctype="multipart/form-data" name="videoUploadForm">
+                        <input type="file" name="videoUpload" id="videoUpload" style="display: none" onchange="handleVideoSelect(this)" required />
+                    </form>
+
+                    <div id="sign-modal"></div>
                 </div>
-              </div>
             </div>
-            <!-- End Group modal -->
-
-            <form
-              id="imageUploadForm"
-              enctype="multipart/form-data"
-              name="imageUploadForm"
-            >
-              <input
-                type="file"
-                name="imageUpload"
-                id="imageUpload"
-                style="display: none"
-                onchange="handleImageSelect(this)"
-                required
-              />
-            </form>
-
-            <form
-              id="videoUploadForm"
-              enctype="multipart/form-data"
-              name="videoUploadForm"
-            >
-              <input
-                type="file"
-                name="videoUpload"
-                id="videoUpload"
-                style="display: none"
-                onchange="handleVideoSelect(this)"
-                required
-              />
-            </form>
-
-            <div id="sign-modal"></div>
-          </div>
         </div>
-      </div>
     </div>
 
     <script>
-      $("#sign-modal").load("signature/index.html");
-      function signLesson(event, imgId, signInput) {
-        if ($("#signature")) {
-          $("#signature").modal("show");
+        $("#sign-modal").load("signature/index.html");
+
+        function signLesson(event, imgId, signInput) {
+            if ($("#signature")) {
+                $("#signature").modal("show");
+            }
+            document.addEventListener("signatureSubmitted", function(e) {
+                $("#" + signInput).val(window.currentSignature.data);
+                $("#" + imgId).attr("src", window.currentSignature.data);
+                $("#" + imgId).removeAttr("hidden");
+                event.target.innerHTML = "Redraw Signature";
+                // window.currentSignature = undefined;
+            });
         }
-        document.addEventListener("signatureSubmitted", function (e) {
-          $("#" + signInput).val(window.currentSignature.data);
-          $("#" + imgId).attr("src", window.currentSignature.data);
-          $("#" + imgId).removeAttr("hidden");
-          event.target.innerHTML = "Redraw Signature";
-          // window.currentSignature = undefined;
-        });
-      }
     </script>
 
     <script>
-      var passwordResetToken = getParam("token");
-      var userToken = localStorage.getItem("user-token");
-      var system_users = [];
+        var passwordResetToken = getParam("token");
+        var userToken = localStorage.getItem("user-token");
+        var system_users = [];
 
-      console.log("MODE: PASSWORD_RESET, Token - " + passwordResetToken);
+        console.log("MODE: PASSWORD_RESET, Token - " + passwordResetToken);
 
-      if (userToken == null) {
-        window.location.replace("student_login.html");
-      }
-
-      function getParam(sParam) {
-        var sPageURL = window.location.search.substring(1);
-        var sURLVariables = sPageURL.split("&");
-        for (var i = 0; i < sURLVariables.length; i++) {
-          var sParameterName = sURLVariables[i].split("=");
-          if (sParameterName[0] == sParam) {
-            return sParameterName[1];
-          }
+        if (userToken == null) {
+            window.location.replace("student_login.html");
         }
-      }
 
-      $(document).ready(function () {
-        $("#left-sidebar").load("sidebar.html");
-        $("#page-header").load("header.html");
-        //                        $("#page-container").load('dashboard.html');
-      });
-      $("#body-row .collapse").collapse("hide");
-
-      // Collapse/Expand icon
-      //$('#collapse-icon').addClass('fa-angle-double-left');
-
-      // Collapse click
-      function left_sidebar() {
-        SidebarCollapse();
-      }
-      function SidebarCollapse() {
-        $(".menu-collapsed").toggleClass("d-none");
-        $(".sidebar-submenu").toggleClass("d-none");
-        $(".submenu-icon").toggleClass("d-none");
-        $("#sidebar-container").toggleClass(
-          "sidebar-expanded sidebar-collapsed"
-        );
-
-        // Treating d-flex/d-none on separators with title
-        var SeparatorTitle = $(".sidebar-separator-title");
-        if (SeparatorTitle.hasClass("d-flex")) {
-          SeparatorTitle.removeClass("d-flex");
-        } else {
-          SeparatorTitle.addClass("d-flex");
+        function getParam(sParam) {
+            var sPageURL = window.location.search.substring(1);
+            var sURLVariables = sPageURL.split("&");
+            for (var i = 0; i < sURLVariables.length; i++) {
+                var sParameterName = sURLVariables[i].split("=");
+                if (sParameterName[0] == sParam) {
+                    return sParameterName[1];
+                }
+            }
         }
+
+        $(document).ready(function() {
+            $("#left-sidebar").load("sidebar.html");
+            $("#page-header").load("header.html");
+            //                        $("#page-container").load('dashboard.html');
+        });
+        $("#body-row .collapse").collapse("hide");
 
         // Collapse/Expand icon
-        //$('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
-      }
+        //$('#collapse-icon').addClass('fa-angle-double-left');
 
-      var group_data = [
-        { created_at: "2020-10-08T20:47:22Z", group_name: "group1" },
-        { created_at: "2020-11-02T20:55:04Z", group_name: "group1" },
-        { created_at: "2020-11-02T20:56:50Z", group_name: "group3" },
-        { created_at: "2020-11-13T04:12:40Z", group_name: "group1" },
-        { created_at: "2020-11-13T04:12:40Z", group_name: "group2" },
-      ];
+        // Collapse click
+        function left_sidebar() {
+            SidebarCollapse();
+        }
 
-      $(document).ready(function () {
-        list_question_counters(function (questions) {
-          questions.forEach((q) =>{
-            let tempArray = [];
-            tempArray.courseid = q.id;
-            tempArray.coursename = q.lesson_name;
-            system_users.push(tempArray)
-          })
+        function SidebarCollapse() {
+            $(".menu-collapsed").toggleClass("d-none");
+            $(".sidebar-submenu").toggleClass("d-none");
+            $(".submenu-icon").toggleClass("d-none");
+            $("#sidebar-container").toggleClass(
+                "sidebar-expanded sidebar-collapsed"
+            );
 
-          system_users.forEach((item, i) => {
-          $("#users-data").append(`<tr>
+            // Treating d-flex/d-none on separators with title
+            var SeparatorTitle = $(".sidebar-separator-title");
+            if (SeparatorTitle.hasClass("d-flex")) {
+                SeparatorTitle.removeClass("d-flex");
+            } else {
+                SeparatorTitle.addClass("d-flex");
+            }
+
+            // Collapse/Expand icon
+            //$('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
+        }
+
+        var group_data = [{
+            created_at: "2020-10-08T20:47:22Z",
+            group_name: "group1"
+        }, {
+            created_at: "2020-11-02T20:55:04Z",
+            group_name: "group1"
+        }, {
+            created_at: "2020-11-02T20:56:50Z",
+            group_name: "group3"
+        }, {
+            created_at: "2020-11-13T04:12:40Z",
+            group_name: "group1"
+        }, {
+            created_at: "2020-11-13T04:12:40Z",
+            group_name: "group2"
+        }, ];
+
+        $(document).ready(function() {
+            list_question_counters(function(questions) {
+                questions.forEach((q) => {
+                    let tempArray = [];
+                    tempArray.courseid = q.id;
+                    tempArray.coursename = q.lesson_name;
+                    system_users.push(tempArray)
+                })
+
+                system_users.forEach((item, i) => {
+                    $("#users-data").append(`<tr>
                         <td>${item.courseid}</td>
                         <td>${item.coursename}</td>
                         <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
-                            <button onclick="openStudentLesson('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-eye"></i></button></td>
+                          <button onclick="openStudentLesson('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-eye"></i></button>
+                          <button onclick="inviteSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-share-alt"></i></button></td>
                         </tr>`);
-        });
+                });
 
-          getChart(questions);
-        });
+                getChart(questions);
+            });
 
-        $("#tabDiv").show();
-        $(".div-student-builder").hide();
-        $(".div-go-back").hide();
-        $("#systemUserDetail").hide();
+            $("#tabDiv").show();
+            $(".div-student-builder").hide();
+            $(".div-go-back").hide();
+            $("#systemUserDetail").hide();
 
 
 
-        group_data.forEach((item, i) => {
-          $("#group-data").append(`<tr>
+            group_data.forEach((item, i) => {
+                $("#group-data").append(`<tr>
                         <td>${item.created_at}</td>
                         <td>${item.group_name}</td>
                         <td><button onclick="openModal('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
                             </td>
                         </tr>`);
+            });
         });
-      });
 
-      function addUser() {
-        console.log("Add User");
-      }
-      function addPhone() {
-        console.log("Add Phone");
-      }
-      function addGroup() {
-        console.log("Add Group ", $("#grouplist").val());
-      }
-      function editSystemUser(i) {
-        $("#tabDiv").hide();
-        $("#systemUserDetail").show();
-
-        $("#courseid").val(system_users[i].courseid);
-        $("#coursename").val(system_users[i].coursename);
-      }
-
-      function goBack() {
-        $("#tabDiv").show();
-        $("#systemUserDetail").hide();
-        $(".div-student-builder").hide();
-        $(".div-go-back").hide();
-        $("#tabs").show();
-      }
-
-      function openModal(i) {
-        if (i != -1) {
-          $("#groupTitle").text("Update Group");
-          $("#grouplist").val(group_data[i].group_name);
-        } else {
-          $("#groupTitle").text("Add Group");
-          $("#grouplist").val("group1");
+        function addUser() {
+            console.log("Add User");
         }
 
-        $("#groupModal").modal();
-      }
+        function addPhone() {
+            console.log("Add Phone");
+        }
 
-      function openStudentLesson(i) {
-        // window.location.replace("student_lesson.html");
-        // $(".div-student-builder").show();
-        // $(".div-go-back").show();
-        // $("#tabDiv").hide();
-        $(".div-student-builder").show();
-        $(".div-student-builder").load("student_lesson.html");
-        $(".div-go-back").show();
-        $("#tabDiv").hide();
-        $("#tabs").hide();
-      }
+        function addGroup() {
+            console.log("Add Group ", $("#grouplist").val());
+        }
 
-      function getChart(item) {
-        item.forEach((ele, i) => {
-          console.log(ele);
+        function editSystemUser(i) {
+            $("#tabDiv").hide();
+            $("#systemUserDetail").show();
 
-          var html = `<div class="col-xl-6 col-sm-12 mb-6">
+            $("#courseid").val(system_users[i].courseid);
+            $("#coursename").val(system_users[i].coursename);
+        }
+
+
+
+
+        //   this is a function copied from class_list.js file through editSystemStudent  to inviteSystemUser..
+
+
+        function inviteSystemUser(i, id = 101) {
+            $("#student-data").empty()
+            $("#AddStudent").val(id)
+            $("#studentModal").modal();
+            //        system_students.forEach((item, i) => {
+            //    if (String(id) === String(item.class_enrolled.id)) {
+            $("#student-data").append(`<tr>
+            <td>${item.student.name}</td>
+            <td>${item.student.email}</td>
+            <td>${item.student.phone}</td>
+            <td><button onclick="deleteStudent('${item.student.id}','${item.class_enrolled.id}')" class="btn btn-primary btn-edit"><i class="fa fa-trash"></i></button>
+            </tr>`);
+            //          }
+            //}
+            //)
+        }
+
+
+
+        //
+        //
+        //           new function for inviting button task
+
+        // function inviteSystemUser(i) {
+        //   $("#tabDiv").hide();
+        // $("#systemUserDetail").show();
+
+        // $("#courseid").val(system_users[i].courseid);
+        //$("#coursename").val(system_users[i].coursename);
+        // }
+
+
+
+
+
+
+
+
+
+
+        function goBack() {
+            $("#tabDiv").show();
+            $("#systemUserDetail").hide();
+            $(".div-student-builder").hide();
+            $(".div-go-back").hide();
+            $("#tabs").show();
+        }
+
+        function openModal(i) {
+            if (i != -1) {
+                $("#groupTitle").text("Update Group");
+                $("#grouplist").val(group_data[i].group_name);
+            } else {
+                $("#groupTitle").text("Add Group");
+                $("#grouplist").val("group1");
+            }
+
+            $("#groupModal").modal();
+        }
+
+        function openStudentLesson(i) {
+            // window.location.replace("student_lesson.html");
+            // $(".div-student-builder").show();
+            // $(".div-go-back").show();
+            // $("#tabDiv").hide();
+            $(".div-student-builder").show();
+            $(".div-student-builder").load("student_lesson.html");
+            $(".div-go-back").show();
+            $("#tabDiv").hide();
+            $("#tabs").hide();
+        }
+
+        function getChart(item) {
+            item.forEach((ele, i) => {
+                console.log(ele);
+
+                var html = `<div class="col-xl-6 col-sm-12 mb-6">
 
                                 <div class="card mb-3">
                                     <div class="card-header">
@@ -657,82 +566,81 @@
 
                                 </div>`;
 
-          $("#customChart").append(html);
+                $("#customChart").append(html);
 
-          var canvas = document.createElement("canvas");
+                var canvas = document.createElement("canvas");
 
-          canvas.id = "canavs" + i;
-          //canvas.width = "50%";
+                canvas.id = "canavs" + i;
+                //canvas.width = "50%";
 
-          var body = document.getElementById("chart-body" + i);
-          body.appendChild(canvas);
+                var body = document.getElementById("chart-body" + i);
+                body.appendChild(canvas);
 
-          var ctx = document.getElementById("canavs" + i);
+                var ctx = document.getElementById("canavs" + i);
 
-          var custom_labels = [];
-          var counter = [];
+                var custom_labels = [];
+                var counter = [];
 
-          ele.answers.forEach((element) => {
-            custom_labels.push(element.answer);
-            counter.push(element.count);
-          });
+                ele.answers.forEach((element) => {
+                    custom_labels.push(element.answer);
+                    counter.push(element.count);
+                });
 
-          var myPieChart = new Chart(ctx, {
-            type: "pie",
-            data: {
-              labels: custom_labels,
-              datasets: [
-                {
-                  data: counter,
-                  backgroundColor: ["#f73378", "#9c27b0", "#ee99fc", "#3d5afe"],
-                },
-              ],
-            },
-            options: {
-              legend: {
-                display: false,
-                position: "bottom",
-                labels: {
-                  fontColor: "#000",
-                  //boxWidth:50,
-                  fontSize: 14,
-                  //fontSize:'26px'
-                  //fontWeight:700
-                },
-              },
-              legendCallback: function (chart) {
-                var text = [];
-                text.push('<ul class="0-legend">');
-                var ds = chart.data.datasets[0];
-                var sum = ds.data.reduce(function add(a, b) {
-                  return a + b;
-                }, 0);
-                for (var i = 0; i < ds.data.length; i++) {
-                  text.push("<li>");
-                  var perc = Math.round((100 * ds.data[i]) / sum, 0);
-                  text.push(
-                    '<span style="background-color:' +
-                      ds.backgroundColor[i] +
-                      '">' +
-                      "</span>" +
-                      chart.data.labels[i]
-                  );
-                  text.push("</li>");
-                }
-                text.push("</ul>");
-                return text.join("");
-              },
-              elements: {
-                arc: {
-                  borderWidth: 0,
-                },
-              },
-            },
-          });
+                var myPieChart = new Chart(ctx, {
+                    type: "pie",
+                    data: {
+                        labels: custom_labels,
+                        datasets: [{
+                            data: counter,
+                            backgroundColor: ["#f73378", "#9c27b0", "#ee99fc", "#3d5afe"],
+                        }, ],
+                    },
+                    options: {
+                        legend: {
+                            display: false,
+                            position: "bottom",
+                            labels: {
+                                fontColor: "#000",
+                                //boxWidth:50,
+                                fontSize: 14,
+                                //fontSize:'26px'
+                                //fontWeight:700
+                            },
+                        },
+                        legendCallback: function(chart) {
+                            var text = [];
+                            text.push('<ul class="0-legend">');
+                            var ds = chart.data.datasets[0];
+                            var sum = ds.data.reduce(function add(a, b) {
+                                return a + b;
+                            }, 0);
+                            for (var i = 0; i < ds.data.length; i++) {
+                                text.push("<li>");
+                                var perc = Math.round((100 * ds.data[i]) / sum, 0);
+                                text.push(
+                                    '<span style="background-color:' +
+                                    ds.backgroundColor[i] +
+                                    '">' +
+                                    "</span>" +
+                                    chart.data.labels[i]
+                                );
+                                text.push("</li>");
+                            }
+                            text.push("</ul>");
+                            return text.join("");
+                        },
+                        elements: {
+                            arc: {
+                                borderWidth: 0,
+                            },
+                        },
+                    },
+                });
 
-          $(`#legend${i}`).html(myPieChart.generateLegend());
-        });
-      }
+                $(`#legend${i}`).html(myPieChart.generateLegend());
+            });
+        }
     </script>
-  </body>
+</body>
+
 </html>
