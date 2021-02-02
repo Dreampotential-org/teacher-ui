@@ -105,38 +105,40 @@ $(document).ready(function() {
     $("#tabDiv").show();
     $("#systemUserDetail").hide();
     $.ajax({
-        "async": true,
-        "crossDomain": true,
-        "url": SERVER + "students_list/get/class",
-        "type": "GET",
-        "processData": false,
-        "contentType": false,
-        "mimeType": "multipart/form-data",
-        beforesend: (xhr) => { xhr.setRequestHeader("Authorization", "Bearer" + localStorage.getItem('user-token')) }
-    }).done((response) => {
-        system_users = response
+        async: true,
+        crossDomain: true,
+        crossOrigin: true,
+        url: SERVER + "students_list/get/class",
+        type: "GET",
+        headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+    }).done((classess) => {
+        system_users = classess
         system_users.forEach((item, i) => {
-            if (item.user.username === localStorage.getItem('user-name')) {
-
-                $("#users-data").append(`<tr>
-                <td>${item.id}</td>
-                <td>${item.class_name}</td>
-                <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
-                &nbsp
-                <button onclick="editSystemStudent('${i}','${item.id}')" class="btn btn-primary btn-edit"><i class="fa fa-list"></i></button>
-                &nbsp
-                <button class="btn btn-primary btn-edit" onclick="showEmail('${i}')"><i class="fa fa-envelope"></i></button>
-                &nbsp
-                <button class="btn btn-primary btn-edit" onclick="showText('${i}')"><i class="fa fa-comment"></i></button>
-                </td>
-                </tr>`);
-            }
+            $("#users-data").append(`<tr>
+                    <td>${item.id}</td>
+                    <td>${item.class_name}</td>
+                    <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
+                    &nbsp
+                    <button onclick="editSystemStudent('${i}','${item.id}')" class="btn btn-primary btn-edit"><i class="fa fa-list"></i></button>
+                    &nbsp
+                    <button class="btn btn-primary btn-edit" onclick="showEmail('${i}')"><i class="fa fa-envelope"></i></button>
+                    &nbsp
+                    <button class="btn btn-primary btn-edit" onclick="showText('${i}')"><i class="fa fa-comment"></i></button>
+                    </td>
+                    </tr>`);
         })
-        $.get(SERVER + "students_list/get/classenrolled").done((res) => {
-            system_students = res
+        $.get(SERVER + "students_list/get/classenrolled").done((enroll) => {
+            system_students = enroll
 
-            $.get(SERVER + "students_list/get/students").done((data) => {
-                all_students = data
+            $.ajax({
+                async: true,
+                crossDomain: true,
+                crossOrigin: true,
+                url: SERVER + "students_list/get/students",
+                type: "GET",
+                headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+            }).done((students) => {
+                all_students = students
 
             }).fail(function(err) { alert(err) })
 
@@ -196,9 +198,9 @@ $("#addClass").submit((event) => {
     $.ajax({
         type: 'POST',
         url: SERVER + 'students_list/get/class',
+        headers: { "Authorization": `${localStorage.getItem('user-token')}` },
         data: {
-            "class_name": $("#class_name").val(),
-            "user": localStorage.getItem("user-name")
+            "class_name": $("#class_name").val()
         },
         success: () => {
             location.reload()
@@ -210,6 +212,7 @@ $("#showDelete").on('click', () => {
     $.ajax({
         type: 'DELETE',
         url: SERVER + 'students_list/get/class' + '?' + $.param({ 'id': $('#classid').val() }),
+        headers: { "Authorization": `${localStorage.getItem('user-token')}` },
         success: () => {
             location.reload();
         }
@@ -220,10 +223,10 @@ $("#updateClass").on('click', () => {
     $.ajax({
         type: 'PUT',
         url: SERVER + 'students_list/get/class',
+        headers: { "Authorization": `${localStorage.getItem('user-token')}` },
         data: {
             "id": $("#classid").val(),
-            "class_name": $("#classname").val(),
-            "user": localStorage.getItem("user-name")
+            "class_name": $("#classname").val()
         },
         success: () => {
             location.reload()

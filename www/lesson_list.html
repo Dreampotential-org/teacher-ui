@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/administration.css" />
     <link rel="stylesheet" href="css/student_list.css" />
+    <link rel="stylesheet" href="css/lesson_list.css" />
 
     <script src="js/main.js"></script>
     <script src="js/web_api.js"></script>
@@ -77,6 +78,55 @@
                                                     <tbody id="users-data"></tbody>
                                                 </table>
                                             </div>
+
+
+
+                                            <!-- overlay invite -->
+
+
+                                            <div id="overlay">
+                                                <h1 style="color: white;">Enroll Lesson</h1>
+                                                <form class="px-2">
+                                                    <div class="form-group">
+                                                        <label for="list">Select</label>
+                                                        <select class="form-control" id="list">
+                                                        <option selected>Select</option>
+                                                        <option>Class</option>
+                                                        <option>Student</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="from-group" id="classList" style="display: none;">
+                                                        <label for="classOption">Select Class:</label>
+                                                        <select class="form-control" id="classOption">
+                                                            <option selected>Select</option>
+                                                            <option>Cls1</option>
+                                                            <option>Cls2</option>
+                                                            <option>Cls3</option>
+                                                            </select>
+                                                    </div>
+
+                                                    <div class="from-group" id="studentList" style="display: none;">
+                                                        <label for="studentOption">Select Class:</label>
+                                                        <select class="form-control" id="studentOption">
+                                                            <option selected>Select</option>
+                                                            <option>Std1</option>
+                                                            <option>Std2</option>
+                                                            <option>Std3</option>
+                                                            </select>
+                                                    </div>
+                                                    <hr>
+                                                    <br><br>
+                                                    <br><br>
+                                                    <button type="button" value="close" onclick="off()">Close</button>
+                                                </form>
+                                            </div>
+                                            <!-- overlay over -->
+
+
+
+
+
+
 
                                             <div class="text-right mt-2">
                                                 <button type="button" data-toggle="modal" data-target="#userModal" class="btn btn-primary">
@@ -427,7 +477,7 @@
                         <td>${item.coursename}</td>
                         <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
                           <button onclick="openStudentLesson('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-eye"></i></button>
-                          <button onclick="inviteSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-share-alt"></i></button></td>
+                          <button onclick="on('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-user-plus"></i></button></td>
                         </tr>`);
                 });
 
@@ -451,6 +501,29 @@
             });
         });
 
+        $("#list").change(() => {
+            initValue = $("#list option:selected").val()
+            if (initValue === 'Class') {
+                $("#classList").show();
+                $("#studentList").hide()
+            } else if (initValue === 'Student') {
+                $("#studentList").show();
+                $("#classList").hide();
+            } else if (initValue === 'Select') {
+                $("#classList").hide();
+                $("#studentList").hide()
+            }
+        })
+
+        function on(i) {
+            console.log("Selected ID is :", i)
+            document.getElementById("overlay").style.display = "block";
+        }
+
+        function off() {
+            document.getElementById("overlay").style.display = "none";
+        }
+
         function addUser() {
             console.log("Add User");
         }
@@ -470,52 +543,6 @@
             $("#courseid").val(system_users[i].courseid);
             $("#coursename").val(system_users[i].coursename);
         }
-
-
-
-
-        //   this is a function copied from class_list.js file through editSystemStudent  to inviteSystemUser..
-
-
-        function inviteSystemUser(i, id = 101) {
-            $("#student-data").empty()
-            $("#AddStudent").val(id)
-            $("#studentModal").modal();
-            //        system_students.forEach((item, i) => {
-            //    if (String(id) === String(item.class_enrolled.id)) {
-            $("#student-data").append(`<tr>
-            <td>${item.student.name}</td>
-            <td>${item.student.email}</td>
-            <td>${item.student.phone}</td>
-            <td><button onclick="deleteStudent('${item.student.id}','${item.class_enrolled.id}')" class="btn btn-primary btn-edit"><i class="fa fa-trash"></i></button>
-            </tr>`);
-            //          }
-            //}
-            //)
-        }
-
-
-
-        //
-        //
-        //           new function for inviting button task
-
-        // function inviteSystemUser(i) {
-        //   $("#tabDiv").hide();
-        // $("#systemUserDetail").show();
-
-        // $("#courseid").val(system_users[i].courseid);
-        //$("#coursename").val(system_users[i].coursename);
-        // }
-
-
-
-
-
-
-
-
-
 
         function goBack() {
             $("#tabDiv").show();
@@ -551,8 +578,7 @@
 
         function getChart(item) {
             item.forEach((ele, i) => {
-                console.log(ele);
-
+                //console.log(ele);
                 var html = `<div class="col-xl-6 col-sm-12 mb-6">
 
                                 <div class="card mb-3">
