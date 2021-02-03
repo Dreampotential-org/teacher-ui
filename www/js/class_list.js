@@ -324,10 +324,7 @@ $("#studentlist").click(() => {
 
     if (option_length === 1) {
         all_students.forEach((item, i) => {
-            if (localStorage.getItem('user-name') === item.user.username) {
-
-                $("#studentlist").append($('<option>').val(item.name).text(item.name))
-            }
+            $("#studentlist").append($('<option>').val(item.name).text(item.name))
         })
     }
 })

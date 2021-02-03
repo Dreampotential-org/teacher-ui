@@ -18,12 +18,21 @@ h2 {
     padding-top: 20px;
 }
 
+label {
+    margin-left: 5px;
+    display: inline-block;
+    margin-bottom: .5rem;
+}
+
 #overlay {
+    text-decoration-color: black;
     position: fixed;
     display: none;
-    align-content: center;
-    text-align: center;
-    width: 100%;
+    /* align-content: center; */
+    align-content: flex-start;
+    /* text-align: center; */
+    text-align: left;
+    width: 90%;
     height: 100%;
     top: 0;
     left: 0;
@@ -32,54 +41,21 @@ h2 {
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 2;
     cursor: pointer;
+    margin-left: 10%;
 }
 
-
-/* 
-a {
-    color: #06c;
-} */
-
-
-/* ul {
-    display: none;
-    padding: 0;
-    margin: 0;
-    background: pink;
-    float: left;
+#overlay_1 {
+    width: 500px;
+    height: 500px;
+    background-color: aliceblue;
+    margin-left: 35%;
+    margin-top: 10%;
 }
 
-ul.nav-menu {
-    display: block;
+button {
+    align-content: flex-end;
 }
 
-li {
-    float: left;
-    display: inline;
-    position: relative;
-    width: 150px;
-    list-style: none;
-    color: #ccc;
-}
-
-#menu {
-    position: absolute;
-    left: 0;
-    top: 100%;
-    background: #ccc;
+#send {
     display: none;
 }
-
-.menu1 {
-    position: absolute;
-    left: 0;
-    top: 100%;
-    background: #ccc;
-    display: none;
-}
-
-ul.nav-menu>li>ul>li ul {
-    left: 100%;
-    top: 0px;
-    position: absolute;
-} */
