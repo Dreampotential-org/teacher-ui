@@ -93,6 +93,29 @@ function get_user_list(callback) {
 }
 
 
+function get_activity_list(phone,cb){
+    var form = new FormData();
+    form.append("phone", phone); 
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": SERVER + "sfapp2/api/checkin_activity_admin",
+        "method": "POST",
+        "processData": false,
+        "contentType": false,
+        "data": form,
+        "mimeType": "multipart/form-data",
+        "headers": {
+            "Authorization": 'Token '+localStorage.getItem("user-token"),
+        },
+    }
+    $.ajax(settings).done(function (response) {
+        cb(JSON.parse(response))
+    }).fail(function (err) {
+      alert("ERROR")
+    })
+}
+
 function send_user_sms(to_number, msg, callback) {
     var form = new FormData();
     form.append("to_number", to_number);
@@ -228,3 +251,15 @@ function get_sms_to_number(to_number, callback) {
         alert("ERROR")
     })
 }
+
+function format_date (created_at) {
+    var date = new Date(created_at * 1000)
+    var hours = date.getHours()
+    var minutes = date.getMinutes()
+    var ampm = hours >= 12 ? 'pm' : 'am'
+    hours = hours % 12
+    hours = hours || 12 // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0' + minutes : minutes
+    var strTime = hours + ':' + minutes + ' ' + ampm
+    return date.toLocaleDateString('en-US') + ' ' + strTime
+  }

@@ -1,116 +1,116 @@
 .start-container {
-  /* border: 1px solid lightgray; */
-  padding: 25px;
+    /* border: 1px solid lightgray; */
+    padding: 25px;
 }
+
+
 /* .row {
   padding-top: 10px;
 } */
 
 .row {
-  margin-right: -15px;
-  margin-left: -15px;
+    margin-right: -15px;
+    margin-left: -15px;
 }
+
 .col-xs-6.col-sm-6 {
-  margin-top: 0 !important;
+    margin-top: 0 !important;
 }
+
 p {
-  font-size: 22px;
-  margin: 0 0 22px 0;
-  font-weight: 600;
+    font-size: 22px;
+    margin: 0 0 22px 0;
+    font-weight: 600;
 }
 
 .form-control {
-  display: block;
-  width: 100%;
-  height: 34px;
-  padding: 6px 12px;
-  font-size: 14px;
-  line-height: 1.42857143;
-  color: #555;
-  background-color: #fff;
-  background-image: none;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  -webkit-transition: border-color ease-in-out 0.15s,
-    box-shadow ease-in-out 0.15s;
-  -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-  -webkit-transition: border-color ease-in-out 0.15s,
-    -webkit-box-shadow ease-in-out 0.15s;
-  transition: border-color ease-in-out 0.15s,
-    -webkit-box-shadow ease-in-out 0.15s;
-  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s,
-    -webkit-box-shadow ease-in-out 0.15s;
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    -webkit-transition: border-color ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
 }
 
 .anchor {
-  color: #337ab7;
-  text-decoration: none;
+    color: #337ab7;
+    text-decoration: none;
 }
 
 a {
-  background-color: transparent;
+    background-color: transparent;
 }
 
 .btn-primary {
-  color: #fff !important;
-  /* background-color: #337ab7;
+    color: #fff !important;
+    /* background-color: #337ab7;
   border-color: #2e6da4; */
-  background-color: #88c3e6;
-  border-color: #64b3e6;
+    background-color: #88c3e6;
+    border-color: #64b3e6;
 }
 
 span.glyphicon.glyphicon-wrench {
-  font-size: 20px !important;
+    font-size: 20px !important;
 }
 
 .glyphicon {
-  position: relative;
-  top: 1px;
-  display: inline-block;
-  font-family: "Glyphicons Halflings";
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: "Glyphicons Halflings";
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .glyphicon-wrench:before {
-  content: "\e136";
+    content: "\e136";
 }
 
 .col-xs-12.col-sm-12 {
-  padding-bottom: 10px !important;
+    padding-bottom: 10px !important;
 }
 
 button#add {
-  margin-top: 20px !important;
-  margin-bottom: 20px !important;
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
 }
 
 .btn-success {
-  color: #fff;
-  background-color: #5cb85c;
-  border-color: #4cae4c;
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
 }
 
 .col-xs-12 {
-  width: 100%;
+    width: 100%;
 }
 
 .save-button {
-  max-width: 475px;
+    max-width: 475px;
 }
 
 .save-button {
-  margin: 0 auto;
-  text-align: center;
-  /* width: 450px; */
+    margin: 0 auto;
+    text-align: center;
+    /* width: 450px; */
 }
 
 .div-student-builder {
-  padding-top: 10px;
+    padding-top: 10px;
 }
