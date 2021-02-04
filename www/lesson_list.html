@@ -80,9 +80,7 @@
                                                     <tbody id="users-data"></tbody>
                                                 </table>
                                                 <div id="lessonLoader" class="d-flex justify-content-center">
-                                                    <svg style="height: auto; width: 120px;" version="1.1"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="25 25 50 50">
+                                                    <svg style="height: auto; width: 120px;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="25 25 50 50">
                                                     <circle cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke="#132644" stroke-linecap="round" stroke-dashoffset="0" stroke-dasharray="100, 200">
                                                       <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 50 50" to="360 50 50" dur="2.5s" repeatCount="indefinite"/>
                                                       <animate attributeName="stroke-dashoffset" values="0;-30;-124" dur="1.25s" repeatCount="indefinite"/>
@@ -511,7 +509,7 @@
                     async: true,
                     crossDomain: true,
                     crossOrigin: true,
-                    url: SERVER + "students_list/get/class",
+                    url: SERVER + "/students_list/get/class",
                     type: "GET",
                     headers: {
                         "Authorization": `${localStorage.getItem('user-token')}`
@@ -523,15 +521,15 @@
                         async: true,
                         crossDomain: true,
                         crossOrigin: true,
-                        url: SERVER + "students_list/get/students",
+                        url: SERVER + "/students_list/get/students",
                         type: "GET",
                         headers: {
                             "Authorization": `${localStorage.getItem('user-token')}`
                         }
                     }).done((student) => {
                         studentList = student
-                    })
-                })
+                    }).fail((err) => {alert('ERROR')})
+                }).fail((err) => {alert('ERROR')})
                 getChart(questions);
             });
 
@@ -557,20 +555,20 @@
             showContact(initValue)
             if (initValue === 'Class') {
                 $("#classList").show();
+                $("#studentList").hide();
                 if ($("#classOption option").length === 1) {
                     classList.forEach((item) => {
                         $("#classOption").append($('<option>').val(item.id).text(item.class_name))
                     })
                 }
-                $("#studentList").hide()
             } else if (initValue === 'Student') {
                 $("#studentList").show();
+                $("#classList").hide();
                 if ($("#studentOption option").length === 1) {
                     studentList.forEach((item) => {
                         $("#studentOption").append($('<option>').val(item.id).text(item.name))
                     })
                 }
-                $("#classList").hide();
             } else if (initValue === 'Select') {
                 $("#classList").hide();
                 $("#studentList").hide();
