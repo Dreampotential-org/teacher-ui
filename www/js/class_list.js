@@ -104,6 +104,7 @@ $("#body-row .collapse").collapse("hide");
         $("#tabDiv").show();
         $("#systemUserDetail").hide();
         $.get( SERVER + "students_list/get/class").done((response) => {
+          $('#classLoader').remove();
             system_users = response
             system_users.forEach((item,i) => {
               if (item.user.username === localStorage.getItem('user-name')){
@@ -132,7 +133,9 @@ $("#body-row .collapse").collapse("hide");
 
               }).fail(function (err) {alert(err)})
 
-            }).fail(function (err) {(err) })
+            }).fail(function (err) {
+              $('#classLoader').remove();
+              alert(err); })
        
 
 

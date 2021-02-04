@@ -137,8 +137,10 @@ function send_user_sms(to_number, msg, callback) {
     }
     $.ajax(settings).done(function (response) {
         // change screen for code collecton
+        callback(response,null);
         console.log(response)
     }).fail(function (err) {
+        callback(null,err);
       //alert("ERROR")
     });
 }

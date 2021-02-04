@@ -79,6 +79,7 @@ $(document).ready(function() {
 
     }
     $.ajax(settings).done((response) => {
+        $('#studentloader').remove();
         system_users = JSON.parse(response)
         system_users.forEach((item, i) => {
             if (item.user.username === localStorage.getItem("user-name")) {
@@ -92,6 +93,7 @@ $(document).ready(function() {
             }
         })
     }).fail(function(err) {
+        $('#studentloader').remove();
         alert("ERROR")
     })
 
