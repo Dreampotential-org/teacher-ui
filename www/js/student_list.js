@@ -76,21 +76,19 @@ $(document).ready(function() {
         "processData": false,
         "contentType": false,
         "mimeType": "multipart/form-data",
+        headers: { "Authorization": `${localStorage.getItem('user-token')}` }
 
     }
     $.ajax(settings).done((response) => {
         $('#studentloader').remove();
         system_users = JSON.parse(response)
         system_users.forEach((item, i) => {
-            if (item.user.username === localStorage.getItem("user-name")) {
-
-                $("#users-data").append(`<tr>
-        <td>${item.name}</td>
-        <td>${item.email}</td>
-        <td>${item.phone}</td>
-        <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
-        </tr>`);
-            }
+            $("#users-data").append(`<tr>
+            <td>${item.name}</td>
+            <td>${item.email}</td>
+            <td>${item.phone}</td>
+            <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
+            </tr>`);
         })
     }).fail(function(err) {
         $('#studentloader').remove();
@@ -123,11 +121,11 @@ $("#addStudent").submit((event) => {
     $.ajax({
         type: 'POST',
         url: SERVER + 'students_list/get/students',
+        headers: { "Authorization": `${localStorage.getItem('user-token')}` },
         data: {
             "name": $("#uname").val(),
             "phone": $("#phone").val(),
-            "email": $("#email").val(),
-            'user': localStorage.getItem("user-name")
+            "email": $("#email").val()
         },
         success: () => {
             location.reload()
@@ -139,6 +137,7 @@ $("#showDelete").on('click', () => {
     $.ajax({
         type: 'DELETE',
         url: SERVER + 'students_list/get/students' + '?' + $.param({ 'id': $("#eid").val() }),
+        headers: { "Authorization": `${localStorage.getItem('user-token')}` },
         success: () => {
             location.reload();
 
@@ -149,7 +148,8 @@ $("#showDelete").on('click', () => {
 $("#updateStudent").on('click', () => {
     $.ajax({
         type: 'PUT',
-        url: SERVER + 'students_list/get/students' + '?' + $.param({ 'id': $("#eid").val() }),
+        url: SERVER + 'students_list/get/students',
+        headers: { "Authorization": `${localStorage.getItem('user-token')}` },
         data: {
             "id": $("#eid").val(),
             "name": $("#ename").val(),

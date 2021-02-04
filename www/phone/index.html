@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="phone-verification-body">
+    <div class="modal" id="verify_phone" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle2">Enter Your Phone Number</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="phone_block">
+                    <label>Phone Number:</label>
+                    <input class="form-control" type="text" id="phone_number" placeholder="Enter your phone number">
+                </div>
+                <br>
+                <div id="code_block" >
+                    <label >Code:</label>
+                    <input class="form-control" type="number" id="2fa_code" placeholder="Enter the code">
+                </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="send-sms" class="btn btn-primary">Submit Number</button>
+                    <button type="button" id="submit-code" class="btn btn-primary">Submit Code</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script> 
+        window.SERVER = 'http://localhost:8000'
+        window.API_SERVER = 'https://sfapp-api.dreamstate-4-all.org'
+        var phone_number = '';
+        var code ='';
+        function verification_process(){
+            $("#code_block").show()
+            $("#submit-code").show()
+            $("#send-sms").hide()
+            $("#phone_number").attr("disabled","true");
+        }   
+
+        $(window).ready(function() {
+            $("#code_block").hide()
+            $("#submit-code").hide()
+            $('#send-sms').on('click', function () {
+                phone_number = $("#phone_number").val();
+                console.log(phone_number)
+                if (phone_number == '') {
+                    return alert("Please provide your number first");
+                }else{
+                    
+                    var data_ ={
+                        "phone_number":phone_number,
+                        "session_id":localStorage.session_id
+                    }
+
+                    $.ajax({
+                        "url": API_SERVER +"/courses_api/confirm/phone",
+                        'data': JSON.stringify(data_),
+                        'type': 'POST',
+                        'contentType': 'application/json',
+                        'success': function (data){
+                            alert("SMS SEnt")
+                        },
+                        'error': function(res){
+                            // alert(JSON.stringify(res))
+                        }
+                    })   
+                }
+                verification_process()
+            });
+
+
+            $('#submit-code').on('click', function () {
+                phone_number = $("#phone_number").val();
+                code = $("#2fa_code").val();
+
+                console.log(phone_number)
+                if (phone_number == '') {
+                    return alert("Please provide your number first");
+                }else{
+                    
+                    var data_ ={
+                        "phone_number":phone_number,
+                        "code_2fa":code
+                    }
+
+                    $.ajax({
+                        "url": API_SERVER +"/courses_api/verify/phone",
+                        'data': JSON.stringify(data_),
+                        'type': 'POST',
+                        'contentType': 'application/json',
+                        'success': function (data){
+                            alert("Code Verified")
+                            const evt = new Event("phoneVerified", {"bubbles":true, "cancelable":false});
+                            document.dispatchEvent(evt);
+
+                        },
+                        'error': function(res){
+                            alert("Code didn't match");
+                        }
+                    })   
+                }
+            });
+
+        });
+
+
+        
+    </script>
+</body>
+</html>
