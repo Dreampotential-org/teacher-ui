@@ -28,3 +28,7 @@ b#userTitle {
 div#add-student-Modal {
   background: rgba(0, 0, 0, 0.64);
 }
+
+.modal-content{
+  width: 640px;
+}
