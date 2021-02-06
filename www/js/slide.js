@@ -225,7 +225,7 @@ function init() {
                 $("#theSlide").append('<div class="'+className+'"><div alt="title_text" style="height:500px"><h1> '+flashcard.question+'</h1><iframe src= "'+flashcard.image+'"></iframe></div></div>')
             }
             if(flashcard.lesson_type == "video_file"){
-                $("#theSlide").append('<div class="'+className+'"><div alt="title_text" style="height:500px"><h1> '+flashcard.question+'</h1><video controls> <source src= "'+flashcard.image+'"></video></div></div>')
+                $("#theSlide").append('<div class="'+className+'"><div alt="title_text" style="height:500px"><h1> '+flashcard.question+'</h1><video style="height:500px;width:1000px"; controls> <source src= "'+flashcard.image+'"></video></div></div>')
             }
 
             if(flashcard.lesson_type == "image_file"){
