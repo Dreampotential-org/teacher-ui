@@ -1,0 +1,53 @@
+<html>
+    <head>
+    <title>Lesson Responses</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      
+      </head>
+<body>
+    <table class="table" id="the_body">
+            <tr>
+                <td>Sesion Id </td>
+                <td>Question</td>
+                <td>Answer</td>
+            </tr>
+    </table>
+</body>
+</html>
+
+<script>
+var SERVER ='https://sfapp-api.dreamstate-4-all.org'
+//var SERVER = "http://localhost:8000";
+
+
+function getParam(sParam){
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++){
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam) {
+            return sParameterName[1];
+        }
+    }
+}
+var lesson_id = getParam("lesson_id")
+$.get(SERVER+'/courses_api/lesson/response/get/'+lesson_id+'/',function(response){
+    response.forEach(function(r){
+        var q = r.flashcard[0].question
+        var a = r.answer
+        var s_id = r.user_session[0].session_id
+        var type = r.flashcard[0].lesson_type
+        if(type =="signature"){
+            $("#the_body").append("<tr><td>"+s_id+"</td><td>"+q+"</td><td><img src='"+a+"'></td></tr>")
+
+        }else{
+            $("#the_body").append("<tr><td>"+s_id+"</td><td>"+q+"</td><td>"+a+"</td></tr>")
+
+        }
+    })
+})
+</script>
