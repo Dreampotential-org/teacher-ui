@@ -31,7 +31,7 @@
 
     <script src="js/main.js"></script>
     <script src="js/web_api.js"></script>
-    <script src="js/student_lesson.js"></script>
+    <!-- <script src="js/student_lesson.js"></script> -->
 
     <style>
         .p-0 .container-fluid {
@@ -488,7 +488,12 @@
         }, ];
 
         $(document).ready(function() {
-            list_question_counters(function(questions) {
+            $.ajax({
+                async: true,
+                crossDomain: true,
+                url: SERVER + "courses_api/lesson/all",
+                method: "GET"
+            }).done((questions) => {
                 questions.forEach((q) => {
                     let tempArray = [];
                     tempArray.courseid = q.id;
@@ -605,6 +610,7 @@
                 var studentValue = $("#studentOption option:selected").val()
             }
             var courseValue = $("#course").val()
+            var url_invite
             var typeValue = $("#contactList option:selected").val()
             if (classValue === 'Select' || studentValue === 'Select' || typeValue === 'Select') {
                 swal({
@@ -629,7 +635,7 @@
                         "class": classValue,
                         "student": studentValue,
                         "type": typeValue,
-                        "body": courseValue
+                        "body": courseValue + url_invite
                     },
                     success: () => {
                         swal({
@@ -649,6 +655,7 @@
                 })
 
             }
+            console.log("mail body is : ",body)
             if (typeValue === 'Text') {
 
                 $.ajax({
