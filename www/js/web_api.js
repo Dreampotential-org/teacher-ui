@@ -89,16 +89,13 @@ function get_user_list(callback) {
 
 
 function get_activity_list(phone, cb) {
-    var form = new FormData();
-    form.append("phone", phone);
     var settings = {
         "async": true,
         "crossDomain": true,
-        "url": SERVER + "sfapp2/api/checkin_activity_admin",
-        "method": "POST",
+        "url": SERVER + "sfapp2/api/checkin_activity_admin?phone="+phone,
+        "method": "GET",
         "processData": false,
         "contentType": false,
-        "data": form,
         "mimeType": "multipart/form-data",
         "headers": {
             "Authorization": 'Token ' + localStorage.getItem("user-token"),
