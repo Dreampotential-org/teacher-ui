@@ -610,7 +610,6 @@
                 var studentValue = $("#studentOption option:selected").val()
             }
             var courseValue = $("#course").val()
-            var url_invite
             var typeValue = $("#contactList option:selected").val()
             if (classValue === 'Select' || studentValue === 'Select' || typeValue === 'Select') {
                 swal({
@@ -626,7 +625,7 @@
                     async: true,
                     crossDomain: true,
                     crossOrigin: true,
-                    url: SERVER + "courses_api/invite/email",
+                    url: SERVER + "/courses_api/invite/email",
                     type: "POST",
                     headers: {
                         "Authorization": `${localStorage.getItem('user-token')}`
@@ -635,7 +634,7 @@
                         "class": classValue,
                         "student": studentValue,
                         "type": typeValue,
-                        "body": courseValue + url_invite
+                        "body": courseValue
                     },
                     success: () => {
                         swal({
@@ -655,14 +654,13 @@
                 })
 
             }
-            console.log("mail body is : ",body)
             if (typeValue === 'Text') {
 
                 $.ajax({
                     async: true,
                     crossDomain: true,
                     crossOrigin: true,
-                    url: SERVER + "courses_api/invite/text",
+                    url: SERVER + "/courses_api/invite/text",
                     type: "POST",
                     headers: {
                         "Authorization": `${localStorage.getItem('user-token')}`
@@ -788,42 +786,42 @@
                     counter.push(element.count);
                 });
 
-                var myPieChart = new Chart(ctx, {
-                    type: "pie",
-                    data: {
-                        labels: custom_labels,
-                        datasets: [{
-                            data: counter,
-                            backgroundColor: ["#f73378", "#9c27b0", "#ee99fc", "#3d5afe"],
-                        }, ],
-                    },
-                    options: {
-                        legend: {
-                            display: false,
-                            position: "bottom",
-                            labels: {
-                                fontColor: "#000",
-                                //boxWidth:50,
-                                fontSize: 14,
-                                //fontSize:'26px'
-                                //fontWeight:700
-                            },
-                        },
-                        legendCallback: function(chart) {
-                            var text = [];
-                            text.push('<ul class="0-legend">');
-                            var ds = chart.data.datasets[0];
-                            var sum = ds.data.reduce(function add(a, b) {
-                                return a + b;
-                            }, 0);
-                            for (var i = 0; i < ds.data.length; i++) {
-                                text.push("<li>");
-                                var perc = Math.round((100 * ds.data[i]) / sum, 0);
-                                text.push(
-                                    '<span style="background-color:' +
-                                    ds.backgroundColor[i] +
-                                    '">' +
-                                    "</span>" +
+var myPieChart = new Chart(ctx, {
+    type: "pie",
+    data: {
+        labels: custom_labels,
+        datasets: [{
+            data: counter,
+            backgroundColor: ["#f73378", "#9c27b0", "#ee99fc", "#3d5afe"],
+        }, ],
+    },
+    options: {
+        legend: {
+            display: false,
+            position: "bottom",
+            labels: {
+                fontColor: "#000",
+                //boxWidth:50,
+                fontSize: 14,
+                //fontSize:'26px'
+                //fontWeight:700
+            },
+        },
+        legendCallback: function(chart) {
+            var text = [];
+            text.push('<ul class="0-legend">');
+            var ds = chart.data.datasets[0];
+            var sum = ds.data.reduce(function add(a, b) {
+                return a + b;
+            }, 0);
+            for (var i = 0; i < ds.data.length; i++) {
+                text.push("<li>");
+                var perc = Math.round((100 * ds.data[i]) / sum, 0);
+                text.push(
+                    '<span style="background-color:' +
+                    ds.backgroundColor[i] +
+                    '">' +
+                    "</span>" +
                                     chart.data.labels[i]
                                 );
                                 text.push("</li>");
@@ -839,10 +837,10 @@
                     },
                 });
 
-                $(`#legend${i}`).html(myPieChart.generateLegend());
-            });
-        }
-    </script>
+$(`#legend${i}`).html(myPieChart.generateLegend());
+});
+}
+</script>
 </body>
 
 </html>
