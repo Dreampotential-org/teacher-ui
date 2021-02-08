@@ -379,7 +379,7 @@ margin-top: 10%;
             var html =
             '<div class="border rounded mb-2"> <div class="video_entry p-3" video_url="' +
               item.video_url +
-              '"><a href="javascript:void(0)"><span class="glyphicon glyphicon-facetime-video pr-2"></span></a> \
+              '"><a href="javascript:void(0)" class="video-view"><span class="glyphicon glyphicon-facetime-video pr-2"></span></a> \
               <a href="javascript:void(0)" class="btn-link" data-toggle="collapse" data-target="#collapse'+i+'" aria-expanded="false" aria-controls="collapse'+i+'"><span class="glyphicon glyphicon glyphicon-envelope pr-2"></span></a><span>\
                 ' +
                 format_date(item.created_at) +
@@ -407,7 +407,7 @@ margin-top: 10%;
                 item.lat +
                 '" lng="' +
                 item.lng +
-                `"><a href='javascript:void(0)'><span class='glyphicon glyphicon-map-marker pr-2'></span></a>` +
+                `"><a href='javascript:void(0)' class="gps-view"><span class='glyphicon glyphicon-map-marker pr-2'></span></a>` +
                 '<a href="javascript:void(0)" class="btn-link" data-toggle="collapse" data-target="#collapse'+i+'" aria-expanded="false" aria-controls="collapse'+i+'"><span class="glyphicon glyphicon glyphicon-envelope pr-2"></span></a><span>' +
                   format_date(item.created_at) +
                   '</span>&nbsp - &nbsp' +

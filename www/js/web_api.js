@@ -259,10 +259,10 @@ function format_date(created_at) {
 }
 
 function setup_activity_view_events () {
-    $('body').delegate('.video_entry', 'click', function (e) {
+    $('body').delegate('.video_entry a.video-view', 'click', function (e) {
       $('#activityModal').modal('show')
   
-      var video_url = $(this).attr('video_url');
+      var video_url = $(this).parent().attr('video_url');
   
       $('#activity-body').html(
         '<video controls="" autoplay="" name="media" ' +
@@ -273,15 +273,15 @@ function setup_activity_view_events () {
       )
     })
   
-    $('body').delegate('.gps-entry', 'click', function (e) {
+    $('body').delegate('.gps-entry a.gps-view', 'click', function (e) {
       $('#activityModal').modal('show')
   
       $('#activity-body').html(
         "<div id='gps-view' style='width:100%;height:400px;'></div>"
       )
       var spot = {
-        lat: parseFloat($(this).attr('lat')),
-        lng: parseFloat($(this).attr('lng'))
+        lat: parseFloat($(this).parent().attr('lat')),
+        lng: parseFloat($(this).parent().attr('lng'))
       }
       var name = ''
       var latlng = spot
