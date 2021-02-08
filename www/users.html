@@ -37,6 +37,11 @@
   />
   <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+  <script
+  async
+  defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWJ2UbLhFeu3jVgd4ZwWMMNyGl4Kqx7V4"
+></script>
   <!-- user.html JS, CSS end -->
   
   <link rel="stylesheet" href="css/dashboard.css" />
@@ -59,6 +64,14 @@
     .video_entry, .gps-entry{
       background-color: #80808040;
     }
+    .modal-content {
+  width:100%;
+}
+
+.modal-dialog-centered {
+margin-top: 10%;
+}
+
   </style>
   
   <script>
@@ -247,6 +260,32 @@
 </div>
 </div>
 </div>
+<div class="modal fade"
+      id="activityModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="activityModalLabel"
+      aria-hidden="true"
+      >
+      <div
+          class="modal-dialog modal-dialog-centered"
+          role="document"
+          >
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                      >
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div id="activity-body" class="modal-body text-center"></div>
+          </div>
+      </div>
+  </div>
 
 <script>
   var user_phone = "";
@@ -258,7 +297,7 @@
   if (userToken == null) {
     window.location.replace("student_login.html");
   }
-  
+  setup_activity_view_events();
   function getParam(sParam) {
     var sPageURL = window.location.search.substring(1);
     var sURLVariables = sPageURL.split("&");
@@ -340,8 +379,8 @@
             var html =
             '<div class="border rounded mb-2"> <div class="video_entry p-3" video_url="' +
               item.video_url +
-              '"><a href="#"><span class="glyphicon glyphicon-facetime-video pr-2"></span></a> \
-              <a href="#javascript:void()" class="btn-link" data-toggle="collapse" data-target="#collapse'+i+'" aria-expanded="false" aria-controls="collapse'+i+'"><span class="glyphicon glyphicon glyphicon-envelope pr-2"></span></a><span>\
+              '"><a href="javascript:void(0)"><span class="glyphicon glyphicon-facetime-video pr-2"></span></a> \
+              <a href="javascript:void(0)" class="btn-link" data-toggle="collapse" data-target="#collapse'+i+'" aria-expanded="false" aria-controls="collapse'+i+'"><span class="glyphicon glyphicon glyphicon-envelope pr-2"></span></a><span>\
                 ' +
                 format_date(item.created_at) +
                 '</span></div>'+
@@ -368,8 +407,8 @@
                 item.lat +
                 '" lng="' +
                 item.lng +
-                `"><a href='#'><span class='glyphicon glyphicon-map-marker pr-2'></span></a>` +
-                '<a href="javascript:void()" class="btn-link" data-toggle="collapse" data-target="#collapse'+i+'" aria-expanded="false" aria-controls="collapse'+i+'"><span class="glyphicon glyphicon glyphicon-envelope pr-2"></span></a><span>' +
+                `"><a href='javascript:void(0)'><span class='glyphicon glyphicon-map-marker pr-2'></span></a>` +
+                '<a href="javascript:void(0)" class="btn-link" data-toggle="collapse" data-target="#collapse'+i+'" aria-expanded="false" aria-controls="collapse'+i+'"><span class="glyphicon glyphicon glyphicon-envelope pr-2"></span></a><span>' +
                   format_date(item.created_at) +
                   '</span>&nbsp - &nbsp' +
                   '<span>' +
