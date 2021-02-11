@@ -81,11 +81,23 @@ function nextSlide(){
     }
 
 
+    const param = new URL(window.location.href)
+    const params = param.searchParams.get('params')
 
-    var data_ = {
-        "flashcard":flashcard_id,
-        "session_id":localStorage.getItem("session_id"),
-        "answer":answer?answer:"",
+    if (params){
+
+        var data_ = {
+            "flashcard":flashcard_id,
+            "session_id":localStorage.getItem("session_id"),
+            "answer":answer?answer:"",
+            "params" : params
+        }
+    }else{
+        var data_ = {
+            "flashcard":flashcard_id,
+            "session_id":localStorage.getItem("session_id"),
+            "answer":answer?answer:"",
+        }
     }
 
 
