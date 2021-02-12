@@ -684,13 +684,19 @@ $(document).ready(function () {
     } else {
         MODE = "CREATE";
     }
-
+    const param = new URL(window.location.href)
+    const params = param.searchParams.get('params')
     if (MODE == "UPDATE") {
         $.get(API_SERVER + '/courses_api/lesson/read/' +
               lesson_id + '/', function (response) {
+            if(params){
+                $("#lesson_slide").attr(
+                    "href", `/slide.html?lesson_id=${lesson_id}&params=${params}`)
+            }else{
 
-            $("#lesson_slide").attr(
-                "href", "/slide.html?lesson_id=" + lesson_id)
+                $("#lesson_slide").attr(
+                    "href", "/slide.html?lesson_id=" + lesson_id)
+                }
             $("#lesson_responses").attr(
                 "href", "/lesson_responses.html?lesson_id=" + lesson_id)
 
