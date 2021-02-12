@@ -36,8 +36,7 @@
     <link rel="stylesheet" href="css/lesson_list.css" />
 
     <script src="js/main.js"></script>
-    <script src="js/web_api.js"></script>
-    <!-- <script src="js/student_lesson.js"></script> -->
+    <script src="js/student_lesson.js"></script>
 
     <style>
         .p-0 .container-fluid {
@@ -522,7 +521,10 @@
                 crossDomain: true,
                 crossOrigin: true,
                 url: SERVER + "courses_api/lesson/all",
-                method: "GET"
+                method: "GET",
+                headers: {
+                        "Authorization": `${localStorage.getItem('user-token')}`
+                    }
             }).done((questions) => {
                 questions.forEach((q) => {
                     let tempArray = [];
