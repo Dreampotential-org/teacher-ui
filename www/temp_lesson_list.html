@@ -105,7 +105,7 @@
                                                         </circle>
                                                     </svg>
                                                 </div>
-
+                                                
                                             </div>
 
 
@@ -441,8 +441,13 @@
     </script>
 
     <script>
+        var passwordResetToken = getParam("token");
         var userToken = localStorage.getItem("user-token");
-        var user_lessons = [];
+        var system_users = [];
+        var classList;
+        var studentList;
+
+        console.log("MODE: PASSWORD_RESET, Token - " + passwordResetToken);
 
         if (userToken == null) {
             window.location.replace("student_login.html");
@@ -459,7 +464,11 @@
             }
         }
 
-
+        $(document).ready(function () {
+            $("#left-sidebar").load("sidebar.html");
+            $("#page-header").load("header.html");
+            //                        $("#page-container").load('dashboard.html');
+        });
         $("#body-row .collapse").collapse("hide");
 
         // Collapse/Expand icon
@@ -490,14 +499,130 @@
             //$('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
         }
 
+        var group_data = [{
+            created_at: "2020-10-08T20:47:22Z",
+            group_name: "group1"
+        }, {
+            created_at: "2020-11-02T20:55:04Z",
+            group_name: "group1"
+        }, {
+            created_at: "2020-11-02T20:56:50Z",
+            group_name: "group3"
+        }, {
+            created_at: "2020-11-13T04:12:40Z",
+            group_name: "group1"
+        }, {
+            created_at: "2020-11-13T04:12:40Z",
+            group_name: "group2"
+        },];
+
+        $(document).ready(function () {
+            $.ajax({
+                "url": SERVER + "courses_api/lesson/all",
+                type: "GET",
+                headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+            }).done((questions) => {
+                console.log("dones")
+                questions.forEach((q) => {
+                    let tempArray = [];
+                    tempArray.courseid = q.id;
+                    tempArray.coursename = q.lesson_name;
+                    system_users.push(tempArray)
+                })
+                $('#lessonLoader').remove();
+                system_users.forEach((item, i) => {
+                    $("#users-data").append(`<tr>
+                        <td>${item.courseid}</td>
+                        <td>${item.coursename}</td>
+                        <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
+                          <button onclick="openStudentLesson('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-eye"></i></button>
+                          <button onclick="on('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-user-plus"></i></button></td>
+                        </tr>`);
+                });
+            });
+
+            $("#tabDiv").show();
+            $(".div-student-builder").hide();
+            $(".div-go-back").hide();
+            $("#systemUserDetail").hide();
+
+
+
+            group_data.forEach((item, i) => {
+                $("#group-data").append(`<tr>
+                        <td>${item.created_at}</td>
+                        <td>${item.group_name}</td>
+                        <td><button onclick="openModal('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
+                            </td>
+                        </tr>`);
+            });
+        });
+
+        $("#list").change(() => {
+            initValue = $("#list option:selected").val()
+            showContact(initValue)
+            if (initValue === 'Class') {
+                $("#classList").show();
+                $("#studentList").hide();
+                if ($("#classOption option").length === 1) {
+                    classList.forEach((item) => {
+                        $("#classOption").append($('<option>').val(item.id).text(item.class_name))
+                    })
+                }
+            } else if (initValue === 'Student') {
+                $("#studentList").show();
+                $("#classList").hide();
+                if ($("#studentOption option").length === 1) {
+                    studentList.forEach((item) => {
+                        $("#studentOption").append($('<option>').val(item.id).text(item.name))
+                    })
+                }
+            } else if (initValue === 'Select') {
+                $("#classList").hide();
+                $("#studentList").hide();
+                $("#send").hide();
+            }
+        })
+
+        function showContact(type) {
+            if (type !== 'Select') {
+                $("#contactList").show();
+                $("#send").show();
+            } else {
+                $("#contactList").hide();
+            }
+        }
+        $("#classOption").change(() => {
+
+            initClassValue = $("#classOption option:selected").val()
+            showContact(initClassValue)
+        })
+
+        $("#studentOption").change(() => {
+            initClassValue = $("#studentOption option:selected").val()
+            showContact(initClassValue)
+        })
+
         function on(i) {
             // ${system_users[i].coursename}-
-            //$("#course").val(system_users[i].courseid)
+            $("#course").val(system_users[i].courseid)
             document.getElementById("overlay").style.display = "block";
         }
 
         function off() {
             document.getElementById("overlay").style.display = "none";
+        }
+
+        function addUser() {
+            console.log("Add User");
+        }
+
+        function addPhone() {
+            console.log("Add Phone");
+        }
+
+        function addGroup() {
+            console.log("Add Group ", $("#grouplist").val());
         }
 
         function editSystemUser(i) {
@@ -540,51 +665,98 @@
             $("#tabDiv").hide();
             $("#tabs").hide();
         }
-  
-  
-        
-        $(document).ready(function () {
-            $("#left-sidebar").load("sidebar.html");
-            $("#page-header").load("header.html");
 
-            $.ajax({
-                url: SERVER + "courses_api/lesson/all",
-                async: true,
-                crossDomain: true,
-                crossOrigin: true,
-                type: "GET",
-                headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+        function getChart(item) {
+            item.forEach((ele, i) => {
+                //console.log(ele);
+                var html = `<div class="col-xl-6 col-sm-12 mb-6">
 
-            }).done((questions) => {
-                console.log("dones")
-                questions.forEach((q) => {
-                    let tempArray = [];
-                    tempArray.courseid = q.id;
-                    tempArray.coursename = q.lesson_name;
-                    user_lessons.push(tempArray)
-                })
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        ${ele.question}
+                                    </div>
+                                    <div id="chart-body${i}" class="card-body">
+                                    </div>
+                                    <div id="legend${i}" class="custom-legend"></div>
+                                </div>
 
-                $('#lessonLoader').remove();
+                                </div>`;
 
-                user_lessons.forEach((item, i) => {
-                    $("#users-data").append(`<tr>
-                        <td>${item.courseid}</td>
-                        <td>${item.coursename}</td>
-                        <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
-                          <button onclick="openStudentLesson('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-eye"></i></button>
-                          <button onclick="on('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-user-plus"></i></button></td>
-                        </tr>`);
+                $("#customChart").append(html);
+
+                var canvas = document.createElement("canvas");
+
+                canvas.id = "canavs" + i;
+                //canvas.width = "50%";
+
+                var body = document.getElementById("chart-body" + i);
+                body.appendChild(canvas);
+
+                var ctx = document.getElementById("canavs" + i);
+
+                var custom_labels = [];
+                var counter = [];
+
+                ele.answers.forEach((element) => {
+                    custom_labels.push(element.answer);
+                    counter.push(element.count);
                 });
+
+                var myPieChart = new Chart(ctx, {
+                    type: "pie",
+                    data: {
+                        labels: custom_labels,
+                        datasets: [{
+                            data: counter,
+                            backgroundColor: ["#f73378", "#9c27b0", "#ee99fc", "#3d5afe"],
+                        },],
+                    },
+                    options: {
+                        legend: {
+                            display: false,
+                            position: "bottom",
+                            labels: {
+                                fontColor: "#000",
+                                //boxWidth:50,
+                                fontSize: 14,
+                                //fontSize:'26px'
+                                //fontWeight:700
+                            },
+                        },
+                        legendCallback: function (chart) {
+                            var text = [];
+                            text.push('<ul class="0-legend">');
+                            var ds = chart.data.datasets[0];
+                            var sum = ds.data.reduce(function add(a, b) {
+                                return a + b;
+                            }, 0);
+                            for (var i = 0; i < ds.data.length; i++) {
+                                text.push("<li>");
+                                var perc = Math.round((100 * ds.data[i]) / sum, 0);
+                                text.push(
+                                    '<span style="background-color:' +
+                                    ds.backgroundColor[i] +
+                                    '">' +
+                                    "</span>" +
+                                    chart.data.labels[i]
+                                );
+                                text.push("</li>");
+                            }
+                            text.push("</ul>");
+                            return text.join("");
+                        },
+                        elements: {
+                            arc: {
+                                borderWidth: 0,
+                            },
+                        },
+                    },
+                });
+
+                $(`#legend${i}`).html(myPieChart.generateLegend());
             });
-
-            $("#tabDiv").show();
-            $(".div-student-builder").hide();
-            $(".div-go-back").hide();
-            $("#systemUserDetail").hide();  
-        });
-
-
-  </script>
+        }
+    </script>
 </body>
 
 </html>

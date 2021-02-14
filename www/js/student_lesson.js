@@ -674,7 +674,7 @@ $(document).ready(function () {
       }
     );
   } else {
-    getAllLessons();
+    //getAllLessons();
   }
 
   $("#lesson_form").submit((e) => {
