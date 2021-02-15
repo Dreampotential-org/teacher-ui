@@ -41,7 +41,7 @@
   async
   defer
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWJ2UbLhFeu3jVgd4ZwWMMNyGl4Kqx7V4"
-></script>
+  ></script>
   <!-- user.html JS, CSS end -->
   
   <link rel="stylesheet" href="css/dashboard.css" />
@@ -65,13 +65,13 @@
       background-color: #80808040;
     }
     .modal-content {
-  width:100%;
-}
-
-.modal-dialog-centered {
-margin-top: 10%;
-}
-
+      width:100%;
+    }
+    
+    .modal-dialog-centered {
+      margin-top: 10%;
+    }
+    
   </style>
   
   <script>
@@ -125,73 +125,73 @@ margin-top: 10%;
                 <animate attributeName="stroke-dasharray" values="0,200;110,200;110,200" dur="1.25s" repeatCount="indefinite"/>
               </circle>
             </svg>
-            </div>
           </div>
         </div>
-        
-        <div id="showUserInfo" style="display: none" class="pt-3">
-          <!-- <form id="placeForm">
-            
-          </form> -->
-          <div>
-            <button onclick="goBack()" class="btn">
-              <i class="fa fa-chevron-left"></i> Back
-            </button>
+      </div>
+      
+      <div id="showUserInfo" style="display: none" class="pt-3">
+        <!-- <form id="placeForm">
+          
+        </form> -->
+        <div>
+          <button onclick="goBack()" class="btn">
+            <i class="fa fa-chevron-left"></i> Back
+          </button>
+        </div>
+        <h2 class="text-center">
+          <b>User Information</b>
+        </h2>
+        <form class="px-2">
+          <div class="form-group">
+            <label for="uname">
+              <b>Name</b>
+            </label>
+            <input
+            type="text"
+            class="form-control"
+            id="uname"
+            placeholder="Name"
+            readonly
+            />
           </div>
-          <h2 class="text-center">
-            <b>User Information</b>
-          </h2>
-          <form class="px-2">
-            <div class="form-group">
-              <label for="uname">
-                <b>Name</b>
-              </label>
-              <input
-              type="text"
-              class="form-control"
-              id="uname"
-              placeholder="Name"
-              readonly
-              />
-            </div>
-            
-            <div class="form-group">
-              <label for="phone">
-                <b>Phone</b>
-              </label>
-              <input
-              type="text"
-              class="form-control"
-              id="phone"
-              placeholder="Phone"
-              readonly
-              />
-            </div>
-            
-            <div class="form-group">
-              <label for="joined">
-                <b>Joined</b>
-              </label>
-              <input
-              type="text"
-              class="form-control"
-              id="joined"
-              placeholder="Joined"
-              readonly
-              />
-            </div>
-            
-            <div class="form-group">
-              <label>
-                <b>Questions/Answers</b>
-              </label>
-              <div id="answerList"></div>
-            </div>
-            <div class="form-group">
-              <label>
-                <b>Activities</b>
-              </label>
-              <!-- <div class="spinner-border"></div>
+          
+          <div class="form-group">
+            <label for="phone">
+              <b>Phone</b>
+            </label>
+            <input
+            type="text"
+            class="form-control"
+            id="phone"
+            placeholder="Phone"
+            readonly
+            />
+          </div>
+          
+          <div class="form-group">
+            <label for="joined">
+              <b>Joined</b>
+            </label>
+            <input
+            type="text"
+            class="form-control"
+            id="joined"
+            placeholder="Joined"
+            readonly
+            />
+          </div>
+          
+          <div class="form-group">
+            <label>
+              <b>Questions/Answers</b>
+            </label>
+            <div id="answerList"></div>
+          </div>
+          <div class="form-group">
+            <label>
+              <b>Activities</b>
+            </label>
+            <!-- <div class="spinner-border"></div>
               <div class="d-flex justify-content-center">
                 <div class="spinner-border" role="status">
                   <span class="sr-only">Loading...</span>
@@ -208,51 +208,50 @@ margin-top: 10%;
                     <animate attributeName="stroke-dasharray" values="0,200;110,200;110,200" dur="1.25s" repeatCount="indefinite"/>
                   </circle>
                 </svg>
-                </div>
               </div>
             </div>
-          </form>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Add Phone number Modal -->
+      <div
+      class="modal fade"
+      id="phoneModal"
+      tabindex="-1"
+      role="dialog"
+      aria-hidden="true"
+      >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              Enter your phone number and we will connect you
+            </h5>
+            <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            >
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-        
-        <!-- Add Phone number Modal -->
-        <div
-        class="modal fade"
-        id="phoneModal"
-        tabindex="-1"
-        role="dialog"
-        aria-hidden="true"
-        >
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">
-                Enter your phone number and we will connect you
-              </h5>
-              <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-              >
-              <span aria-hidden="true">&times;</span>
+        <div class="modal-body">
+          <form class="px-2">
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input
+              type="number"
+              class="form-control"
+              id="uname"
+              placeholder="Phone"
+              />
+            </div>
+            <button type="button" class="btn btn-primary float-right">
+              Call
             </button>
-          </div>
-          <div class="modal-body">
-            <form class="px-2">
-              <div class="form-group">
-                <label for="phone">Phone</label>
-                <input
-                type="number"
-                class="form-control"
-                id="uname"
-                placeholder="Phone"
-                />
-              </div>
-              <button type="button" class="btn btn-primary float-right">
-                Call
-              </button>
-            </form>
-          </div>
+          </form>
         </div>
       </div>
     </div>
@@ -260,32 +259,33 @@ margin-top: 10%;
 </div>
 </div>
 </div>
+</div>
 <div class="modal fade"
-      id="activityModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="activityModalLabel"
-      aria-hidden="true"
-      >
-      <div
-          class="modal-dialog modal-dialog-centered"
-          role="document"
-          >
-          <div class="modal-content">
-              <div class="modal-header">
-                  <button
-                      type="button"
-                      class="close"
-                      data-dismiss="modal"
-                      aria-label="Close"
-                      >
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-              </div>
-              <div id="activity-body" class="modal-body text-center"></div>
-          </div>
-      </div>
-  </div>
+id="activityModal"
+tabindex="-1"
+role="dialog"
+aria-labelledby="activityModalLabel"
+aria-hidden="true"
+>
+<div
+class="modal-dialog modal-dialog-centered"
+role="document"
+>
+<div class="modal-content">
+  <div class="modal-header">
+    <button
+    type="button"
+    class="close"
+    data-dismiss="modal"
+    aria-label="Close"
+    >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div id="activity-body" class="modal-body text-center"></div>
+</div>
+</div>
+</div>
 
 <script>
   var user_phone = "";
@@ -386,92 +386,123 @@ margin-top: 10%;
                 '</span></div>'+
                 `<div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#accordion">
                   <div class="card-body">
-                    <h5 class="font-weight-bold"> Text Reply </h5>
-                    <form class="form-inline">
-                      <div class="form-group mb-2">
-                        <label for="staticPhone${i}" class="sr-only">Phone number</label>
-                        <input type="text" readonly class="form-control-plaintext" id="staticPhone${i}" value="${user_list[ind].phone}">
-                      </div>
-                      <div class="form-group mx-sm-3 mb-2">
-                        <label for="inputMessage${i}" class="sr-only">Message</label>
-                        <input type="text" class="form-control" id="inputMessage${i}" placeholder="Your message">
-                      </div>
-                      <button type="button" class="btn btn-primary mb-2" onclick="send_message(${i}, event)">Send</button>
-                    </form>
-                  </div>
-                </div>
-              </div>`;
-            } else if (item.type == 'gps') {
-              var html =
-              '<div class="border rounded mb-2"> <div class="gps-entry p-3" lat="' +
-                item.lat +
-                '" lng="' +
-                item.lng +
-                `"><a href='javascript:void(0)' class="gps-view"><span class='glyphicon glyphicon-map-marker pr-2'></span></a>` +
-                '<a href="javascript:void(0)" class="btn-link" data-toggle="collapse" data-target="#collapse'+i+'" aria-expanded="false" aria-controls="collapse'+i+'"><span class="glyphicon glyphicon glyphicon-envelope pr-2"></span></a><span>' +
-                  format_date(item.created_at) +
-                  '</span>&nbsp - &nbsp' +
-                  '<span>' +
-                    item.msg +
-                    '</span></div>'+
-                    `<div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#accordion">
-                      <div class="card-body">
-                        <h5 class="font-weight-bold"> Text Reply </h5>
-                        <form class="form-inline">
-                          <div class="form-group mb-2">
-                            <label for="staticPhone${i}" class="sr-only">Phone number</label>
-                            <input type="text" readonly class="form-control-plaintext" id="staticPhone${i}" value="${user_list[ind].phone}">
-                          </div>
-                          <div class="form-group mx-sm-3 mb-2">
-                            <label for="inputMessage${i}" class="sr-only">Message</label>
-                            <input type="text" class="form-control" id="inputMessage${i}" placeholder="Your message">
-                          </div>
-                          <button type="button" class="btn btn-primary mb-2" onclick="send_message(${i}, event)">Send</button>
-                        </form>
-                      </div>
+                    <div class="comments">
+                      <h5 class="font-weight-bold mb-1"> Feedbacks </h5>
+                      `
+                      item.feedbacks.forEach((feed,j)=>{
+                        html += `<div id="" class="pl-3 ${i != 0?'mt-2':''}" data-feedId=${feed.feed_id}>
+                          <h5 class="text-blue mb-0 font-weight-bold"> ${feed.uesr_details.first_name + ' ' +feed.uesr_details.last_name} </h5>
+                          <p class="mt-1 mb-0"> ${feed.message}</p>
+                          <h6 class="m-0 text-info" style="font-size:xx-small">${format_date(new Date(feed.created_at).getTime()/1000)}</h6>
+                        </div>`
+                      })
+                      
+                      html += `</div>
+                      <h5 class="font-weight-bold"> Text Reply </h5>
+                      <form class="form-inline">
+                        <div class="form-group mb-2">
+                          <label for="staticPhone${i}" class="sr-only">Phone number</label>
+                          <input type="text" readonly class="form-control-plaintext" id="staticPhone${i}" value="${user_list[ind].phone}">
+                        </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                          <label for="inputMessage${i}" class="sr-only">Message</label>
+                          <input type="text" class="form-control" id="inputMessage${i}" placeholder="Your message">
+                        </div>
+                        <button type="button" class="btn btn-primary mb-2" data-logId=${item.video_uuid} onclick="send_message(${i}, event, 'video')">Send</button>
+                      </form>
                     </div>
+                  </div>
+                </div>`;
+              } else if (item.type == 'gps') {
+                var html =
+                '<div class="border rounded mb-2"> <div class="gps-entry p-3" lat="' +
+                  item.lat +
+                  '" lng="' +
+                  item.lng +
+                  `"><a href='javascript:void(0)' class="gps-view"><span class='glyphicon glyphicon-map-marker pr-2'></span></a>` +
+                  '<a href="javascript:void(0)" class="btn-link" data-toggle="collapse" data-target="#collapse'+i+'" aria-expanded="false" aria-controls="collapse'+i+'"><span class="glyphicon glyphicon glyphicon-envelope pr-2"></span></a><span>' +
+                    format_date(item.created_at) +
+                    '</span>&nbsp - &nbsp' +
+                    '<span>' +
+                      item.msg +
+                      '</span></div>'+
+                      `<div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#accordion">
+                        <div class="card-body">
+                          <div class="comments">
+                            <h5 class="font-weight-bold mb-1"> Feedbacks </h5>`
+                            item.feedbacks.forEach((feed,j)=>{
+                              html += `<div class="pl-3 ${i != 0?'mt-2':''}" data-feedId=${feed.feed_id}>
+                                <h5 class="text-blue mb-0 font-weight-bold"> ${feed.uesr_details.first_name + ' ' +feed.uesr_details.last_name} </h5>
+                                <p class="mt-1 mb-0"> ${feed.message}</p>
+                                <h6 class="m-0 text-info" style="font-size:xx-small">${format_date(new Date(feed.created_at).getTime()/1000)}</h6>
+                              </div>`
+                            })
+                            html += `</div><h5 class="font-weight-bold"> Text Reply </h5>
+                            <form class="form-inline">
+                              <div class="form-group mb-2">
+                                <label for="staticPhone${i}" class="sr-only">Phone number</label>
+                                <input type="text" readonly class="form-control-plaintext" id="staticPhone${i}" value="${user_list[ind].phone}">
+                              </div>
+                              <div class="form-group mx-sm-3 mb-2">
+                                <label for="inputMessage${i}" class="sr-only">Message</label>
+                                <input type="text" class="form-control" id="inputMessage${i}" placeholder="Your message">
+                              </div>
+                              <button type="button" class="btn btn-primary mb-2" data-logId=${item.id} onclick="send_message(${i}, event,'gps')">Send</button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>`;
+                    }
+                    $('#activityList').append(html);
+                  });
+                });
+                
+                console.log(user_list[ind]);
+                $("#userListData").hide();
+                $("#showUserInfo").show();
+                
+                $("#uname").val(user_list[ind].name);
+                $("#phone").val(user_list[ind].phone);
+                $("#joined").val(user_list[ind].created_at);
+                
+                $("#answerList").empty();
+                
+                var html = "";
+                
+                user_list[ind].answers.forEach((item, i) => {
+                  html += `<div class="form-group">
+                    <label>${i + 1}. ${item.question}</label>
+                    <input type="text" class="form-control" value="${
+                      item.answer
+                    }" readonly>
                   </div>`;
-                }
-                $('#activityList').append(html);
-              });
-            });
-            
-            console.log(user_list[ind]);
-            $("#userListData").hide();
-            $("#showUserInfo").show();
-            
-            $("#uname").val(user_list[ind].name);
-            $("#phone").val(user_list[ind].phone);
-            $("#joined").val(user_list[ind].created_at);
-            
-            $("#answerList").empty();
-            
-            var html = "";
-            
-            user_list[ind].answers.forEach((item, i) => {
-              html += `<div class="form-group">
-                <label>${i + 1}. ${item.question}</label>
-                <input type="text" class="form-control" value="${
-                  item.answer
-                }" readonly>
-              </div>`;
-            });
-            
-            $("#answerList").append(html);
-          }
-          function send_message(index, event) {
-            var msg = document.getElementById("inputMessage"+index).value;
-            if (msg.trim() != "") {              
-              event.target.innerHTML = 'Sending';
-              send_user_sms(user_phone, msg, function (response,err) {
-                console.log(response);
-                if(!err)
-                  document.getElementById("inputMessage"+index).value = ""; 
-                event.target.innerHTML = 'Send';
-              });              
-            }                      
-          }
-        </script>
-      </body>
-      </html>
-      
+                });
+                
+                $("#answerList").append(html);
+              }
+              function send_message(index, event, type) {
+                var msg = document.getElementById("inputMessage"+index).value;
+                if (msg.trim() != "") {              
+                  event.target.innerHTML = 'Sending';
+                  document.getElementById("inputMessage"+index).value = "";
+                  send_feedback(msg, type, event.target.dataset.logid, function (response,err) {
+                    if(!err){
+                      var feed = JSON.parse(response).feed;
+                      document.getElementById("inputMessage"+index).value = ""; 
+                      event.target.innerHTML = 'Send';
+                      var comment = document.createElement('div');
+                      comment.setAttribute('feedId', feed.feed_id);
+                      comment.innerHTML = `<div class="pl-3">
+                        <h5 class="text-blue mb-0 font-weight-bold"> ${feed.user_details.first_name + ' ' +feed.user_details.last_name} </h5>
+                        <p class="mt-1 mb-0"> ${msg}</p>
+                        <h6 class="m-0 text-info" style="font-size:xx-small">${format_date(new Date(feed.created_at).getTime()/1000)}</h6>
+                      </div>`;
+                      event.target.parentNode.parentNode.getElementsByClassName('comments')[0].append(comment);
+                    }
+                  });              
+                }                      
+              }
+            </script>
+          </body>
+          </html>
+          
