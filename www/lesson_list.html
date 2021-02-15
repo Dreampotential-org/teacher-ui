@@ -443,6 +443,8 @@
     <script>
         var userToken = localStorage.getItem("user-token");
         var user_lessons = [];
+        var classList;	
+        var studentList;
 
         if (userToken == null) {
             window.location.replace("student_login.html");
@@ -492,7 +494,7 @@
 
         function on(i) {
             // ${system_users[i].coursename}-
-            //$("#course").val(system_users[i].courseid)
+            $("#course").val(user_lessons[i].courseid)
             document.getElementById("overlay").style.display = "block";
         }
 
@@ -504,8 +506,8 @@
             $("#tabDiv").hide();
             $("#systemUserDetail").show();
 
-            $("#courseid").val(system_users[i].courseid);
-            $("#coursename").val(system_users[i].coursename);
+            $("#courseid").val(user_lessons[i].courseid);
+            $("#coursename").val(user_lessons[i].coursename);
         }
 
         function goBack() {
@@ -548,7 +550,7 @@
             $("#page-header").load("header.html");
 
             $.ajax({
-                url: SERVER + "courses_api/lesson/all",
+                url: SERVER + "/courses_api/lesson/all",
                 async: true,
                 crossDomain: true,
                 crossOrigin: true,
@@ -575,6 +577,34 @@
                           <button onclick="on('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-user-plus"></i></button></td>
                         </tr>`);
                 });
+                $.ajax({	
+                    async: true,	
+                    crossDomain: true,	
+                    crossOrigin: true,	
+                    url: SERVER + "/students_list/get/class/",	
+                    type: "GET",	
+                    headers: {	
+                        "Authorization": `${localStorage.getItem('user-token')}`	
+                    }	
+
+                }).done((cls) => {
+                    classList = cls;
+                    $.ajax({	
+                        async: true,	
+                        crossDomain: true,	
+                        crossOrigin: true,	
+                        url: SERVER + "/students_list/get/students/",	
+                        type: "GET",	
+                        headers: {	
+                            "Authorization": `${localStorage.getItem('user-token')}`	
+                        }	
+                    }).done((student) => {
+                        studentList = student;
+                    }).fail((err) => { alert('ERROR') })
+                }).fail((fail) => { alert('ERROR') })
+            }).fail((err) => { 
+                alert('ERROR') 
+                
             });
 
             $("#tabDiv").show();
@@ -583,6 +613,154 @@
             $("#systemUserDetail").hide();  
         });
 
+        $("#list").change(() => {	
+            initValue = $("#list option:selected").val()	
+            showContact(initValue)	
+            if (initValue === 'Class') {	
+                $("#classList").show();	
+                $("#studentList").hide();	
+                if ($("#classOption option").length === 1) {	
+                    classList.forEach((item) => {	
+                        $("#classOption").append($('<option>').val(item.id).text(item.class_name))	
+                    })	
+                }	
+            } else if (initValue === 'Student') {	
+                $("#studentList").show();	
+                $("#classList").hide();	
+                if ($("#studentOption option").length === 1) {	
+                    studentList.forEach((item) => {	
+                        $("#studentOption").append($('<option>').val(item.id).text(item.name))	
+                    })	
+                }	
+            } else if (initValue === 'Select') {	
+                $("#classList").hide();	
+                $("#studentList").hide();	
+                $("#send").hide();	
+            }	
+        })
+
+        function addUser() {	
+            console.log("Add User");	
+        }	
+
+        function addPhone() {	
+            console.log("Add Phone");	
+        }	
+
+        function addGroup() {	
+            console.log("Add Group ", $("#grouplist").val());	
+        }
+        
+        function showContact(type) {	
+            if (type !== 'Select') {	
+                $("#contactList").show();	
+                $("#send").show();	
+            } else {	
+                $("#contactList").hide();	
+            }	
+        }
+        $("#classOption").change(() => {	
+            initClassValue = $("#classOption option:selected").val()	
+            showContact(initClassValue)	
+        })	
+
+        $("#studentOption").change(() => {	
+            initClassValue = $("#studentOption option:selected").val()	
+            showContact(initClassValue)	
+        })
+
+        $("#sendMailText").submit((event) => {	
+            event.preventDefault()	
+
+            if (document.getElementById("studentList").style.display === 'none') {	
+                var classValue = $("#classOption option:selected").val()	
+            }	
+            if (document.getElementById("classList").style.display === 'none') {	
+                var studentValue = $("#studentOption option:selected").val()	
+            }	
+            // var courseValue = $("#course").val()	
+            var courseURL = `https://teacher.dreampotential.org/lesson.html?lesson_id=${$("#course").val()}`	
+            var typeValue = $("#contactList option:selected").val()	
+            if (classValue === 'Select' || studentValue === 'Select' || typeValue === 'Select') {	
+                swal({	
+                    title: "Warning",	
+                    text: 'You must have to select Type,Class/Student and Send Email/Text',	
+                    icon: "warning"	
+                });	
+            } else {	
+
+
+                if (typeValue === 'Email') {	
+                    $.ajax({	
+                        async: true,	
+                        crossDomain: true,	
+                        crossOrigin: true,	
+                        url: SERVER + "/courses_api/invite/email",	
+                        type: "POST",	
+                        headers: {	
+                            "Authorization": `${localStorage.getItem('user-token')}`	
+                        },	
+                        data: {	
+                            "class": classValue,	
+                            "student": studentValue,	
+                            "lesson": $("#course").val(),	
+                            "type": typeValue,	
+                            "body": courseURL	
+                        },	
+                        success: () => {	
+                            swal({	
+                                title: "Sent Inivation",	
+                                text: "You have sent successfully invitaion through Email",	
+                                icon: "success"	
+                            })	
+
+                        },	
+                        error: (err) => {	
+                            swal({	
+                                title: "Not Exist",	
+                                text: err.responseJSON.msg,	
+                                icon: "error"	
+                            });	
+                        }	
+                    })	
+
+                }	
+                if (typeValue === 'Text') {	
+
+                    $.ajax({	
+                        async: true,	
+                        crossDomain: true,	
+                        crossOrigin: true,	
+                        url: SERVER + "/courses_api/invite/text",	
+                        type: "POST",	
+                        headers: {	
+                            "Authorization": `${localStorage.getItem('user-token')}`	
+                        },	
+                        data: {	
+                            "class": classValue,	
+                            "student": studentValue,	
+                            "lesson": $("#course").val(),	
+                            "type": typeValue,	
+                            "body": courseURL	
+                        },	
+                        success: () => {	
+                            swal({	
+                                title: "Sent Inivation",	
+                                text: "You have sent successfully invitaion through Text Message",	
+                                icon: "success"	
+                            })	
+                        },	
+                        error: (err) => {	
+                            swal({	
+                                title: "Not Exist",	
+                                text: err.responseJSON.msg,	
+                                icon: "error"	
+                            });	
+                        }	
+                    })	
+                }	
+            }	
+        })
 
   </script>
 </body>
