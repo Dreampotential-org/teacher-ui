@@ -43,7 +43,6 @@ $(document).ready(function() {
                 console.log(response);
                 loginResponse = response;
                 localStorage.setItem("user-token", response.token);
-                localStorage.setItem("user-name", response.user.email);
 
                 swal({
                     title: "Welcome " + response.user.name + "!",
@@ -83,7 +82,6 @@ $(document).ready(function() {
                 loginResponse = response;
                 console.log("Response", response)
                 localStorage.setItem("user-token", response.token);
-                localStorage.setItem("user-name", response.user.email);
 
                 swal({
                     title: "Welcome " + response.user.name + "!",

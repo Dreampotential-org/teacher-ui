@@ -431,6 +431,7 @@
             };
             $.ajax(settings).done(function (response) {
                 console.log(response);
+                $("#room-visitor-data").empty();
                 response.forEach((item, i) => {
                     $("#room-visitor-data").append(`<tr>
                         <td>${item.room_name}</td>
