@@ -339,6 +339,7 @@
             $("#left-sidebar").load("sidebar.html");
             $("#page-header").load("header.html");
             //                        $("#page-container").load('dashboard.html');
+
         });
         $("#body-row .collapse").collapse("hide");
 
@@ -393,10 +394,52 @@
             { created_at: "2020-11-13T04:12:40Z", group_name: "group1" },
             { created_at: "2020-11-13T04:12:40Z", group_name: "group2" },
         ];
+        var room_list = []
         var SERVER = 'https://sfapp-api.dreamstate-4-all.org/';
+        var HOST = 'sfapp-api.dreamstate-4-all.org'
         var drop_down_options = [
-            {quiz_link:"Send Quiz Link"}
+            { quiz_link: "Send Quiz Link" }
         ]
+        function sendNotification(index) {
+            // console.log(index)
+            // console.log(room_list[index].room_name, "123")
+            // console.log(document.getElementById("quiz_link" + index).value)
+            var socket = new WebSocket('wss://' + HOST + '/notifications/' + room_list[index].room_name + '/');
+            socket.onopen = function open() {
+                console.log('WebSockets connection created.');
+                var dict = {
+                    action: "broadcast",
+                    message: document.getElementById("quiz_link" + index).value
+                }
+                socket.send(JSON.stringify(dict));
+            };
+
+            socket.onmessage = function (event) {
+                web_socket_data = JSON.parse(event.data);
+                console.log(web_socket_data);
+                if(web_socket_data.action === "broadcast"){
+                    socket.close();
+                    document.getElementById("quiz_link" + index).value = ""
+                }
+            }
+
+            // socket.close();
+
+            // document.getElementById("quiz_link").value = ""
+            // $(".quiz_link").oninput = function () {
+            //     console.log(input.value)
+            // }
+
+        }
+
+        // $("#quiz-btn").click(function () {
+        //     var $item = $(this).closest("tr")   // Finds the closest row <tr> 
+        //         .find(".nr")
+        //         .text();         // Retrieves the text within <td>
+        //     console.log($item)
+        //     console.log("inside...")
+        //     // $("#resultas").append($item);       // Outputs the answer
+        // });
         function loadRoomList() {
             // var SERVER = 'http://localhost:8040/';
             var settings = {
@@ -424,11 +467,15 @@
                 console.log(response);
                 $('#roomloader').remove();
                 $("#rooms-data").empty();
-                var dropDownHTML = `<td><div class="row">
-                    <select name="mode_class" id="websocket_operations">
-                    <option value="">Please Select</option>
-                    <option value="quiz_link">Quiz Link</option>
-                </select></div><div class="row">Link</div><div class="row">sendbutton</div></td>`
+                // var dropDownHTML = `<td><div class="row">
+                //     <select name="mode_class" id="websocket_operations">
+                //     <option value="">Please Select</option>
+                //     <option value="quiz_link">Quiz Link</option>
+                // </select></div><div class="row">
+                // <input type="text" class="form-control" id="quiz_link" placeholder="Quiz Link" /></div>
+                // <div class="row">
+                // <button type="button" onclick="sendNotification('${i}')" id="quiz-btn" class="btn btn-primary float-right">
+                //     Submit</button></div></td>`
                 // var select = document.getElementById("websocket_operations");
                 // var option = document.createElement("option");
                 // for (var i = 0; i <= drop_down_options.length; i++) {
@@ -438,12 +485,29 @@
                 //     opt.innerHTML = drop_down_options.quiz_link;
                 //     select.add(opt);
                 // }
+
                 response.forEach((item, i) => {
+
+                    // item1 = item
+                    item["quiz_link"] = ""
+                    room_list.push(item);
                     $("#rooms-data").append(`<tr>
-                        <td>${item.room_name}</td>
+                        <td >${item.room_name}</td>
                         <td><img src=${item.logo_url} alt="Loading.." width="80" height="80"></td>
                         <td><a href=${item.slack_channel} >Slack Channel</a></td>
-                        <td><a href=${item.video_url} >Video URL</a></td>` + dropDownHTML + `
+                        <td><a href=${item.video_url} >Video URL</a></td>` +
+                        `<td><div class="row">
+                            <select name="mode_class" id="websocket_operations">
+                            <option value="">Please Select</option>
+                            <option value="quiz_link">Quiz Link</option>
+                        </select></div><div class="row">
+                        <input type="text" class="form-control" id="quiz_link${i}" 
+                         placeholder="Quiz Link" />
+                        </div>
+                        <div class="row">
+                        <button type="button" onclick="sendNotification('${i}')" id="quiz-btn" class="btn btn-primary float-right">
+                            Submit</button></div></td>`
+                        + `
                         <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
                         </tr>`);
                 });
