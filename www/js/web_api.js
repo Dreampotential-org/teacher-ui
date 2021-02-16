@@ -1,4 +1,5 @@
-SERVER='http://localhost:8000/';
+var SERVER ='https://sfapp-api.dreamstate-4-all.org'
+// SERVER='http://localhost:8000/';
 $.ajaxSetup({
     statusCode: {
         401: function(jqxhr, textStatus, errorThrown) {
