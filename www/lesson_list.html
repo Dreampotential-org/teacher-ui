@@ -172,7 +172,7 @@
 
 
                                             <div class="text-right mt-2">
-                                                <button type="button" data-toggle="modal" data-target="#userModal"
+                                                <button type="button" onclick="addLesson()"
                                                     class="btn btn-primary">
                                                     <i class="fa fa-plus"></i> Add
                                                 </button>
@@ -527,6 +527,7 @@
 
             $("#groupModal").modal();
         }
+        
 
         function openStudentLesson(i) {
             // window.location.replace("student_lesson.html");
@@ -542,6 +543,9 @@
         }
   
   
+        function addLesson(){
+            
+        }
         
         $(document).ready(function () {
             $("#left-sidebar").load("sidebar.html");

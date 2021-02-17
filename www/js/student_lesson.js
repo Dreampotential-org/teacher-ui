@@ -557,6 +557,7 @@ function sendUpdates() {
       data: JSON.stringify(data_),
       type: "POST",
       contentType: "application/json",
+      headers: { "Authorization": `${localStorage.getItem('user-token')}` },
       success: function (data) {
         //console.log(data.id)
         var currentPathName = window.location.pathname;

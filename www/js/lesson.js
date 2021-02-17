@@ -7,8 +7,8 @@ var iframe_link_count = 0;
 var verify_phone_count =0;
 var title_textarea_count = 0;
 var title_input_count =0;
-
 var braintree_count = 0;
+var question_checkboxes_count = 0;
 var question_text_count = 0;
 var sign_count = 0;
 var sortArray = [];
@@ -26,7 +26,15 @@ function selectLesson() {
 }
 
 function getAllLessons() {
-	$.get(API_SERVER + '/courses_api/lesson/all', function(response2) {
+    $.ajax({
+        url: API_SERVER + "/courses_api/lesson/all",
+        async: true,
+        crossDomain: true,
+        crossOrigin: true,
+        type: "GET",
+        headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+
+    }).done((response2) => {
         console.log(response2)
         for(var lesson of response2) {
 			$('#select_lesson').append(
@@ -46,6 +54,24 @@ function addChoices(id, value) {
 			.last()
 			.data('id') + 1;
 	$('#choices_' + id).append(
+		'<div><input type="text" class="form-control" data-id="' +
+			next_id +
+			'"rows="7" placeholder="Choices" value="' +
+			value +
+			'"><button onclick="$(this).parent().remove()">Remove Choice</button></div>'
+	);
+}
+
+function addCheckboxes(id, value) {
+	if (!value) {
+		value = '';
+	}
+	var next_id =
+		$('#checkboxes_' + id)
+			.children()
+			.last()
+			.data('id') + 1;
+	$('#checkboxes_' + id).append(
 		'<div><input type="text" class="form-control" data-id="' +
 			next_id +
 			'"rows="7" placeholder="Choices" value="' +
@@ -181,6 +207,64 @@ function addQuestionChoices(isNew, id, question, choices, image, posU) {
     $("#question_choices").html(tempQC)
 
 }
+
+
+function addQuestionCheckboxes(isNew, id, question, choices, image, posU) {
+    console.log("Adding question checkboxes")
+
+	$('#question_checkboxes')
+		.find('input')
+		.first()
+        .attr('name', 'question_checkboxes_question_' + question_checkboxes_count);
+        if(question_choices_count ==0){
+            $('#question_checkboxes')
+            .find('#checkboxes')
+            .attr('id', 'checkboxes_' + question_checkboxes_count);
+            
+        }else{
+            $('#question_checkboxes')
+            .find('#checkboxes_'+(question_checkboxes_count-1))
+            .attr('id', 'checkboxes_' + question_checkboxes_count);    
+        }
+
+	$('#question_checkboxes')
+		.find('input')
+		.last()
+		.attr('name', 'image_' + question_checkboxes_count);
+	$('#question_checkboxes')
+        .find('button')
+        .last()
+		.attr('onclick', 'addCheckboxes(' + question_checkboxes_count + ')');
+        let tempQC = $("#question_checkboxes").html()
+
+	if (!isNew) {
+		$('#question_checkboxes').find('input').first().attr('value', question);
+		$('#question_checkboxes').find('input').last().attr('value', image);
+
+		$('#question_checkboxes').find('input').first().attr('data-id', id);
+		$('#question_checkboxes').find('input').last().attr('data-id', id);
+		$('#checkboxes_' + question_checkboxes_count)
+			.find('input')
+			.remove();
+		choices.split(',').forEach(function (choice) {
+			//console.log(choice)
+			addCheckboxes(question_checkboxes_count, choice);
+		});
+
+		// Display image
+		displayImage(image);
+	} else {
+		$('#question_checkboxes').find('input').first().attr('value', '');
+		$('#question_checkboxes').find('text').html('');
+		$('#question_checkboxes').find('input').last().attr('value', '');
+	}
+	$('#sortable').append($('#question_checkboxes').html());
+    sortablePositionFunction(isNew, posU);
+    question_checkboxes_count++;
+    $("#question_checkboxes").html(tempQC)
+
+}
+
 
 function handleImageUpload() {
 	// prompt for video upload
@@ -602,6 +686,32 @@ function sendUpdates() {
         flashcards.push(temp)
     }
 
+    for (var i = 0; i < question_checkboxes_count; i++) {
+        var question = $('input[name="question_checkboxes_question_' + i + '"]').val()
+
+        var choices_array = $('#checkboxes_' + i + ' :input').map(function () {
+            var type = $(this).prop("type");
+
+            if (type == "text") {
+                return($(this).val())
+            }
+        })
+
+        position_me = $('input[name="question_checkboxes_question_' + i + '"]').parent().parent().data("position")
+
+
+        var choices = choices_array.toArray().join(",")
+        var image = $('input[name="image_' + i + '"]').val()
+        temp = {
+            "lesson_type": "question_checkboxes",
+            "question": question,
+            "image": image,
+            "options": choices,
+            "position": position_me
+        }
+        flashcards.push(temp)
+    }
+
     for (var i = 0; i < video_file_count; i++) {
         var question = $('input[name="video_question_' + i + '"]').val()
         var video = $('input[name="video_' + i + '"]').val()
@@ -654,6 +764,7 @@ function sendUpdates() {
             'data': JSON.stringify(data_),
             'type': 'POST',
             'contentType': 'application/json',
+            headers: { "Authorization": `${localStorage.getItem('user-token')}` },
             'success': function (data) {
                 //console.log(data.id)
                 var currentPathName = window.location.pathname;
@@ -759,6 +870,13 @@ $(document).ready(function () {
                                        flashcard.position)
                 }
 
+                if (flashcard.lesson_type == "question_checkboxes") {
+                    addQuestionCheckboxes(false, flashcard.id,
+                                       flashcard.question,
+                                       flashcard.options, flashcard.image,
+                                       flashcard.position)
+                }
+
                 if (flashcard.lesson_type == "video_file") {
                     addVideoFile(false, flashcard.id, flashcard.question,
                                  flashcard.options, flashcard.image,
@@ -837,6 +955,8 @@ $(document).ready(function () {
                 sign_count--
             } else if (lesson_element_type.startsWith("brain_tree")) {
                 braintree_count--
+            }else if (lesson_element_type.startsWith("question_checkboxes")) {
+                question_checkboxes_count--
             }
             //console.log(lesson_element_type)
             $(e.target).parent().parent().remove()
@@ -864,6 +984,13 @@ $(document).ready(function () {
             addQuestionChoices(true)
 
         }
+
+        if ($("#selectsegment").val() == 'question_checkboxes')
+        {
+            addQuestionCheckboxes(true)
+
+        }
+
         if ($("#selectsegment").val() == 'video_file')
         {
             addVideoFile(true)

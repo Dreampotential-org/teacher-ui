@@ -56,6 +56,9 @@ function nextSlide(){
     if (type == "question_choices") {
         answer = $("input[name= choices_" + (current_slide - 1) + "]:checked").val()
         console.log(answer)
+    }else if (type == "question_checkboxes") {
+        answer = $("input[name= checkboxes_" + (current_slide - 1) + "]:checked").val()
+        console.log(answer)
     }else if(type == "title_textarea"){
         answer = $("textarea[name= textarea_"+(current_slide-1)+"]").val()
     }else if(type == "title_input"){
@@ -233,6 +236,29 @@ function init() {
                     }
                 })
             }
+
+            if(flashcard.lesson_type == "question_checkboxes"){
+                $("#prevButton").attr("data-type","question_checkboxes");
+                $("#nextButton").attr("data-type","question_checkboxes");
+                $("#theSlide").append('<div class="'+className+'" id="flashcard_'+i+'"><div class="question_checkboxes"><h1>'+flashcard.question+'</h1><ul alt="question_checkboxes_'+i+'"></ul></div></div>')
+                if(flashcard.image){
+                    $("#flashcard_"+i).prepend('<center><img src="'+flashcard.image+'" alt="Chania" style="height:300px;border:5px;border-style:solid;border-color:black"></center>')
+                }
+
+                flashcard.options.split(",").forEach(function (valu) {
+                $("#theSlide").find("ul").each((a,b,c) => {
+                        if($(b).attr("alt") == "question_checkboxes_"+i){
+                            $(b).append("<input type='checkbox' value='"+valu+"' name='checkboxes_"+i+"'> "+valu+"<br>")
+
+                        }
+                        
+                });
+                    if($("#theSlide").find('ul').attr("alt") === "question_checkboxes_"+i){
+
+                    }
+                })
+            }
+
             if(flashcard.lesson_type == "iframe_link"){
                 $("#theSlide").append('<div class="'+className+'"><div alt="title_text" style="height:500px"><h1> '+flashcard.question+'</h1><iframe src= "'+flashcard.image+'"></iframe></div></div>')
             }
@@ -292,6 +318,10 @@ function init() {
                         }
                         if (f.lesson_type == 'question_choices') {
                             $("input[name=choices_" + i + "][value=" + rf.answer + "]").attr("checked", true)
+                        }
+
+                        if (f.lesson_type == 'question_checkboxes') {
+                            $("input[name=checkboxes_" + i + "][value=" + rf.answer + "]").attr("checked", true)
                         }
 
                     }
