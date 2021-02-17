@@ -79,10 +79,6 @@ function list_services(callback) {
 }
 
 
-
-
-
-
 function get_user_list(callback) {
     
     var settings = {

@@ -302,30 +302,6 @@
                 }
             });
 
-
-
-{% comment %} 
-        function invite_link_data(){
-           console.log("print the invite data.......")
-
-            var data_invite = {
-            name = "passing student",
-            }
-                $.ajax({
-                    "url": API_SERVER +"/courses_api/invite/response",
-                    'data': JSON.stringify(data_invite),
-                    'type': 'POST',
-                    'contentType': 'application/json',
-                    'success': function (data){
-                        alert("done")
-                        console.log("invite link is clicked.")
-                    },
-                    'error': function(res){
-                    // alert(JSON.stringify(res))
-                    }
-                })   
-
-            } {% endcomment %}
         </script>
     </body>
 </html>
