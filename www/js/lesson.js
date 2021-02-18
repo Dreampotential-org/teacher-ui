@@ -15,9 +15,6 @@ var sortArray = [];
 var MODE;
 var pos = 0;
 
-var API_SERVER = 'https://sfapp-api.dreamstate-4-all.org';
-//var API_SERVER ='http://localhost:8000';
-
 var lesson_id = getParam('lesson_id');
 
 function selectLesson() {
@@ -27,7 +24,7 @@ function selectLesson() {
 
 function getAllLessons() {
     $.ajax({
-        
+
     })
 	$.get(API_SERVER + '/courses_api/lesson/all', function(response2) {
         console.log(response2)
