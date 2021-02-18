@@ -14,6 +14,7 @@ var sign_count = 0;
 var sortArray = [];
 var MODE;
 var pos = 0;
+window.addEventListener('DOMContentLoaded', init, false)
 
 var lesson_id = getParam('lesson_id');
 
@@ -24,11 +25,12 @@ function selectLesson() {
 
 function getAllLessons() {
     $.ajax({
-        url: API_SERVER + "/courses_api/lesson/all",
+        url: API_SERVER + "/courses_api/lesson/all/",
         async: true,
         crossDomain: true,
         crossOrigin: true,
         type: "GET",
+        dataType: "json",
         headers: { "Authorization": `${localStorage.getItem('user-token')}` }
     }).done((response2) => {
         console.log(response2)
@@ -945,11 +947,9 @@ $(document).ready(function () {
                 "flashcard" : "f-123",
                 "answer" : "answer-123"
             },	
-            
-
             success: () => {	
                 swal({	
-                    title: "data saved",	``
+                    title: "data saved",
                     text: "You have save data successfully ",	
                     icon: "success"	
                 })	
