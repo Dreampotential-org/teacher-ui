@@ -15,9 +15,6 @@ var sortArray = [];
 var MODE;
 var pos = 0;
 
-var API_SERVER = 'https://sfapp-api.dreamstate-4-all.org';
-// var API_SERVER ='http://localhost:8000';
-
 var lesson_id = getParam('lesson_id');
 
 function selectLesson() {
@@ -33,7 +30,6 @@ function getAllLessons() {
         crossOrigin: true,
         type: "GET",
         headers: { "Authorization": `${localStorage.getItem('user-token')}` }
-
     }).done((response2) => {
         console.log(response2)
         for(var lesson of response2) {
@@ -789,7 +785,8 @@ function sendUpdates() {
 
 $(document).ready(function () {
 
-
+    $("#left-sidebar").load("sidebar.html");
+    $("#page-header").load("header.html");
     if (lesson_id) {
         MODE = "UPDATE";
     } else {
@@ -928,6 +925,45 @@ $(document).ready(function () {
         e.preventDefault()
         console.log(sortArray)
         sendUpdates()
+        var lesson_n = $("#lesson_name").val()
+        const param = new URL(window.location.href)
+        const params = param.searchParams.get('params')
+
+        $.ajax({	
+            async: true,	
+            crossDomain: true,	
+            crossOrigin: true,	
+            url: SERVER + "/courses_api/invite/response",	
+            type: "POST",	
+            headers: {	
+                "Authorization": `${localStorage.getItem('user-token')}`	
+            },	
+            data: {	
+                "params" : params,
+                // "student": studentValue,	
+                "lesson": lesson_n,	
+                "flashcard" : "f-123",
+                "answer" : "answer-123"
+            },	
+            
+
+            success: () => {	
+                swal({	
+                    title: "data saved",	``
+                    text: "You have save data successfully ",	
+                    icon: "success"	
+                })	
+            },	
+            error: (err) => {	
+                swal({	
+                    title: "Not Exist",	
+                    text: err.responseJSON.msg,	
+                    icon: "error"	
+                });	
+            }	
+        })	
+    
+    
     })
 
     $(document).on("click", ".remove_flashcard", function (e) {
@@ -1026,3 +1062,26 @@ $(document).ready(function () {
         }
     })
 })
+
+// var data_invite = {
+//     name = "passing student",
+// }
+
+// function invite_link_data(){
+//     console.log("invite_data_button_clicked....")
+
+//     $.ajax({
+//         "url": API_SERVER +"/courses_api/invite/response/",
+//         'data': JSON.stringify(data_invite),
+//         'type': 'POST',
+//         'contentType': 'application/json',
+//         'success': function (data){
+//             alert("done")
+//             console.log("invite link is clicked.")
+//         },
+//         'error': function(res){
+//         // alert(JSON.stringify(res))
+//     }
+// })   
+
+// }

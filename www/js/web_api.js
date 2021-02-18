@@ -1,3 +1,13 @@
+$.ajaxSetup({
+    statusCode: {
+        401: function(jqxhr, textStatus, errorThrown) {
+            alert('You must login to proceed');
+            localStorage.removeItem('user-token');
+            $('body').load('student_login.html');
+        }
+    }
+});
+
 function get_users() {
     get_user_list(function(users) {
         for (var user of users) {
@@ -8,7 +18,6 @@ function get_users() {
 }
 
 function list_question_counters(callback) {
-
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -17,7 +26,9 @@ function list_question_counters(callback) {
         "processData": false,
         "contentType": false,
         "mimeType": "multipart/form-data",
-
+        "headers": {
+            "Authorization": 'Token ' + localStorage.getItem("user-token"),
+        }
     }
     $.ajax(settings).done(function(response) {
         callback(JSON.parse(response))
@@ -27,7 +38,7 @@ function list_question_counters(callback) {
 }
 
 function list_inbound_calls(callback) {
-
+    
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -36,7 +47,9 @@ function list_inbound_calls(callback) {
         "processData": false,
         "contentType": false,
         "mimeType": "multipart/form-data",
-
+        "headers": {
+            "Authorization": 'Token ' + localStorage.getItem("user-token"),
+        }
     }
     $.ajax(settings).done(function(response) {
         callback(JSON.parse(response))
@@ -54,7 +67,7 @@ function list_services(callback) {
         "processData": false,
         "contentType": false,
         "mimeType": "multipart/form-data",
-
+        
     }
     $.ajax(settings).done(function(response) {
         callback(JSON.parse(response))
@@ -64,12 +77,8 @@ function list_services(callback) {
 }
 
 
-
-
-
-
 function get_user_list(callback) {
-
+    
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -78,7 +87,9 @@ function get_user_list(callback) {
         "processData": false,
         "contentType": false,
         "mimeType": "multipart/form-data",
-
+        "headers": {
+            "Authorization": 'Token ' + localStorage.getItem("user-token"),
+        },
     }
     $.ajax(settings).done(function(response) {
         callback(JSON.parse(response))
@@ -112,7 +123,7 @@ function send_user_sms(to_number, msg, callback) {
     var form = new FormData();
     form.append("to_number", to_number);
     form.append("msg", msg);
-
+    
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -125,7 +136,7 @@ function send_user_sms(to_number, msg, callback) {
         "headers": {
             "Authorization": localStorage.getItem("token"),
         },
-
+        
     }
     $.ajax(settings).done(function(response) {
         // change screen for code collecton
@@ -137,6 +148,36 @@ function send_user_sms(to_number, msg, callback) {
     });
 }
 
+function send_feedback(msg,type, logId, callback) {
+    var form = new FormData();
+    // form.append("to_number", to_number);
+    form.append("msg", msg);
+    form.append("logType", type);
+    form.append("logId", logId);
+    
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": SERVER + "sfapp2/api/checkin_admin_feedback",
+        "method": "POST",
+        "processData": false,
+        "contentType": false,
+        "mimeType": "multipart/form-data",
+        "data": form,
+        "headers": {
+            "Authorization": 'Token ' + localStorage.getItem("user-token"),
+        },
+        
+    }
+    $.ajax(settings).done(function(response) {
+        // change screen for code collecton
+        callback(response, null);
+        console.log(response)
+    }).fail(function(err) {
+        callback(null, err);
+        //alert("ERROR")
+    });
+}
 
 function send_image_twilio(callback) {
     // alert("ready");
@@ -177,9 +218,9 @@ function send_image_twilio(callback) {
         file_url = response['file_url']
         alert(file_url);
         upload_to_twilio(file_url);
-
+        
         // $('#output').html("<div> Uploaded to S3 Url: "+ file_url + "</div>");
-
+        
         // var img = $('<img>');
         // img.attr('src', file_url);
         // img.appendTo('#output');
@@ -190,7 +231,7 @@ function send_image_twilio(callback) {
             icon: "warning",
         });
     });
-
+    
 }
 
 function upload_to_twilio(image) {
@@ -211,7 +252,7 @@ function upload_to_twilio(image) {
         "headers": {
             "Authorization": localStorage.getItem("token"),
         },
-
+        
     }
     $.ajax(settings).done(function(response) {
         console.log(response)
@@ -223,7 +264,7 @@ function upload_to_twilio(image) {
 function get_sms_to_number(to_number, callback) {
     var form = new FormData();
     form.append("to_number", to_number);
-
+    
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -235,8 +276,8 @@ function get_sms_to_number(to_number, callback) {
     }
     $.ajax(settings).done(function(response) {
         response = JSON.parse(response)
-            // XXX Santosh here is what msg look like to populate
-            // SMS chat interface.
+        // XXX Santosh here is what msg look like to populate
+        // SMS chat interface.
         for (var msg of response.messages) {
             console.log(msg);
         }
@@ -260,62 +301,62 @@ function format_date(created_at) {
 
 function setup_activity_view_events () {
     $('body').delegate('.video_entry a.video-view', 'click', function (e) {
-      $('#activityModal').modal('show')
-  
-      var video_url = $(this).parent().attr('video_url');
-  
-      $('#activity-body').html(
-        '<video controls="" autoplay="" name="media" ' +
-          'id="video">' +
-          '<source src="' +
-          video_url +
-          '" type="video/mp4"></video>'
-      )
-    })
-  
-    $('body').delegate('.gps-entry a.gps-view', 'click', function (e) {
-      $('#activityModal').modal('show')
-  
-      $('#activity-body').html(
-        "<div id='gps-view' style='width:100%;height:400px;'></div>"
-      )
-      var spot = {
-        lat: parseFloat($(this).parent().attr('lat')),
-        lng: parseFloat($(this).parent().attr('lng'))
-      }
-      var name = ''
-      var latlng = spot
-      var geocoder = new google.maps.Geocoder()
-  
-      var panorama = new google.maps.Map(document.getElementById('gps-view'), {
-        center: { lat: spot.lat, lng: spot.lng },
-        zoom: 18
-      })
-      geocoder.geocode({ location: latlng }, function (results, status) {
-        if (status === 'OK') {
-          if (results[0]) {
-            name = results[0].formatted_address
-            // alert(name);
-            var marker = new google.maps.Marker({
-              position: spot,
-              map: panorama,
-              icon: 'images/map_icon.png'
+        $('#activityModal').modal('show')
+        
+        var video_url = $(this).parent().attr('video_url');
+        
+        $('#activity-body').html(
+            '<video controls="" autoplay="" name="media" ' +
+            'id="video">' +
+            '<source src="' +
+            video_url +
+            '" type="video/mp4"></video>'
+            )
+        })
+        
+        $('body').delegate('.gps-entry a.gps-view', 'click', function (e) {
+            $('#activityModal').modal('show')
+            
+            $('#activity-body').html(
+                "<div id='gps-view' style='width:100%;height:400px;'></div>"
+                )
+                var spot = {
+                    lat: parseFloat($(this).parent().attr('lat')),
+                    lng: parseFloat($(this).parent().attr('lng'))
+                }
+                var name = ''
+                var latlng = spot
+                var geocoder = new google.maps.Geocoder()
+                
+                var panorama = new google.maps.Map(document.getElementById('gps-view'), {
+                    center: { lat: spot.lat, lng: spot.lng },
+                    zoom: 18
+                })
+                geocoder.geocode({ location: latlng }, function (results, status) {
+                    if (status === 'OK') {
+                        if (results[0]) {
+                            name = results[0].formatted_address
+                            // alert(name);
+                            var marker = new google.maps.Marker({
+                                position: spot,
+                                map: panorama,
+                                icon: 'images/map_icon.png'
+                            })
+                            var infowindow = new google.maps.InfoWindow({
+                                content: name
+                            })
+                            infowindow.setContent(results[0].formatted_address)
+                            infowindow.open(panorama, marker)
+                            marker.addListener('click', function () {
+                                infowindow.open(panorama, marker)
+                            })
+                        } else {
+                            window.alert('No results found')
+                        }
+                    } else {
+                        window.alert('Geocoder failed due to: ' + status)
+                    }
+                })
             })
-            var infowindow = new google.maps.InfoWindow({
-              content: name
-            })
-            infowindow.setContent(results[0].formatted_address)
-            infowindow.open(panorama, marker)
-            marker.addListener('click', function () {
-              infowindow.open(panorama, marker)
-            })
-          } else {
-            window.alert('No results found')
-          }
-        } else {
-          window.alert('Geocoder failed due to: ' + status)
         }
-      })
-    })
-  }
-  
+        
