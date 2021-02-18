@@ -171,49 +171,47 @@
                                 </div>
                             </div>
 
+
+
                             <div id="systemUserDetail" style='display:none'>
-                                <div>
-                                    <button onclick="goBack()" class="btn">
-                                        <i class="fa fa-chevron-left"></i> Back
-                                    </button>
-                                    <button onclick="goBack()" class="btn btn-danger float-right" id="showDelete">
-                                        <i class="fa fa-trash"></i> Delete
-                                    </button>
-                                </div>
-
-                                <h2 class="text-center">
-                                    <b id="userTitle">Update Student</b>
-                                </h2>
-
-                                <form class="pt-2 pt-3">
-                                    <div class="form-group">
-                                        <label for="ename">Name</label>
-                                        <input type="text" class="form-control" id="ename" placeholder="Name" />
+                                    <div>
+                                        <button onclick="goBack()" class="btn">
+                                            <i class="fa fa-chevron-left"></i> Back
+                                        </button>
+                                        <button onclick="goBack()" class="btn btn-danger float-right" id="showDelete">
+                                            <i class="fa fa-trash"></i> Delete
+                                        </button>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="eemail">Email</label>
-                                        <input type="text" class="form-control" id="eemail" placeholder="Email" />
-                                    </div>
+                                        <div>
+                                            <h1> edit system room </h1>
+                                        </div>  
 
-                                    <div class="form-group">
-                                        <label for="ephone">Phone</label>
-                                        <input type="phone" class="form-control" id="ephone" placeholder="Phone" />
-                                    </div>
+                                        <div class="form-group">
+                                            <label for="edit_room_name">Room Name</label>
+                                            <input type="text" class="form-control" id="edit_room_name">
+                                        </div>
+                                        <!-- location -->
+                                        <div class="form-group">
+                                            <label for="room_logo">Enter Room Logo</label>
+                                            <input type="file" name="file" class="form-control" id="room_logo" placeholder=" Enter ROOM URL " required />
+                                        </div>
 
-                                    <!-- <div class="form-group">
-                      <label for="group-list">Select Group:</label>
-                      <select class="form-control">
-                        <option>group1</option>
-                        <option>group2</option>
-                        <option>group3</option>
-                      </select>
-                    </div> -->
+                                        <div class="form-group">
+                                            <label for="brand_video_url">Enter Brand Video</label>
+                                            <input type="file" name="brand_video" class="form-control" id="brand_video_url" placeholder=" Enter BRAND URL "
+                                            required />
+                                        </div>
+                    
+                                        <div class="form-group">
+                                            <label for="slack_channel_url">Slack Channel</label>
+                                            <input type="text" class="form-control" id="slack_channel_url">
+                                        </div>
 
-                                    <button type="button" class="btn btn-primary">
-                                        Submit
-                                    </button>
-                                </form>
+                                        <button type="button" onclick="edit_room()" class="btn btn-primary float-right">
+                                            Submit
+                                        </button>
+                                                                                             
                             </div>
                         </div>
                     </section>
@@ -335,6 +333,7 @@
         </div>
     </div>
     <script>
+    let rooms_list;
         $(document).ready(function () {
             $("#left-sidebar").load("sidebar.html");
             $("#page-header").load("header.html");
@@ -465,6 +464,7 @@
                 // console.log(response)
                 // response = JSON.parse(response);
                 console.log(response);
+                rooms_list = response
                 $('#roomloader').remove();
                 $("#rooms-data").empty();
                 // var dropDownHTML = `<td><div class="row">
@@ -630,6 +630,10 @@
                 });
             });
         }
+
+
+
+
         function addPhone() {
             console.log("Add Phone");
         }
@@ -637,13 +641,32 @@
             console.log("Add Group ", $("#grouplist").val());
         }
         function editSystemUser(i) {
+            console.log(rooms_list[i])
             $("#tabDiv").hide();
             $("#systemUserDetail").show();
 
-            $("#ename").val(system_users[i].name);
-            $("#eemail").val(system_users[i].email);
-            $("#ephone").val(system_users[i].phone);
+            $("#edit_room_name").val(rooms_list[i].room_name);
+            $("#slack_channel_url").val(rooms_list[i].slack_channel);
+            // $("#room_logo").val(rooms_list[i].logo_url);
+            // $("#brand_video_url").val(rooms_list[i].video_url);   
         }
+
+        function edit_room() {
+            console.log("edit room")
+            $.ajax({
+                type: 'POST',
+                url: SERVER + '',
+                data: {
+                    "message": $("#email-subject").val() + "\n" + $("#email-body").val(),
+                    "class_enrolled_id": $("#class-email-id").val()
+                },
+                success: () => {
+                    location.reload()
+                }
+            })
+
+        }
+
         function goBack() {
             $("#tabDiv").show();
             $("#systemUserDetail").hide();

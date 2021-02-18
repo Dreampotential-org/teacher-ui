@@ -814,9 +814,15 @@ $(document).ready(function () {
         e.preventDefault()
         console.log(sortArray)
         sendUpdates()
-        var lesson_n = $("#lesson_name").val()
+        var lesson_name = $("#lesson_name").val()
+        // console.log(lesson_name , "as lesson name consoled....")
+        var lesson_type = $("#selectsegment").val()
         const param = new URL(window.location.href)
         const params = param.searchParams.get('params')
+        const lesson_id = param.searchParams.get('lesson_id')
+        // console.log("lesson id is :" , lesson_id)
+        var answer = $("#answer").val()
+        // console.log(answer , "as answer passed ...")
 
         $.ajax({	
             async: true,	
@@ -829,16 +835,14 @@ $(document).ready(function () {
             },	
             data: {	
                 "params" : params,
-                // "student": studentValue,	
-                "lesson": lesson_n,	
-                "flashcard" : "f-123",
-                "answer" : "answer-123"
+                "lesson_id" : lesson_id,
+                "lesson_name": lesson_name,
+                "lesson_type" : lesson_type,
+                "answer" : answer,
             },	
-            
-
             success: () => {	
                 swal({	
-                    title: "data saved",	``
+                    title: "data saved",
                     text: "You have save data successfully ",	
                     icon: "success"	
                 })	
@@ -851,8 +855,6 @@ $(document).ready(function () {
                 });	
             }	
         })	
-    
-    
     })
 
     $(document).on("click", ".remove_flashcard", function (e) {

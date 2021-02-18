@@ -22,7 +22,7 @@ function getParam(sParam) {
 }
 
 $(document).ready(function() {
-    window.localStorage.clear();
+
     let MODE = "WELCOME_PAGE";
 
     if (passwordResetToken) {
