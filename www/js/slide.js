@@ -105,13 +105,13 @@ function nextSlide(){
     console.log(data_)
 
     $.ajax({
-        "url": API_SERVER +"/courses_api/flashcard/response/",
+        "url": API_SERVER +"courses_api/flashcard/response/",
         'data': JSON.stringify(data_),
         'type': 'POST',
         'contentType': 'application/json',
         'success': function (data){
             $.ajax({
-                "url": API_SERVER + '/courses_api/session/event/' + flashcard_id + '/' + sessionId + '/',
+                "url": API_SERVER + 'courses_api/session/event/' + flashcard_id + '/' + sessionId + '/',
                 "data": JSON.stringify(da_),
                 "type": 'POST',
                 "contentType": 'application/json',
@@ -157,7 +157,7 @@ function get_session() {
         return session_id
     }
     console.log("Generate new session")
-    $.get(API_SERVER + '/courses_api/session/get', function (resp) {
+    $.get(API_SERVER + 'courses_api/session/get', function (resp) {
         console.log(resp)
         localStorage.setItem("session_id", resp.session_id)
     })
@@ -170,7 +170,7 @@ function init() {
     $("#progress-section").hide();
     var lesson_id = getParam("lesson_id");
 
-    $.get(API_SERVER + '/courses_api/lesson/read/' + lesson_id,
+    $.get(API_SERVER + 'courses_api/lesson/read/' + lesson_id,
           function (response) {
 
         get_session();

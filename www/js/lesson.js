@@ -25,12 +25,11 @@ function selectLesson() {
 
 function getAllLessons() {
     $.ajax({
-        url: API_SERVER + "/courses_api/lesson/all/",
+        url: API_SERVER + "courses_api/lesson/all",
         async: true,
         crossDomain: true,
         crossOrigin: true,
         type: "GET",
-        dataType: "json",
         headers: { "Authorization": `${localStorage.getItem('user-token')}` }
     }).done((response2) => {
         console.log(response2)
@@ -758,7 +757,7 @@ function sendUpdates() {
     if (MODE == "CREATE") {
 
         $.ajax({
-            "url": API_SERVER + "/courses_api/lesson/create",
+            "url": API_SERVER + "courses_api/lesson/create",
             'data': JSON.stringify(data_),
             'type': 'POST',
             'contentType': 'application/json',
@@ -774,7 +773,7 @@ function sendUpdates() {
     } else {
 
         $.ajax({
-            "url": API_SERVER + "/courses_api/lesson/update/" + lesson_id + "/",
+            "url": API_SERVER + "courses_api/lesson/update/" + lesson_id + "/",
             'data': JSON.stringify(data_),
             'type': 'POST',
             'contentType': 'application/json',
@@ -797,7 +796,7 @@ $(document).ready(function () {
     const param = new URL(window.location.href)
     const params = param.searchParams.get('params')
     if (MODE == "UPDATE") {
-        $.get(API_SERVER + '/courses_api/lesson/read/' +
+        $.get(API_SERVER + 'courses_api/lesson/read/' +
               lesson_id + '/', function (response) {
             if(params){
                 $("#lesson_slide").attr(
