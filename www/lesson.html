@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Segment Builder</title>
+        <title>Teacher Portal</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -19,6 +19,7 @@
         <link rel="stylesheet" href="css/administration.css" />
         <link rel="stylesheet" href="css/student_list.css" />
         <link rel="stylesheet" href="css/lesson_list.css" />
+        <script src="js/main.js"></script>
         <script src="js/lesson.js"></script>
         <style>
             .start-container{
@@ -51,6 +52,7 @@
                         <option value="title_text">Title Text</option>
                         <option value="title_input">Title Input</option>
                         <option value="question_choices">Question Choices</option>
+                        <option value="question_checkboxes">Question Checkboxes</option>
                         <option value="iframe_link">Iframe Link</option>
                         <option value="video_file">Video File</option>
                         <option value="image_file">Image File</option>
@@ -146,6 +148,33 @@
                             </div>
 
                         </div>
+
+                        <div class="speed_read" id="question_checkboxes" style="display: none; padding-top: 15px">
+                            <div style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                <div class="row">
+                                    <h4 class="col-xs-10 col-lg-10">Question Checkboxes</h4>
+                                    <a class="remove_flashcard col-xs-2 col-lg-2" style="color:red;font-weight:bold;font-size:23px;text-align:right;"> X </a>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="question"  placeholder="Question">
+                                </div>
+                                <div class="form-group" id="checkboxes">
+                                    <div>
+                                        <input type="text" class="form-control" rows="7" placeholder="Choices"><button onclick="$(this).parent().remove()">Remove Choice</button>
+                                    </div>
+                                </div>
+                                <button>Add Choice</button>
+                                <div class="form-group">
+                                    <hr>
+                                    <input type="button" id="upload-img-btn" onclick="handleImageUpload()" value="Upload Image"/>
+                                    <input type="text" class="form-control" id="image" placeholder="Image Link" />
+                                    <div id="output"></div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
                         <div class="speed_read" id="video_file" style="display: none; padding-top: 15px">
                             <div style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
                                 <div class="row">
