@@ -71,7 +71,7 @@ $(document).ready(function() {
     var settings = {
         "async": true,
         "crossDomain": true,
-        "url": SERVER + "students_list/get/students",
+        "url": SERVER + "students_list/get/students/",
         "method": "GET",
         "processData": false,
         "contentType": false,
@@ -120,7 +120,7 @@ $("#addStudent").submit((event) => {
     event.preventDefault()
     $.ajax({
         type: 'POST',
-        url: SERVER + 'students_list/get/students',
+        url: SERVER + 'students_list/get/students/',
         headers: { "Authorization": `${localStorage.getItem('user-token')}` },
         data: {
             "name": $("#uname").val(),
@@ -136,7 +136,7 @@ $("#addStudent").submit((event) => {
 $("#showDelete").on('click', () => {
     $.ajax({
         type: 'DELETE',
-        url: SERVER + 'students_list/get/students' + '?' + $.param({ 'id': $("#eid").val() }),
+        url: SERVER + 'students_list/get/students/' + '?' + $.param({ 'id': $("#eid").val() }),
         headers: { "Authorization": `${localStorage.getItem('user-token')}` },
         success: () => {
             location.reload();
@@ -148,7 +148,7 @@ $("#showDelete").on('click', () => {
 $("#updateStudent").on('click', () => {
     $.ajax({
         type: 'PUT',
-        url: SERVER + 'students_list/get/students',
+        url: SERVER + 'students_list/get/students/',
         headers: { "Authorization": `${localStorage.getItem('user-token')}` },
         data: {
             "id": $("#eid").val(),

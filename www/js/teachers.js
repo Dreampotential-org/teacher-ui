@@ -79,7 +79,7 @@ $(document).ready(function() {
         $.ajax({
             async: true,
             crossDomain: true,
-            url: SERVER + "students_list/get/students" + '?' + $.param({ 'teacher': true }),
+            url: SERVER + "students_list/get/students/" + '?' + $.param({ 'teacher': true }),
             method: "GET",
             processData: false,
             contentType: false,
