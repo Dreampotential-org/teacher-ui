@@ -33,6 +33,7 @@ function list_question_counters(callback) {
     $.ajax(settings).done(function(response) {
         callback(JSON.parse(response))
     }).fail(function(err) {
+        console.log(err)
         alert("ERROR")
     })
 }

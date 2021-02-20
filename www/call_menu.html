@@ -98,13 +98,8 @@
           >
             <form>
                 <div class="form-group">
-                    <select class="form-control" id="sourceNumber">
-                        <option value="" selected disabled>Select Source Number</option>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
+                    <select class="form-control" id="sourceCallNumber">
+                        <option value="" selected>Select Source Number</option>
                     </select>
                   </div>
                 <div class="form-group">
@@ -126,13 +121,8 @@
           >
            <form action="">
             <div class="form-group">
-                <select class="form-control" id="sourceNumber">
-                    <option value="" selected disabled>Select Source Number</option>
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
+                <select class="form-control" id="sourceMsgNumber">
+                    <option value="" selected>Select Source Number</option>
                 </select>
               </div>
             <div class="form-group">
@@ -158,6 +148,7 @@
     <script>
       var passwordResetToken = getParam("token");
       var userToken = localStorage.getItem("user-token");
+      var all_numbers;
 
       console.log("MODE: PASSWORD_RESET, Token - " + passwordResetToken);
 
@@ -179,6 +170,16 @@
       $(document).ready(function () {
         $("#left-sidebar").load("sidebar.html");
         $("#page-header").load("header.html");
+        $.ajax({
+              async: true,
+              crossDomain: true,
+              crossOrigin: true,
+              url: SERVER + "voip/api_voip/twilio_phon_numbers",
+              type: "GET",
+              headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+          }).done((numbers) => {
+                all_numbers = numbers
+          }).fail(function(err) { alert(err) })
       });
       $("#body-row .collapse").collapse("hide");
 
@@ -209,8 +210,22 @@
         // Collapse/Expand icon
         //$('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
       }
-     
       
+      
+      $("#sourceCallNumber").click(() => {
+          if ($("#sourceCallNumber option").length === 1) {
+              all_numbers.forEach((item, i) => {
+              $("#sourceCallNumber").append($('<option>').val(item.number).text(item.number))
+            })
+          }  
+      })
+      $("#sourceMsgNumber").click(() => {
+          if ($("#sourceMsgNumber option").length === 1) {
+              all_numbers.forEach((item, i) => {
+              $("#sourceMsgNumber").append($('<option>').val(item.number).text(item.number))
+            })
+          }   
+      })
     </script>
   </body>
 </html>
