@@ -32,7 +32,7 @@ $(document).ready(function() {
         ev.preventDefault();
 
         $.ajax({
-            url: SERVER + "s3_uploader/user/register",
+            url: SERVER + "s3_uploader/user/register/",
             type: "post",
             data: $(this).serialize(),
             success: function(response) {
