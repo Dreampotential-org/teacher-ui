@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>SF Social Service</title>
+    <title>Teacher Portal</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -171,49 +171,51 @@
                                 </div>
                             </div>
 
+
+
                             <div id="systemUserDetail" style='display:none'>
                                 <div>
                                     <button onclick="goBack()" class="btn">
                                         <i class="fa fa-chevron-left"></i> Back
                                     </button>
-                                    <button onclick="goBack()" class="btn btn-danger float-right" id="showDelete">
+                                    <button class="btn btn-danger float-right" id="showDelete">
                                         <i class="fa fa-trash"></i> Delete
                                     </button>
                                 </div>
 
-                                <h2 class="text-center">
-                                    <b id="userTitle">Update Student</b>
-                                </h2>
-
-                                <form class="pt-2 pt-3">
+                                <div>
+                                    <h1> edit system room </h1>
+                                </div>
+                                <form id="editRoom" method="POST">
                                     <div class="form-group">
-                                        <label for="ename">Name</label>
-                                        <input type="text" class="form-control" id="ename" placeholder="Name" />
+                                        <label for="edit_room_name">Room Name</label>
+                                        <input type="text" class="form-control" id="edit_room_name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="room_logo">Enter Room Logo</label>
+                                        <input type="file" name="file" class="form-control" id="room_logo"
+                                            placeholder="Enter ROOM URL" />
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="eemail">Email</label>
-                                        <input type="text" class="form-control" id="eemail" placeholder="Email" />
+                                        <label for="brand_video_url">Enter Brand Video</label>
+                                        <input type="file" name="brand_video" class="form-control" id="brand_video_url"
+                                            placeholder=" Enter BRAND URL " />
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="ephone">Phone</label>
-                                        <input type="phone" class="form-control" id="ephone" placeholder="Phone" />
+                                        <label for="slack_channel_url">Slack Channel</label>
+                                        <input type="text" class="form-control" id="slack_channel_url">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="hidden" class="form-control" id="room_id">
                                     </div>
 
-                                    <!-- <div class="form-group">
-                      <label for="group-list">Select Group:</label>
-                      <select class="form-control">
-                        <option>group1</option>
-                        <option>group2</option>
-                        <option>group3</option>
-                      </select>
-                    </div> -->
-
-                                    <button type="button" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-primary float-right">
                                         Submit
                                     </button>
                                 </form>
+
                             </div>
                         </div>
                     </section>
@@ -335,6 +337,12 @@
         </div>
     </div>
     <script>
+        var userToken = localStorage.getItem("user-token");
+        if (userToken == null) {
+            window.location.replace("student_login.html");
+        }
+
+        let rooms_list;
         $(document).ready(function () {
             $("#left-sidebar").load("sidebar.html");
             $("#page-header").load("header.html");
@@ -395,8 +403,6 @@
             { created_at: "2020-11-13T04:12:40Z", group_name: "group2" },
         ];
         var room_list = []
-        var SERVER = 'https://sfapp-api.dreamstate-4-all.org/';
-        var HOST = 'sfapp-api.dreamstate-4-all.org'
         var drop_down_options = [
             { quiz_link: "Send Quiz Link" }
         ]
@@ -417,7 +423,7 @@
             socket.onmessage = function (event) {
                 web_socket_data = JSON.parse(event.data);
                 console.log(web_socket_data);
-                if(web_socket_data.action === "broadcast"){
+                if (web_socket_data.action === "broadcast") {
                     socket.close();
                     document.getElementById("quiz_link" + index).value = ""
                 }
@@ -441,7 +447,7 @@
         //     // $("#resultas").append($item);       // Outputs the answer
         // });
         function loadRoomList() {
-            // var SERVER = 'http://localhost:8040/';
+            // var SERVER = 'http://localhost:8000/';
             var settings = {
                 "async": true,
                 "crossDomain": true,
@@ -465,6 +471,7 @@
                 // console.log(response)
                 // response = JSON.parse(response);
                 console.log(response);
+                rooms_list = response
                 $('#roomloader').remove();
                 $("#rooms-data").empty();
                 // var dropDownHTML = `<td><div class="row">
@@ -495,7 +502,7 @@
                         <td >${item.room_name}</td>
                         <td><img src=${item.logo_url} alt="Loading.." width="80" height="80"></td>
                         <td><a href=${item.slack_channel} >Slack Channel</a></td>
-                        <td><a href=${item.video_url} >Video URL</a></td>` +
+                        <td><button><a href=${item.video_url}>Play Video</a></button></td>` +
                         `<td><div class="row">
                             <select name="mode_class" id="websocket_operations">
                             <option value="">Please Select</option>
@@ -512,7 +519,7 @@
                         </tr>`);
                 });
             }).fail(function (response) {
-                console.log("Logo Uploading Failed!");
+                console.log("Logo Uploading Failed! GET request");
                 swal({
                     title: "Error!",
                     text: "Loading failed!",
@@ -550,10 +557,9 @@
             // document.getElementById("userModal").style.display = "none";
             // var file = document.getElementById('file').files[0];
             // console.log(document.getElementById("file").files[0])
-            // var SERVER = 'https://sfapp-api.dreamstate-4-all.org/';
-            // var SERVER = 'http://localhost:8040/';
             var form = new FormData();
             form.append("file", document.getElementById("file").files[0])
+            // form.append("brand_video", document.getElementById("brand_video").files[0])
             var settings = {
                 "async": true,
                 "crossDomain": true,
@@ -589,8 +595,6 @@
                 form.append("room_name", document.getElementById("room_name").value)
                 form.append("video_url", document.getElementById("brand_video").files[0])
                 form.append("slack_channel", document.getElementById("slack_channel").value)
-                // var SERVER1 = 'http://localhost:8040/'
-                // form.append("room_name",)
                 var settings1 = {
                     "async": true,
                     "crossDomain": true,
@@ -630,6 +634,60 @@
                 });
             });
         }
+        
+
+        $("#editRoom").submit((event) => {
+            event.preventDefault()
+            var form = new FormData();
+            form.append("room_name",document.getElementById("edit_room_name").value)
+            if (document.getElementById("room_logo").files.length > 0){
+                form.append("room_logo", document.getElementById("room_logo").files[0])
+            }
+            if (document.getElementById("brand_video_url").files.length > 0){
+                form.append("video_url", document.getElementById("brand_video_url").files[0])
+            }
+            form.append("slack_channel", document.getElementById("slack_channel_url").value)
+            form.append("room_id",$("#room_id").val())
+            $.ajax({
+                async: true,
+                crossDomain: true,
+                url: SERVER + 's3_uploader/edit/room_logo/',
+                type: "PUT",
+                processData: false,
+                contentType: false,
+                mimeType: "multipart/form-data",
+                data: form,
+                headers: {
+                    "Authorization": localStorage.getItem("token")
+                }
+            }).done((response) => {
+                window.location.reload()
+            }).fail(err => {
+                alert("ERROR!")
+            })
+        })
+        
+        $("#showDelete").click(() => {
+            $.ajax({
+                async: true,
+                crossDomain: true,
+                url: SERVER + 's3_uploader/edit/room_logo/',
+                type: "DELETE",
+                data: {"room_id" : $("#room_id").val()},
+                headers: {
+                    "Authorization": localStorage.getItem("token")
+                }
+            }).done((response) => {
+                window.location.reload()
+            }).fail(err => {
+                alert("ERROR!")
+            })
+
+        })
+
+
+
+
         function addPhone() {
             console.log("Add Phone");
         }
@@ -640,10 +698,11 @@
             $("#tabDiv").hide();
             $("#systemUserDetail").show();
 
-            $("#ename").val(system_users[i].name);
-            $("#eemail").val(system_users[i].email);
-            $("#ephone").val(system_users[i].phone);
+            $("#edit_room_name").val(rooms_list[i].room_name);
+            $("#slack_channel_url").val(rooms_list[i].slack_channel);  
+            $("#room_id").val(rooms_list[i].id)
         }
+
         function goBack() {
             $("#tabDiv").show();
             $("#systemUserDetail").hide();

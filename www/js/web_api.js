@@ -1,5 +1,3 @@
-var SERVER ='https://sfapp-api.dreamstate-4-all.org'
-// SERVER='http://localhost:8000/';
 $.ajaxSetup({
     statusCode: {
         401: function(jqxhr, textStatus, errorThrown) {
@@ -35,6 +33,7 @@ function list_question_counters(callback) {
     $.ajax(settings).done(function(response) {
         callback(JSON.parse(response))
     }).fail(function(err) {
+        console.log(err)
         alert("ERROR")
     })
 }
