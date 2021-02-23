@@ -543,16 +543,15 @@
             $("#tabDiv").hide();
             $("#tabs").hide();
         }
-  
-  
+
         function addLesson(){
-            
         }
-        
+
         $(document).ready(function () {
             $("#left-sidebar").load("sidebar.html");
             $("#page-header").load("header.html");
 
+            alert(SERVER)
             $.ajax({
                 url: SERVER + "courses_api/lesson/all",
                 async: true,
@@ -604,9 +603,10 @@
                         }	
                     }).done((student) => {
                         studentList = student;
-                    }).fail((err) => { alert('ERROR') })
-                }).fail((fail) => { alert('ERROR') })
+                    }).fail((err) => { alert('ERROR1') })
+                }).fail((fail) => { console.log(fail); alert('ERROR2'); })
             }).fail((err) => { 
+                console.log(err)
                 alert('ERROR') 
                 
             });

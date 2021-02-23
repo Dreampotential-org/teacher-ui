@@ -39,7 +39,7 @@ function list_question_counters(callback) {
 }
 
 function list_inbound_calls(callback) {
-    
+
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -69,18 +69,18 @@ function list_services(callback) {
         "processData": false,
         "contentType": false,
         "mimeType": "multipart/form-data",
-        
     }
     $.ajax(settings).done(function(response) {
         callback(JSON.parse(response))
     }).fail(function(err) {
+        console.log(err)
         alert("ERROR")
     })
 }
 
 
 function get_user_list(callback) {
-    
+
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -96,6 +96,7 @@ function get_user_list(callback) {
     $.ajax(settings).done(function(response) {
         callback(JSON.parse(response))
     }).fail(function(err) {
+        console.log(err)
         alert("ERROR")
     })
 }
@@ -117,6 +118,7 @@ function get_activity_list(phone, cb) {
     $.ajax(settings).done(function(response) {
         cb(JSON.parse(response))
     }).fail(function(err) {
+        console.log(err)
         alert("ERROR")
     })
 }
@@ -125,7 +127,7 @@ function send_user_sms(to_number, msg, callback) {
     var form = new FormData();
     form.append("to_number", to_number);
     form.append("msg", msg);
-    
+
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -138,13 +140,13 @@ function send_user_sms(to_number, msg, callback) {
         "headers": {
             "Authorization": localStorage.getItem("token"),
         },
-        
     }
     $.ajax(settings).done(function(response) {
         // change screen for code collecton
         callback(response, null);
         console.log(response)
     }).fail(function(err) {
+        console.log(err)
         callback(null, err);
         //alert("ERROR")
     });
@@ -156,7 +158,7 @@ function send_feedback(msg,type, logId, callback) {
     form.append("msg", msg);
     form.append("logType", type);
     form.append("logId", logId);
-    
+
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -169,7 +171,6 @@ function send_feedback(msg,type, logId, callback) {
         "headers": {
             "Authorization": 'Token ' + localStorage.getItem("user-token"),
         },
-        
     }
     $.ajax(settings).done(function(response) {
         // change screen for code collecton
@@ -254,11 +255,11 @@ function upload_to_twilio(image) {
         "headers": {
             "Authorization": localStorage.getItem("token"),
         },
-        
     }
     $.ajax(settings).done(function(response) {
         console.log(response)
     }).fail(function(err) {
+        console.log(err)
         alert("ERROR")
     });
 }
@@ -266,7 +267,7 @@ function upload_to_twilio(image) {
 function get_sms_to_number(to_number, callback) {
     var form = new FormData();
     form.append("to_number", to_number);
-    
+
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -285,6 +286,7 @@ function get_sms_to_number(to_number, callback) {
         }
         callback(response.messages)
     }).fail(function(err) {
+        console.log(err)
         alert("ERROR")
     })
 }
