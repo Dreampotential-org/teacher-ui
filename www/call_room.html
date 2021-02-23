@@ -33,9 +33,9 @@
               <div class="row" style="margin: 0">
                 <div class="col s12">
                 <button class="btn btn-raised btn-primary waves-effect waves-light" id="join">JOIN</button>
-                <button class="btn btn-raised red waves-effect waves-light" id="leave">LEAVE</button>
-                <button class="btn btn-raised green waves-effect waves-light" id="publish">UNMUTE</button>
-                <button class="btn btn-raised grey waves-effect waves-light" id="unpublish">MUTE</button>
+                <button class="btn btn-raised btn-primary waves-effect waves-light" id="leave">LEAVE</button>
+                <button class="btn btn-raised grey waves-effect waves-light" id="publish">UNMUTE</button>
+                <button class="btn btn-raised red waves-effect waves-light" id="unpublish">MUTE</button>
                 </div>
               </div>
           </div>
@@ -89,14 +89,11 @@
               </div>
           </li>
         </ul>
-       
       </div>
       <div class="col l7 m6 s12">
         <div class="video-grid hide" id="video">
           <div class="video-view">
             <div id="local_stream" class="video-placeholder"></div>
-            <div id="local_video_info" class="video-profile hide"></div>
-            <div id="video_autoplay_local" class="autoplay-fallback hide"></div>
           </div>
         </div>
       </div>
@@ -162,34 +159,25 @@
 
     
     // adding video stream
-    function addView (id, channel) {
+    function addView (id, show) {
       if (!$("#" + id)[0]) {
         $("<div/>", {
           id: "remote_video_panel_" + id,
-          class: "video-view hide",
+          class: "video-view",
         }).appendTo("#video")
 
         $("<div/>", {
           id: "remote_video_" + id,
-          class: "video-placeholder hide",
+          class: "video-placeholder",
+          html: '<p> ' + id +'</p>',
         }).appendTo("#remote_video_panel_" + id)
 
-        $("<div/>", {
-          id: "remote_video_info_" + id,
-          class: "video-profile hide" + (show ? "" :  "hide"),
-        }).appendTo("#remote_video_panel_" + id)
-
-        $("<div/>", {
-          id: "video_autoplay_"+ id,
-          class: "autoplay-fallback hide",
-        }).appendTo("#remote_video_panel_" + id)
       }
     }
     function removeView (id) {
       if ($("#remote_video_panel_" + id)[0]) {
         $("#remote_video_panel_"+id).remove()
       }
-     
     }
 
     // get client devices
@@ -251,10 +239,8 @@
         rtc.remoteStreams = streams
         if (id !== rtc.params.uid) {
           removeView(id)
-        } else {
-          Toast.notice(id + " left the room");
         }
-        
+        Toast.notice(id + " Unpublished or left the meeting.")
         console.log("peer-leave", id)
       })
       // Occurs when the local stream is published.
@@ -266,7 +252,7 @@
       rtc.client.on("stream-added", function (evt) {  
         var remoteStream = evt.stream
         var id = remoteStream.getId()
-        Toast.info("" + id + " joined the room")
+        Toast.info(id + " mic open")
         if (id !== rtc.params.uid) {
           rtc.client.subscribe(remoteStream, function (err) {
             console.log("microphone stream failed", err)
@@ -281,14 +267,14 @@
         rtc.remoteStreams.push(remoteStream)
         addView(id)
         remoteStream.play("remote_video_" + id)
-        Toast.info(id + " Unmuted")
+        Toast.info(id + " unmute")
         console.log("stream-subscribed remote-uid: ", id)
       })
       // Occurs when the remote stream is removed; for example, a peer user calls Client.unpublish.
       rtc.client.on("stream-removed", function (evt) {
         var remoteStream = evt.stream
         var id = remoteStream.getId()
-        Toast.info(id + " Muted")
+        Toast.info(id + "muted")
         if(remoteStream.isPlaying()) {
           remoteStream.stop()
         }
@@ -385,8 +371,8 @@
                    *      If you use a number as the user ID, it should be a 32-bit unsigned integer with a value ranging from 0 to (232-1).
                   **/
                   rtc.client.join(option.token ? option.token : null, option.channel , option.uid, function (uid) {
-                    Toast.notice(option.uid + " joined the room " + option.channel)
-                    console.log(option.uid + " joined the room " + option.channel)
+                    Toast.notice(option.uid + " joined the room: " + option.channel)
+                    console.log("join channel: " + option.channel + " success, uid: " + option.uid)
                     rtc.joined = true
 
                     rtc.params.uid = uid
