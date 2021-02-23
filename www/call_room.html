@@ -17,21 +17,25 @@
       </div>
     </nav>
   </div>
-  <form id="form" class="row col l12 s12">
-    <div class="row container">
-      <div class="col l5" style="min-width: 433px; max-width: 443px">
+  <form id="form" class="container-fluid">
+    <div class="row">
+      <div class="col l5 m6 s12" style="min-width: 433px; max-width: 443px">
         <div class="card" style="margin-top: 0px; margin-bottom: 0px;">
           <div class="row card-content" style="margin-bottom: 0px;">
               <div class="input-field">
                 <label for="channel" class="active">Channel</label>
                 <input type="text" placeholder="channel" name="channel">
               </div>
+              <div class="input-field">
+                <label for="UID" class="active">Name</label>
+                <input type="text" placeholder="Name" name="uid">
+              </div>
               <div class="row" style="margin: 0">
                 <div class="col s12">
                 <button class="btn btn-raised btn-primary waves-effect waves-light" id="join">JOIN</button>
-                <button class="btn btn-raised btn-primary waves-effect waves-light" id="leave">LEAVE</button>
-                <button class="btn btn-raised btn-primary waves-effect waves-light" id="publish">PUBLISH</button>
-                <button class="btn btn-raised btn-primary waves-effect waves-light" id="unpublish">UNPUBLISH</button>
+                <button class="btn btn-raised red waves-effect waves-light" id="leave">LEAVE</button>
+                <button class="btn btn-raised green waves-effect waves-light" id="publish">UNMUTE</button>
+                <button class="btn btn-raised grey waves-effect waves-light" id="unpublish">MUTE</button>
                 </div>
               </div>
           </div>
@@ -44,10 +48,7 @@
             <div class="collapsible-body card-content">
               <div class="row">
                 <div class="col s12">
-                  <div class="input-field">
-                    <label for="UID" class="active">UID</label>
-                    <input type="number" placeholder="UID" name="uid">
-                  </div>
+                 
                   <div class="input-field">
                     <label for="microphoneId" class="active">MICROPHONE</label>
                     <select name="microphoneId" id="microphoneId"></select>
@@ -88,14 +89,14 @@
               </div>
           </li>
         </ul>
+       
       </div>
-      <div class="col l7 row">
-        <div class="video-grid" id="video">
+      <div class="col l7 m6 s12">
+        <div class="video-grid hide" id="video">
           <div class="video-view">
-            <div id="local_stream" class="video-placeholder">
-            </div>
-            <div id="local_video_info" class="video-profile"></div>
-            <div id="video_autoplay_local" class="autoplay-fallback"></div>
+            <div id="local_stream" class="video-placeholder"></div>
+            <div id="local_video_info" class="video-profile hide"></div>
+            <div id="video_autoplay_local" class="autoplay-fallback hide"></div>
           </div>
         </div>
       </div>
@@ -161,26 +162,26 @@
 
     
     // adding video stream
-    function addView (id, show) {
+    function addView (id, channel) {
       if (!$("#" + id)[0]) {
         $("<div/>", {
           id: "remote_video_panel_" + id,
-          class: "video-view",
+          class: "video-view hide",
         }).appendTo("#video")
 
         $("<div/>", {
           id: "remote_video_" + id,
-          class: "video-placeholder",
+          class: "video-placeholder hide",
         }).appendTo("#remote_video_panel_" + id)
 
         $("<div/>", {
           id: "remote_video_info_" + id,
-          class: "video-profile" ,
+          class: "video-profile hide" + (show ? "" :  "hide"),
         }).appendTo("#remote_video_panel_" + id)
 
         $("<div/>", {
           id: "video_autoplay_"+ id,
-          class: "autoplay-fallback",
+          class: "autoplay-fallback hide",
         }).appendTo("#remote_video_panel_" + id)
       }
     }
@@ -188,6 +189,7 @@
       if ($("#remote_video_panel_" + id)[0]) {
         $("#remote_video_panel_"+id).remove()
       }
+     
     }
 
     // get client devices
@@ -249,23 +251,25 @@
         rtc.remoteStreams = streams
         if (id !== rtc.params.uid) {
           removeView(id)
+        } else {
+          Toast.notice(id + " left the room");
         }
-        Toast.notice("peer leave")
+        
         console.log("peer-leave", id)
       })
       // Occurs when the local stream is published.
       rtc.client.on("stream-published", function (evt) {
-        Toast.notice("stream published success")
+        Toast.notice("Microphone is open")
         console.log("stream-published")
       })
       // Occurs when the remote stream is added.
       rtc.client.on("stream-added", function (evt) {  
         var remoteStream = evt.stream
         var id = remoteStream.getId()
-        Toast.info("stream-added uid: " + id)
+        Toast.info("" + id + " joined the room")
         if (id !== rtc.params.uid) {
           rtc.client.subscribe(remoteStream, function (err) {
-            console.log("stream subscribe failed", err)
+            console.log("microphone stream failed", err)
           })
         }
         console.log("stream-added remote-uid: ", id)
@@ -277,14 +281,14 @@
         rtc.remoteStreams.push(remoteStream)
         addView(id)
         remoteStream.play("remote_video_" + id)
-        Toast.info("stream-subscribed remote-uid: " + id)
+        Toast.info(id + " Unmuted")
         console.log("stream-subscribed remote-uid: ", id)
       })
       // Occurs when the remote stream is removed; for example, a peer user calls Client.unpublish.
       rtc.client.on("stream-removed", function (evt) {
         var remoteStream = evt.stream
         var id = remoteStream.getId()
-        Toast.info("stream-removed uid: " + id)
+        Toast.info(id + " Muted")
         if(remoteStream.isPlaying()) {
           remoteStream.stop()
         }
@@ -380,9 +384,9 @@
                    *      All users in the same channel should have the same type (number or string) of uid.
                    *      If you use a number as the user ID, it should be a 32-bit unsigned integer with a value ranging from 0 to (232-1).
                   **/
-                  rtc.client.join(option.token ? option.token : null, option.channel , option.uid ? +option.uid : null, function (uid) {
-                    Toast.notice("join channel: " + option.channel + " success, uid: " + uid)
-                    console.log("join channel: " + option.channel + " success, uid: " + uid)
+                  rtc.client.join(option.token ? option.token : null, option.channel , option.uid, function (uid) {
+                    Toast.notice(option.uid + " joined the room " + option.channel)
+                    console.log(option.uid + " joined the room " + option.channel)
                     rtc.joined = true
 
                     rtc.params.uid = uid
@@ -528,7 +532,7 @@
       /*
         button functions 
       */
-      var fields = ["channel"]
+      var fields = ["channel", "uid"]
 
       // This will start the join functions with all the configuration selected by the user.
       $("#join").on("click", function async (e) {

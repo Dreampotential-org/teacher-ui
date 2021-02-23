@@ -9158,8 +9158,8 @@ html, body {
 .agora-theme .video-view,
 .agora-theme .video-placeholder,
 .agora-theme #local_stream, .agora-theme #local_video_info {
-  width: 480px;
-  height: 320px; }
+  width: 100%;
+  height: 100%; }
 
 .agora-theme .video-profile {
   position: absolute;
