@@ -216,8 +216,10 @@
           if ($("#sourceCallNumber option").length === 1) {
               all_numbers.forEach((item, i) => {
               $("#sourceCallNumber").append($('<option>').val(item.number).text(item.number))
-            })
-          }  
+            }) 
+          }
+          var sourceCall_number_selected = document.getElementById('sourceCallNumber');
+          $("#call").val(sourceCall_number_selected.value);
       })
       $("#sourceMsgNumber").click(() => {
           if ($("#sourceMsgNumber option").length === 1) {
@@ -225,6 +227,7 @@
               $("#sourceMsgNumber").append($('<option>').val(item.number).text(item.number))
             })
           }   
+          var sourceMsg_number_selected_sms = document.getElementById('sourceMsgNumber');
       })
     </script>
   </body>

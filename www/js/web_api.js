@@ -45,9 +45,9 @@ function list_inbound_calls(callback) {
         "crossDomain": true,
         "url": SERVER + "admin_backend/api_admin/list_calls",
         "method": "GET",
-        "processData": false,
-        "contentType": false,
-        "mimeType": "multipart/form-data",
+        // "processData": false,
+        // "contentType": false,
+        // "mimeType": "multipart/form-data",
         "headers": {
             "Authorization": 'Token ' + localStorage.getItem("user-token"),
         }
@@ -55,6 +55,7 @@ function list_inbound_calls(callback) {
     $.ajax(settings).done(function(response) {
         callback(JSON.parse(response))
     }).fail(function(err) {
+        console.log(err)
         alert("ERROR")
     })
 }
