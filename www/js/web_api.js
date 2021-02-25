@@ -16,7 +16,6 @@ function get_users() {
         }
     });
 }
-SERVER = 'http://localhost:8000/'
 function list_question_counters(callback) {
     var settings = {
         "async": true,
