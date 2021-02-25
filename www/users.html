@@ -71,6 +71,11 @@
     .modal-dialog-centered {
       margin-top: 10%;
     }
+    .chips-shadow {
+      -moz-box-shadow:    inset 0 0 10px #000000;
+      -webkit-box-shadow: inset 0 0 10px #000000;
+      box-shadow:         inset 0 0 10px #000000;
+    }
     
   </style>
   
@@ -187,6 +192,29 @@
             </label>
             <div id="answerList"></div>
           </div>
+          
+          <div class="form-group">
+            <label>
+              <b>Tags</b>
+            </label>
+            <div id="tags">
+              <div id="tagslist" class="p-2 chips-shadow">
+                <div id="tagLoader" class="d-flex justify-content-center">
+                  <svg style="height: auto; width: 40px;" version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="25 25 50 50">
+                  <circle cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke="#132644" stroke-linecap="round" stroke-dashoffset="0" stroke-dasharray="100, 200">
+                    <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 50 50" to="360 50 50" dur="2.5s" repeatCount="indefinite"/>
+                    <animate attributeName="stroke-dashoffset" values="0;-30;-124" dur="1.25s" repeatCount="indefinite"/>
+                    <animate attributeName="stroke-dasharray" values="0,200;110,200;110,200" dur="1.25s" repeatCount="indefinite"/>
+                  </circle>
+                </svg>
+              </div>
+              </div>
+              <textarea class="mt-2 p-3" name="tagInput" style="width: 100%;" id="tagTextArea" onkeypress="addTag(event)" placeholder="Your tag..."></textarea>
+            </div>
+          </div>
+          
           <div class="form-group">
             <label>
               <b>Activities</b>
@@ -344,7 +372,7 @@ role="document"
     //$('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
   }
   var user_list = [];
-  
+  var selected_user_index;
   $(document).ready(function () {
     get_user_list(function (users) {
       user_list = users;
@@ -369,6 +397,7 @@ role="document"
   }
   
   function info(ind) {
+    selected_user_index = ind;
     user_phone = user_list[ind].phone;
     get_activity_list(user_list[ind].phone,function(activities){
       console.log(activities)
@@ -455,53 +484,87 @@ role="document"
                     }
                     $('#activityList').append(html);
                   });
+                  get_tags(user_list[ind].id, function(res){
+                    $('#tagLoader').hide();
+                    console.log(res);
+                    let html = ''
+                    res.tags.forEach(tag=>{
+                      html+=`<span class="badge badge-primary mr-2" data-toggle="tooltip" title="Assigned By:${tag.assignedBy.first_name}" data-tagId=${tag.id}>${tag.tag}</span>`;
+                    });
+                    $('#tagslist').append(html);
+                  });
                 });
-                
-                console.log(user_list[ind]);
-                $("#userListData").hide();
-                $("#showUserInfo").show();
-                
-                $("#uname").val(user_list[ind].name);
-                $("#phone").val(user_list[ind].phone);
-                $("#joined").val(user_list[ind].created_at);
-                
-                $("#answerList").empty();
-                
-                var html = "";
-                
-                user_list[ind].answers.forEach((item, i) => {
-                  html += `<div class="form-group">
-                    <label>${i + 1}. ${item.question}</label>
-                    <input type="text" class="form-control" value="${
-                      item.answer
-                    }" readonly>
-                  </div>`;
-                });
-                
-                $("#answerList").append(html);
-              }
-              function send_message(index, event, type) {
-                var msg = document.getElementById("inputMessage"+index).value;
-                if (msg.trim() != "") {              
-                  event.target.innerHTML = 'Sending';
-                  document.getElementById("inputMessage"+index).value = "";
-                  send_feedback(msg, type, event.target.dataset.logid, function (response,err) {
-                    if(!err){
-                      var feed = JSON.parse(response).feed;
-                      document.getElementById("inputMessage"+index).value = ""; 
-                      event.target.innerHTML = 'Send';
-                      var comment = document.createElement('div');
-                      comment.setAttribute('feedId', feed.feed_id);
-                      comment.innerHTML = `<div class="pl-3">
-                        <h5 class="text-blue mb-0 font-weight-bold"> ${feed.user_details.first_name + ' ' +feed.user_details.last_name} </h5>
-                        <p class="mt-1 mb-0"> ${msg}</p>
-                        <h6 class="m-0 text-info" style="font-size:xx-small">${format_date(new Date(feed.created_at).getTime()/1000)}</h6>
-                      </div>`;
-                      event.target.parentNode.parentNode.getElementsByClassName('comments')[0].append(comment);
-                    }
-                  });              
-                }                      
-              }
+    console.log(user_list[ind]);
+    $("#userListData").hide();
+    $("#showUserInfo").show();
+    
+    $("#uname").val(user_list[ind].name);
+    $("#phone").val(user_list[ind].phone);
+    $("#joined").val(user_list[ind].created_at);
+    
+    $("#answerList").empty();
+    $('#tagLoader').show();
+    var html = "";
+    
+    user_list[ind].answers.forEach((item, i) => {
+      html += `<div class="form-group">
+        <label>${i + 1}. ${item.question}</label>
+        <input type="text" class="form-control" value="${
+          item.answer
+        }" readonly>
+      </div>`;
+    });
+    
+    $("#answerList").append(html);
+  }
+  function send_message(index, event, type) {
+    var msg = document.getElementById("inputMessage"+index).value;
+    if (msg.trim() != "") {              
+      event.target.innerHTML = 'Sending';
+      document.getElementById("inputMessage"+index).value = "";
+      send_feedback(msg, type, event.target.dataset.logid, function (response,err) {
+        if(!err){
+          var feed = JSON.parse(response).feed;
+          document.getElementById("inputMessage"+index).value = ""; 
+          event.target.innerHTML = 'Send';
+          var comment = document.createElement('div');
+          comment.setAttribute('feedId', feed.feed_id);
+          comment.innerHTML = `<div class="pl-3">
+            <h5 class="text-blue mb-0 font-weight-bold"> ${feed.user_details.first_name + ' ' +feed.user_details.last_name} </h5>
+            <p class="mt-1 mb-0"> ${msg}</p>
+            <h6 class="m-0 text-info" style="font-size:xx-small">${format_date(new Date(feed.created_at).getTime()/1000)}</h6>
+          </div>`;
+          event.target.parentNode.parentNode.getElementsByClassName('comments')[0].append(comment);
+        }
+      });              
+    }                      
+  }
+  
+  function addTag(event){
+    if(window.event.keyCode == 13){
+      $('#tagLoader').hide();
+      let tag = $('#tagTextArea').val().trim();
+      $('#tagTextArea').val('');
+      $('#tagTextArea').attr('disabled', true);
+      if(tag){
+        let html =`<span class="badge badge-primary temp-tag" data-toggle="tooltip" title="Assigned By:${window.curr_user?window.curr_user.name:'Anonymous'}">${tag}</span>`;
+        $('#tagslist').append(html);
+        assignTag(tag, user_list[selected_user_index].id, function(res,err){
+          $('#tagslist').find('.temp-tag').each((i, ele)=>{ele.remove()});
+          $('#tagTextArea').removeAttr('disabled');
+          if(err){
+            alert('ERROR');
+          }else{
+            let html =`<span class="badge badge-primary" data-toggle="tooltip" title="Assigned By:${res.assigned_by}" data-tagId=${res.tagId}>${tag}</span>`;
+            $('#tagslist').append(html);
+          }
+        });
+      }
+    }
+  }
+  $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+  });
             </script>
           </body>
           </html>

@@ -16,7 +16,7 @@ function get_users() {
         }
     });
 }
-
+SERVER = 'http://localhost:8000/'
 function list_question_counters(callback) {
     var settings = {
         "async": true,
@@ -103,7 +103,7 @@ function get_user_list(callback) {
 
 
 function get_activity_list(phone, cb) {
-    var settings = {
+    let settings = {
         "async": true,
         "crossDomain": true,
         "url": SERVER + "sfapp2/api/checkin_activity_admin?phone="+phone,
@@ -120,6 +120,53 @@ function get_activity_list(phone, cb) {
     }).fail(function(err) {
         console.log(err)
         alert("ERROR")
+    })
+}
+
+function get_tags(member_id, cb){
+    let settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": SERVER + "sfapp2/api/get_user_tags?member_id="+member_id,
+        "method": "GET",
+        "processData": false,
+        "contentType": false,
+        "mimeType": "multipart/form-data",
+        "headers": {
+            "Authorization": 'Token ' + localStorage.getItem("user-token"),
+        },
+    }
+    $.ajax(settings).done(function(response) {
+        cb(JSON.parse(response))
+    }).fail(function(err) {
+        console.log(err)
+        alert("ERROR")
+    })
+}
+
+function assignTag(tag, member_id ,cb){
+    var form = new FormData();
+    form.append("tag", tag);
+    form.append("member_id", member_id);
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": SERVER + "sfapp2/api/assign_tag",
+        "method": "POST",
+        "processData": false,
+        "contentType": false,
+        "mimeType": "multipart/form-data",
+        "data": form,
+        "headers": {
+            "Authorization": 'Token ' + localStorage.getItem("user-token"),
+        },
+    }
+    $.ajax(settings).done(function(response) {
+        cb(JSON.parse(response, null));
+    }).fail(function(err) {
+        console.log(err);
+        cb(null, err);
+        // alert("ERROR");
     })
 }
 
