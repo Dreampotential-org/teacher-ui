@@ -927,15 +927,11 @@ $(document).ready(function () {
         console.log(sortArray)
         sendUpdates()
         var lesson_name = $("#lesson_name").val()
-        // console.log(lesson_name , "as lesson name consoled....")
         var lesson_type = $("#selectsegment").val()
         const param = new URL(window.location.href)
         const params = param.searchParams.get('params')
         const lesson_id = param.searchParams.get('lesson_id')
-        // console.log("lesson id is :" , lesson_id)
         var answer = $("#answer").val()
-        // console.log(answer , "as answer passed ...")
-
         $.ajax({	
             async: true,	
             crossDomain: true,	
@@ -1065,26 +1061,3 @@ $(document).ready(function () {
         }
     })
 })
-
-// var data_invite = {
-//     name = "passing student",
-// }
-
-// function invite_link_data(){
-//     console.log("invite_data_button_clicked....")
-
-//     $.ajax({
-//         "url": API_SERVER +"/courses_api/invite/response/",
-//         'data': JSON.stringify(data_invite),
-//         'type': 'POST',
-//         'contentType': 'application/json',
-//         'success': function (data){
-//             alert("done")
-//             console.log("invite link is clicked.")
-//         },
-//         'error': function(res){
-//         // alert(JSON.stringify(res))
-//     }
-// })   
-
-// }
