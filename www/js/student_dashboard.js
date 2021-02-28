@@ -1,6 +1,7 @@
-// var SERVER = "https://sfapp-api.dreamstate-4-all.org/";
 
-var SERVER = 'http://localhost:8000/'
+var SERVER = "https://sfapp-api.dreamstate-4-all.org/";
+// var SERVER = 'http://localhost:8000/'
+
 
 var passwordResetToken = getParam("token");
 var userToken = localStorage.getItem("user-token");

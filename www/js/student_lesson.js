@@ -9,7 +9,8 @@ var sortArray = [];
 var MODE;
 var pos = 0;
 
-// var API_SERVER = "https://sfapp-api.dreamstate-4-all.org";
+
+var API_SERVER = "https://sfapp-api.dreamstate-4-all.org";
 var API_SERVER ='http://localhost:8000';
 
 var lesson_id = getParam("lesson_id");
@@ -557,6 +558,7 @@ function sendUpdates() {
       data: JSON.stringify(data_),
       type: "POST",
       contentType: "application/json",
+      headers: { "Authorization": `${localStorage.getItem('user-token')}` },
       success: function (data) {
         //console.log(data.id)
         var currentPathName = window.location.pathname;

@@ -1,5 +1,7 @@
-// var API_SERVER ="https://sfapp-api.dreamstate-4-all.org"
-var API_SERVER = "http://localhost:8000";
+// <<<<<<< commaDelimeter
+var API_SERVER ="https://sfapp-api.dreamstate-4-all.org"
+// var API_SERVER = "http://localhost:8000";
+
 var answer = ""
 var signature = ""
 var current_slide = 0;
@@ -56,6 +58,9 @@ function nextSlide(){
     if (type == "question_choices") {
         answer = $("input[name= choices_" + (current_slide - 1) + "]:checked").val()
         console.log(answer)
+    }else if (type == "question_checkboxes") {
+        answer = $("input[name= checkboxes_" + (current_slide - 1) + "]:checked").val()
+        console.log(answer)
     }else if(type == "title_textarea"){
         answer = $("textarea[name= textarea_"+(current_slide-1)+"]").val()
     }else if(type == "title_input"){
@@ -104,13 +109,13 @@ function nextSlide(){
     console.log(data_)
 
     $.ajax({
-        "url": API_SERVER +"/courses_api/flashcard/response/",
+        "url": API_SERVER +"courses_api/flashcard/response/",
         'data': JSON.stringify(data_),
         'type': 'POST',
         'contentType': 'application/json',
         'success': function (data){
             $.ajax({
-                "url": API_SERVER + '/courses_api/session/event/' + flashcard_id + '/' + sessionId + '/',
+                "url": API_SERVER + 'courses_api/session/event/' + flashcard_id + '/' + sessionId + '/',
                 "data": JSON.stringify(da_),
                 "type": 'POST',
                 "contentType": 'application/json',
@@ -156,7 +161,7 @@ function get_session() {
         return session_id
     }
     console.log("Generate new session")
-    $.get(API_SERVER + '/courses_api/session/get', function (resp) {
+    $.get(API_SERVER + 'courses_api/session/get', function (resp) {
         console.log(resp)
         localStorage.setItem("session_id", resp.session_id)
     })
@@ -169,7 +174,7 @@ function init() {
     $("#progress-section").hide();
     var lesson_id = getParam("lesson_id");
 
-    $.get(API_SERVER + '/courses_api/lesson/read/' + lesson_id,
+    $.get(API_SERVER + 'courses_api/lesson/read/' + lesson_id,
           function (response) {
 
         get_session();
@@ -233,6 +238,29 @@ function init() {
                     }
                 })
             }
+
+            if(flashcard.lesson_type == "question_checkboxes"){
+                $("#prevButton").attr("data-type","question_checkboxes");
+                $("#nextButton").attr("data-type","question_checkboxes");
+                $("#theSlide").append('<div class="'+className+'" id="flashcard_'+i+'"><div class="question_checkboxes"><h1>'+flashcard.question+'</h1><ul alt="question_checkboxes_'+i+'"></ul></div></div>')
+                if(flashcard.image){
+                    $("#flashcard_"+i).prepend('<center><img src="'+flashcard.image+'" alt="Chania" style="height:300px;border:5px;border-style:solid;border-color:black"></center>')
+                }
+
+                flashcard.options.split(",").forEach(function (valu) {
+                $("#theSlide").find("ul").each((a,b,c) => {
+                        if($(b).attr("alt") == "question_checkboxes_"+i){
+                            $(b).append("<input type='checkbox' value='"+valu+"' name='checkboxes_"+i+"'> "+valu+"<br>")
+
+                        }
+                        
+                });
+                    if($("#theSlide").find('ul').attr("alt") === "question_checkboxes_"+i){
+
+                    }
+                })
+            }
+
             if(flashcard.lesson_type == "iframe_link"){
                 $("#theSlide").append('<div class="'+className+'"><div alt="title_text" style="height:500px"><h1> '+flashcard.question+'</h1><iframe src= "'+flashcard.image+'"></iframe></div></div>')
             }
@@ -292,6 +320,10 @@ function init() {
                         }
                         if (f.lesson_type == 'question_choices') {
                             $("input[name=choices_" + i + "][value=" + rf.answer + "]").attr("checked", true)
+                        }
+
+                        if (f.lesson_type == 'question_checkboxes') {
+                            $("input[name=checkboxes_" + i + "][value=" + rf.answer + "]").attr("checked", true)
                         }
 
                     }

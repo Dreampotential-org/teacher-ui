@@ -108,7 +108,7 @@ $(document).ready(function() {
         async: true,
         crossDomain: true,
         crossOrigin: true,
-        url: SERVER + "students_list/get/class",
+        url: SERVER + "students_list/get/class/",
         type: "GET",
         headers: { "Authorization": `${localStorage.getItem('user-token')}` }
     }).done((classess) => {
@@ -128,14 +128,14 @@ $(document).ready(function() {
                     </td>
                     </tr>`);
         })
-        $.get(SERVER + "students_list/get/classenrolled").done((enroll) => {
+        $.get(SERVER + "students_list/get/classenrolled/").done((enroll) => {
             system_students = enroll
 
             $.ajax({
                 async: true,
                 crossDomain: true,
                 crossOrigin: true,
-                url: SERVER + "students_list/get/students",
+                url: SERVER + "students_list/get/students/",
                 type: "GET",
                 headers: { "Authorization": `${localStorage.getItem('user-token')}` }
             }).done((students) => {
@@ -198,7 +198,7 @@ $("#addClass").submit((event) => {
     event.preventDefault()
     $.ajax({
         type: 'POST',
-        url: SERVER + 'students_list/get/class',
+        url: SERVER + 'students_list/get/class/',
         headers: { "Authorization": `${localStorage.getItem('user-token')}` },
         data: {
             "class_name": $("#class_name").val()
@@ -212,7 +212,7 @@ $("#addClass").submit((event) => {
 $("#showDelete").on('click', () => {
     $.ajax({
         type: 'DELETE',
-        url: SERVER + 'students_list/get/class' + '?' + $.param({ 'id': $('#classid').val() }),
+        url: SERVER + 'students_list/get/class/' + '?' + $.param({ 'id': $('#classid').val() }),
         headers: { "Authorization": `${localStorage.getItem('user-token')}` },
         success: () => {
             location.reload();
@@ -223,7 +223,7 @@ $("#showDelete").on('click', () => {
 $("#updateClass").on('click', () => {
     $.ajax({
         type: 'PUT',
-        url: SERVER + 'students_list/get/class',
+        url: SERVER + 'students_list/get/class/',
         headers: { "Authorization": `${localStorage.getItem('user-token')}` },
         data: {
             "id": $("#classid").val(),
@@ -296,7 +296,7 @@ $("#AddStudent").click(() => {
     if (class_student.indexOf(student) === -1) {
         $.ajax({
             type: 'POST',
-            url: SERVER + 'students_list/get/classenrolled',
+            url: SERVER + 'students_list/get/classenrolled/',
             data: {
                 "student": student,
                 "class": class_,
@@ -333,7 +333,7 @@ $("#studentlist").click(() => {
 function deleteStudent(sid, cid) {
     $.ajax({
         type: 'DELETE',
-        url: SERVER + 'students_list/get/classenrolled' + '?' + $.param({ 'sid': sid, 'cid': cid }),
+        url: SERVER + 'students_list/get/classenrolled/' + '?' + $.param({ 'sid': sid, 'cid': cid }),
         success: () => {
             location.reload();
         }
@@ -344,7 +344,7 @@ $("#emailForm").submit((event) => {
     event.preventDefault();
     $.ajax({
         type: 'POST',
-        url: SERVER + 'students_list/send/mail/class',
+        url: SERVER + 'students_list/send/mail/class/',
         data: {
             "message": $("#email-subject").val() + "\n" + $("#email-body").val(),
             "class_enrolled_id": $("#class-email-id").val()
@@ -358,7 +358,7 @@ $("#textForm").submit((event) => {
     event.preventDefault();
     $.ajax({
         type: 'POST',
-        url: SERVER + 'students_list/send/text/class',
+        url: SERVER + 'students_list/send/text/class/',
         data: {
             "message": $("#text-msg").val(),
             "class_enrolled_id": $("#class-text-id").val()

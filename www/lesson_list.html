@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>SF Social Service</title>
+    <title>Teacher Portal</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -172,7 +172,7 @@
 
 
                                             <div class="text-right mt-2">
-                                                <button type="button" data-toggle="modal" data-target="#userModal"
+                                                <button type="button" onclick="addLesson()"
                                                     class="btn btn-primary">
                                                     <i class="fa fa-plus"></i> Add
                                                 </button>
@@ -529,6 +529,7 @@
 
             $("#groupModal").modal();
         }
+        
 
         function openStudentLesson(i) {
             // window.location.replace("student_lesson.html");
@@ -542,15 +543,16 @@
             $("#tabDiv").hide();
             $("#tabs").hide();
         }
-  
-  
-        
+
+        function addLesson(){
+        }
+
         $(document).ready(function () {
             $("#left-sidebar").load("sidebar.html");
             $("#page-header").load("header.html");
 
             $.ajax({
-                url: SERVER + "/courses_api/lesson/all",
+                url: SERVER + "courses_api/lesson/all",
                 async: true,
                 crossDomain: true,
                 crossOrigin: true,
@@ -600,9 +602,10 @@
                         }	
                     }).done((student) => {
                         studentList = student;
-                    }).fail((err) => { alert('ERROR') })
-                }).fail((fail) => { alert('ERROR') })
+                    }).fail((err) => { alert('ERROR1') })
+                }).fail((fail) => { console.log(fail); alert('ERROR2'); })
             }).fail((err) => { 
+                console.log(err)
                 alert('ERROR') 
                 
             });

@@ -1,5 +1,5 @@
-// var SERVER ='https://sfapp-api.dreamstate-4-all.org'
-SERVER='http://localhost:8000/';
+var SERVER ='https://sfapp-api.dreamstate-4-all.org'
+// SERVER='http://localhost:8000/';
 $.ajaxSetup({
     statusCode: {
         401: function(jqxhr, textStatus, errorThrown) {
@@ -18,7 +18,6 @@ function get_users() {
         }
     });
 }
-
 function list_question_counters(callback) {
     var settings = {
         "async": true,
@@ -35,20 +34,21 @@ function list_question_counters(callback) {
     $.ajax(settings).done(function(response) {
         callback(JSON.parse(response))
     }).fail(function(err) {
+        console.log(err)
         alert("ERROR")
     })
 }
 
 function list_inbound_calls(callback) {
-    
+
     var settings = {
         "async": true,
         "crossDomain": true,
         "url": SERVER + "admin_backend/api_admin/list_calls",
         "method": "GET",
-        "processData": false,
-        "contentType": false,
-        "mimeType": "multipart/form-data",
+        // "processData": false,
+        // "contentType": false,
+        // "mimeType": "multipart/form-data",
         "headers": {
             "Authorization": 'Token ' + localStorage.getItem("user-token"),
         }
@@ -56,6 +56,7 @@ function list_inbound_calls(callback) {
     $.ajax(settings).done(function(response) {
         callback(JSON.parse(response))
     }).fail(function(err) {
+        console.log(err)
         alert("ERROR")
     })
 }
@@ -69,18 +70,18 @@ function list_services(callback) {
         "processData": false,
         "contentType": false,
         "mimeType": "multipart/form-data",
-        
     }
     $.ajax(settings).done(function(response) {
         callback(JSON.parse(response))
     }).fail(function(err) {
+        console.log(err)
         alert("ERROR")
     })
 }
 
 
 function get_user_list(callback) {
-    
+
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -96,13 +97,14 @@ function get_user_list(callback) {
     $.ajax(settings).done(function(response) {
         callback(JSON.parse(response))
     }).fail(function(err) {
+        console.log(err)
         alert("ERROR")
     })
 }
 
 
 function get_activity_list(phone, cb) {
-    var settings = {
+    let settings = {
         "async": true,
         "crossDomain": true,
         "url": SERVER + "sfapp2/api/checkin_activity_admin?phone="+phone,
@@ -117,7 +119,55 @@ function get_activity_list(phone, cb) {
     $.ajax(settings).done(function(response) {
         cb(JSON.parse(response))
     }).fail(function(err) {
+        console.log(err)
         alert("ERROR")
+    })
+}
+
+function get_tags(member_id, cb){
+    let settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": SERVER + "sfapp2/api/get_user_tags?member_id="+member_id,
+        "method": "GET",
+        "processData": false,
+        "contentType": false,
+        "mimeType": "multipart/form-data",
+        "headers": {
+            "Authorization": 'Token ' + localStorage.getItem("user-token"),
+        },
+    }
+    $.ajax(settings).done(function(response) {
+        cb(JSON.parse(response))
+    }).fail(function(err) {
+        console.log(err)
+        alert("ERROR")
+    })
+}
+
+function assignTag(tag, member_id ,cb){
+    var form = new FormData();
+    form.append("tag", tag);
+    form.append("member_id", member_id);
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": SERVER + "sfapp2/api/assign_tag",
+        "method": "POST",
+        "processData": false,
+        "contentType": false,
+        "mimeType": "multipart/form-data",
+        "data": form,
+        "headers": {
+            "Authorization": 'Token ' + localStorage.getItem("user-token"),
+        },
+    }
+    $.ajax(settings).done(function(response) {
+        cb(JSON.parse(response, null));
+    }).fail(function(err) {
+        console.log(err);
+        cb(null, err);
+        // alert("ERROR");
     })
 }
 
@@ -125,7 +175,7 @@ function send_user_sms(to_number, msg, callback) {
     var form = new FormData();
     form.append("to_number", to_number);
     form.append("msg", msg);
-    
+
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -138,13 +188,13 @@ function send_user_sms(to_number, msg, callback) {
         "headers": {
             "Authorization": localStorage.getItem("token"),
         },
-        
     }
     $.ajax(settings).done(function(response) {
         // change screen for code collecton
         callback(response, null);
         console.log(response)
     }).fail(function(err) {
+        console.log(err)
         callback(null, err);
         //alert("ERROR")
     });
@@ -156,7 +206,7 @@ function send_feedback(msg,type, logId, callback) {
     form.append("msg", msg);
     form.append("logType", type);
     form.append("logId", logId);
-    
+
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -169,7 +219,6 @@ function send_feedback(msg,type, logId, callback) {
         "headers": {
             "Authorization": 'Token ' + localStorage.getItem("user-token"),
         },
-        
     }
     $.ajax(settings).done(function(response) {
         // change screen for code collecton
@@ -254,11 +303,11 @@ function upload_to_twilio(image) {
         "headers": {
             "Authorization": localStorage.getItem("token"),
         },
-        
     }
     $.ajax(settings).done(function(response) {
         console.log(response)
     }).fail(function(err) {
+        console.log(err)
         alert("ERROR")
     });
 }
@@ -266,7 +315,7 @@ function upload_to_twilio(image) {
 function get_sms_to_number(to_number, callback) {
     var form = new FormData();
     form.append("to_number", to_number);
-    
+
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -285,6 +334,7 @@ function get_sms_to_number(to_number, callback) {
         }
         callback(response.messages)
     }).fail(function(err) {
+        console.log(err)
         alert("ERROR")
     })
 }

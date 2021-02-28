@@ -1,9 +1,9 @@
-// var SERVER = "https://sfapp-api.dreamstate-4-all.org/";
-var SERVER = 'http://localhost:8000/'
+var SERVER = "https://sfapp-api.dreamstate-4-all.org/";
+// var SERVER = 'http://localhost:8000/'
 
 var passwordResetToken = getParam("token");
 var userToken = localStorage.getItem("user-token");
-
+window.addEventListener('DOMContentLoaded', init, false)
 console.log("MODE: PASSWORD_RESET, Token - " + passwordResetToken);
 
 if (userToken != null) {
@@ -22,7 +22,7 @@ function getParam(sParam) {
 }
 
 $(document).ready(function() {
-    window.localStorage.clear();
+
     let MODE = "WELCOME_PAGE";
 
     if (passwordResetToken) {
@@ -35,7 +35,7 @@ $(document).ready(function() {
         ev.preventDefault();
 
         $.ajax({
-            url: SERVER + "s3_uploader/user/register",
+            url: SERVER + "s3_uploader/user/register/",
             type: "post",
             data: $(this).serialize(),
             success: function(response) {
@@ -76,6 +76,9 @@ $(document).ready(function() {
         $.ajax({
             url: SERVER + "s3_uploader/user/login",
             type: "post",
+            async: true,
+            crossDomain: true,
+            crossOrigin: true,
             data: $(this).serialize(),
             success: function(response) {
                 // Whatever you want to do after the form is successfully submitted
@@ -92,7 +95,7 @@ $(document).ready(function() {
                 });
 
                 // displayPage("dashboard");
-
+                window.curr_user = response.user;
                 window.location.replace("student_dashboard.html");
             },
             error: function() {

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>SF Social Service</title>
+    <title>Teacher Portal</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
@@ -215,20 +215,20 @@
               $('#inboundCallsLoader').remove();
                 users.forEach((item) => {
                     $("#inbound-data").append(`<tr>
-                        <td>${item.date_created}</td>
-                        <td>${item.from}</td>
-                        <td>${item.to}</td>
+                        <td>${item.fields.date}</td>
+                        <td>${item.fields.from_number}</td>
+                        <td>${item.fields.to_number}</td>
                         <td><audio controls >
-                        <source src="${item.recording}">
+                        <source src="${item.fields.recording_url}">
                         </audio></td>
                         </tr>`);
             $('#outboundCallsLoader').remove();           
             $("#outbound-data").append(`<tr>
-                        <td>${item.date_created}</td>
-                        <td>${item.from}</td>
-                        <td>${item.to}</td>
+                        <td>${item.fields.date}</td>
+                        <td>${item.fields.from_number}</td>
+                        <td>${item.fields.to_number}</td>
                         <td><audio controls >
-                        <source src="${item.recording}">
+                        <source src="${item.fields.recording_url}">
                         </audio></td>
                         </tr>`);
                 });
