@@ -8,7 +8,7 @@
   <title>Basic Communication</title>
   <link rel="stylesheet" href="./css/common.css" />
 </head>
-<body class="agora-theme">
+<body class="agora-theme" onload="getChannel()">
   <div class="navbar-fixed">
     <nav class="agora-navbar">
       <div class="nav-wrapper agora-primary-bg valign-wrapper">
@@ -24,7 +24,7 @@
           <div class="row card-content" style="margin-bottom: 0px;">
               <div class="input-field">
                 <label for="channel" class="active">Channel</label>
-                <input type="text" placeholder="channel" name="channel">
+                <input type="text" id="channel" placeholder="channel" name="channel">
               </div>
               <div class="input-field">
                 <label for="UID" class="active">Name</label>
@@ -89,6 +89,10 @@
               </div>
           </li>
         </ul>
+        <div class="input-field">
+          <label for="room-link" class="active">Room link</label>
+          <p id="room-link" style="font-size: large;" onclick="copyElementText(this.id)"></p>
+        </div>
       </div>
       <div class="col l7 m6 s12">
         <div class="video-grid hide" id="video">
@@ -99,10 +103,34 @@
       </div>
     </div>
   </form>
+</body>
   <script src="./js/jquery.min.js"></script>
   <script src="./js/materialize.min.js"></script>
   <script src="./js/AgoraRTCSDK-3.4.0.js"></script>
   <script>
+
+    // set the channel to the input area on load
+    function getChannel(){
+      var url = new URL(window.location.href);
+      if(url.searchParams.get("channel")){
+        document.getElementById("channel").value = url.searchParams.get("channel");
+      }
+
+    }
+
+    // copy room link
+    function copyElementText(id) {
+      var text = document.getElementById(id).innerText;
+      var elem = document.createElement("textarea");
+      document.body.appendChild(elem);
+      elem.value = text;
+      elem.select();
+      document.execCommand("copy");
+      document.body.removeChild(elem);
+      Toast.notice("copied to clipboard");
+  }
+
+
     // check if compatible
     console.log("agora sdk version: " + AgoraRTC.VERSION + " compatible: " + AgoraRTC.checkSystemRequirements());
     
@@ -332,7 +360,7 @@
                   Toast.error("Your already joined")
                   return;
                 }
-
+                
                 /**
                  * A class defining the properties of the config parameter in the createClient method.
                  * Note:
@@ -377,6 +405,7 @@
 
                     rtc.params.uid = uid
 
+                    document.getElementById("room-link").innerText = location.protocol + '//' + location.host + location.pathname + "?channel=" + option.channel;
                     // create local stream
                     rtc.localStream = AgoraRTC.createStream({
                       streamID: rtc.params.uid,
@@ -459,6 +488,7 @@
     }
 
     function leave (rtc) {
+      document.getElementById("room-link").value = '';
       if (!rtc.client) {
         Toast.error("Please Join First!")
         return
@@ -486,6 +516,9 @@
           }
           removeView(id)
         }
+
+        document.getElementById("room-link").innerText = '';
+
         rtc.localStream = null
         rtc.remoteStreams = []
         rtc.client = null
