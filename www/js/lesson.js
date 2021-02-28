@@ -15,8 +15,8 @@ var sortArray = [];
 var MODE;
 var pos = 0;
 
-var API_SERVER = 'https://sfapp-api.dreamstate-4-all.org';
-//var API_SERVER ='http://localhost:8000';
+// var API_SERVER = 'https://sfapp-api.dreamstate-4-all.org';
+var API_SERVER ='http://localhost:8000';
 
 var lesson_id = getParam('lesson_id');
 
@@ -166,10 +166,13 @@ function addQuestionChoices(isNew, id, question, choices, image, posU) {
 		$('#choices_' + question_choices_count)
 			.find('input')
 			.remove();
-		choices.split(',').forEach(function (choice) {
-			//console.log(choice)
+		// choices.split(',').forEach(function (choice) {
+		// 	//console.log(choice)
+		// 	addChoices(question_choices_count, choice);
+		// });
+        choices.map((choice) => {
 			addChoices(question_choices_count, choice);
-		});
+        })
 
 		// Display image
 		displayImage(image);
@@ -593,7 +596,7 @@ function sendUpdates() {
         position_me = $('input[name="question_' + i + '"]').parent().parent().data("position")
 
 
-        var choices = choices_array.toArray().join(",")
+        var choices = choices_array.toArray()
         var image = $('input[name="image_' + i + '"]').val()
         temp = {
             "lesson_type": "question_choices",
@@ -603,6 +606,7 @@ function sendUpdates() {
             "position": position_me
         }
         flashcards.push(temp)
+
     }
 
     for (var i = 0; i < video_file_count; i++) {
@@ -838,7 +842,7 @@ $(document).ready(function () {
 
             success: () => {	
                 swal({	
-                    title: "data saved",	``
+                    title: "data saved",
                     text: "You have save data successfully ",	
                     icon: "success"	
                 })	
