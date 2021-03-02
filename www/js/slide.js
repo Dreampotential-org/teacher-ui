@@ -1,3 +1,7 @@
+// <<<<<<< commaDelimeter
+var API_SERVER ="https://sfapp-api.dreamstate-4-all.org"
+// var API_SERVER = "http://localhost:8000";
+
 var answer = ""
 var signature = ""
 var current_slide = 0;
