@@ -68,6 +68,8 @@ function addCheckboxes(id, value) {
 			.children()
 			.last()
 			.data('id') + 1;
+            alert(next_id)
+
 	$('#checkboxes_' + id).append(
 		'<div><input type="text" class="form-control" data-id="' +
 			next_id +
@@ -213,7 +215,7 @@ function addQuestionCheckboxes(isNew, id, question, choices, image, posU) {
 		.find('input')
 		.first()
         .attr('name', 'question_checkboxes_question_' + question_checkboxes_count);
-        if(question_choices_count ==0){
+        if(question_checkboxes_count ==0){
             $('#question_checkboxes')
             .find('#checkboxes')
             .attr('id', 'checkboxes_' + question_checkboxes_count);
@@ -232,7 +234,7 @@ function addQuestionCheckboxes(isNew, id, question, choices, image, posU) {
         .find('button')
         .last()
 		.attr('onclick', 'addCheckboxes(' + question_checkboxes_count + ')');
-        let tempQC = $("#question_checkboxes").html()
+        let tempQ = $("#question_checkboxes").html()
 
 	if (!isNew) {
 		$('#question_checkboxes').find('input').first().attr('value', question);
@@ -258,7 +260,8 @@ function addQuestionCheckboxes(isNew, id, question, choices, image, posU) {
 	$('#sortable').append($('#question_checkboxes').html());
     sortablePositionFunction(isNew, posU);
     question_checkboxes_count++;
-    $("#question_checkboxes").html(tempQC)
+    alert(question_checkboxes_count)
+    $("#question_checkboxes").html(tempQ)
 
 }
 
