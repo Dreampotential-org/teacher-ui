@@ -27,7 +27,9 @@ $("#tabDiv").show();
 $("#systemUserDetail").hide();
 $("#buyItem").hide();
 // console.log("ajax call started");
-
+// var SERVER = 'http://127.0.0.1:8000/';
+var images = [];
+var addImages = [];
 var settings = {
   "async": true,
   "crossDomain": true,
@@ -46,13 +48,33 @@ $.ajax(settings).done(function (response) {
   // response = JSON.parse(response);
   console.log(response);
     response.forEach((item,i) => {
-      // console.log(item);
-      // console.log(i);
+      var image_temp = '';
+      var array_images = []
+      if(item.images != '' && item.images != null){
+        array_images = item.images.split(',');
+        for(var i = 0; i < array_images.length; i++){
+          image_temp += '<div id="imageDiv_'+i+'_'+item.id+'" style="position: relative">\
+          <img id="image_'+i+'_'+item.id+'" src="'+array_images[i]+'" style="padding:5px;width:42px; height: 42px;cursor: pointer;margin-bottom: 5px;">\
+          <button onclick="deleteImage(\''+array_images[i]+'\','+item.id+','+i+')" style="position: absolute; top: 1px; right: 2px" type="button" class="close" aria-label="Close">\
+            <span aria-hidden="true">&times;</span>\
+          </button>\
+          </div>'
+        }
+      }
+      var count_images = array_images.length;
       $("#item-data").append(`<tr>
+      <input type="hidden" id="image_count_${item.id}" value="${count_images}">
       <td id=${item.id}>${item.id}</td>
       <td id="title_${item.id}">${item.title}</td>
       <td id="description_${item.id}">${item.description}</td>
       <td id="price_${item.id}">${item.price}</td>
+      <td>
+      <div style="display: flex;">
+        <div style="padding: 10px; display: flex;">
+                ${image_temp}
+        </div>
+      </div>
+      </td>
       <td><button onclick="buyItem(${item.id})" class="btn btn-primary">Buy</button></td>
       <td><button type="button" class="btn btn-warning itemEditModal" 
       data-toggle="modal" 
@@ -69,14 +91,48 @@ $.ajax(settings).done(function (response) {
   });
   
 }).fail(function (response) {
-        console.log("get user item list is Failed!");
+  console.log("get user item list is Failed!");
   swal({
       title: "Error!",
       text: "there is some error!",
       icon: "warning",
   });
 });
+document.getElementById('imageFile').onchange = function (event) {
+    images = [];
+    if (event.target.files && event.target.files[0]) {
+      var filesAmount = event.target.files.length;
+      console.log('filesAmount', filesAmount);
+      for (var i = 0; i < filesAmount; i++) {
+        var reader = new FileReader();
 
+        reader.onload = (event) => {
+          console.log('event.target.result....');
+          images.push(event.target.result);
+        }
+
+        reader.readAsDataURL(event.target.files[i]);
+      }
+    }
+  }
+
+document.getElementById('editimageFile').onchange = function (event) {
+  addImages = [];
+  if (event.target.files && event.target.files[0]) {
+    var filesAmount = event.target.files.length;
+    console.log('filesAmount', filesAmount);
+    for (var i = 0; i < filesAmount; i++) {
+      var reader = new FileReader();
+
+      reader.onload = (event) => {
+        console.log('event.target.result....');
+        addImages.push(event.target.result);
+      }
+
+      reader.readAsDataURL(event.target.files[i]);
+    }
+  }
+}  
 $("#additem").submit((event) => {
   event.preventDefault()
   // craete item
@@ -84,6 +140,9 @@ $("#additem").submit((event) => {
   item_form.append("title", $("#title").val())
   item_form.append("description", $("#description").val())
   item_form.append("price", $("#price").val())
+  var json_arr = JSON.stringify(images);
+  item_form.append("images", json_arr)
+
   var settings_add_item = {
     "async": true,
     "crossDomain": true,
@@ -92,18 +151,20 @@ $("#additem").submit((event) => {
     "type": "POST",
     "processData": false,
     "contentType": false,
-    "mimeType": "multipart/form-data",
+    // "mimeType": "multipart/form-data",
     "data": item_form,
     "headers": {
         "Authorization": localStorage.getItem("user-token")
     }
   };
+  console.log(images.length);
   $.ajax(settings_add_item).done(function (response) {
     // response = JSON.parse(response);
     console.log(response);
+    images = [];
     location.reload()
   }).fail(function (response) {
-          console.log("add item Failed!");
+          console.log(response,"add item Failed!");
     swal({
         title: "Error!",
         text: "Add Item is failed!",
@@ -125,6 +186,13 @@ $(document).on("click", ".itemEditModal", function () {
   $("[id='editPrice']").val(price);
   $("[id='editDescription']").val(description);
   $("[id='edit_id']").val(id);
+
+  var image_count = document.getElementById("image_count_"+id).value;
+  $("#imagesUpdateDisplay").empty();
+  for(var i = 0; i < image_count; i++){
+    var image_scr = $('#image_'+i+'_'+id+'').attr('src');
+    $("#imagesUpdateDisplay").append('<img src="'+image_scr+'" style="padding:5px;width:42px; height: 42px;cursor: pointer;">')
+  }
 });
 
 // send data
@@ -136,6 +204,8 @@ $("#edititem").submit((event) => {
   item_form.append("title", $("#editTitle").val())
   item_form.append("description", $("#editDescription").val())
   item_form.append("price", $("#editPrice").val())
+  var json_arr = JSON.stringify(addImages);
+  item_form.append("images", json_arr)
   var settings_add_item_update = {
     "async": true,
     "crossDomain": true,
@@ -169,6 +239,44 @@ $("#edititem").submit((event) => {
 });
 $("#body-row .collapse").collapse("hide");
 
+// delete image
+function deleteImage(imageURL,id,countNum){
+  var item_form = new FormData();
+  item_form.append("id", id)
+  item_form.append("imageURL", imageURL)
+  var settings_delete_item_image = {
+    "async": true,
+    "crossDomain": true,
+    "url": SERVER + 'store/deleteImage',
+    "method": "POST",
+    "type": "POST",
+    "processData": false,
+    "contentType": false,
+    "mimeType": "multipart/form-data",
+    "data": item_form,
+    "headers": {
+        "Authorization": localStorage.getItem("user-token")
+    }
+  };
+  $.ajax(settings_delete_item_image).done(function (response) {
+    // response = JSON.parse(response);
+    console.log(response);
+    // $( "#imageDiv_"+countNum+"_"+id+"").remove();
+    swal({
+      title: "Success",
+      text: "Image is deleted Successfully",
+      icon: "success",
+  });
+  location.reload()
+  }).fail(function (response) {
+    swal({
+        title: "Error!",
+        text: "Delete Image is failed!",
+        icon: "warning",
+    });
+  });
+}
+
 // Collapse/Expand icon
 //$('#collapse-icon').addClass('fa-angle-double-left');
 
@@ -191,18 +299,6 @@ if (SeparatorTitle.hasClass("d-flex")) {
 } else {
     SeparatorTitle.addClass("d-flex");
 }
-
-
-
-// var group_data = [
-// { class_id: "CLS1", group_name: "group1" },
-// { class_id: "CLS2", group_name: "group2" },
-// { class_id: "CLS3", group_name: "group3" },
-// ];
-// var system_users;
-// var system_students;
-// var all_students;
-        
 
 }
 

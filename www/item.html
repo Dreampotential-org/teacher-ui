@@ -118,6 +118,7 @@
                                 <th>Title</th>
                                 <th>Description</th>
                                 <th>Price</th>
+                                <th>Images</th>
                                 <th>Buy</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
@@ -215,7 +216,10 @@
                           placeholder="Price"
                         />
                       </div>
-
+                      <div class="form-group">
+                        <label for="image">Image</label>
+                        <input type="file" class="form-control" id="imageFile" name="imageFile" accept="application/image/*" multiple="" required/>
+                      </div>
                       <button
                         type="submit"
                         class="btn btn-primary float-right"
@@ -276,7 +280,11 @@
                           placeholder="Price"
                         />
                       </div>
-
+                      <div id="imagesUpdateDisplay"></div>
+                      <div class="form-group">
+                        <label for="image">Image</label>
+                        <input type="file" class="form-control" id="editimageFile" name="editImageFile" accept="application/image/*" multiple="" required/>
+                      </div>
                       <button
                         type="submit"
                         class="btn btn-primary float-right"
