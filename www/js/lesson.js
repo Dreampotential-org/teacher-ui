@@ -769,7 +769,7 @@ function sendUpdates() {
     if (MODE == "CREATE") {
 
         $.ajax({
-            "url": API_SERVER + "courses_api/lesson/create",
+            "url": API_SERVER + "/courses_api/lesson/create",
             'data': JSON.stringify(data_),
             'type': 'POST',
             'contentType': 'application/json',
@@ -779,6 +779,10 @@ function sendUpdates() {
                 var currentPathName = window.location.pathname;
                 window.location.replace(currentPathName + "?lesson_id=" + data.id)
                 alert("FlashCard Created!")
+            },
+            error: (err) => {	
+                alert("ERROR")
+                console.log("Create error",err)
             }
         })
 
@@ -944,6 +948,8 @@ $(document).ready(function () {
         const params = param.searchParams.get('params')
         const lesson_id = param.searchParams.get('lesson_id')
         var answer = $("#answer").val()
+        
+        if (params){
         $.ajax({	
             async: true,	
             crossDomain: true,	
@@ -974,7 +980,8 @@ $(document).ready(function () {
                     icon: "error"	
                 });	
             }	
-        })	
+        })
+    }	
     })
 
     $(document).on("click", ".remove_flashcard", function (e) {
