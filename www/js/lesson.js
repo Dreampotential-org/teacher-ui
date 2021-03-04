@@ -14,6 +14,8 @@ var sign_count = 0;
 var sortArray = [];
 var MODE;
 var pos = 0;
+
+
 window.addEventListener('DOMContentLoaded', init, false)
 
 var lesson_id = getParam('lesson_id');
@@ -188,10 +190,13 @@ function addQuestionChoices(isNew, id, question, choices, image, posU) {
 		$('#choices_' + question_choices_count)
 			.find('input')
 			.remove();
-		choices.split(',').forEach(function (choice) {
-			//console.log(choice)
+		// choices.split(',').forEach(function (choice) {
+		// 	//console.log(choice)
+		// 	addChoices(question_choices_count, choice);
+		// });
+        choices.map((choice) => {
 			addChoices(question_choices_count, choice);
-		});
+        })
 
 		// Display image
 		displayImage(image);
@@ -674,7 +679,7 @@ function sendUpdates() {
         position_me = $('input[name="question_' + i + '"]').parent().parent().data("position")
 
 
-        var choices = choices_array.toArray().join(",")
+        var choices = choices_array.toArray()
         var image = $('input[name="image_' + i + '"]').val()
         temp = {
             "lesson_type": "question_choices",
@@ -684,6 +689,7 @@ function sendUpdates() {
             "position": position_me
         }
         flashcards.push(temp)
+
     }
 
     for (var i = 0; i < question_checkboxes_count; i++) {
@@ -760,7 +766,7 @@ function sendUpdates() {
     if (MODE == "CREATE") {
 
         $.ajax({
-            "url": API_SERVER + "courses_api/lesson/create",
+            "url": SERVER + "courses_api/lesson/create",
             'data': JSON.stringify(data_),
             'type': 'POST',
             'contentType': 'application/json',
@@ -770,6 +776,10 @@ function sendUpdates() {
                 var currentPathName = window.location.pathname;
                 window.location.replace(currentPathName + "?lesson_id=" + data.id)
                 alert("FlashCard Created!")
+            },
+            error: (err) => {	
+                alert("ERROR")
+                console.log("Create error",err)
             }
         })
 
@@ -935,6 +945,8 @@ $(document).ready(function () {
         const params = param.searchParams.get('params')
         const lesson_id = param.searchParams.get('lesson_id')
         var answer = $("#answer").val()
+        
+        if (params){
         $.ajax({	
             async: true,	
             crossDomain: true,	
@@ -965,7 +977,8 @@ $(document).ready(function () {
                     icon: "error"	
                 });	
             }	
-        })	
+        })
+    }	
     })
 
     $(document).on("click", ".remove_flashcard", function (e) {

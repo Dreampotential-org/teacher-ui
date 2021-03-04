@@ -9,6 +9,8 @@ var sortArray = [];
 var MODE;
 var pos = 0;
 
+
+
 var lesson_id = getParam("lesson_id");
 
 function selectLesson() {
