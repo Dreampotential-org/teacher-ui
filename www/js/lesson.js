@@ -16,9 +16,6 @@ var MODE;
 var pos = 0;
 
 
-var API_SERVER = 'https://sfapp-api.dreamstate-4-all.org';
-// var API_SERVER ='http://localhost:8000';
-
 window.addEventListener('DOMContentLoaded', init, false)
 
 var lesson_id = getParam('lesson_id');
@@ -769,7 +766,7 @@ function sendUpdates() {
     if (MODE == "CREATE") {
 
         $.ajax({
-            "url": API_SERVER + "/courses_api/lesson/create",
+            "url": SERVER + "courses_api/lesson/create",
             'data': JSON.stringify(data_),
             'type': 'POST',
             'contentType': 'application/json',
