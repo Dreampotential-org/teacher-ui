@@ -23,7 +23,7 @@ function selectLesson() {
 }
 
 function getAllLessons() {
-  $.get(API_SERVER + "/courses_api/lesson/all", function (response) {
+  $.get(SERVER + "courses_api/lesson/all", function (response) {
     var lessons = response;
     lessons.forEach((lesson) => {
       var lesson_id = lesson.id;
@@ -208,7 +208,7 @@ function uploadFile(fileType) {
   var settings = {
     async: true,
     //            "crossDomain": true,
-    url: API_SERVER + "/s3_uploader/upload",
+    url: SERVER + "s3_uploader/upload",
     method: "POST",
     type: "POST",
     processData: false,
@@ -249,7 +249,7 @@ function uploadFile(fileType) {
       },
       async: true,
       crossDomain: true,
-      url: API_SERVER + "/s3_uploader/upload",
+      url: SERVER + "s3_uploader/upload",
       method: "POST",
       type: "POST",
       processData: false,
@@ -552,7 +552,7 @@ function sendUpdates() {
 
   if (MODE == "CREATE") {
     $.ajax({
-      url: API_SERVER + "/courses_api/lesson/create",
+      url: SERVER + "courses_api/lesson/create",
       data: JSON.stringify(data_),
       type: "POST",
       contentType: "application/json",
@@ -566,7 +566,7 @@ function sendUpdates() {
     });
   } else {
     $.ajax({
-      url: API_SERVER + "/courses_api/lesson/update/" + lesson_id + "/",
+      url: SERVER + "courses_api/lesson/update/" + lesson_id + "/",
       data: JSON.stringify(data_),
       type: "POST",
       contentType: "application/json",
@@ -585,7 +585,7 @@ $(document).ready(function () {
   }
   if (MODE == "UPDATE") {
     $.get(
-      API_SERVER + "/courses_api/lesson/read/" + lesson_id + "/",
+      SERVER + "courses_api/lesson/read/" + lesson_id + "/",
       function (response) {
         $("#lesson_responses").attr(
           "href",

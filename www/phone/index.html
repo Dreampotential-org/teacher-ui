@@ -30,8 +30,7 @@
         </div>
     </div>
     <script> 
-        window.SERVER = 'http://localhost:8000'
-        window.API_SERVER = 'https://sfapp-api.dreamstate-4-all.org'
+        window.SERVER = 'https://sfapp-api.dreamstate-4-all.org'
         var phone_number = '';
         var code ='';
         function verification_process(){
@@ -57,7 +56,7 @@
                     }
 
                     $.ajax({
-                        "url": API_SERVER +"/courses_api/confirm/phone",
+                        "url": SERVER +"/courses_api/confirm/phone",
                         'data': JSON.stringify(data_),
                         'type': 'POST',
                         'contentType': 'application/json',
@@ -88,7 +87,7 @@
                     }
 
                     $.ajax({
-                        "url": API_SERVER +"/courses_api/verify/phone",
+                        "url": SERVER +"/courses_api/verify/phone",
                         'data': JSON.stringify(data_),
                         'type': 'POST',
                         'contentType': 'application/json',

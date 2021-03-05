@@ -238,16 +238,16 @@
                                     <button onclick="goBack()" class="btn">
                                         <i class="fa fa-chevron-left"></i> Back
                                     </button>
-                                    <button onclick="goBack()" class="btn btn-danger float-right" id="showDelete">
+                                    <button class="btn btn-danger float-right" id="lessonDelete">
                                         <i class="fa fa-trash"></i> Delete
                                     </button>
                                 </div>
 
                                 <h2 class="text-center">
-                                    <b id="userTitle">Update Student</b>
+                                    <b id="userTitle">Update Lesson</b>
                                 </h2>
-
-                                <form class="pt-2 pt-3">
+                                
+                                <form class="pt-2 pt-3" id="upadetLesson">
                                     <div class="form-group">
                                         <label for="courseid">Couse Id</label>
                                         <input type="text" class="form-control" id="courseid" placeholder="Course Id"
@@ -259,28 +259,8 @@
                                         <input type="text" class="form-control" id="coursename"
                                             placeholder="Course Name" />
                                     </div>
-
-                                    <!-- <div class="form-group">
-                      <label for="ephone">Phone</label>
-                      <input
-                        type="phone"
-                        class="form-control"
-                        id="ephone"
-                        placeholder="Phone"
-                      />
-                    </div> -->
-
-                                    <!-- <div class="form-group">
-                      <label for="group-list">Select Group:</label>
-                      <select class="form-control">
-                        <option>group1</option>
-                        <option>group2</option>
-                        <option>group3</option>
-                      </select>
-                    </div> -->
-
-                                    <button type="button" class="btn btn-primary">
-                                        Submit
+                                    <button type="submit" class="btn btn-primary">
+                                        Update
                                     </button>
                                 </form>
                             </div>
@@ -560,7 +540,6 @@
                 headers: { "Authorization": `${localStorage.getItem('user-token')}` }
 
             }).done((questions) => {
-                console.log("dones")
                 questions.forEach((q) => {
                     let tempArray = [];
                     tempArray.courseid = q.id;
@@ -583,7 +562,7 @@
                     async: true,	
                     crossDomain: true,	
                     crossOrigin: true,	
-                    url: SERVER + "/students_list/get/class/",	
+                    url: SERVER + "students_list/get/class/",	
                     type: "GET",	
                     headers: {	
                         "Authorization": `${localStorage.getItem('user-token')}`	
@@ -595,7 +574,7 @@
                         async: true,	
                         crossDomain: true,	
                         crossOrigin: true,	
-                        url: SERVER + "/students_list/get/students/",	
+                        url: SERVER + "students_list/get/students/",	
                         type: "GET",	
                         headers: {	
                             "Authorization": `${localStorage.getItem('user-token')}`	
@@ -605,9 +584,7 @@
                     }).fail((err) => { alert('ERROR1') })
                 }).fail((fail) => { console.log(fail); alert('ERROR2'); })
             }).fail((err) => { 
-                console.log(err)
                 alert('ERROR') 
-                
             });
 
             $("#tabDiv").show();
@@ -615,6 +592,64 @@
             $(".div-go-back").hide();
             $("#systemUserDetail").hide();  
         });
+
+        $("#upadetLesson").submit((event) => {
+            event.preventDefault()
+            $.ajax({
+                url: SERVER + "courses_api/lesson/all",
+                async: true,
+                crossDomain: true,
+                crossOrigin: true,
+                type: "PUT",
+                data : {lesson_id :$("#courseid").val(), lesson_name : $("#coursename").val()},
+                headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+
+            }).done( () => {
+                    swal({	
+                        title: "Updated",	
+                        text: "You have successfully updated lesson name",	
+                        icon: "success",
+                        timer: 2000
+                    })
+                location.reload()
+            }).fail( (err) => {
+                    swal({	
+                        title: "Not Exist",	
+                        text: "somthing went wrong.",	
+                        icon: "error",	
+                        timer: 2000
+                    });	
+            })
+        })
+
+        $("#lessonDelete").click(() => {
+            $.ajax({
+                url: SERVER + "courses_api/lesson/all",
+                async: true,
+                crossDomain: true,
+                crossOrigin: true,
+                type: "DELETE",
+                data : {lesson_id :$("#courseid").val()},
+                headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+
+            }).done( () => {
+                swal({	
+                    title: "Deleted",	
+                    text: "You have successfully deleted lesson name",	
+                    icon: "success",
+                    timer: 2000
+                    })
+                location.reload()
+            }).fail( (err) => {
+                swal({	
+                    title: "Not Exist",	
+                    text: "somthing went wrong.",	
+                    icon: "error",	
+                    timer: 2000
+                    });	
+               console.log(err)
+            })
+        })
 
         $("#list").change(() => {	
             initValue = $("#list option:selected").val()	

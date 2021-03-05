@@ -57,7 +57,7 @@ $(document).ready(function() {
             error: function(err) {
                 swal({
                     title: "Error",
-                    text: err,
+                    text: err.responseJSON.msg,
                     icon: "error",
                 });
             },

@@ -27,7 +27,7 @@ function selectLesson() {
 
 function getAllLessons() {
     $.ajax({
-        url: API_SERVER + "courses_api/lesson/all",
+        url: SERVER + "courses_api/lesson/all",
         async: true,
         crossDomain: true,
         crossOrigin: true,
@@ -323,7 +323,7 @@ function uploadFile(fileType) {
 	var settings = {
 		async: true,
 		//            "crossDomain": true,
-		url: API_SERVER + '/s3_uploader/upload',
+		url: SERVER + 's3_uploader/upload',
 		method: 'POST',
 		type: 'POST',
 		processData: false,
@@ -366,7 +366,7 @@ function uploadFile(fileType) {
 			},
 			async: true,
 			crossDomain: true,
-			url: API_SERVER + '/s3_uploader/upload',
+			url: SERVER + 's3_uploader/upload',
 			method: 'POST',
 			type: 'POST',
 			processData: false,
@@ -786,7 +786,7 @@ function sendUpdates() {
     } else {
 
         $.ajax({
-            "url": API_SERVER + "courses_api/lesson/update/" + lesson_id + "/",
+            "url": SERVER + "courses_api/lesson/update/" + lesson_id + "/",
             'data': JSON.stringify(data_),
             'type': 'POST',
             'contentType': 'application/json',
@@ -809,7 +809,7 @@ $(document).ready(function () {
     const param = new URL(window.location.href)
     const params = param.searchParams.get('params')
     if (MODE == "UPDATE") {
-        $.get(API_SERVER + 'courses_api/lesson/read/' +
+        $.get(SERVER + 'courses_api/lesson/read/' +
               lesson_id + '/', function (response) {
             if(params){
                 $("#lesson_slide").attr(
