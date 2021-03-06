@@ -810,7 +810,7 @@ $(document).ready(function () {
     const params = param.searchParams.get('params')
     if (MODE == "UPDATE") {
         $.get(SERVER + 'courses_api/lesson/read/' +
-              lesson_id + '/', function (response) {
+              lesson_id, function (response) {
             if(params){
                 $("#lesson_slide").attr(
                     "href", `/slide.html?lesson_id=${lesson_id}&params=${params}`)
