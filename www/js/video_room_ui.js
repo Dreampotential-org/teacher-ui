@@ -6,6 +6,8 @@
     document.getElementById("form-channel").value = url.searchParams.get("channel");
   }
  }
+
+
 function enableUiControls(localStream) {
 
     $("#mic-btn").prop("disabled", false);
