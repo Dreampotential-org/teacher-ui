@@ -1,3 +1,5 @@
+
+
 var passwordResetToken = getParam("token");
 var userToken = localStorage.getItem("user-token");
 window.addEventListener('DOMContentLoaded', init, false)
@@ -37,7 +39,7 @@ $(document).ready(function() {
             data: $(this).serialize(),
             success: function(response) {
                 // Whatever you want to do after the form is successfully submitted
-                console.log(response);
+                console.log(response);  
                 loginResponse = response;
                 localStorage.setItem("user-token", response.token);
 
@@ -55,7 +57,7 @@ $(document).ready(function() {
             error: function(err) {
                 swal({
                     title: "Error",
-                    text: "Username is already exists",
+                    text: err.responseJSON.msg,
                     icon: "error",
                 });
             },

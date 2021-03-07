@@ -105,13 +105,13 @@ function nextSlide(){
     console.log(data_)
 
     $.ajax({
-        "url": API_SERVER +"courses_api/flashcard/response/",
+        "url": SERVER +"courses_api/flashcard/response/",
         'data': JSON.stringify(data_),
         'type': 'POST',
         'contentType': 'application/json',
         'success': function (data){
             $.ajax({
-                "url": API_SERVER + 'courses_api/session/event/' + flashcard_id + '/' + sessionId + '/',
+                "url": SERVER + 'courses_api/session/event/' + flashcard_id + '/' + sessionId + '/',
                 "data": JSON.stringify(da_),
                 "type": 'POST',
                 "contentType": 'application/json',
@@ -157,7 +157,7 @@ function get_session() {
         return session_id
     }
     console.log("Generate new session")
-    $.get(API_SERVER + 'courses_api/session/get', function (resp) {
+    $.get(SERVER + 'courses_api/session/get', function (resp) {
         console.log(resp)
         localStorage.setItem("session_id", resp.session_id)
     })
@@ -170,7 +170,7 @@ function init() {
     $("#progress-section").hide();
     var lesson_id = getParam("lesson_id");
 
-    $.get(API_SERVER + 'courses_api/lesson/read/' + lesson_id,
+    $.get(SERVER + 'courses_api/lesson/read/' + lesson_id,
           function (response) {
 
         get_session();
@@ -200,6 +200,7 @@ function init() {
             } else {
                 className = "item"
             }
+            document.getElementById("lesson_title").innerHTML = (flashcard.lesson_type)
             $("#carousel-indicators").append(
                 '<li data-target="#myCarousel" data-slide-to="'+i+'" class="active"></li>')
             if(flashcard.lesson_type == "quick_read"){
@@ -303,7 +304,7 @@ function init() {
 
 
         $("#theSlide").append('<div class="item"><div alt="quick_read" style="height:500px"><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1></div></div>')
-        $.get(API_SERVER+'/courses_api/lesson/response/get/'+lesson_id+'/'+localStorage.getItem("session_id"),function(response) {
+        $.get(SERVER+'courses_api/lesson/response/get/'+lesson_id+'/'+localStorage.getItem("session_id"),function(response) {
             response.forEach(function(rf){
                 loaded_flashcards.forEach(function(f,i){
                     if(rf.flashcard[0].id == f.id){
@@ -332,7 +333,7 @@ function init() {
                 })
             })
         })
-    })
+    }).done((res) => console.log("Invitaion res",res)).fail((err) => console.log("Invitation err",err))
 }
 
 

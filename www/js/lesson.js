@@ -14,6 +14,8 @@ var sign_count = 0;
 var sortArray = [];
 var MODE;
 var pos = 0;
+
+
 window.addEventListener('DOMContentLoaded', init, false)
 
 var lesson_id = getParam('lesson_id');
@@ -25,7 +27,7 @@ function selectLesson() {
 
 function getAllLessons() {
     $.ajax({
-        url: API_SERVER + "courses_api/lesson/all",
+        url: SERVER + "courses_api/lesson/all",
         async: true,
         crossDomain: true,
         crossOrigin: true,
@@ -68,6 +70,8 @@ function addCheckboxes(id, value) {
 			.children()
 			.last()
 			.data('id') + 1;
+            alert(next_id)
+
 	$('#checkboxes_' + id).append(
 		'<div><input type="text" class="form-control" data-id="' +
 			next_id +
@@ -186,10 +190,13 @@ function addQuestionChoices(isNew, id, question, choices, image, posU) {
 		$('#choices_' + question_choices_count)
 			.find('input')
 			.remove();
-		choices.split(',').forEach(function (choice) {
-			//console.log(choice)
+		// choices.split(',').forEach(function (choice) {
+		// 	//console.log(choice)
+		// 	addChoices(question_choices_count, choice);
+		// });
+        choices.map((choice) => {
 			addChoices(question_choices_count, choice);
-		});
+        })
 
 		// Display image
 		displayImage(image);
@@ -213,7 +220,7 @@ function addQuestionCheckboxes(isNew, id, question, choices, image, posU) {
 		.find('input')
 		.first()
         .attr('name', 'question_checkboxes_question_' + question_checkboxes_count);
-        if(question_choices_count ==0){
+        if(question_checkboxes_count ==0){
             $('#question_checkboxes')
             .find('#checkboxes')
             .attr('id', 'checkboxes_' + question_checkboxes_count);
@@ -232,7 +239,7 @@ function addQuestionCheckboxes(isNew, id, question, choices, image, posU) {
         .find('button')
         .last()
 		.attr('onclick', 'addCheckboxes(' + question_checkboxes_count + ')');
-        let tempQC = $("#question_checkboxes").html()
+        let tempQ = $("#question_checkboxes").html()
 
 	if (!isNew) {
 		$('#question_checkboxes').find('input').first().attr('value', question);
@@ -258,7 +265,8 @@ function addQuestionCheckboxes(isNew, id, question, choices, image, posU) {
 	$('#sortable').append($('#question_checkboxes').html());
     sortablePositionFunction(isNew, posU);
     question_checkboxes_count++;
-    $("#question_checkboxes").html(tempQC)
+    alert(question_checkboxes_count)
+    $("#question_checkboxes").html(tempQ)
 
 }
 
@@ -315,7 +323,7 @@ function uploadFile(fileType) {
 	var settings = {
 		async: true,
 		//            "crossDomain": true,
-		url: API_SERVER + '/s3_uploader/upload',
+		url: SERVER + 's3_uploader/upload',
 		method: 'POST',
 		type: 'POST',
 		processData: false,
@@ -358,7 +366,7 @@ function uploadFile(fileType) {
 			},
 			async: true,
 			crossDomain: true,
-			url: API_SERVER + '/s3_uploader/upload',
+			url: SERVER + 's3_uploader/upload',
 			method: 'POST',
 			type: 'POST',
 			processData: false,
@@ -671,7 +679,7 @@ function sendUpdates() {
         position_me = $('input[name="question_' + i + '"]').parent().parent().data("position")
 
 
-        var choices = choices_array.toArray().join(",")
+        var choices = choices_array.toArray()
         var image = $('input[name="image_' + i + '"]').val()
         temp = {
             "lesson_type": "question_choices",
@@ -681,6 +689,7 @@ function sendUpdates() {
             "position": position_me
         }
         flashcards.push(temp)
+
     }
 
     for (var i = 0; i < question_checkboxes_count; i++) {
@@ -757,7 +766,7 @@ function sendUpdates() {
     if (MODE == "CREATE") {
 
         $.ajax({
-            "url": API_SERVER + "courses_api/lesson/create",
+            "url": SERVER + "courses_api/lesson/create",
             'data': JSON.stringify(data_),
             'type': 'POST',
             'contentType': 'application/json',
@@ -767,13 +776,17 @@ function sendUpdates() {
                 var currentPathName = window.location.pathname;
                 window.location.replace(currentPathName + "?lesson_id=" + data.id)
                 alert("FlashCard Created!")
+            },
+            error: (err) => {	
+                alert("ERROR")
+                console.log("Create error",err)
             }
         })
 
     } else {
 
         $.ajax({
-            "url": API_SERVER + "courses_api/lesson/update/" + lesson_id + "/",
+            "url": SERVER + "courses_api/lesson/update/" + lesson_id + "/",
             'data': JSON.stringify(data_),
             'type': 'POST',
             'contentType': 'application/json',
@@ -796,8 +809,8 @@ $(document).ready(function () {
     const param = new URL(window.location.href)
     const params = param.searchParams.get('params')
     if (MODE == "UPDATE") {
-        $.get(API_SERVER + 'courses_api/lesson/read/' +
-              lesson_id + '/', function (response) {
+        $.get(SERVER + 'courses_api/lesson/read/' +
+              lesson_id, function (response) {
             if(params){
                 $("#lesson_slide").attr(
                     "href", `/slide.html?lesson_id=${lesson_id}&params=${params}`)
@@ -932,6 +945,8 @@ $(document).ready(function () {
         const params = param.searchParams.get('params')
         const lesson_id = param.searchParams.get('lesson_id')
         var answer = $("#answer").val()
+        
+        if (params){
         $.ajax({	
             async: true,	
             crossDomain: true,	
@@ -962,7 +977,8 @@ $(document).ready(function () {
                     icon: "error"	
                 });	
             }	
-        })	
+        })
+    }	
     })
 
     $(document).on("click", ".remove_flashcard", function (e) {
