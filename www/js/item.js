@@ -26,6 +26,7 @@ $("#page-header").load("header.html");
 $("#tabDiv").show();
 $("#systemUserDetail").hide();
 $("#buyItem").hide();
+$("#NeighbourDiv").hide();
 // console.log("ajax call started");
 // var SERVER = 'http://127.0.0.1:8000/';
 var images = [];
@@ -342,7 +343,92 @@ function deleteItem(id){
           }
       })
 }
+// all item with neighbours
+function neighbourhoodItems(){
+  $("#tabDiv").hide();
+  $("#systemUserDetail").hide();
+  $("#buyItem").hide();
+  $("#NeighbourDiv").show();
+  // console.log("ajax call started");
+  // var SERVER = 'http://127.0.0.1:8000/';
 
+  var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": SERVER + 'store/TeacherUIItemsNeighbourhood',
+    "method": "GET",
+    "type": "GET",
+    "processData": false,
+    "contentType": false,
+    // "mimeType": "multipart/form-data",
+    // "data": form,
+    "headers": {
+        "Authorization": localStorage.getItem("user-token")
+    }
+  };
+  $.ajax(settings).done(function (response) {
+    // response = JSON.parse(response);
+    console.log(response.profile);
+    if(response.profile == true){
+      $("#Neighbour_item-data").empty();
+      var data = JSON.parse(response.data);
+      console.log(data);
+      data.forEach((item,i) => {
+        console.log(item.fields,i);
+        var image_temp = '';
+        var array_images = []
+        if(item.fields.images != '' && item.fields.images != null){
+          array_images = item.fields.images.split(',');
+          for(var i = 0; i < array_images.length; i++){
+            image_temp += '<div id="imageDiv_'+i+'_'+item.pk+'" style="position: relative">\
+            <img id="image_'+i+'_'+item.pk+'" src="'+array_images[i]+'" style="padding:5px;width:42px; height: 42px;cursor: pointer;margin-bottom: 5px;">\
+            </div>'
+          }
+        }
+        var count_images = array_images.length;
+        $("#Neighbour_item-data").append(`<tr>
+        <input type="hidden" id="image_count_${item.pk}" value="${count_images}">
+        <td id=${item.pk}>${item.pk}</td>
+        <td id="title_${item.pk}">${item.fields.title}</td>
+        <td id="description_${item.pk}">${item.fields.description}</td>
+        <td id="price_${item.pk}">${item.fields.price}</td>
+        <td>
+        <div style="display: flex;">
+          <div style="padding: 10px; display: flex;">
+                  ${image_temp}
+          </div>
+        </div>
+        </td>
+        <td><button onclick="buyItem(${item.pk})" class="btn btn-primary">Buy</button></td>
+        </tr>`);
+    })
+    $('#Neighbour_item_data_table').DataTable({
+    "paging": true,
+    "pageLength": 5 // false to disable pagination (or any other option)
+    });
+  }else{
+    console.log(response,"item do not have user with profile");
+    swal({
+        title: "Error!",
+        text: "This user do not have Profile!",
+        icon: "warning",
+    });
+  }  
+  }).fail(function (response) {
+    console.log(response,"get Item list is Failed!");
+    swal({
+        title: "Error!",
+        text: "there is some error!",
+        icon: "warning",
+    });
+  });
+}
+function usersitems(){
+  $("#tabDiv").show();
+  $("#systemUserDetail").hide();
+  $("#buyItem").hide();
+  $("#NeighbourDiv").hide();
+}
 function buyItem(id){
   var settings_buy_item = {
     "async": true,
@@ -361,6 +447,7 @@ function buyItem(id){
   $.ajax(settings_buy_item).done(function (response) {
     $("#buyItem").show();
     $("#tabDiv").hide();
+    $("#NeighbourDiv").hide();
     // window.location.href="http://localhost:8086/checkout.html";
     console.log(response.title);
     $("[id='itemTitle']").html(response.title);
@@ -393,7 +480,6 @@ function buyItem(id){
             // form.submit();
             // event.preventDefault()
             // update item
-            // alert($("#nonce").val())
             var order_form = new FormData();
             order_form.append("id", $("#item_ID").val())
             order_form.append("title", $("#itemTitle").text())
@@ -460,4 +546,5 @@ function buyItem(id){
         icon: "warning",
     });
   });
+
 }
