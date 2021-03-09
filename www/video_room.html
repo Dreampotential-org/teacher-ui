@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
-	<body>
+	<body onload="getChannel()">
         <nav class="navbar navbar-light bg-primary">
             <button class="btn btn-info btn-sm mx-2" onclick="window.location.href=('/student_dashboard.html')">Go back</button>
             <h1 class="mx-auto text-light">Video Room</h1>
@@ -28,32 +28,36 @@
 						<div id="local-video" class="col p-0"></div>
 					</div>
 				</div>
-                <div class="row mx-auto bg-transparent">
-                    <div class="col-3 mt-3">
-                        <button id="screen-share-btn"  type="button" class="btn btn-primary btn-lg">
-                            <i id="screen-share-icon" class="fas fa-desktop"></i>
-                        </button>
-                    </div>
-                    <div class="col-9 mt-3 ">
-                        <div class="row mx-auto">
-                            <div class="col-4 text-center">
-                                <button id="mic-btn" type="button" class="btn btn-block btn-dark btn-lg">
-                                    <i id="mic-icon" class="fas fa-microphone"></i>
-                                </button>
-                            </div>
-                            <div class="col-4 text-center">
-                                <button id="video-btn"  type="button" class="btn btn-block btn-dark btn-lg">
-                                    <i id="video-icon" class="fas fa-video"></i>
-                                </button>
-                            </div>
-                            <div class="col-4 text-center">
-                                <button id="exit-btn"  type="button" class="btn btn-block btn-danger btn-lg">
-                                    <i id="exit-icon" class="fas fa-phone-slash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          <div class="row mx-auto bg-transparent">
+              <div class="col-6 mt-3">
+                  <button id="screen-share-btn"  type="button" class="btn btn-primary btn-lg my-2">
+                      <i id="screen-share-icon" class="fas fa-desktop"></i>
+                  </button>
+                  <button id="room-link"  class="btn btn-info my-2" onclick="copyElementText('link')">
+                    copy room link <span id="link" style="display: none;"></span>
+                  </button>
+              </div>
+              
+              <div class="col-6 mt-3 ">
+                  <div class="row justify-content-end">
+                      <div class="col-sm-3 my-2">
+                          <button id="mic-btn" type="button" class="btn btn-block btn-dark btn-lg">
+                              <i id="mic-icon" class="fas fa-microphone"></i>
+                          </button>
+                      </div>
+                      <div class="col-sm-3 my-2">
+                          <button id="video-btn"  type="button" class="btn btn-block btn-dark btn-lg">
+                              <i id="video-icon" class="fas fa-video"></i>
+                          </button>
+                      </div>
+                      <div class="col-sm-3 my-2">
+                          <button id="exit-btn"  type="button" class="btn btn-block btn-danger btn-lg">
+                              <i id="exit-icon" class="fas fa-phone-slash"></i>
+                          </button>
+                      </div>
+                  </div>
+              </div>
+          </div>
 			</div>
 		</div>
     <div class="modal fade" id="modalForm">
@@ -67,12 +71,12 @@
           </div>
           <div class="modal-body mx-3">
             <div class="md-form mb-4">
-              <input type="text" id="form-channel" class="form-control" placeholder="channel">
               <label for="form-channel">Channel</label>
+              <input type="text" id="form-channel" class="form-control" placeholder="channel">
             </div>
             <div class="md-form mb-4">
-              <input type="text" id="form-uid" class="form-control" placeholder="name" data-decimals="0"/>
               <label for="form-uid">Name</label>
+              <input type="text" id="form-uid" class="form-control" placeholder="name" data-decimals="0"/>
             </div>
           </div>
           <div class="modal-footer d-flex justify-content-center">
@@ -108,6 +112,20 @@
 			initClientAndJoinChannel(channel, uid);
 		});
 	</script>
+  <script>
+     // copy room link
+    function copyElementText(id) {
+      var text = document.getElementById(id).innerText;
+      var elem = document.createElement("textarea");
+      document.body.appendChild(elem);
+      elem.value = text;
+      elem.select();
+      document.execCommand("copy");
+      document.body.removeChild(elem);
+      alert("link copied!");
+  }
+
+  </script>
 	<script src="./js/video_room_ui.js"></script>
 	<script src="./js/video_room_agora_interface.js"></script>
 </html>

@@ -1,4 +1,13 @@
 // UI buttons
+ // set the channel to the input area on load
+ function getChannel(){
+  var url = new URL(window.location.href);
+  if(url.searchParams.get("channel")){
+    document.getElementById("form-channel").value = url.searchParams.get("channel");
+  }
+ }
+
+
 function enableUiControls(localStream) {
 
     $("#mic-btn").prop("disabled", false);

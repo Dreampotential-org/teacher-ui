@@ -44,6 +44,7 @@ function initClientAndJoinChannel(channel, uid) {
         localStorage.setItem("app_id", response.app_id);
         localStorage.setItem("token", response.token);
         localStorage.setItem("channel", channel);
+        
 
         // initialize sdk when we received response
         client.init(response.app_id, function () {
@@ -155,9 +156,14 @@ client.on("unmute-video", function (evt) {
 // join a channel
 function joinChannel(channelName, uid, token) {
   client.join(token, channelName, uid ? uid : null, function(uid) {
+
       console.log("User " + uid + " join channel successfully");
       createCameraStream(uid);
       localStreams.camera.id = uid; // keep track of the stream uid 
+     
+      // set call room link
+      document.getElementById("link").innerText = location.protocol + '//' + location.host + location.pathname + "?channel=" + channelName;
+                   
   }, function(err) {
       console.log("[ERROR] : join channel failed", err);
   });
@@ -318,6 +324,8 @@ function leaveChannel() {
     localStorage.removeItem("channel");
 
     console.log("client leaves channel");
+
+    document.getElementById("link").innerText = "";
 
     localStreams.camera.stream.stop() // stop the camera stream playback
     client.unpublish(localStreams.camera.stream); // unpublish the camera stream
