@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>SF Social Service</title>
+    <title>Teacher Portal</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
@@ -101,6 +101,17 @@
                   </thead>
                   <tbody id="body-data"></tbody>
                 </table>
+                <div id="placesLoader" class="d-flex justify-content-center">
+                  <svg style="height: auto; width: 120px;" version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="25 25 50 50">
+                  <circle cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke="#132644" stroke-linecap="round" stroke-dashoffset="0" stroke-dasharray="100, 200">
+                    <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 50 50" to="360 50 50" dur="2.5s" repeatCount="indefinite"/>
+                    <animate attributeName="stroke-dashoffset" values="0;-30;-124" dur="1.25s" repeatCount="indefinite"/>
+                    <animate attributeName="stroke-dasharray" values="0,200;110,200;110,200" dur="1.25s" repeatCount="indefinite"/>
+                  </circle>
+                </svg>
+              </div>
               </div>
             </div>
             <div id="showEditForm" style="display: none" class="pt-3">
@@ -284,7 +295,7 @@
                         <td><button onclick="edit('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
                         </tr>`);
           });
-
+          $('#placesLoader').remove();
           $("#placeTable").DataTable();
         });
       });

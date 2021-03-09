@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Basic Communication</title>
+  <link rel="stylesheet" href="./css/common.css" />
+</head>
+<body class="agora-theme" onload="getChannel()">
+  <div class="navbar-fixed">
+    <nav class="agora-navbar">
+      <div class="nav-wrapper agora-primary-bg valign-wrapper">
+        <button class="btn btn-raised btn-light waves-effect waves-light" onclick="window.location.href=('/student_dashboard.html')">go back</button>
+        <h5>Audio Room</h5>
+      </div>
+    </nav>
+  </div>
+  <form id="form" class="container-fluid">
+    <div class="row">
+      <div class="col l5 m6 s12" style="min-width: 433px; max-width: 443px">
+        <div class="card" style="margin-top: 0px; margin-bottom: 0px;">
+          <div class="row card-content" style="margin-bottom: 0px;">
+              <div class="input-field">
+                <label for="channel" class="active">Channel</label>
+                <input type="text" id="channel" placeholder="channel" name="channel">
+              </div>
+              <div class="input-field">
+                <label for="UID" class="active">Name</label>
+                <input type="text" placeholder="Name" name="uid">
+              </div>
+              <div class="row" style="margin: 0">
+                <div class="col s12">
+                <button class="btn btn-raised btn-primary waves-effect waves-light" id="join">JOIN</button>
+                <button class="btn btn-raised btn-primary waves-effect waves-light" id="leave">LEAVE</button>
+                <button class="btn btn-raised grey waves-effect waves-light" id="publish">UNMUTE</button>
+                <button class="btn btn-raised red waves-effect waves-light" id="unpublish">MUTE</button>
+                </div>
+              </div>
+          </div>
+        </div>
+        <ul class="collapsible card agora-secondary-border" style="margin-top: .4rem; border: 1px ">
+          <li>
+            <div class="collapsible-header agora-secondary-bg">
+              <h8 class="center-align">ADVANCED SETTINGS</h8>
+            </div>
+            <div class="collapsible-body card-content">
+              <div class="row">
+                <div class="col s12">
+                 
+                  <div class="input-field">
+                    <label for="microphoneId" class="active">MICROPHONE</label>
+                    <select name="microphoneId" id="microphoneId"></select>
+                  </div>
+                  <div class="row col s12">
+                    <div class="row">
+                      <label for="mode" class="active">MODE</label>
+                    </div>
+                    <div class="row">
+                      <label>
+                        <input type="radio" class="with-gap" name="mode" value="live" checked />
+                        <span>live</span>
+                      </label>
+
+                      <label>
+                        <input type="radio" class="with-gap" name="mode" value="rtc" />
+                        <span>rtc</span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="row col s12">
+                    <div class="row">
+                      <label for="codec" class="active">CODEC</label>
+                    </div>
+                    <div class="row">
+                      <label>
+                        <input type="radio" class="with-gap" name="codec" value="h264" checked />
+                        <span>h264</span>
+                      </label>
+
+                      <label>
+                        <input type="radio" class="with-gap" name="codec" value="vp8" />
+                        <span>vp8</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </li>
+        </ul>
+        <div class="input-field">
+          <label for="room-link" class="active">Room link</label>
+          <p id="room-link" style="font-size: large;" onclick="copyElementText(this.id)"></p>
+        </div>
+      </div>
+      <div class="col l7 m6 s12">
+        <div class="video-grid hide" id="video">
+          <div class="video-view">
+            <div id="local_stream" class="video-placeholder"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</body>
+  <script src="./js/jquery.min.js"></script>
+  <script src="./js/materialize.min.js"></script>
+  <script src="./js/AgoraRTCSDK-3.4.0.js"></script>
+  <script src="./js/call_room.js"></script>
+</html>
