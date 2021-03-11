@@ -483,11 +483,12 @@
         }
 
         function editSystemUser(i) {
-            $("#tabDiv").hide();
-            $("#systemUserDetail").show();
+            location.href = 'lesson.html?lesson_id='+i;
+            // $("#tabDiv").hide();
+            // $("#systemUserDetail").show();
 
-            $("#courseid").val(user_lessons[i].courseid);
-            $("#coursename").val(user_lessons[i].coursename);
+            // $("#courseid").val(user_lessons[i].courseid);
+            // $("#coursename").val(user_lessons[i].coursename);
         }
 
         function goBack() {
@@ -553,7 +554,7 @@
                     $("#users-data").append(`<tr>
                         <td>${item.courseid}</td>
                         <td>${item.coursename}</td>
-                        <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
+                        <td><button onclick="editSystemUser('${item.courseid}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
                           <button onclick="openStudentLesson('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-eye"></i></button>
                           <button onclick="on('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-user-plus"></i></button></td>
                         </tr>`);
