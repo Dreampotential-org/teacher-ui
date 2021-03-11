@@ -44,6 +44,12 @@ function nextSlide(){
         completed = false;
     } else {
         completed = true;
+        swal({	
+            title: "Submitted",	
+            text: "You have successfully completed the lesson. Thank you.",	
+            icon: "success",
+            timer: 2000
+        })
     }
     
     updateProgressBar()

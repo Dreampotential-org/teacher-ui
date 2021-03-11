@@ -70,7 +70,6 @@ function addCheckboxes(id, value) {
 			.children()
 			.last()
 			.data('id') + 1;
-            alert(next_id)
 
 	$('#checkboxes_' + id).append(
 		'<div><input type="text" class="form-control" data-id="' +
@@ -268,7 +267,6 @@ function addQuestionCheckboxes(isNew, id, question, choices, image, posU) {
 	$('#sortable').append($('#question_checkboxes').html());
     sortablePositionFunction(isNew, posU);
     question_checkboxes_count++;
-    alert(question_checkboxes_count)
     $("#question_checkboxes").html(tempQ)
 
 }
@@ -778,11 +776,19 @@ function sendUpdates() {
                 //console.log(data.id)
                 var currentPathName = window.location.pathname;
                 window.location.replace(currentPathName + "?lesson_id=" + data.id)
-                alert("FlashCard Created!")
+                swal({	
+                    title: "Lesson Created",	
+                    text: "You have successfully created a lesson",	
+                    icon: "success",
+                    timer: 2000
+                })
             },
             error: (err) => {	
-                alert("ERROR")
-                console.log("Create error",err)
+                swal({	
+                    title: "Error Creating Lesson",	
+                    text: err,	
+                    icon: "error"	
+                });	
             }
         })
 
@@ -794,8 +800,12 @@ function sendUpdates() {
             'type': 'POST',
             'contentType': 'application/json',
             'success': function (data) {
-                alert("FlashCard Updated!")
-            }
+                swal({	
+                    title: "Lesson Updated",	
+                    text: "You have updated created a lesson",	
+                    icon: "success",
+                    timer: 2000
+                })            }
         })
     }
 }
@@ -985,37 +995,50 @@ $(document).ready(function () {
     })
 
     $(document).on("click", ".remove_flashcard", function (e) {
-        if (confirm("Are you sure you want to delete")) {
-            var lesson_element_type = $(e.target).parent().parent().children().last().children().attr("name")
-            //console.log(lesson_element_type)
-            pos--;
-            if (lesson_element_type.startsWith("speed_read")) {
-                quick_read_count--;
-            } else if (lesson_element_type.startsWith("text")) {
-                title_text_count--;
-            } else if (lesson_element_type.startsWith("question")) {
-                question_choices_count--
-            } else if (lesson_element_type.startsWith("link")) {
-                iframe_link_count--
-            } else if (lesson_element_type.startsWith("video")) {
-                video_file_count--
-            } else if (lesson_element_type.startsWith("image")) {
-                image_file_count--
-            }else if (lesson_element_type.startsWith("title_textarea")) {
-                title_textarea_count--
-            }else if (lesson_element_type.startsWith("title_input")) {
-                title_input_count--
-            } else if (lesson_element_type.startsWith("sign_b64")) {
-                sign_count--
-            } else if (lesson_element_type.startsWith("brain_tree")) {
-                braintree_count--
-            }else if (lesson_element_type.startsWith("question_checkboxes")) {
-                question_checkboxes_count--
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          },function(isConfirm) {
+            if (isConfirm) {
+                var lesson_element_type = $(e.target).parent().parent().children().last().children().attr("name")
+                //console.log(lesson_element_type)
+                pos--;
+                if (lesson_element_type.startsWith("speed_read")) {
+                    quick_read_count--;
+                } else if (lesson_element_type.startsWith("text")) {
+                    title_text_count--;
+                } else if (lesson_element_type.startsWith("question")) {
+                    question_choices_count--
+                } else if (lesson_element_type.startsWith("link")) {
+                    iframe_link_count--
+                } else if (lesson_element_type.startsWith("video")) {
+                    video_file_count--
+                } else if (lesson_element_type.startsWith("image")) {
+                    image_file_count--
+                }else if (lesson_element_type.startsWith("title_textarea")) {
+                    title_textarea_count--
+                }else if (lesson_element_type.startsWith("title_input")) {
+                    title_input_count--
+                } else if (lesson_element_type.startsWith("sign_b64")) {
+                    sign_count--
+                } else if (lesson_element_type.startsWith("brain_tree")) {
+                    braintree_count--
+                }else if (lesson_element_type.startsWith("question_checkboxes")) {
+                    question_checkboxes_count--
+                }
+                //console.log(lesson_element_type)
+                $(e.target).parent().parent().remove()
+                sortablePositionFunction();
+            } else {
+              swal("Cancelled", "Your imaginary file is safe :)", "error");
             }
-            //console.log(lesson_element_type)
-            $(e.target).parent().parent().remove()
-            sortablePositionFunction();
-        }
+          })
+
     });
 
     $('#add').click(function (e) {
@@ -1076,7 +1099,11 @@ $(document).ready(function () {
         }
         if ($("#selectsegment").val() == 'select_type')
         {
-            alert("Please select a type");
-        }
+            swal({	
+                title: "Please select a type",	
+                text: "Select a flashcard type to add to the lesson.",	
+                icon: "error",
+                timer: 2000
+            })        }
     })
 })
