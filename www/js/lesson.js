@@ -215,9 +215,7 @@ function addQuestionChoices(isNew, id, question, choices, image, posU) {
 }
 
 
-function addQuestionCheckboxes(isNew, id, question, choices, image, posU) {
-    console.log("Adding question checkboxes")
-
+function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
 	$('#question_checkboxes')
 		.find('input')
 		.first()
@@ -252,7 +250,7 @@ function addQuestionCheckboxes(isNew, id, question, choices, image, posU) {
 		$('#checkboxes_' + question_checkboxes_count)
 			.find('input')
 			.remove();
-		choices.split(',').forEach(function (choice) {
+		options.map((choice) => {
 			//console.log(choice)
 			addCheckboxes(question_checkboxes_count, choice);
 		});

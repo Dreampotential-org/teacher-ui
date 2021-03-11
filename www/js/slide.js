@@ -111,7 +111,7 @@ function nextSlide(){
     console.log(data_)
 
     $.ajax({
-        "url": SERVER +"courses_api/flashcard/response/",
+        "url": SERVER +"/courses_api/flashcard/response/",
         'data': JSON.stringify(data_),
         'type': 'POST',
         'contentType': 'application/json',
@@ -312,7 +312,7 @@ function init() {
 
 
         $("#theSlide").append('<div class="item"><div alt="quick_read" style="height:500px"><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1></div></div>')
-        $.get(SERVER+'courses_api/lesson/response/get/'+lesson_id+'/'+localStorage.getItem("session_id"),function(response) {
+        $.get(SERVER+'/courses_api/lesson/response/get/'+lesson_id+'/'+localStorage.getItem("session_id"),function(response) {
             response.forEach(function(rf){
                 loaded_flashcards.forEach(function(f,i){
                     if(rf.flashcard[0].id == f.id){
