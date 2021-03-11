@@ -261,7 +261,7 @@ function init() {
             }
 
             if(flashcard.lesson_type == "iframe_link"){
-                $("#theSlide").append('<div class="'+className+'"><div alt="title_text" style="height:500px"><h1> '+flashcard.question+'</h1><iframe src= "'+flashcard.image+'"></iframe></div></div>')
+                $("#theSlide").append('<div class="'+className+'"><div alt="iframe_link" class="iframe_div"><h1> '+flashcard.question+'</h1><iframe  class="iframe_screen" src= "'+flashcard.image+'"></iframe></div></div>')
             }
             if(flashcard.lesson_type == "video_file"){
                 $("#theSlide").append('<div class="'+className+'"><div alt="title_text" style="height:500px"><h1> '+flashcard.question+'</h1><video style="height:500px;width:1000px"; controls> <source src= "'+flashcard.image+'"></video></div></div>')
