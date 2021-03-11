@@ -7,7 +7,6 @@ $.ajaxSetup({
         }
     }
 });
-
 function get_users() {
     get_user_list(function(users) {
         for (var user of users) {

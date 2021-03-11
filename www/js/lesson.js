@@ -193,8 +193,11 @@ function addQuestionChoices(isNew, id, question, choices, image, posU) {
 		// choices.split(',').forEach(function (choice) {
 		// 	//console.log(choice)
 		// 	addChoices(question_choices_count, choice);
-		// });
+        // });
+
+        console.log(choices);
         choices.map((choice) => {
+            console.log(choice.trim());
 			addChoices(question_choices_count, choice);
         })
 
@@ -706,7 +709,7 @@ function sendUpdates() {
         position_me = $('input[name="question_checkboxes_question_' + i + '"]').parent().parent().data("position")
 
 
-        var choices = choices_array.toArray().join(",")
+        var choices = choices_array.toArray();//.join(",")
         var image = $('input[name="image_' + i + '"]').val()
         temp = {
             "lesson_type": "question_checkboxes",

@@ -221,8 +221,10 @@ function init() {
                 if(flashcard.image){
                     $("#flashcard_"+i).prepend('<center><img src="'+flashcard.image+'" alt="Chania" style="height:300px;border:5px;border-style:solid;border-color:black"></center>')
                 }
-
-                flashcard.options.split(",").forEach(function (valu) {
+                if (typeof(flashcard.options)=='string'){
+                    flashcard.options = flashcard.options.split(',');
+                }
+                flashcard.options.forEach(function (valu) {
                 $("#theSlide").find("ul").each((a,b,c) => {
                         if($(b).attr("alt") == "question_choices_"+i){
                             $(b).append("<input type='radio' value='"+valu+"' name='choices_"+i+"'> "+valu+"<br>")
@@ -244,7 +246,7 @@ function init() {
                     $("#flashcard_"+i).prepend('<center><img src="'+flashcard.image+'" alt="Chania" style="height:300px;border:5px;border-style:solid;border-color:black"></center>')
                 }
 
-                flashcard.options.split(",").forEach(function (valu) {
+                flashcard.options.forEach(function (valu) {
                 $("#theSlide").find("ul").each((a,b,c) => {
                         if($(b).attr("alt") == "question_checkboxes_"+i){
                             $(b).append("<input type='checkbox' value='"+valu+"' name='checkboxes_"+i+"'> "+valu+"<br>")
