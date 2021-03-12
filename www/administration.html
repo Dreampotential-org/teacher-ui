@@ -173,7 +173,7 @@
                                                             <th>Time</th> -->
                               </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="user_number_assign">
                               <tr>
                                 <td>+18434259777</td>
                               </tr>
@@ -514,23 +514,23 @@
         // Collapse/Expand icon
         //$('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
       }
-      var system_users = [
-        {
-          created_at: "2020-11-04T04:46:05.662Z",
-          name: "Doe",
-          email: "john@example.com",
-        },
-        {
-          created_at: "2020-11-04T08:38:58.603Z",
-          name: "Moe",
-          email: "mary@example.com",
-        },
-        {
-          created_at: "2020-11-04T04:46:05.662Z",
-          name: "Dooley",
-          email: "july@example.com",
-        },
-      ];
+      // var system_users = [
+      //   {
+      //     created_at: "2020-11-04T04:46:05.662Z",
+      //     name: "Doe",
+      //     email: "john@example.com",
+      //   },
+      //   {
+      //     created_at: "2020-11-04T08:38:58.603Z",
+      //     name: "Moe",
+      //     email: "mary@example.com",
+      //   },
+      //   {
+      //     created_at: "2020-11-04T04:46:05.662Z",
+      //     name: "Dooley",
+      //     email: "july@example.com",
+      //   },
+      // ];
 
       var group_data = [
         { created_at: "2020-10-08T20:47:22Z", group_name: "group1" },
@@ -543,15 +543,36 @@
       $(document).ready(function () {
         $("#tabDiv").show();
         $("#systemUserDetail").hide();
+      
 
-        system_users.forEach((item, i) => {
-          $("#users-data").append(`<tr>
-                        <td>${item.created_at}</td>
-                        <td>${item.name}</td>
-                        <td>${item.email}</td>
-                        <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
-                        </tr>`);
-        });
+        $.ajax({
+          async: true,
+          crossDomain: true,
+          url: SERVER + "students_list/get/teachers",
+          method: "GET",
+          // processData: false,
+          // contentType: false,
+          mimeType: "multipart/form-data"
+        }).done((response) => {
+          system_users = JSON.parse(response)
+          system_users.forEach((item) => {
+            $("#users-data").append(`<tr>
+            <td>${item.date_joined}</td>
+            <td>${item.first_name}</td>
+            <td>${item.username}</td>
+            <td><button('${item.id}')" class="btn btn-primary btn-edit"><i class="fa fa-list"></i></button></td>
+            </tr>`);
+          })
+        })
+
+        // system_users.forEach((item, i) => {
+        //   $("#users-data").append(`<tr>
+        //                 <td>${item.created_at}</td>
+        //                 <td>${item.name}</td>
+        //                 <td>${item.email}</td>
+        //                 <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
+        //                 </tr>`);
+        // });
 
         group_data.forEach((item, i) => {
           $("#group-data").append(`<tr>
