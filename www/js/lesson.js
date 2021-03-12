@@ -759,6 +759,16 @@ function sendUpdates() {
         flashcards.push(temp)
     }
 
+    for (var i = 0; i < verify_phone_count; i++) {
+        position_me = 0 //for temporary purpose
+
+        temp = {
+            "lesson_type": "verify_phone",
+            "position": position_me
+        }
+        flashcards.push(temp)
+    }
+
     data_.flashcards = flashcards
     console.log(data_)
 
