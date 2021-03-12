@@ -10,6 +10,7 @@ var title_input_count =0;
 var braintree_count = 0;
 var question_checkboxes_count = 0;
 var question_text_count = 0;
+var name_type_count =0;
 var sign_count = 0;
 var sortArray = [];
 var MODE;
@@ -147,11 +148,26 @@ function addTitleInput(isNew, id, title, text, posU) {
         $("#title_input").find("textarea").html("")
     }
     $("#title_input").find("textarea").attr(
-        "name", "title_input_textarea" + title_input_count)
+        "name", "title_input_textarea_" + title_input_count)
     $("#sortable").append($("#title_input").html())
     sortablePositionFunction(isNew, posU);
 
     title_input_count++;
+}
+
+function addNameType(isNew, id, title, text, posU) {
+    if (!isNew) {
+        $("#name_type").find("textarea").html(title)
+        $("#name_type").find("teaxtarea").attr("data-id", id)
+    } else {
+        $("#name_type").find("textarea").html("")
+    }
+    $("#name_type").find("textarea").attr(
+        "name", "name_type_textarea_" + title_input_count)
+    $("#sortable").append($("#name_type").html())
+    sortablePositionFunction(isNew, posU);
+
+    name_type_count++;
 }
 
 function addQuestionChoices(isNew, id, question, choices, image, posU) {
@@ -651,13 +667,26 @@ function sendUpdates() {
 
 
     for (var i = 0; i < title_input_count; i++) {
-        var title_value = $('textarea[name="title_input_textarea' + i + '"]').val();
+        var title_value = $('textarea[name="title_input_textarea_' + i + '"]').val();
 
-        position_me = $('textarea[name="title_input_textarea' + i + '"]').parent().parent().data("position")
+        position_me = $('textarea[name="title_input_textarea_' + i + '"]').parent().parent().data("position")
 
         temp = {
             "lesson_type": "title_input",
             "question": title_value,
+            "position": position_me
+
+        }
+        flashcards.push(temp)
+    }
+
+    for (var i = 0; i < name_type_count; i++) {
+        var title_value = $('textarea[name="name_type_textarea_' + i + '"]').val();
+
+        position_me = $('textarea[name="name_type_textarea_' + i + '"]').parent().parent().data("position")
+
+        temp = {
+            "lesson_type": "name_type",
             "position": position_me
 
         }
@@ -902,6 +931,13 @@ $(document).ready(function () {
                                        flashcard.position)
                 }
 
+                if (flashcard.lesson_type == "name_type") {
+                    addNameType(false, flashcard.id,
+                                       flashcard.question,
+                                       flashcard.options, flashcard.image,
+                                       flashcard.position)
+                }
+
                 if (flashcard.lesson_type == "question_checkboxes") {
                     addQuestionCheckboxes(false, flashcard.id,
                                        flashcard.question,
@@ -1038,6 +1074,8 @@ $(document).ready(function () {
                     braintree_count--
                 }else if (lesson_element_type.startsWith("question_checkboxes")) {
                     question_checkboxes_count--
+                }else if (lesson_element_type.startsWith("name_type")) {
+                    name_type_count--
                 }
                 //console.log(lesson_element_type)
                 $(e.target).parent().parent().remove()
@@ -1067,6 +1105,12 @@ $(document).ready(function () {
         if ($("#selectsegment").val() == 'question_choices')
         {
             addQuestionChoices(true)
+
+        }
+
+        if ($("#selectsegment").val() == 'name_type')
+        {
+            addNameType(true)
 
         }
 
