@@ -38,46 +38,8 @@ function signLesson(event, imgId, signInput) {
     });
 }
 
-function nextSlide(){
-    if(current_slide <total_slides){
-        current_slide++
-        completed = false;
-    } else {
-        completed = true;
-        swal({	
-            title: "Submitted",	
-            text: "You have successfully completed the lesson. Thank you.",	
-            icon: "success",
-            timer: 2000
-        })
-    }
-    
-    updateProgressBar()
-    
-    if(!completed){
-    var type = $("div.active").children().children().attr("alt");
-    console.log(type)
-    if (type == "question_choices") {
-        answer = $("input[name= choices_" + (current_slide - 1) + "]:checked").val()
-        console.log(answer)
-    }else if (type == "question_checkboxes") {
-        answer = $("input[name= checkboxes_" + (current_slide - 1) + "]:checked").val()
-        console.log(answer)
-    }else if(type == "title_textarea"){
-        answer = $("textarea[name= textarea_"+(current_slide-1)+"]").val()
-    }else if(type == "title_input"){
-        answer = $("input[name= title_input_"+(current_slide-1)+"]").val()
-        console.log("title inpt")
-    }else if(type=='signature'){
-        console.log("This is signature")
-        answer = $("input[name= input_signature_"+(current_slide-1)+"]").val()
-    }
-    
 
-    $('#myCarousel').carousel('next');
-    var current_flashcard = loaded_flashcards[current_slide-1]
-    current_flashcard = current_flashcard.id?current_flashcard:loaded_flashcards[current_slide-2]
-    var flashcard_id = current_flashcard.id;
+function sendResponse(flashcard_id,answer){
     var sessionId = localStorage.getItem("session_id");
     var ip_address = "172.0.0.1";
     var user_device = "self device"
@@ -86,7 +48,6 @@ function nextSlide(){
         "ip_address": ip_address,
         "user_device": user_device
     }
-
 
     const param = new URL(window.location.href)
     const params = param.searchParams.get('params')
@@ -132,7 +93,66 @@ function nextSlide(){
             // alert(JSON.stringify(res))
         }
     })   
+}
 
+function updateMeta(type,answer){
+    if(type =='name'){
+        swal({title:"setting up name to "+answer})
+    }
+}
+function nextSlide(){
+    if(current_slide <total_slides){
+        current_slide++
+        completed = false;
+    } else {
+        completed = true;
+        swal({	
+            title: "Submitted",	
+            text: "You have successfully completed the lesson. Thank you.",	
+            icon: "success",
+            timer: 2000
+        })
+    }
+
+    var current_flashcard = loaded_flashcards[current_slide-1]
+    current_flashcard = current_flashcard.id?current_flashcard:loaded_flashcards[current_slide-2]
+    var flashcard_id = current_flashcard.id;
+
+    updateProgressBar()
+    
+    if(!completed){
+    var type = $("div.active").children().children().attr("alt");
+    console.log(type)
+    if (type == "question_choices") {
+        answer = $("input[name= choices_" + (current_slide - 1) + "]:checked").val()
+        console.log(answer)
+        sendResponse(flashcard_id,answer)
+
+    }else if (type == "question_checkboxes") {
+        answer = $("input[name= checkboxes_" + (current_slide - 1) + "]:checked").val()
+        console.log(answer)
+        sendResponse(flashcard_id,answer)
+
+    }else if(type == "title_textarea"){
+        answer = $("textarea[name= textarea_"+(current_slide-1)+"]").val()
+        sendResponse(flashcard_id,answer)
+
+    }else if(type == "title_input"){
+        answer = $("input[name= title_input_"+(current_slide-1)+"]").val()
+        console.log("title inpt")
+        sendResponse(flashcard_id,answer)
+    }else if(type=='signature'){
+        console.log("This is signature")
+        answer = $("input[name= input_signature_"+(current_slide-1)+"]").val()
+        updateMeta('signature',answer)
+    }else if(type == "name_type"){
+        swal({title:'Updated Name type'})
+        answer = $("input[name= name_type_"+(current_slide-1)+"]").val()
+        console.log("Name Type")
+        updateMeta('name',answer)
+    }
+
+    $('#myCarousel').carousel('next');
 }
 }
 
@@ -283,6 +303,11 @@ function init() {
             if(flashcard.lesson_type == "title_input"){
                 $("#theSlide").append('<div class="'+className+'"><div class="title_input"><div alt="title_input" style="height:500px"><h1> '+flashcard.question+'</h1><input name ="title_input_'+i+'" class="form-control" placeholder="Enter you answer here"></div></div></div>')
             }
+
+            if(flashcard.lesson_type == "name_type"){
+                $("#theSlide").append('<div class="'+className+'"><div class="name_type"><div alt="name_type" style="height:500px"><h1> Enter your name: </h1><input name ="name_type_'+i+'" class="form-control" placeholder="Enter you name here"></div></div></div>')
+            }
+
             if(flashcard.lesson_type == "signature") {
                 $("#theSlide").append(`
                 <div class="${className}" id="flashcard_${i}">
