@@ -7,6 +7,7 @@ var pct = 0
 var completed = false
 var signature = [];
 var phone_verification_status =false;
+
 function updateProgressBar() {
     pct = (current_slide / total_slides) * 100
     $('.progress-bar').css("width", pct + "%")
@@ -32,7 +33,7 @@ function signLesson(event, imgId, signInput) {
     if ($('#signature')) {
         $('#signature').modal('show');
     }
-    
+
     document.addEventListener('signatureSubmitted', function (e) {
         updateSign(window.currentSignature.data,event,imgId,signInput);
     });
@@ -52,7 +53,7 @@ function sendResponse(flashcard_id,answer){
     const param = new URL(window.location.href)
     const params = param.searchParams.get('params')
 
-    if (params){
+    if (params) {
 
         var data_ = {
             "flashcard":flashcard_id,
@@ -60,7 +61,7 @@ function sendResponse(flashcard_id,answer){
             "answer":answer?answer:"",
             "params" : params
         }
-    }else{
+    } else {
         var data_ = {
             "flashcard":flashcard_id,
             "session_id":localStorage.getItem("session_id"),
@@ -84,7 +85,6 @@ function sendResponse(flashcard_id,answer){
                 "contentType": 'application/json',
                 "success": function (da_) {
                     console.log("Session event duration")
-        
                 }
             })
             alert("FlashCard Response Sent")
@@ -92,7 +92,7 @@ function sendResponse(flashcard_id,answer){
         'error': function(res){
             // alert(JSON.stringify(res))
         }
-    })   
+    })
 }
 
 function updateMeta(type,answer){

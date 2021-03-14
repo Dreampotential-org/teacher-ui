@@ -179,11 +179,10 @@ function addQuestionChoices(isNew, id, question, choices, image, posU) {
             $('#question_choices')
             .find('#choices')
             .attr('id', 'choices_' + question_choices_count);
-            
         }else{
             $('#question_choices')
             .find('#choices_'+(question_choices_count-1))
-            .attr('id', 'choices_' + question_choices_count);    
+            .attr('id', 'choices_' + question_choices_count);
         }
 
 	$('#question_choices')
@@ -205,10 +204,6 @@ function addQuestionChoices(isNew, id, question, choices, image, posU) {
 		$('#choices_' + question_choices_count)
 			.find('input')
 			.remove();
-		// choices.split(',').forEach(function (choice) {
-		// 	//console.log(choice)
-		// 	addChoices(question_choices_count, choice);
-        // });
 
         console.log(choices);
         choices.map((choice) => {
@@ -236,15 +231,15 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
 		.find('input')
 		.first()
         .attr('name', 'question_checkboxes_question_' + question_checkboxes_count);
-        if(question_checkboxes_count ==0){
+        if(question_checkboxes_count ==0) {
             $('#question_checkboxes')
             .find('#checkboxes')
             .attr('id', 'checkboxes_' + question_checkboxes_count);
-            
-        }else{
+
+        } else {
             $('#question_checkboxes')
             .find('#checkboxes_'+(question_checkboxes_count-1))
-            .attr('id', 'checkboxes_' + question_checkboxes_count);    
+            .attr('id', 'checkboxes_' + question_checkboxes_count);
         }
 
 	$('#question_checkboxes')
@@ -837,9 +832,9 @@ function sendUpdates() {
             'type': 'POST',
             'contentType': 'application/json',
             'success': function (data) {
-                swal({	
-                    title: "Lesson Updated",	
-                    text: "You have updated created a lesson",	
+                swal({
+                    title: "Lesson Updated",
+                    text: "You have updated created a lesson",
                     icon: "success",
                     timer: 2000
                 })            }
@@ -873,6 +868,7 @@ $(document).ready(function () {
                 "href", "/lesson_responses.html?lesson_id=" + lesson_id)
 
             $("#lesson_name").val(response.lesson_name)
+            $("title").text(response.lesson_name + " - edit..")
             console.log(response)
             var flashcards = response.flashcards;
 
