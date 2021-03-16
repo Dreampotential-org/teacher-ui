@@ -265,7 +265,7 @@ function init() {
                 flashcard.options.forEach(function (valu) {
                 $("#theSlide").find("ul").each((a,b,c) => {
                         if($(b).attr("alt") == "question_choices_"+i){
-                            $(b).append("<input type='radio' id='"+valu+"' value='"+valu+"' name='choices_"+i+"'> <label for='"+valu+"'>"+valu+"</lable><br>")
+                            $(b).append("<br><input type='radio' id='"+valu+"' value='"+valu+"' name='choices_"+i+"'> <label style='font-weight: normal;' for='"+valu+"'>"+valu+ "</lable>")
 
                         }
                         
@@ -287,7 +287,7 @@ function init() {
                 flashcard.options.forEach(function (valu) {
                 $("#theSlide").find("ul").each((a,b,c) => {
                         if($(b).attr("alt") == "question_checkboxes_"+i){
-                            $(b).append("<input type='checkbox' value='"+valu+"' name='checkboxes_"+i+"'> "+valu+"<br>")
+                            $(b).append("<br><input type='checkbox' id='"+valu+"' value='"+valu+"' name='checkboxes_"+i+"'> <label style='font-weight: normal;' for='"+valu+"'>"+valu+ "</lable>")
 
                         }
                         
