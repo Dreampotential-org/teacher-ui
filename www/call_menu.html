@@ -103,14 +103,14 @@
                     </select>
                   </div>
                 <div class="form-group">
-                    <input type="tel" class="form-control" id="dest" placeholder="Dest Number"  required/>
+                    <input type="tel" class="form-control" id="dest_num_call" placeholder="Dest Number"  required/>
                 </div>
                 
                 <div class="form-group">
                     <input type="tel" class="form-control" id="call" placeholder="Your Number"  required/>
                 </div>
                
-                    <button class="btn btn-primary float-right"  type="submit"><i class="fa fa-phone-square"></i> Call</button>
+                    <button class="btn btn-primary float-right" id="make_call" type="submit"><i class="fa fa-phone-square"></i> Call</button>
             </form>
           </div>
           <div
@@ -126,7 +126,7 @@
                 </select>
               </div>
             <div class="form-group">
-                <input type="tel" class="form-control" id="dest" placeholder="Dest Number"  required/>
+                <input type="tel" class="form-control" id="dest_num_sms" placeholder="Dest Number"  required/>
             </div>
           
             <div class="form-group">
@@ -191,6 +191,10 @@
         SidebarCollapse();
       }
 
+      $("#make_call").click (() => {
+        dest_num_call = $("#dest_num_call").val()
+      })
+      
       function SidebarCollapse() {
         $(".menu-collapsed").toggleClass("d-none");
         $(".sidebar-submenu").toggleClass("d-none");
@@ -218,8 +222,8 @@
               $("#sourceCallNumber").append($('<option>').val(item.number).text(item.number))
             }) 
           }
-          var sourceCall_number_selected = document.getElementById('sourceCallNumber');
-          $("#call").val(sourceCall_number_selected.value);
+          var sourceCall_number_selected = $('#sourceCallNumber').val();
+          $("#call").val(sourceCall_number_selected);
       })
       $("#sourceMsgNumber").click(() => {
           if ($("#sourceMsgNumber option").length === 1) {
@@ -227,7 +231,7 @@
               $("#sourceMsgNumber").append($('<option>').val(item.number).text(item.number))
             })
           }   
-          var sourceMsg_number_selected_sms = document.getElementById('sourceMsgNumber');
+          var sourceSms_number_selected = $('#sourceMsgNumber').val();
       })
     </script>
   </body>

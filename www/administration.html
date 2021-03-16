@@ -531,6 +531,7 @@
     <script>
       var passwordResetToken = getParam("token");
       var userToken = localStorage.getItem("user-token");
+      var twilio_assigned_numbers;
 
       console.log("MODE: PASSWORD_RESET, Token - " + passwordResetToken);
 
@@ -614,16 +615,16 @@
             <td><button class="btn btn-primary btn-edit" onclick="number_list('${item.id}')"><i class="fa fa-list"></i></button></td>
             </tr>`);
           })
+            $.ajax({
+              async: true,
+              crossDomain: true,
+              url: SERVER + "voip/api_voip/assign_number_",
+              method: "GET",
+              mimeType: "multipart/form-data"
+            }).done((response) => {
+              twilio_assigned_numbers = JSON.parse(response)    
+            })
         })
-
-        // system_users.forEach((item, i) => {
-        //   $("#users-data").append(`<tr>
-        //                 <td>${item.created_at}</td>
-        //                 <td>${item.name}</td>
-        //                 <td>${item.email}</td>
-        //                 <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
-        //                 </tr>`);
-        // });
 
         group_data.forEach((item, i) => {
           $("#group-data").append(`<tr>
@@ -632,25 +633,19 @@
                         <td><button onclick="openModal('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
                         </tr>`);
         });
-
-        // $.ajax({
-        //   type: 'GET',
-        //   url: SERVER + 'voip/api_voip/assign_number_',
-
-        //   success: (twilio_nunbers) => {
-        //     twilio_nunbers.forEach((item) => {
-        //       console.log(item)
-        //       // $('#assigned_numbers').append(`<tr>
-        //         // <td>${item.number}</td>
-        //         // </tr>`);
-        //     })
-        //   }
-        // })
       });
 
       function number_list(id){
         $("#submit_assign_number").val(id)
         $("#number_model_list").modal();
+        $('#assigned_numbers').empty()
+        twilio_assigned_numbers.forEach((item) => {
+            if(item.user == id){
+              $('#assigned_numbers').append(`<tr>
+                          <td>${item['phone']}</td>
+                          </tr>`);
+            }
+        })
       }
 
       function assigne_number(){
