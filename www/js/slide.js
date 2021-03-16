@@ -7,7 +7,7 @@ var pct = 0
 var completed = false
 var signature = [];
 var phone_verification_status =false;
-
+var session_id = null;
 function updateProgressBar() {
     pct = (current_slide / total_slides) * 100
     $('.progress-bar').css("width", pct + "%")
@@ -38,7 +38,6 @@ function signLesson(event, imgId, signInput) {
         updateSign(window.currentSignature.data,event,imgId,signInput);
     });
 }
-
 
 function sendResponse(flashcard_id,answer){
     var sessionId = localStorage.getItem("session_id");
@@ -100,6 +99,7 @@ function updateMeta(type,answer){
         swal({title:"setting up name to "+answer})
     }
 }
+
 function nextSlide(){
     if(current_slide <total_slides){
         current_slide++
@@ -177,19 +177,31 @@ function getParam(sParam){
 }
 
 function get_session() {
-    var session_id = localStorage.getItem("session_id")
+    session_id = localStorage.getItem("session_id")
     if (session_id) {
         console.log("Already have session_id " + session_id)
         return session_id
     }
     console.log("Generate new session")
-    $.get(SERVER + 'courses_api/session/get', function (resp) {
+    $.get(SERVER + '/courses_api/session/get', function (resp) {
         console.log(resp)
         localStorage.setItem("session_id", resp.session_id)
     })
 }
 
+function verifyPhone(event){
+    if ($('#verify_phone')) {
+        $('#verify_phone').modal('show');
+    }
+    
+    document.addEventListener('phoneVerified', function (e) {
+        $('#verify_phone').modal('hide');
+        phone_verification_status = true 
+    });
+}
+
 function init() {
+    console.log("Starting")
     $('#sign-modal').load("signature/index.html");
     $("#verify-phone-modal").load('phone/index.html');
 
@@ -337,6 +349,8 @@ function init() {
 
 
         $("#theSlide").append('<div class="item"><div alt="quick_read" style="height:500px"><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1></div></div>')
+       if(session_id){
+        console.log("we have session id")
         $.get(SERVER+'/courses_api/lesson/response/get/'+lesson_id+'/'+localStorage.getItem("session_id"),function(response) {
             response.forEach(function(rf){
                 loaded_flashcards.forEach(function(f,i){
@@ -363,21 +377,11 @@ function init() {
                         $("#slide_signature").attr("hidden",false)
                         $('.input_signature').children('button')[0].innerText = 'Redraw Signature'
                     }
+                
                 })
             })
-        })
-    }).done((res) => console.log("Invitaion res",res)).fail((err) => console.log("Invitation err",err))
-}
-
-
-function verifyPhone(event){
-    if ($('#verify_phone')) {
-        $('#verify_phone').modal('show');
-    }
-    
-    document.addEventListener('phoneVerified', function (e) {
-        $('#verify_phone').modal('hide');
-        phone_verification_status = true 
+        }).done((res) => console.log("Invitaion res",res)).fail((err) => console.log("Invitation err",err))
+        }
     });
 }
 
