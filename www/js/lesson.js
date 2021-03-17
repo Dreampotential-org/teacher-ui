@@ -207,7 +207,6 @@ function addQuestionChoices(isNew, id, question, choices, image, posU) {
 
         console.log(choices);
         choices.map((choice) => {
-            console.log(choice.trim());
 			addChoices(question_choices_count, choice);
         })
 
