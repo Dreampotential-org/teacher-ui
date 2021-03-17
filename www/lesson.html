@@ -45,11 +45,18 @@
                         <a id="lesson_slide" class="col-lg-6">View Lesson</a>
                         <a id="lesson_responses" class="col-lg-6">View Responses</a>
                     </div>
+                    <br>
+                    <div class="row" id="meta_attributes">
+                        <label class="col-lg-12">What Metadata do you want to collect from user ?</label>
+                        <span class="col-lg-2" ><input type="checkbox" id="name"><label>Name</label> </span> 
+                        <span class="col-lg-2" ><input type="checkbox" id="email"><label>Email</label></span> 
+                        <span class="col-lg-4" ><input type="checkbox" id="phone"><label>Phone Number</label></span> 
+                    </div>
+
                 </div>
                 <div class="col-xs-6 col-sm-6" style="margin-top: 20px;margin-bottom: 10px;">
                     <select class="form-control " id="selectsegment">
                         <option selected value="select_type">Select Segment Type</option>
-                        <option value="name_type">Name Type</option>
                         <option value="speed_read">Speed Read</option>
                         <option value="title_text">Title Text</option>
                         <option value="title_input">Title Input</option>
@@ -60,7 +67,6 @@
                         <option value="image_file">Image File</option>
                         <option value="title_textarea">Title Textarea</option>
                         <option value="sign_b64">Signature Image</option>
-                        <option value="verify_phone">Phone Verfication</option>
                         <option value="brain_tree">BrainTree</option>
                     </select>
                     <button class="btn form-control btn-success" style="margin-top: 20px;margin-bottom: 10px;" id="add">Add</button>

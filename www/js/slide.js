@@ -9,6 +9,9 @@ var signature = [];
 
 var phone_verification_status =false;
 var session_id = null;
+var hasName = false;
+var hasPhone = false;
+var hasEmail= false;
 function updateProgressBar() {
   pct = (current_slide / total_slides) * 100;
   $('.progress-bar').css('width', pct + '%');
@@ -106,6 +109,7 @@ function updateMeta(type, answer) {
 }
 
 function nextSlide(){
+    console.log(current_slide)
     if(current_slide <total_slides){
         current_slide++
         completed = false;
@@ -119,9 +123,9 @@ function nextSlide(){
         })
     }
 
-    var current_flashcard = loaded_flashcards[current_slide-1]
-    current_flashcard = current_flashcard.id?current_flashcard:loaded_flashcards[current_slide-2]
-    var flashcard_id = current_flashcard.id;
+    //var current_flashcard = loaded_flashcards[current_slide-1]
+    //current_flashcard = current_flashcard.id?current_flashcard:loaded_flashcards[current_slide-2]
+    //var flashcard_id = current_flashcard.id;
 
     updateProgressBar()
     
@@ -225,7 +229,13 @@ function init() {
         get_session();
         //let sign_flashcard = {lesson_type: 'input_signature'}
         //response.flashcards.push(sign_flashcard)
-        total_slides = response.flashcards.length;
+        total_slides = response.flashcards.length + response.meta_attributes.split(",").length
+        // Updating Meta Attribute states
+
+        if(response.meta_attributes.includes("name")) hasName =true;
+        if(response.meta_attributes.includes("email")) hasEmail =true;
+        if(response.meta_attributes.includes("phone")) hasPhone =true;
+
         $("#progress-section").show();
 
         $("#progress").html(current_slide+ " out of "+ total_slides)
@@ -243,8 +253,44 @@ function init() {
         var i = 0;
         var className = "item";
         // XXX refactor code below into smaller processing chunk
+
+
+
+        if(hasName){
+            console.log(i)
+            $("#theSlide").append(`
+                <duv class="${className} ${(i == 0) ? 'active' : ''}" id="flashcard_${i}" id="name">
+                        <input type="text" placeholder="Enter your name"  name="name" id="name">
+                </div>
+            `);
+            i++;
+        }
+
+        if(hasPhone){
+            console.log(i)
+            $("#theSlide").append(`
+                <duv class="${className} ${(i == 0) ? 'active' : ''}" id="flahscard_${i}" id="verify_phone">
+                    <div alt="verify_phone">
+                        <input type="text" hidden name="verify_phone_${i}" id="verifyPhone">
+                        <button class="btn btn-primary" type="button" onclick="verifyPhone(event)"> Click To Verify Phone Number</button>
+                        <p id="phone_verification_status">${phone_verification_status? "verified" : "not verified"}</p>
+                        </div>
+                </div>
+            `);
+            i++;
+        }
+
+        if(hasEmail){
+            $("#theSlide").append(`
+                <duv class="${className} ${(i == 0) ? 'active' : ''}" id="flashcard_${i}" id="verify_email">
+                    <h1>Email Verification Div Goes here </h1>
+                </div>
+            `);
+            i++;
+        }
+
         flashcards.forEach((flashcard) => {
-            if (i == 0) {
+            if (i == 1) {
                 className = "item active"
             } else {
                 className = "item"
@@ -422,6 +468,7 @@ function init() {
                 </div>
                 </div>`);
       }
+      
       if (flashcard.lesson_type == 'verify_phone') {
         console.log('adding verify phone');
 
@@ -486,7 +533,6 @@ function verifyPhone(event) {
   });
             i++;
         })
-
 
         $("#theSlide").append('<div class="item"><div alt="quick_read" style="height:500px"><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1></div></div>')
        if(session_id){

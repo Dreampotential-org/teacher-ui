@@ -35,7 +35,6 @@ function getAllLessons() {
         type: "GET",
         headers: { "Authorization": `${localStorage.getItem('user-token')}` }
     }).done((response2) => {
-        console.log(response2)
         for(var lesson of response2) {
 			$('#select_lesson').append(
 				"<option value='" + lesson.id + "'>" + lesson.lesson_name + '</option>'
@@ -562,20 +561,20 @@ function addImageFile(isNew, id, question, image, posU) {
 	sortablePositionFunction(isNew, posU);
 }
 
-function addVerifyPhone(isNew,id,question,image,posU){
-    if (!isNew) {
+// function addVerifyPhone(isNew,id,question,image,posU){
+//     if (!isNew) {
 
-    } else {
-        $("#title_textarea").find("textarea").first().html("")
-    }
+//     } else {
+//         $("#title_textarea").find("textarea").first().html("")
+//     }
 
-    $("#verify_phone").find("input").first().attr(
-        "name", "verify_phone_" + verify_phone_count)
-    $("#sortable").append($("#verify_phone").html())
+//     $("#verify_phone").find("input").first().attr(
+//         "name", "verify_phone_" + verify_phone_count)
+//     $("#sortable").append($("#verify_phone").html())
 
-    verify_phone_count++;
-    sortablePositionFunction(isNew, posU);
-}
+//     verify_phone_count++;
+//     sortablePositionFunction(isNew, posU);
+// }
 
 function addBrainTree(isNew, id, merchant_ID, braintree_public_key,
                       braintree_private_key,
@@ -619,6 +618,7 @@ function addBrainTree(isNew, id, merchant_ID, braintree_public_key,
 
 function sendUpdates() {
     var lesson_name = $("#lesson_name").val()
+    var meta_attributes = []
     data_ = {
         "lesson_name": lesson_name
     }
@@ -630,6 +630,18 @@ function sendUpdates() {
     current_flashcard_elements = []
     var attr_array = []
     position_me = 0
+
+    if(document.querySelector("#name:checked")){
+        meta_attributes.push("name")
+    }
+
+    if(document.querySelector("#email:checked")){
+        meta_attributes.push("email")
+    }
+
+    if(document.querySelector("#phone:checked")){
+        meta_attributes.push("phone")
+    }
 
     sortable_div = document.getElementById("sortable").childNodes
     sortable_div.forEach((flashcard_div) => {
@@ -796,174 +808,9 @@ function sendUpdates() {
 
     })
         console.log(flashcards)
-        /*
-    for (var i = 0; i < quick_read_count; i++) {
-        quick_read_value = $('textarea[name="speed_read_' + i + '"]').val()
-        position_me = $('textarea[name="speed_read_' + i + '"]').parent().parent().data("position")
-        console.log(position_me)
 
-        if (quick_read_value) {
-            temp = {
-                "lesson_type": "quick_read",
-                "question": quick_read_value,
-                "position": position_me
-            }
-            flashcards.push(temp)
-        }
-    }
-
-    //Saving Title Text
-    for (var i = 0; i < title_text_count; i++) {
-        var title_value = $('input[name="title_' + i + '"]').val();
-        var text_value = $('textarea[name="text_' + i + '"]').val();
-
-        position_me = $('input[name="title_' + i + '"]').parent().parent().data("position")
-
-        temp = {
-            "lesson_type": "title_text",
-            "question": title_value,
-            "answer": text_value,
-            "position": position_me
-
-        }
-        flashcards.push(temp)
-    }
-
-
-    for (var i = 0; i < title_input_count; i++) {
-        var title_value = $('textarea[name="title_input_textarea_' + i + '"]').val();
-
-        position_me = $('textarea[name="title_input_textarea_' + i + '"]').parent().parent().data("position")
-
-        temp = {
-            "lesson_type": "title_input",
-            "question": title_value,
-            "position": position_me
-
-        }
-        flashcards.push(temp)
-    }
-
-    for (var i = 0; i < name_type_count; i++) {
-        var title_value = $('textarea[name="name_type_textarea_' + i + '"]').val();
-
-        position_me = $('textarea[name="name_type_textarea_' + i + '"]').parent().parent().data("position")
-
-        temp = {
-            "lesson_type": "name_type",
-            "position": position_me
-
-        }
-        flashcards.push(temp)
-    }
-
-    for (var i = 0; i < question_choices_count; i++) {
-        var question = $('input[name="question_' + i + '"]').val()
-
-        var choices_array = $('#choices_' + i + ' :input').map(function () {
-            var type = $(this).prop("type");
-
-            if (type == "text") {
-                return($(this).val())
-            }
-        })
-
-        position_me = $('input[name="question_' + i + '"]').parent().parent().data("position")
-
-
-        var choices = choices_array.toArray()
-        var image = $('input[name="image_' + i + '"]').val()
-        temp = {
-            "lesson_type": "question_choices",
-            "question": question,
-            "image": image,
-            "options": choices,
-            "position": position_me
-        }
-        flashcards.push(temp)
-
-    }
-
-    for (var i = 0; i < question_checkboxes_count; i++) {
-        var question = $('input[name="question_checkboxes_question_' + i + '"]').val()
-
-        var choices_array = $('#checkboxes_' + i + ' :input').map(function () {
-            var type = $(this).prop("type");
-
-            if (type == "text") {
-                return($(this).val())
-            }
-        })
-
-        position_me = $('input[name="question_checkboxes_question_' + i + '"]').parent().parent().data("position")
-
-
-        var choices = choices_array.toArray();//.join(",")
-        var image = $('input[name="image_' + i + '"]').val()
-        temp = {
-            "lesson_type": "question_checkboxes",
-            "question": question,
-            "image": image,
-            "options": choices,
-            "position": position_me
-        }
-        flashcards.push(temp)
-    }
-
-    for (var i = 0; i < video_file_count; i++) {
-        var question = $('input[name="video_question_' + i + '"]').val()
-        var video = $('input[name="video_' + i + '"]').val()
-        position_me = $('input[name="video_question_' + i + '"]').parent().parent().data("position")
-
-        temp = {
-            "lesson_type": "video_file",
-            "question": question,
-            "image": video,
-            "options": choices,
-            "position": position_me
-        }
-        flashcards.push(temp)
-    }
-
-    for (var i = 0; i < iframe_link_count; i++) {
-        var question = $('input[name="question_' + i + '"]').val()
-        position_me = $('input[name="question_' + i + '"]').parent().parent().data("position")
-
-        var link = $('input[name="link_' + i + '"]').val()
-        temp = {
-            "lesson_type": "iframe_link",
-            "question": question,
-            "image": link,
-            "options": choices,
-            "position": position_me
-        }
-        flashcards.push(temp)
-    }
-
-    for (var i = 0; i < title_textarea_count; i++) {
-        var question = $('textarea[name="title_textarea_' + i + '"]').val()
-        position_me = $('textarea[name="title_textarea_' + i + '"]').parent().parent().data("position")
-
-        temp = {
-            "lesson_type": "title_textarea",
-            "question": question,
-            "position": position_me
-        }
-        flashcards.push(temp)
-    }
-
-    for (var i = 0; i < verify_phone_count; i++) {
-        position_me = 0 //for temporary purpose
-
-        temp = {
-            "lesson_type": "verify_phone",
-            "position": position_me
-        }
-        flashcards.push(temp)
-    }
-
-    
     data_.flashcards = flashcards
+    data_.meta_attributes = meta_attributes
     console.log(data_)
 
     if (MODE == "CREATE") {
@@ -1010,7 +857,7 @@ function sendUpdates() {
                 })            }
         })
     }
-    */
+    
 }
 
 $(document).ready(function () {
@@ -1040,8 +887,23 @@ $(document).ready(function () {
 
             $("#lesson_name").val(response.lesson_name)
             $("title").text(response.lesson_name + " - edit..")
-            console.log(response)
+
             var flashcards = response.flashcards;
+            //Updating meta
+            var recieved_meta = response.meta_attributes
+
+            if(recieved_meta.includes("name")){
+                document.getElementById("name").checked = true
+            }
+
+            if(recieved_meta.includes("email")){
+                document.getElementById("email").checked = true
+            }
+
+            if(recieved_meta.includes("phone")){
+                document.getElementById("phone").checked = true
+            }
+
 
             flashcards.sort(function (a, b) {
                 keyA = a.position;
@@ -1098,12 +960,12 @@ $(document).ready(function () {
                                        flashcard.position)
                 }
 
-                if (flashcard.lesson_type == "name_type") {
-                    addNameType(false, flashcard.id,
-                                       flashcard.question,
-                                       flashcard.options, flashcard.image,
-                                       flashcard.position)
-                }
+                // if (flashcard.lesson_type == "name_type") {
+                //     addNameType(false, flashcard.id,
+                //                        flashcard.question,
+                //                        flashcard.options, flashcard.image,
+                //                        flashcard.position)
+                // }
 
                 if (flashcard.lesson_type == "question_checkboxes") {
                     addQuestionCheckboxes(false, flashcard.id,
@@ -1144,10 +1006,10 @@ $(document).ready(function () {
                                     flashcard.position + 1);
                 }
 
-                if(flashcard.lesson_type == "verify_phone"){
-                    addVerifyPhone(false, flashcard.id, null,
-                                    flashcard.position + 1);
-                }
+                // if(flashcard.lesson_type == "verify_phone"){
+                //     addVerifyPhone(false, flashcard.id, null,
+                //                     flashcard.position + 1);
+                // }
             })
         
             getAllLessons();
@@ -1217,38 +1079,37 @@ $(document).ready(function () {
           },function(isConfirm) {
             if (isConfirm) {
                 var lesson_element_type = $(e.target).parent().parent().children().last().children().attr("name")
-                //console.log(lesson_element_type)
                 pos--;
-                if (lesson_element_type.startsWith("speed_read")) {
-                    quick_read_count--;
-                } else if (lesson_element_type.startsWith("text")) {
-                    title_text_count--;
-                } else if (lesson_element_type.startsWith("question")) {
-                    question_choices_count--
-                } else if (lesson_element_type.startsWith("link")) {
-                    iframe_link_count--
-                } else if (lesson_element_type.startsWith("video")) {
-                    video_file_count--
-                } else if (lesson_element_type.startsWith("image")) {
-                    image_file_count--
-                }else if (lesson_element_type.startsWith("title_textarea")) {
-                    title_textarea_count--
-                }else if (lesson_element_type.startsWith("title_input")) {
-                    title_input_count--
-                } else if (lesson_element_type.startsWith("sign_b64")) {
-                    sign_count--
-                } else if (lesson_element_type.startsWith("brain_tree")) {
-                    braintree_count--
-                }else if (lesson_element_type.startsWith("question_checkboxes")) {
-                    question_checkboxes_count--
-                }else if (lesson_element_type.startsWith("name_type")) {
-                    name_type_count--
-                }
+                // if (lesson_element_type.startsWith("speed_read")) {
+                //     quick_read_count--;
+                // } else if (lesson_element_type.startsWith("text")) {
+                //     title_text_count--;
+                // } else if (lesson_element_type.startsWith("question")) {
+                //     question_choices_count--
+                // } else if (lesson_element_type.startsWith("link")) {
+                //     iframe_link_count--
+                // } else if (lesson_element_type.startsWith("video")) {
+                //     video_file_count--
+                // } else if (lesson_element_type.startsWith("image")) {
+                //     image_file_count--
+                // }else if (lesson_element_type.startsWith("title_textarea")) {
+                //     title_textarea_count--
+                // }else if (lesson_element_type.startsWith("title_input")) {
+                //     title_input_count--
+                // } else if (lesson_element_type.startsWith("sign_b64")) {
+                //     sign_count--
+                // } else if (lesson_element_type.startsWith("brain_tree")) {
+                //     braintree_count--
+                // }else if (lesson_element_type.startsWith("question_checkboxes")) {
+                //     question_checkboxes_count--
+                // }else if (lesson_element_type.startsWith("name_type")) {
+                //     name_type_count--
+                // }
                 //console.log(lesson_element_type)
                 $(e.target).parent().parent().remove()
                 sortablePositionFunction();
             } else {
-              swal("Cancelled", "Your imaginary file is safe :)", "error");
+              swal("Cancelled", "error");
             }
           })
 
