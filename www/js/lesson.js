@@ -224,7 +224,6 @@ function addQuestionChoices(isNew, id, question, choices, image, posU) {
 
 }
 
-
 function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
 	$('#question_checkboxes')
 		.find('input')
@@ -278,7 +277,6 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
     $("#question_checkboxes").html(tempQ)
 
 }
-
 
 function handleImageUpload() {
 	// prompt for video upload
@@ -627,6 +625,178 @@ function sendUpdates() {
     var flashcards = [];
     var position_me = 0;
     // Saving Quick Reads
+    flashcards_div = []
+    flashcard_body = []
+    current_flashcard_elements = []
+    var attr_array = []
+    position_me = 0
+
+    sortable_div = document.getElementById("sortable").childNodes
+    sortable_div.forEach((flashcard_div) => {
+        try{
+            if(flashcard_div.getAttribute("data-position")){
+                flashcards_div.push(flashcard_div)
+            }
+        }catch(e){
+            
+        }
+        })
+
+        flashcards_div.forEach(flashcard => {
+            // Prepare the data
+            current_flashcard_elements = []
+            flashcard.childNodes.forEach(flashcard_element => {
+                if(flashcard_element.attributes){
+                    current_flashcard_elements.push(flashcard_element)
+                }
+            })
+
+            current_flashcard_elements.shift() // remove the header
+            flashcard_type = flashcard.getAttribute("data-type")
+            position_me +=1
+            
+            //current_flashcard_elements has all the fields of current selected flashcard
+            console.log(flashcard_type + " has length of "+current_flashcard_elements.length)
+
+            if(current_flashcard_elements.length < 4 ){
+
+         
+            current_flashcard_elements.forEach(current_flashcard_element => {
+                this_element = current_flashcard_element.firstElementChild
+                if(this_element.type == "textarea" || this_element.type == "text"){
+                    attr_value = current_flashcard_element.firstElementChild.value
+                    attr_array.push(attr_value)   
+                }
+            })
+
+            }else{
+                real_flashcard_elements = [] 
+                current_flashcard_elements.forEach(current_flashcard_element => {
+                    if(current_flashcard_element.attributes){
+                        real_flashcard_elements.push(current_flashcard_element)
+                    }
+                })
+                attr_array[0] = real_flashcard_elements[0].firstElementChild.value
+                choices_array = []
+                //working on choices
+                real_flashcard_elements[1].childNodes.forEach(choice => {
+    
+                    choice.childNodes.forEach(choice_unit => {
+                        if(choice_unit.type == "text"){
+                            choices_array.push(choice_unit.value)    
+                    }
+                })
+                })
+                // Selecting the value of image
+                real_flashcard_elements[current_flashcard_elements.length -1].childNodes.forEach(image_upload_element => {
+                    if(image_upload_element.type == "text"){
+                        attr_array[1] = image_upload_element.value
+                    }
+                })
+                
+                console.log(attr_array)
+
+            }
+            switch(flashcard_type){
+                case "speed_read":
+                    temp = {
+                        "lesson_type": "quick_read",
+                        "question": attr_array[0],
+                        "position": position_me
+                    }
+                    flashcards.push(temp)
+                    break; 
+
+                case "title_text":
+                    console.log("This is a titletext")
+                    temp = {
+                        "lesson_type": "title_text",
+                        "question": attr_array[0],
+                        "answer": attr_array[1],
+                        "position": position_me
+            
+                    }
+                    flashcards.push(temp)
+                    break;
+                
+                case "title_input":
+
+                    temp = {
+                        "lesson_type": "title_input",
+                        "question": attr_array[0],
+                        "position": position_me
+            
+                    }
+                    flashcards.push(temp)
+                    break;
+                
+                case "iframe_link":            
+                    temp = {
+                        "lesson_type": "iframe_link",
+                        "question": attr_array[0],
+                        "image": attr_array[1],
+                        "position": position_me
+                    }
+                    flashcards.push(temp)
+                    break;
+
+                case "title_textarea":
+                    temp = {
+                        "lesson_type": "title_textarea",
+                        "question": attr_array[0],
+                        "position": position_me
+                    }
+                    flashcards.push(temp)
+                    break;
+
+                case "image_file":
+                    temp = {
+                        "lesson_type": "image_file",
+                        "question": attr_array[0],
+                        "image": attr_array[2],
+                        "position": position_me
+                    }
+                    flashcards.push(temp)
+                    break;
+                
+                case "video_file":
+                    temp = {
+                        "lesson_type": "video_file",
+                        "question": attr_array[0],
+                        "image": attr_array[2],
+                        "position": position_me
+                    }
+                    flashcards.push(temp)
+                    break;
+                
+                case "question_choices":
+                    temp = {
+                        "lesson_type": "question_choices",
+                        "question": attr_array[0],
+                        "choices":choices_array,
+                        "image": attr_array[1],
+                        "position": position_me
+                    }
+                    flashcards.push(temp)
+                    break;
+
+                case "question_checkboxes":
+                    temp = {
+                        "lesson_type": "question_checkboxes",
+                        "question": attr_array[0],
+                        "choices":choices_array,
+                        "image": attr_array[1],
+                        "position": position_me
+                    }
+                    flashcards.push(temp)
+                    break;
+            }
+            
+            attr_array = []
+
+    })
+        console.log(flashcards)
+        /*
     for (var i = 0; i < quick_read_count; i++) {
         quick_read_value = $('textarea[name="speed_read_' + i + '"]').val()
         position_me = $('textarea[name="speed_read_' + i + '"]').parent().parent().data("position")
@@ -792,6 +962,7 @@ function sendUpdates() {
         flashcards.push(temp)
     }
 
+    
     data_.flashcards = flashcards
     console.log(data_)
 
@@ -839,6 +1010,7 @@ function sendUpdates() {
                 })            }
         })
     }
+    */
 }
 
 $(document).ready(function () {
