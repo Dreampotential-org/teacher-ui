@@ -119,7 +119,7 @@
             role="tabpanel"
             aria-labelledby="nav-sms-tab"
           >
-           <form action="">
+           <form id="send_sms">
             <div class="form-group">
                 <select class="form-control" id="sourceMsgNumber">
                     <option value="" selected>Select Source Number</option>
@@ -131,7 +131,7 @@
           
             <div class="form-group">
                
-                <textarea class="form-control" id="message" rows="4" placeholder="Message" required></textarea>
+                <textarea class="form-control" id="message_body" rows="4" placeholder="Message" required></textarea>
               </div>
 
             <button type="submit" class="btn btn-primary float-right">
@@ -174,7 +174,7 @@
               async: true,
               crossDomain: true,
               crossOrigin: true,
-              url: SERVER + "voip/api_voip/twilio_phon_numbers",
+              url: SERVER + "voip/api_voip/getNumber",
               type: "GET",
               headers: { "Authorization": `${localStorage.getItem('user-token')}` }
           }).done((numbers) => {
@@ -192,7 +192,71 @@
       }
 
       $("#make_call").click (() => {
+        source_num_call = $('#sourceCallNumber').val();
         dest_num_call = $("#dest_num_call").val()
+
+        $.ajax({
+          url: SERVER + "voip/api_voip/make_call",
+          async: true,
+          crossDomain: true,
+          crossOrigin: true,
+          type: "POST",
+          data : {
+            "from_num" : source_num_call,
+            "to_num" : dest_num_call,
+          },
+          headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+        }).done( () => {
+            swal({	
+                title: "Calling",
+                text: "You have successfully make_call",	
+                icon: "success",
+                timer: 2000
+                })
+        }).fail( (err) => {
+            swal({	
+                title: "not calling",	
+                text: "somthing went wrong.",	
+                icon: "error",	
+                timer: 2000
+                });	
+            console.log(err)
+        })
+      })
+      
+      $('#send_sms').submit(() => {
+        source_num_sms = $('#sourceMsgNumber').val()
+        des_num_sms = $('#dest_num_sms').val()
+        body_msg = $("#message_body").val()
+
+        $.ajax({
+          url: SERVER + "voip/api_voip/send_sms_",
+          async: true,
+          crossDomain: true,
+          crossOrigin: true,
+          type: "POST",
+          data : {
+            "from_num" : source_num_sms,
+            "to_num" : des_num_sms,
+            'body' : body_msg,
+          },
+          headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+        }).done( () => {
+            swal({	
+                title: "message_send",
+                text: "You have successfully send msg",	
+                icon: "success",
+                timer: 2000
+                })
+        }).fail( (err) => {
+            swal({	
+                title: "not sending msg",	
+                text: "somthing went wrong.",	
+                icon: "error",	
+                timer: 2000
+                });	
+            console.log(err)
+        })
       })
       
       function SidebarCollapse() {
