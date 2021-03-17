@@ -1,45 +1,46 @@
-var answer = ""
-var signature = ""
+var answer = '';
+var signature = '';
 var current_slide = 0;
 var total_slides = 0;
 var loaded_flashcards = null;
-var pct = 0
-var completed = false
+var pct = 0;
+var completed = false;
 var signature = [];
+
 var phone_verification_status =false;
 var session_id = null;
 var hasName = false;
 var hasPhone = false;
 var hasEmail= false;
 function updateProgressBar() {
-    pct = (current_slide / total_slides) * 100
-    $('.progress-bar').css("width", pct + "%")
-    $('.progress-bar').attr("aria-valuenow", pct)
-    $("#progress").html(current_slide + " out of " + total_slides)
+  pct = (current_slide / total_slides) * 100;
+  $('.progress-bar').css('width', pct + '%');
+  $('.progress-bar').attr('aria-valuenow', pct);
+  $('#progress').html(current_slide + ' out of ' + total_slides);
 }
 
-function updateSign(data_,event,imgId,signInput){
-    console.log("yo")
-    $('#' + signInput).val(data_);
-    console.log("updating sign :"+imgId)
-    console.log("with: "+ data_)
-    $('#' + imgId).attr("src", data_);
-    console.log("yo"+data_+$('#' + imgId).attr("src"))
-    $('#' + imgId).removeAttr('hidden');
+function updateSign(data_, event, imgId, signInput) {
+  console.log('yo');
+  $('#' + signInput).val(data_);
+  console.log('updating sign :' + imgId);
+  console.log('with: ' + data_);
+  $('#' + imgId).attr('src', data_);
+  console.log('yo' + data_ + $('#' + imgId).attr('src'));
+  $('#' + imgId).removeAttr('hidden');
 
-    if(event){
-        event.target.innerHTML = 'Redraw Signature';
-    }
+  if (event) {
+    event.target.innerHTML = 'Redraw Signature';
+  }
 }
 
 function signLesson(event, imgId, signInput) {
-    if ($('#signature')) {
-        $('#signature').modal('show');
-    }
+  if ($('#signature')) {
+    $('#signature').modal('show');
+  }
 
-    document.addEventListener('signatureSubmitted', function (e) {
-        updateSign(window.currentSignature.data,event,imgId,signInput);
-    });
+  document.addEventListener('signatureSubmitted', function (e) {
+    updateSign(window.currentSignature.data, event, imgId, signInput);
+  });
 }
 
 function sendResponse(flashcard_id,answer){
@@ -90,17 +91,21 @@ function sendResponse(flashcard_id,answer){
                 }
             })
             alert("FlashCard Response Sent")
+
         },
-        'error': function(res){
-            // alert(JSON.stringify(res))
-        }
-    })
+      });
+      alert('FlashCard Response Sent');
+    },
+    error: function (res) {
+      // alert(JSON.stringify(res))
+    },
+  });
 }
 
-function updateMeta(type,answer){
-    if(type =='name'){
-        swal({title:"setting up name to "+answer})
-    }
+function updateMeta(type, answer) {
+  if (type == 'name') {
+    swal({ title: 'setting up name to ' + answer });
+  }
 }
 
 function nextSlide(){
@@ -154,43 +159,48 @@ function nextSlide(){
         answer = $("input[name= name_type_"+(current_slide-1)+"]").val()
         console.log("Name Type")
         updateMeta('name',answer)
+
     }
 
     $('#myCarousel').carousel('next');
-}
+  }
 }
 
 function prevSlide() {
-    if (current_slide > 0) {
-        current_slide--;
-    }
-    updateProgressBar()
-    console.log(current_slide)
-    $('#myCarousel').carousel('prev');
+  if (current_slide > 0) {
+    current_slide--;
+  }
+  updateProgressBar();
+  console.log(current_slide);
+  $('#myCarousel').carousel('prev');
 }
 
-function getParam(sParam){
-    var sPageURL = window.location.search.substring(1);
-    var sURLVariables = sPageURL.split('&');
-    for (var p = 0; p < sURLVariables.length; p++){
-        var sParameterName = sURLVariables[p].split('=');
-        if (sParameterName[0] == sParam) {
-            return sParameterName[1];
-        }
+function getParam(sParam) {
+  var sPageURL = window.location.search.substring(1);
+  var sURLVariables = sPageURL.split('&');
+  for (var p = 0; p < sURLVariables.length; p++) {
+    var sParameterName = sURLVariables[p].split('=');
+    if (sParameterName[0] == sParam) {
+      return sParameterName[1];
     }
+  }
 }
 
-function get_session() {
-    session_id = localStorage.getItem("session_id")
-    if (session_id) {
-        console.log("Already have session_id " + session_id)
-        return session_id
-    }
-    console.log("Generate new session")
-    $.get(SERVER + '/courses_api/session/get', function (resp) {
-        console.log(resp)
-        localStorage.setItem("session_id", resp.session_id)
-    })
+async function  get_session() {
+  var session_id = localStorage.getItem('session_id');
+  if (session_id) {
+    console.log('Already have session_id ' + session_id);
+    return session_id;
+  }
+
+  $.ajax({
+    async: false,
+    type: 'GET',
+    url: SERVER + '/courses_api/session/get',
+    success: function (data) {
+        localStorage.setItem('session_id', data.session_id);
+    },
+  });
 }
 
 function verifyPhone(event){
@@ -205,6 +215,7 @@ function verifyPhone(event){
 }
 
 function init() {
+
     console.log("Starting")
     $('#sign-modal').load("signature/index.html");
     $("#verify-phone-modal").load('phone/index.html');
@@ -366,20 +377,162 @@ function init() {
                 $("#theSlide").append('<div class="'+className+'"><div class="name_type"><div alt="name_type" style="height:500px"><h1> Enter your name: </h1><input name ="name_type_'+i+'" class="form-control" placeholder="Enter you name here"></div></div></div>')
             }
 
-            if(flashcard.lesson_type == "signature") {
-                $("#theSlide").append(`
+        flashcard.options.forEach(function (valu) {
+          $('#theSlide')
+            .find('ul')
+            .each((a, b, c) => {
+              if ($(b).attr('alt') == 'question_checkboxes_' + i) {
+                $(b).append("<input type='checkbox' value='" + valu + "' name='checkboxes_" + i + "'> " + valu + '<br>');
+              }
+            });
+          if ($('#theSlide').find('ul').attr('alt') === 'question_checkboxes_' + i) {
+          }
+        });
+      }
+
+      if (flashcard.lesson_type == 'iframe_link') {
+        $('#theSlide').append(
+          '<div class="' +
+            className +
+            '"><div alt="iframe_link" class="iframe_div"><h1> ' +
+            flashcard.question +
+            '</h1><iframe  class="iframe_screen" src= "' +
+            flashcard.image +
+            '"></iframe></div></div>'
+        );
+      }
+      if (flashcard.lesson_type == 'video_file') {
+        $('#theSlide').append(
+          '<div class="' +
+            className +
+            '"><div alt="title_text" style="height:500px"><h1> ' +
+            flashcard.question +
+            '</h1><video style="height:500px;width:1000px"; controls> <source src= "' +
+            flashcard.image +
+            '"></video></div></div>'
+        );
+      }
+
+      if (flashcard.lesson_type == 'image_file') {
+        $('#theSlide').append(
+          '<div class="' +
+            className +
+            '"><div alt="title_text" style="height:500px"><h1> ' +
+            flashcard.question +
+            '</h1><img src= "' +
+            flashcard.image +
+            '"></div></div>'
+        );
+      }
+
+      if (flashcard.lesson_type == 'title_textarea') {
+        $('#theSlide').append(
+          '<div class="' +
+            className +
+            '"><div class="title_textarea"><div alt="title_text" style="height:500px"><h1> ' +
+            flashcard.question +
+            '</h1><textarea name ="textarea_' +
+            i +
+            '" class="form-control" placeholder="Enter you answer here"></textarea></div></div></div>'
+        );
+      }
+      if (flashcard.lesson_type == 'title_input') {
+        $('#theSlide').append(
+          '<div class="' +
+            className +
+            '"><div class="title_input"><div alt="title_input" style="height:500px"><h1> ' +
+            flashcard.question +
+            '</h1><input name ="title_input_' +
+            i +
+            '" class="form-control" placeholder="Enter you answer here"></div></div></div>'
+        );
+      }
+
+      if (flashcard.lesson_type == 'name_type') {
+        $('#theSlide').append(
+          '<div class="' +
+            className +
+            '"><div class="name_type"><div alt="name_type" style="height:500px"><h1> Enter your name: </h1><input name ="name_type_' +
+            i +
+            '" class="form-control" placeholder="Enter you name here"></div></div></div>'
+        );
+      }
+
+      if (flashcard.lesson_type == 'signature') {
+        $('#theSlide').append(`
                 <div class="${className}" id="flashcard_${i}">
                 <div alt="signature">
                 <input type="text" hidden name="input_signature_${i}" id="signInput">
                 <button class="btn btn-primary" type="button" onclick="signLesson(event,'slide_signature', 'signInput')"> Click To Sign</button>
                 <img id="slide_signature" hidden >
                 </div>
-                </div>`)
+                </div>`);
+      }
+      
+      if (flashcard.lesson_type == 'verify_phone') {
+        console.log('adding verify phone');
+
+        $('#theSlide').append(`
+                    <duv class="${className}" id="flascard_${i}" id="verify_phone">
+                        <div alt="verify_phone">
+                            <input type="text" hidden name="verify_phone_${i}" id="verifyPhone">
+                            <button class="btn btn-primary" type="button" onclick="verifyPhone(event)"> Click To Verify Phone Number</button>
+                            <p id="phone_verification_status">${phone_verification_status ? 'verified' : 'not verified'}</p>
+                            </div>
+                    </div>
+                `);
+      }
+
+      i++;
+    });
+
+    $('#theSlide').append(
+      '<div class="item"><div alt="quick_read" style="height:500px"><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1></div></div>'
+    );
+    $.get(SERVER + '/courses_api/lesson/response/get/' + lesson_id + '/' + localStorage.getItem('session_id'), function (response) {
+      response.forEach(function (rf) {
+        loaded_flashcards.forEach(function (f, i) {
+          if (rf.flashcard[0].id == f.id) {
+            console.log(rf.answer);
+            if (f.lesson_type == 'title_textarea') {
+              $('textarea[name=textarea_' + i).val(rf.answer);
+            }
+            if (f.lesson_type == 'title_input') {
+              $('input[name=title_input_' + i).val(rf.answer);
+            }
+            if (f.lesson_type == 'question_choices') {
+              $('input[name=choices_' + i + '][value=' + rf.answer + ']').attr('checked', true);
             }
 
+            if (f.lesson_type == 'question_checkboxes') {
+              $('input[name=checkboxes_' + i + '][value=' + rf.answer + ']').attr('checked', true);
+            }
+          }
+          $('input[name=input_signature_' + i + ']').val(rf.answer);
+          $('#slide_signature').attr('src', rf.answer);
+          if (rf.answer) {
+            $('#slide_signature').attr('hidden', false);
+            $('.input_signature').children('button')[0].innerText = 'Redraw Signature';
+          }
+        });
+      });
+    });
+  })
+    .done((res) => console.log('Invitaion res', res))
+    .fail((err) => console.log('Invitation err', err));
+}
+
+function verifyPhone(event) {
+  if ($('#verify_phone')) {
+    $('#verify_phone').modal('show');
+  }
+
+  document.addEventListener('phoneVerified', function (e) {
+    $('#verify_phone').modal('hide');
+    phone_verification_status = true;
+  });
             i++;
         })
-
 
         $("#theSlide").append('<div class="item"><div alt="quick_read" style="height:500px"><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1></div></div>')
        if(session_id){
@@ -417,4 +570,4 @@ function init() {
     });
 }
 
-window.addEventListener('DOMContentLoaded', init, false)
+window.addEventListener('DOMContentLoaded', init, false);

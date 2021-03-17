@@ -30,7 +30,8 @@
         </div>
     </div>
     <script> 
-        window.SERVER = 'https://sfapp-api.dreamstate-4-all.org'
+        // window.SERVER = 'https://sfapp-api.dreamstate-4-all.org'
+        SERVER="http://localhost:8000"
         var phone_number = '';
         var code ='';
         function verification_process(){
@@ -45,7 +46,6 @@
             $("#submit-code").hide()
             $('#send-sms').on('click', function () {
                 phone_number = $("#phone_number").val();
-                console.log(phone_number)
                 if (phone_number == '') {
                     return alert("Please provide your number first");
                 }else{
@@ -64,7 +64,7 @@
                             alert("SMS SEnt")
                         },
                         'error': function(res){
-                            // alert(JSON.stringify(res))
+
                         }
                     })   
                 }
