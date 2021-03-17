@@ -71,36 +71,38 @@
                 <div class="col-xs-12" id="sortable">
 
                 </div>
+
+
                 <div class="col-xs-12">
                     <form id="lesson_form">
                         <div class="speed_read" id="speed_read" style="display: none; padding-top: 15px">
-                            <div class="ui-sortable-handle" style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div data-type="speed_read" style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
                                 <div class="row">
                                     <h4 class="col-xs-10 col-lg-10">Speed Read</h4>
                                     <a class="remove_flashcard col-xs-2 col-lg-2" style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;"> x </a>
                                 </div>
 
                                 <div class="form-group">
-                                    <textarea class="form-control" id="answer" name="speed_read" rows="7" placeholder=""></textarea>
+                                    <textarea class="form-control" alt="speed_read_textarea" rows="7" placeholder=""></textarea>
                                 </div>
                             </div>
                         </div>
 
                         <div class="speed_read" id="title_textarea" style="display: none; padding-top: 15px">
-                            <div style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div data-type="title_textarea" style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
                                 <div class="row">
                                     <h4 class="col-xs-10 col-lg-10">Question Text</h4>
                                     <a class="remove_flashcard col-xs-2 col-lg-2" style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;"> x </a>
                                 </div>
 
                                 <div class="form-group">
-                                    <textarea class="form-control" id="answer" name="speed_read" rows="7" placeholder=""></textarea>
+                                    <textarea class="form-control" name="speed_read" rows="7" placeholder=""></textarea>
                                 </div>
                             </div>
                         </div>
 
                         <div class="speed_read" id="title_text" style="display: none; padding-top: 15px">
-                            <div style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div data-type="title_text" style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
                                 <div class="row">
                                     <h4 class="col-xs-10 col-lg-10">Title Text</h4>
                                     <a class="remove_flashcard col-xs-2 col-lg-2" style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;"> x </a>
@@ -109,43 +111,43 @@
                                     <input type="text" class="form-control" id="title"  placeholder="Title">
                                 </div>
                                 <div class="form-group">
-                                    <textarea class="form-control" id="answer" rows="7" placeholder=""></textarea>
+                                    <textarea class="form-control" rows="7" placeholder=""></textarea>
                                 </div>
                             </div>
                         </div>
 
                         <div class="speed_read" id="title_input" style="display: none; padding-top: 15px">
-                            <div style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div data-type="title_input" style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
                                 <div class="row">
                                     <h4 class="col-xs-10 col-lg-10">Title Input</h4>
                                     <a class="remove_flashcard col-xs-2 col-lg-2" style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;"> x </a>
                                 </div>
                                 <div class="form-group">
-                                    <textarea class="form-control" id="answer" rows="7" placeholder="Enter your title here"></textarea>
+                                    <textarea class="form-control" rows="7" placeholder="Enter your title here"></textarea>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="speed_read" id="name_type" style="display: none; padding-top: 15px">
-                            <div style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div data-type="name_type" style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
                                 <div class="row">
                                     <h4 class="col-xs-10 col-lg-10">Name Type</h4>
                                     <a class="remove_flashcard col-xs-2 col-lg-2" style="color:rgb(46, 46, 46);font-size:16px;text-align:right;"> X </a>
                                 </div>
                                 <div class="form-group">
-                                    <textarea class="form-control" id="answer" rows="7" placeholder="Enter your title here"></textarea>
+                                    <textarea class="form-control" rows="7" placeholder="Enter your title here"></textarea>
                                 </div>
                             </div>
                         </div>
 
                         <div class="speed_read" id="question_choices" style="display: none; padding-top: 15px">
-                            <div style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div data-type="question_choices" style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
                                 <div class="row">
                                     <h4 class="col-xs-10 col-lg-10">Question Choices</h4>
                                     <a class="remove_flashcard col-xs-2 col-lg-2" style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;"> x </a>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="question"  placeholder="Question">
+                                    <input type="text" class="form-control" placeholder="Question">
                                 </div>
                                 <div class="form-group" id="choices">
                                     <div>
@@ -155,8 +157,8 @@
                                 <button>Add Choice</button>
                                 <div class="form-group">
                                     <hr>
-                                    <input type="button" id="upload-img-btn" onclick="handleImageUpload()" value="Upload Image"/>
-                                    <input type="text" class="form-control" id="image" placeholder="Image Link" />
+                                    <input type="button" onclick="handleImageUpload()" value="Upload Image"/>
+                                    <input type="text" class="form-control" placeholder="Image Link" />
                                     <div id="output"></div>
                                 </div>
 
@@ -165,13 +167,13 @@
                         </div>
 
                         <div class="speed_read" id="question_checkboxes" style="display: none; padding-top: 15px">
-                            <div style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div data-type="question_checkboxes" style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
                                 <div class="row">
                                     <h4 class="col-xs-10 col-lg-10">Question Checkboxes</h4>
                                     <a class="remove_flashcard col-xs-2 col-lg-2" style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;"> x </a>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="question"  placeholder="Question">
+                                    <input type="text" class="form-control" placeholder="Question">
                                 </div>
                                 <div class="form-group" id="checkboxes">
                                     <div>
@@ -182,7 +184,7 @@
                                 <div class="form-group">
                                     <hr>
                                     <input type="button" id="upload-img-btn" onclick="handleImageUpload()" value="Upload Image"/>
-                                    <input type="text" class="form-control" id="image" placeholder="Image Link" />
+                                    <input type="text" class="form-control" placeholder="Image Link" />
                                     <div id="output"></div>
                                 </div>
 
@@ -191,7 +193,7 @@
                         </div>
 
                         <div class="speed_read" id="video_file" style="display: none; padding-top: 15px">
-                            <div style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div data-type="video_file" style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
                                 <div class="row">
                                     <h4 class="col-xs-10 col-lg-10">Video File</h4>
                                     <a class="remove_flashcard col-xs-2 col-lg-2" style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;"> x </a>
@@ -212,18 +214,18 @@
                         </div>
 
                         <div class="speed_read" id="image_file" style="display: none; padding-top: 15px">
-                            <div style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div data-type="image_file" style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
                                 <div class="row">
                                     <h4 class="col-xs-10 col-lg-10">Image File</h4>
                                     <a class="remove_flashcard col-xs-2 col-lg-2" style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;"> x </a>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="video_title"  placeholder="Title">
+                                    <input type="text" class="form-control" id="image_title"  placeholder="Title">
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="button" id="upload-img-btn" onclick="handleImageUpload()" value="Upload Image"/>
-                                    <input type="text" class="form-control" id="video" placeholder="Image Link" />
+                                    <input type="button" onclick="handleImageUpload()" value="Upload Image"/>
+                                    <input type="text" class="form-control" placeholder="Image Link" />
                                 </div>
                                 <div id="image-output" style="display: none">
                                     <img  id="videoplayer" controls preload="none" height="360" style="width: 100%;">
@@ -232,7 +234,7 @@
                         </div>
 
                         <div class="speed_read" id="iframe_link" style="display: none; ping-top: 15px">
-                            <div style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div data-type="iframe_link" style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
                                 <div class="row">
                                     <h4 class="col-xs-10 col-lg-10">Iframe Link</h4>
                                     <a class="remove_flashcard col-xs-2 col-lg-2" style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;"> x </a>
@@ -269,7 +271,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="text" hidden name="input_signature" id="signInput">
+                                    <input type="text" hidden name="input_signature" id="verifyPhone">
                                     <button class="btn btn-primary" type="button"> Click To Verify your Phone</button>
                                 </div>
                             </div>
