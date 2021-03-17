@@ -1081,38 +1081,37 @@ $(document).ready(function () {
           },function(isConfirm) {
             if (isConfirm) {
                 var lesson_element_type = $(e.target).parent().parent().children().last().children().attr("name")
-                //console.log(lesson_element_type)
                 pos--;
-                if (lesson_element_type.startsWith("speed_read")) {
-                    quick_read_count--;
-                } else if (lesson_element_type.startsWith("text")) {
-                    title_text_count--;
-                } else if (lesson_element_type.startsWith("question")) {
-                    question_choices_count--
-                } else if (lesson_element_type.startsWith("link")) {
-                    iframe_link_count--
-                } else if (lesson_element_type.startsWith("video")) {
-                    video_file_count--
-                } else if (lesson_element_type.startsWith("image")) {
-                    image_file_count--
-                }else if (lesson_element_type.startsWith("title_textarea")) {
-                    title_textarea_count--
-                }else if (lesson_element_type.startsWith("title_input")) {
-                    title_input_count--
-                } else if (lesson_element_type.startsWith("sign_b64")) {
-                    sign_count--
-                } else if (lesson_element_type.startsWith("brain_tree")) {
-                    braintree_count--
-                }else if (lesson_element_type.startsWith("question_checkboxes")) {
-                    question_checkboxes_count--
-                }else if (lesson_element_type.startsWith("name_type")) {
-                    name_type_count--
-                }
+                // if (lesson_element_type.startsWith("speed_read")) {
+                //     quick_read_count--;
+                // } else if (lesson_element_type.startsWith("text")) {
+                //     title_text_count--;
+                // } else if (lesson_element_type.startsWith("question")) {
+                //     question_choices_count--
+                // } else if (lesson_element_type.startsWith("link")) {
+                //     iframe_link_count--
+                // } else if (lesson_element_type.startsWith("video")) {
+                //     video_file_count--
+                // } else if (lesson_element_type.startsWith("image")) {
+                //     image_file_count--
+                // }else if (lesson_element_type.startsWith("title_textarea")) {
+                //     title_textarea_count--
+                // }else if (lesson_element_type.startsWith("title_input")) {
+                //     title_input_count--
+                // } else if (lesson_element_type.startsWith("sign_b64")) {
+                //     sign_count--
+                // } else if (lesson_element_type.startsWith("brain_tree")) {
+                //     braintree_count--
+                // }else if (lesson_element_type.startsWith("question_checkboxes")) {
+                //     question_checkboxes_count--
+                // }else if (lesson_element_type.startsWith("name_type")) {
+                //     name_type_count--
+                // }
                 //console.log(lesson_element_type)
                 $(e.target).parent().parent().remove()
                 sortablePositionFunction();
             } else {
-              swal("Cancelled", "Your imaginary file is safe :)", "error");
+              swal("Cancelled", "error");
             }
           })
 
