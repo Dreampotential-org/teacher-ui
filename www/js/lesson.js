@@ -561,20 +561,20 @@ function addImageFile(isNew, id, question, image, posU) {
 	sortablePositionFunction(isNew, posU);
 }
 
-// function addVerifyPhone(isNew,id,question,image,posU){
-//     if (!isNew) {
+function addVerifyPhone(isNew,id,question,image,posU){
+    if (!isNew) {
 
-//     } else {
-//         $("#title_textarea").find("textarea").first().html("")
-//     }
+    } else {
+        $("#title_textarea").find("textarea").first().html("")
+    }
 
-//     $("#verify_phone").find("input").first().attr(
-//         "name", "verify_phone_" + verify_phone_count)
-//     $("#sortable").append($("#verify_phone").html())
+    $("#verify_phone").find("input").first().attr(
+        "name", "verify_phone_" + verify_phone_count)
+    $("#sortable").append($("#verify_phone").html())
 
-//     verify_phone_count++;
-//     sortablePositionFunction(isNew, posU);
-// }
+    verify_phone_count++;
+    sortablePositionFunction(isNew, posU);
+}
 
 function addBrainTree(isNew, id, merchant_ID, braintree_public_key,
                       braintree_private_key,
@@ -666,7 +666,7 @@ function sendUpdates() {
             current_flashcard_elements.shift() // remove the header
             flashcard_type = flashcard.getAttribute("data-type")
             position_me +=1
-            
+            console.log(current_flashcard_elements)
             //current_flashcard_elements has all the fields of current selected flashcard
             console.log(flashcard_type + " has length of "+current_flashcard_elements.length)
 
@@ -680,6 +680,7 @@ function sendUpdates() {
                     attr_array.push(attr_value)   
                 }
             })
+            console.log(attr_array)
 
             }else{
                 real_flashcard_elements = [] 
@@ -785,7 +786,7 @@ function sendUpdates() {
                     temp = {
                         "lesson_type": "question_choices",
                         "question": attr_array[0],
-                        "choices":choices_array,
+                        "options":choices_array,
                         "image": attr_array[1],
                         "position": position_me
                     }
@@ -796,8 +797,26 @@ function sendUpdates() {
                     temp = {
                         "lesson_type": "question_checkboxes",
                         "question": attr_array[0],
-                        "choices":choices_array,
+                        "options":choices_array,
                         "image": attr_array[1],
+                        "position": position_me
+                    }
+                    flashcards.push(temp)
+                    break;
+                
+                case "name_type":
+                    temp = {
+                        "lesson_type": "name_type",
+                        "question": attr_array[0],
+                        "position": position_me
+
+                    }
+                    flashcards.push(temp)
+                    break;
+                
+                case "verify_phone":
+                    temp = {
+                        "lesson_type": "verify_phone",
                         "position": position_me
                     }
                     flashcards.push(temp)
@@ -960,12 +979,12 @@ $(document).ready(function () {
                                        flashcard.position)
                 }
 
-                // if (flashcard.lesson_type == "name_type") {
-                //     addNameType(false, flashcard.id,
-                //                        flashcard.question,
-                //                        flashcard.options, flashcard.image,
-                //                        flashcard.position)
-                // }
+                    if (flashcard.lesson_type == "name_type") {
+                        addNameType(false, flashcard.id,
+                                           flashcard.question,
+                                           flashcard.options, flashcard.image,
+                                           flashcard.position)
+                    }
 
                 if (flashcard.lesson_type == "question_checkboxes") {
                     addQuestionCheckboxes(false, flashcard.id,
@@ -1006,10 +1025,10 @@ $(document).ready(function () {
                                     flashcard.position + 1);
                 }
 
-                // if(flashcard.lesson_type == "verify_phone"){
-                //     addVerifyPhone(false, flashcard.id, null,
-                //                     flashcard.position + 1);
-                // }
+                if(flashcard.lesson_type == "verify_phone"){
+                    addVerifyPhone(false, flashcard.id, null,
+                                    flashcard.position + 1);
+                }
             })
         
             getAllLessons();
