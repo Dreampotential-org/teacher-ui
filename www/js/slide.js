@@ -8,6 +8,7 @@ var completed = false
 var signature = [];
 var phone_verification_status =false;
 var session_id = null;
+var SERVER = 'https://sfapp-api.dreamstate-4-all.org/'
 
 
 function updateProgressBar() {
@@ -55,7 +56,6 @@ function sendResponse(flashcard_id,answer){
     const params = param.searchParams.get('params')
 
     if (params) {
-
         var data_ = {
             "flashcard":flashcard_id,
             "session_id":localStorage.getItem("session_id"),
@@ -117,15 +117,16 @@ function nextSlide(){
         })
     }
 
-    //var current_flashcard = loaded_flashcards[current_slide-1]
-    //current_flashcard = current_flashcard.id?current_flashcard:loaded_flashcards[current_slide-2]
-    //var flashcard_id = current_flashcard.id;
+    var current_flashcard = loaded_flashcards[current_slide-1]
+    current_flashcard = current_flashcard.id?current_flashcard:loaded_flashcards[current_slide-2]
+    var flashcard_id = current_flashcard.id;
 
     updateProgressBar()
     
     if(!completed){
     var type = $("div.active").children().children().attr("alt");
     console.log(type)
+    
     if (type == "question_choices") {
         answer = $("input[name= choices_" + (current_slide - 1) + "]:checked").val()
         console.log(answer)
@@ -145,14 +146,11 @@ function nextSlide(){
         console.log("title inpt")
         sendResponse(flashcard_id,answer)
     }else if(type=='signature'){
-        console.log("This is signature")
         answer = $("input[name= input_signature_"+(current_slide-1)+"]").val()
-        updateMeta('signature',answer)
+        sendResponse(flashcard_id,answer)
     }else if(type == "name_type"){
-        swal({title:'Updated Name type'})
         answer = $("input[name= name_type_"+(current_slide-1)+"]").val()
-        console.log("Name Type")
-        updateMeta('name',answer)
+        sendResponse(flashcard_id,answer)
     }
 
     $('#myCarousel').carousel('next');
