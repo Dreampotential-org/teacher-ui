@@ -809,6 +809,7 @@ function sendUpdates() {
                         "lesson_type": "signature",
                         "position": position_me
                     }
+                    break;
                 case "name_type":
                     temp = {
                         "lesson_type": "name_type",
