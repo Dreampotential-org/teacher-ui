@@ -255,7 +255,7 @@
                             </div>
                         </div>
                         <div class="speed_read" id="sign_b64" style="display: none; padding-top: 15px">
-                            <div style="margin-top:50px">
+                            <div data-type="signature" style="margin-top:50px">
                                 <div class="row">
                                     <h4 class="col-xs-10 col-lg-10">Signature</h4>
                                     <a class="remove_flashcard col-xs-2 col-lg-2" style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;"> x </a>
@@ -263,8 +263,8 @@
 
                                 <div class="form-group">
                                     <input type="text" hidden name="input_signature" id="signInput">
-                                    <button class="btn btn-primary" type="button" onclick="signLesson(event, 'lesson_signature', 'signInput')"> Click To Sign</button>
                                     <img id="lesson_signature" hidden src="">
+                                    <button class="btn btn-primary" type="button" onclick="signLesson(event, 'lesson_signature', 'signInput')"> Click To Sign</button>
                                 </div>
                             </div>
                         </div>

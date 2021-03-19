@@ -73,9 +73,8 @@ function sendResponse(flashcard_id,answer){
 
 
     console.log(data_)
-
     $.ajax({
-        "url": SERVER +"/courses_api/flashcard/response/",
+        "url": SERVER +"/courses_api/flashcard/response",
         'data': JSON.stringify(data_),
         'type': 'POST',
         'contentType': 'application/json',
@@ -118,14 +117,14 @@ function nextSlide(){
         })
     }
 
-    //var current_flashcard = loaded_flashcards[current_slide-1]
-    //current_flashcard = current_flashcard.id?current_flashcard:loaded_flashcards[current_slide-2]
-    //var flashcard_id = current_flashcard.id;
+    var current_flashcard = loaded_flashcards[current_slide-1]
+    current_flashcard = current_flashcard.id?current_flashcard:loaded_flashcards[current_slide-2]
+    var flashcard_id = current_flashcard.id;
 
     updateProgressBar()
     
     if(!completed){
-    var type = $("div.active").children().children().attr("alt");
+    var type = current_flashcard.lesson_type;
     console.log(type)
     if (type == "question_choices") {
         answer = $("input[name= choices_" + (current_slide - 1) + "]:checked").val()
@@ -133,9 +132,12 @@ function nextSlide(){
         sendResponse(flashcard_id,answer)
 
     }else if (type == "question_checkboxes") {
-        answer = $("input[name= checkboxes_" + (current_slide - 1) + "]:checked").val()
-        console.log(answer)
-        sendResponse(flashcard_id,answer)
+        let answer = [];
+        $("input[name= checkboxes_" + (current_slide - 1) + "]:checked").each((j,k)=>{
+            answer.push(k.value)
+        });
+        console.log(answer.join(','))
+        sendResponse(flashcard_id,answer.join(','))
 
     }else if(type == "title_textarea"){
         answer = $("textarea[name= textarea_"+(current_slide-1)+"]").val()
@@ -149,6 +151,7 @@ function nextSlide(){
         console.log("This is signature")
         answer = $("input[name= input_signature_"+(current_slide-1)+"]").val()
         updateMeta('signature',answer)
+        sendResponse(flashcard_id,answer)
     }else if(type == "name_type"){
         swal({title:'Updated Name type'})
         answer = $("input[name= name_type_"+(current_slide-1)+"]").val()
@@ -218,7 +221,7 @@ function init() {
         get_session();
         //let sign_flashcard = {lesson_type: 'input_signature'}
         //response.flashcards.push(sign_flashcard)
-        total_slides = response.flashcards.length + response.meta_attributes.split(",").length
+        total_slides = response.flashcards.length + response.meta_attributes.split(",").length - 1
         // Updating Meta Attribute states
 
         if(response.meta_attributes.includes("name")) hasName =true;
@@ -369,10 +372,10 @@ function init() {
             if(flashcard.lesson_type == "signature") {
                 $("#theSlide").append(`
                 <div class="${className}" id="flashcard_${i}">
-                <div alt="signature">
+                <div class="text-center alt="signature">
                 <input type="text" hidden name="input_signature_${i}" id="signInput">
+                <img id="slide_signature" hidden> </br>
                 <button class="btn btn-primary" type="button" onclick="signLesson(event,'slide_signature', 'signInput')"> Click To Sign</button>
-                <img id="slide_signature" hidden >
                 </div>
                 </div>`)
             }
@@ -399,16 +402,21 @@ function init() {
                         }
 
                         if (f.lesson_type == 'question_checkboxes') {
-                            $("input[name=checkboxes_" + i + "][value=" + rf.answer + "]").attr("checked", true)
+                            rf.answer.split(',').forEach((v)=>{
+                                $("input[name=checkboxes_" + i + "][value=" + v + "]").attr("checked", true);
+                            });                            
                         }
-
-                    }
-                    $("input[name=input_signature_"+i+"]").val(rf.answer)
-                    $("#slide_signature").attr("src",rf.answer)
-                    if(rf.answer){
-                        $("#slide_signature").attr("hidden",false)
-                        $('.input_signature').children('button')[0].innerText = 'Redraw Signature'
-                    }
+                        if(f.lesson_type == 'signature'){
+                            $("input[name=input_signature_"+i+"]").val(rf.answer)
+                            $("#slide_signature").attr("src",rf.answer)
+                            if(rf.answer){
+                                $("#slide_signature").attr("hidden",false)
+                                console.log($('#flashcard_'+i))
+                                console.log($('#flashcard_'+i).find('button'))
+                                $('#flashcard_'+i).find('button')[0].innerText = 'Update Signature'
+                            }
+                        }
+                    }                    
                 
                 })
             })

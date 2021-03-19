@@ -709,6 +709,7 @@ function sendUpdates() {
                 console.log(attr_array)
 
             }
+            console.log(flashcard_type);
             switch(flashcard_type){
                 case "speed_read":
                     temp = {
@@ -785,7 +786,7 @@ function sendUpdates() {
                     temp = {
                         "lesson_type": "question_choices",
                         "question": attr_array[0],
-                        "choices":choices_array,
+                        "options":choices_array,
                         "image": attr_array[1],
                         "position": position_me
                     }
@@ -796,8 +797,15 @@ function sendUpdates() {
                     temp = {
                         "lesson_type": "question_checkboxes",
                         "question": attr_array[0],
-                        "choices":choices_array,
+                        "options":choices_array,
                         "image": attr_array[1],
+                        "position": position_me
+                    }
+                    flashcards.push(temp)
+                    break;
+                case "signature":
+                    temp = {
+                        "lesson_type": "signature",
                         "position": position_me
                     }
                     flashcards.push(temp)
@@ -810,7 +818,7 @@ function sendUpdates() {
         console.log(flashcards)
 
     data_.flashcards = flashcards
-    data_.meta_attributes = meta_attributes
+    data_.meta_attributes = meta_attributes.join(',')
     console.log(data_)
 
     if (MODE == "CREATE") {
@@ -1002,6 +1010,7 @@ $(document).ready(function () {
 
 
                 if(flashcard.lesson_type == "signature"){
+                    console.log('signature adding')
                     addSignaturePad(false, flashcard.id, null,
                                     flashcard.position + 1);
                 }

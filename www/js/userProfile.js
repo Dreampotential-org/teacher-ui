@@ -56,7 +56,6 @@ document.getElementById('profileImageFile').onchange = function (event) {
     profile_form.append("description", $("#profileDescription").val())
     var json_arr = JSON.stringify(images);
     profile_form.append("images", json_arr)
-    var SERVER = 'http://localhost:8000/';
     var settings_add_profile = {
       "async": true,
       "crossDomain": true,
