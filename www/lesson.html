@@ -46,17 +46,11 @@
                         <a id="lesson_responses" class="col-lg-6">View Responses</a>
                     </div>
                     <br>
-                    <div class="row" id="meta_attributes">
-                        <label class="col-lg-12">What Metadata do you want to collect from user ?</label>
-                        <span class="col-lg-2" ><input type="checkbox" id="name"><label>Name</label> </span> 
-                        <span class="col-lg-2" ><input type="checkbox" id="email"><label>Email</label></span> 
-                        <span class="col-lg-4" ><input type="checkbox" id="phone"><label>Phone Number</label></span> 
-                    </div>
-
                 </div>
                 <div class="col-xs-6 col-sm-6" style="margin-top: 20px;margin-bottom: 10px;">
                     <select class="form-control " id="selectsegment">
                         <option selected value="select_type">Select Segment Type</option>
+                        <option value="name_type">Name Type</option>
                         <option value="speed_read">Speed Read</option>
                         <option value="title_text">Title Text</option>
                         <option value="title_input">Title Input</option>
@@ -66,6 +60,7 @@
                         <option value="video_file">Video File</option>
                         <option value="image_file">Image File</option>
                         <option value="title_textarea">Title Textarea</option>
+                        <option value="verify_phone">Verify Phone</option>
                         <option value="sign_b64">Signature Image</option>
                         <option value="brain_tree">BrainTree</option>
                     </select>
@@ -77,8 +72,6 @@
                 <div class="col-xs-12" id="sortable">
 
                 </div>
-
-
                 <div class="col-xs-12">
                     <form id="lesson_form">
                         <div class="speed_read" id="speed_read" style="display: none; padding-top: 15px">
@@ -270,7 +263,7 @@
                         </div>
 
                         <div class="speed_read" id="verify_phone" style="display: none; padding-top: 15px">
-                            <div style="margin-top:50px">
+                            <div data-type="verify_phone" style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
                                 <div class="row">
                                     <h4 class="col-xs-10 col-lg-10">Verify phone</h4>
                                     <a class="remove_flashcard col-xs-2 col-lg-2" style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;"> x </a>

@@ -76,70 +76,59 @@
         <div class="col p-0 content-div">
           <div id="page-header"></div>
           <div class="container my-2">
-           <h2><b>Call Menu</b></h2>
-         
-           <section id="tabs" class="administration-tab">
-            <div class="container">
+            <h2><b>Call Menu</b></h2>
+            <section id="tabs" class="administration-tab">
+              <div class="container">
                 <div class="row">
-                    <div class="col-md-12">
-                        <nav>
-                            <div class="nav nav-tabs nav-fill mb-4" id="nav-tab" role="tablist">
-                                <a class="nav-item nav-link active" id="nav-call-tab" data-toggle="tab" href="#nav-call" role="tab" aria-controls="nav-call" aria-selected="true">CALL</a>
-                                <a class="nav-item nav-link" id="nav-sms-tab" data-toggle="tab" href="#nav-sms" role="tab" aria-controls="nav-sms" aria-selected="false">SMS</a>
-          
-                            </div>
-                        </nav>
-        <div class="tab-content" id="nav-tabContent">
-          <div
-            class="tab-pane fade show active"
-            id="nav-call"
-            role="tabpanel"
-            aria-labelledby="nav-call-tab"
-          >
-            <form>
-                <div class="form-group">
-                    <select class="form-control" id="sourceCallNumber">
-                        <option value="" selected>Select Source Number</option>
-                    </select>
+                  <div class="col-md-12">
+                    <nav>
+                      <div class="nav nav-tabs nav-fill mb-4" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-call-tab" data-toggle="tab" href="#nav-call" role="tab" aria-controls="nav-call" aria-selected="true">CALL</a>
+                        <a class="nav-item nav-link" id="nav-sms-tab" data-toggle="tab" href="#nav-sms" role="tab" aria-controls="nav-sms" aria-selected="false">SMS</a>          
+                      </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                      <div class="tab-pane fade show active" id="nav-call" role="tabpanel" aria-labelledby="nav-call-tab">
+                        <form>
+                          <div class="form-group">
+                            <select class="form-control" id="sourceCallNumber">
+                              <option value="" selected>Select Source Number</option>
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <input type="tel" class="form-control" id="dest_num_call" placeholder="Dest Number"  required/>
+                          </div>
+                          
+                          <div class="form-group">
+                              <input type="tel" class="form-control" id="call" placeholder="Your Number"  required/>
+                          </div>
+                        
+                          <button class="btn btn-primary float-right" id="make_call" type="submit"><i class="fa fa-phone-square"></i> Call</button>
+                        </form>
+                      </div>
+                      <div class="tab-pane fade" id="nav-sms" role="tabpanel" aria-labelledby="nav-sms-tab">
+                        <form id="send_sms">
+                          <div class="form-group">
+                            <select class="form-control" id="sourceMsgNumber">
+                              <option value="" selected>Select Source Number</option>
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <input type="tel" class="form-control" id="dest_num_sms" placeholder="Dest Number"  required/>
+                          </div>
+                          <div class="form-group">
+                            <textarea class="form-control" id="message_body" rows="4" placeholder="Message" required></textarea>
+                          </div>
+                          <button type="submit" class="btn btn-primary float-right">
+                            Send
+                          </button>
+                        </form>
+                      </div>
+                    </div>
                   </div>
-                <div class="form-group">
-                    <input type="tel" class="form-control" id="dest_num_call" placeholder="Dest Number"  required/>
-                </div>
-                
-                <div class="form-group">
-                    <input type="tel" class="form-control" id="call" placeholder="Your Number"  required/>
-                </div>
-               
-                    <button class="btn btn-primary float-right" id="make_call" type="submit"><i class="fa fa-phone-square"></i> Call</button>
-            </form>
-          </div>
-          <div
-            class="tab-pane fade"
-            id="nav-sms"
-            role="tabpanel"
-            aria-labelledby="nav-sms-tab"
-          >
-           <form id="send_sms">
-            <div class="form-group">
-                <select class="form-control" id="sourceMsgNumber">
-                    <option value="" selected>Select Source Number</option>
-                </select>
-              </div>
-            <div class="form-group">
-                <input type="tel" class="form-control" id="dest_num_sms" placeholder="Dest Number"  required/>
-            </div>
-          
-            <div class="form-group">
-               
-                <textarea class="form-control" id="message_body" rows="4" placeholder="Message" required></textarea>
-              </div>
-
-            <button type="submit" class="btn btn-primary float-right">
-            Send
-            </button>
-           </form>
-        </section>
-
+                </div> 
+              </div> 
+            </section>
           </div>
         </div>
       </div>
@@ -178,7 +167,7 @@
               type: "GET",
               headers: { "Authorization": `${localStorage.getItem('user-token')}` }
           }).done((numbers) => {
-                all_numbers = numbers
+              all_numbers = numbers
           }).fail(function(err) { alert(err) })
       });
       $("#body-row .collapse").collapse("hide");
