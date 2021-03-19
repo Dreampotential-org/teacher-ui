@@ -809,6 +809,7 @@ function sendUpdates() {
                         "lesson_type": "signature",
                         "position": position_me
                     }
+                    flashcards.push(temp)
                     break;
                 case "name_type":
                     temp = {
