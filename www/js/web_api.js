@@ -36,22 +36,20 @@ function list_question_counters(callback) {
     })
 }
 
-function list_inbound_calls(callback) {
-
+function list_inbound_calls(callback,pageSize,pageNumber) {
     var settings = {
         "async": true,
         "crossDomain": true,
-        "url": SERVER + "admin_backend/api_admin/list_calls",
+        "url": SERVER + `admin_backend/api_admin/list_calls/${pageSize}/${pageNumber}`,
         "method": "GET",
-        // "processData": false,
-        // "contentType": false,
-        // "mimeType": "multipart/form-data",
         "headers": {
             "Authorization": 'Token ' + localStorage.getItem("user-token"),
         }
     }
     $.ajax(settings).done(function(response) {
-        callback(JSON.parse(response))
+        // console.log("reposne type is",typeof(response))
+        // callback(JSON.parse(response))
+        callback(response)
     }).fail(function(err) {
         console.log(err)
         alert("ERROR")
