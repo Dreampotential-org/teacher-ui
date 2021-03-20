@@ -59,6 +59,9 @@
                     position: absolute;
                     right: 16%;
                }
+               .table-filter-container {
+                    text-align: right;
+               }
           </style>
           
           <script>
@@ -162,32 +165,13 @@
                                              <label for="new_url">Zillow url</label>
                                              <input type="text" class="form-control" id="new_url" placeholder="Zillow url" />
                                         </div>
-                                        <button type="button" id="save_lead" class="btn btn-primary">
+                                        <button type="button" id="add_new_lead" class="btn btn-primary">
                                              Submit
                                         </button>
                                    </form>
                               </div>
-                              
-                              <!-- <div class="tab-pane fade show active" id="overlay_1" style='display:none' role="tabpanel" aria-labelledby="nav-call-tab">
-                                   <form>
-                                        <div class="form-group">
-                                             <select class="form-control" id="sourceCallNumber">
-                                                  <option value="" selected>Select Source Number</option>
-                                             </select>
-                                        </div>
-                                        <div class="form-group">
-                                        <input type="tel" class="form-control" id="dest_num_call" placeholder="Dest Number"  required/>
-                                        </div>
-                                        
-                                        <div class="form-group">
-                                             <input type="tel" class="form-control" id="call_1" placeholder="Your Number"  required/>
-                                        </div>
-                                   
-                                        <button class="btn btn-primary float-right" id="make_call" type="submit"><i class="fa fa-phone-square"></i> Call</button>
-                                   </form>
-                              </div> -->
 
-                              <!-- first overlay  select number -->
+                              <!-- 1'st overlay  select number -->
                               <div class="modal fade" id="overlay_1" tabindex="-1" role="dialog" aria-hidden="true">
                                    <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
@@ -216,17 +200,7 @@
                                    </div> 
                               </div>
 
-
-
-
-
-
-
-
-
-
-                              <!-- Add notes on number called -->
-                                                  
+                              <!-- 2'nd overlay Add notes on number called -->
                               <div class="modal fade" id="notesModal" tabindex="-1" role="dialog" aria-hidden="true">
                                    <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
@@ -277,6 +251,16 @@
                     </div>
                </div>
           </div>
+
+          <p id="table_filter" style="display:none">
+               filter: 
+               <select>
+               <option value="">ALL</option>
+               <option value="-">-</option>
+               <option>Call back later</option>
+               <option>not interested</option>
+               </select>
+               </p>
 
           <script>
                var passwordResetToken = getParam("token");
@@ -349,35 +333,19 @@
                                    <td><button onclick="call_1('${index}')" class="btn btn-primary btn-edit" type="button"><i class="fa fa-phone-square"></i></button></td>
                                    </tr>`);
                          })
-                         $("#lead_table").DataTable( {
-                              // initComplete: function () {
-                                   // console.log("modify")
-                                   // this.api().columns().every( function () {
-                                   // console.log("modify_2")
-                                   //      var column = this;
-                                   //      console.log(column,".........................")
-                                   //      var select = $('<select><option value=""></option></select>')
-                                   //      console.log("modify_3")
-
-                                   //           .appendTo( $(column.footer()).empty() )
-                                   //           console.log("appended")
-                                   //           .on( 'change', function () {
-                                   //           var val = $.fn.dataTable.util.escapeRegex(
-                                   //                $(this).val()
-                                   //           );
-                         
-                                   //           column
-                                   //                .search( val ? '^'+val+'$' : '', true, false )
-                                   //                .draw();
-                                   //           } );
-                         
-                                   //      column.data().unique().sort().each( function ( d, j ) {
-                                   //           select.append( '<option value="'+d+'">'+d+'</option>' )
-                                   //      } );
-                                   // } );
-                              // }
+                         var table = $("#lead_table").DataTable( {
+               
+                              dom: 'lr<"table-filter-container">tip',
+                                   initComplete: function(settings){
+                                        var api = new $.fn.dataTable.Api( settings );
+                                        $('.table-filter-container', api.table().container()).append(
+                                             $('#table_filter').detach().show()
+                                        );
+                                        $('#table_filter select').on('change', function(){
+                                             table.search(this.value).draw();   
+                                        });
+                                   }
                          });
-
 
                          $.ajax({
                               async: true,
@@ -409,7 +377,7 @@
                     $("#addLead").hide();
                }
 
-               $('#save_lead').click( () => {           
+               $('#add_new_lead').click( () => {           
                     name = $('#name').val()
                     phone = $('#phone').val()
                     email = $('#email').val()
@@ -446,8 +414,6 @@
                     })
                })
 
-               
-
                function call_1(index) {
                     console.log("call_1 called...")
                     $("#overlay_1").modal();
@@ -456,39 +422,41 @@
                          if ($("#sourceCallNumber option").length === 1) {
                               all_numbers.forEach((item, i) => {
                                    $("#sourceCallNumber").append($('<option>').val(item.number).text(item.number))
-                              }) 
+                              })
                          }
-                         var source_number = $('#sourceCallNumber').val();
                     })
                }
 
-               // $("#make_call_1").click( () => {
-               //      console.log("save notes....")
-               //      var dest_num = $("#dest_num_call").val()
-               //      // console.log("num",dest_num)
-               //      // console.log(user_leads[index])
-               //      $("#save_notes").val(user_leads[index].pk)
-               //      $("#notesModal").modal();
-               //      $("#Zillow_url").empty();
-               //      $("#Zillow_url").append(`<h5> Zillow url </h5><a href="${user_leads[index].fields.url}">${user_leads[index].fields.url}</a> <br><br>`);
-               //      $('#s_notes').val(user_leads[index].fields.notes);
-               //      // $.ajax({
-               //      //      url : SERVER + "voip/api_voip/leadcall",
-               //      //      async : true,
-               //      //      crossDomain : true,
-               //      //      crossOrigin : true,
-               //      //      type : 'POST',
-               //      //      data : {
-               //      //           "phone" : user_leads[index].fields.phone,
-               //      //      },
-               //      //      headers: { "Authorization": `${localStorage.getItem('user-token')}` }
-               //      // }).done( ()=> {                         
-               //      //     console.log("calling to lead")
-               //      // })
-               // })
+
+               var dest_num;
+               var index;
+               $("#make_call_1").click( () => {
+                    index = $("#make_call_1").val()
+                    source_num = $('#sourceCallNumber').val()
+                    dest_num = $("#dest_num_call").val()
+                    $("#save_notes").val(user_leads[index].pk)
+                    $("#notesModal").modal();
+                    // $('#overlay_1').hide();
+                    $("#Zillow_url").empty();
+                    $("#Zillow_url").append(`<h5> Zillow url </h5><a href="${user_leads[index].fields.url}">${user_leads[index].fields.url}</a> <br><br>`);
+                    $('#s_notes').val(user_leads[index].fields.notes);
+                    $.ajax({
+                         url : SERVER + "voip/api_voip/leadcall",
+                         async : true,
+                         crossDomain : true,
+                         crossOrigin : true,
+                         type : 'POST',
+                         data : {
+                              "phone" : user_leads[index].fields.phone,
+                         },
+                         headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+                    }).done( ()=> {                        
+                        console.log("calling to lead")
+                    })
+               })
 
                $("#save_notes").click( () => {
-                    not_id = $("#save_notes").val();
+                    id_pk = user_leads[index].pk
                     status = $('#status_val').val();
                     s_note = $('#s_notes').val();
                     $.ajax({
@@ -498,7 +466,7 @@
                          crossOrigin : true,
                          type : "PUT",
                          data : {
-                              "id" : not_id,
+                              "id_pk" : id_pk,
                               "note" : s_note,
                               "status" : status,
                          },
