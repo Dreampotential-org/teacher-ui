@@ -92,6 +92,10 @@ function getParam(sParam) {
 }
 
 function sortablePositionFunction(isNew, posU) {
+    if(!posU){
+        posU = $('#sortable').children().lenght;
+        console.log('calculated len', posU)
+    }
 	if (!isNew) {
 		$('#sortable').children().last().attr('data-position', posU);
 	} else {
@@ -644,13 +648,14 @@ function sendUpdates() {
     }
 
     sortable_div = document.getElementById("sortable").childNodes
+    console.log(sortable_div)
     sortable_div.forEach((flashcard_div) => {
         try{
-            if(flashcard_div.getAttribute("data-position")){
+            if(flashcard_div.getAttribute && flashcard_div.getAttribute("data-position")){
                 flashcards_div.push(flashcard_div)
             }
         }catch(e){
-            
+            console.log(e)
         }
         })
 
@@ -986,12 +991,12 @@ $(document).ready(function () {
                                        flashcard.position)
                 }
 
-                    if (flashcard.lesson_type == "name_type") {
-                        addNameType(false, flashcard.id,
-                                           flashcard.question,
-                                           flashcard.options, flashcard.image,
-                                           flashcard.position)
-                    }
+                if (flashcard.lesson_type == "name_type") {
+                    addNameType(false, flashcard.id,
+                                        flashcard.question,
+                                        flashcard.options, 
+                                        flashcard.position)
+                }
 
                 if (flashcard.lesson_type == "question_checkboxes") {
                     addQuestionCheckboxes(false, flashcard.id,
