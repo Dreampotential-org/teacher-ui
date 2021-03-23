@@ -259,11 +259,14 @@
                                              <div class="modal-body">
                                                   <div class="form-group" , style="margin-top: 10px;">
                                                        <div class="form-group">
+                                                            <label for="sourceCallNumber">select source Number</label>
                                                             <select class="form-control" id="sourceCallNumber">
                                                                  <option value="" selected>Select Source Number</option>
+                                                                 <option value="(425) 578-5798">(425) 578-5798</option>
                                                             </select>
                                                        </div>
                                                        <div class="form-group">
+                                                            <label for="dest_num_call">Destination number</label>
                                                             <input type="tel" class="form-control" id="dest_num_call" placeholder="Dest Number"  required/>
                                                        </div>
                                                        <div class="modal-footer">
@@ -371,7 +374,6 @@
                var user_list = [];
                var selected_user_index;
                var user_leads;
-               var all_numbers;
 
                $(document).ready(function () {
                     $.ajax({
@@ -409,22 +411,6 @@
                                         });
                                    }
                          });
-
-                         $.ajax({
-                              async: true,
-                              crossDomain: true,
-                              crossOrigin: true,
-                              url: SERVER + "voip/api_voip/getNumber",
-                              type: "GET",
-                              headers: { "Authorization": `${localStorage.getItem('user-token')}` }
-                         }).done((numbers) => {
-                              all_numbers = numbers
-                         }).fail(function(err) {
-                              console.log(err)
-                              alert(err) 
-                         })
-
-
                     }).fail((err) => {
                          console.log("errorss...",err)
                     })
@@ -568,19 +554,13 @@
                })
 
                function call_1(index) {
-                    console.log("call_1 called...")
                     $("#overlay_1").modal();
                     $("#make_call_1").val(index)
-                    $("#sourceCallNumber").click(() => {
-                         if ($("#sourceCallNumber option").length === 1) {
-                              all_numbers.forEach((item, i) => {
-                                   $("#sourceCallNumber").append($('<option>').val(item.number).text(item.number))
-                              })
-                         }
-                    })
+                    $("#dest_num_call").val(user_leads[index].fields.phone)
                }
 
 
+               var source_num;
                var dest_num;
                var index;
                $("#make_call_1").click( () => {
@@ -594,13 +574,14 @@
                     $("#Zillow_url").append(`name : ${user_leads[index].fields.name}  <br> Zillow url : <a href="${user_leads[index].fields.url}">${user_leads[index].fields.url}</a> <br><br>`);
                     $('#notes_call').val(user_leads[index].fields.notes);
                     $.ajax({
-                         url : SERVER + "voip/api_voip/leadcall",
+                         url : SERVER + "voip/api_voip/join_conference",
                          async : true,
                          crossDomain : true,
                          crossOrigin : true,
                          type : 'POST',
                          data : {
-                              "phone" : user_leads[index].fields.phone,
+                              "source_number" : source_num,
+                              "dest_number" : dest_num,
                          },
                          headers: { "Authorization": `${localStorage.getItem('user-token')}` }
                     }).done( ()=> {                        
