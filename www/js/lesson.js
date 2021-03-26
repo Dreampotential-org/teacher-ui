@@ -14,7 +14,8 @@ var name_type_count =0;
 var sign_count = 0;
 var sortArray = [];
 var MODE;
-var CURRENT_IMAGE_POSITION = 0;
+var CURRENT_IMAGE_FLASHCARD_TYPE = 0;
+var CURRENT_IMAGE_TYPE;
 var pos = 0;
 
 
@@ -194,12 +195,15 @@ function addQuestionChoices(isNew, id, question, choices, image, posU) {
 
     $("#question_choices")
         .find("input[type=button]")
-        .attr("onclick","handleImageUpload("+getTotalFlashcardsNumber()+")")
+        .attr("onclick","handleImageUpload('question_choices',"+question_checkboxes_count+")")
+
+    $("#question_checkboxes #output")
+        .attr("id","question_checkboxes_output_"+question_checkboxes_count)
 
 	$('#question_choices')
 		.find('input')
 		.last()
-		.attr('name', 'image_' + question_choices_count);
+		.attr('name', 'question_choices_image_' + question_choices_count);
 
 	$('#question_choices')
         .find('button')
@@ -231,7 +235,7 @@ function addQuestionChoices(isNew, id, question, choices, image, posU) {
 	}
 
     $("#question_choices #output")
-    .attr("id","image_output_"+getTotalFlashcardsNumber())
+    .attr("id","question_choices_output_"+question_choices_count)
 
 
 	$('#sortable').append($('#question_choices').html());
@@ -242,6 +246,8 @@ function addQuestionChoices(isNew, id, question, choices, image, posU) {
 }
 
 function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
+    let tempQ = $("#question_checkboxes").html()
+
 	$('#question_checkboxes')
 		.find('input')
 		.first()
@@ -265,7 +271,6 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
         .find('button')
         .last()
 		.attr('onclick', 'addCheckboxes(' + question_checkboxes_count + ')');
-        let tempQ = $("#question_checkboxes").html()
 
 	if (!isNew) {
 		$('#question_checkboxes').find('input').first().attr('value', question);
@@ -289,12 +294,14 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
 		$('#question_checkboxes').find('input').last().attr('value', '');
 	}
 
+    $('#question_checkboxes').find('input').last().attr('name', 'question_checkboxes_image_'+question_checkboxes_count);
+
     $("#question_checkboxes")
         .find("input[type=button]")
-        .attr("onclick","handleImageUpload("+getTotalFlashcardsNumber()+")")
+        .attr("onclick","handleImageUpload('question_checkboxes',"+question_checkboxes_count+")")
 
     $("#question_checkboxes #output")
-        .attr("id","image_output_"+getTotalFlashcardsNumber())
+        .attr("id","question_checkboxes_output_"+question_checkboxes_count)
 
 	$('#sortable').append($('#question_checkboxes').html());
     sortablePositionFunction(isNew, posU);
@@ -303,7 +310,8 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
 
 }
 
-function handleImageUpload(a) {
+function handleImageUpload(flashcard_type,a) {
+    CURRENT_IMAGE_FLASHCARD_TYPE = flashcard_type
     CURRENT_IMAGE_POSITION = a
     // prompt for video upload
 	$('#imageUpload').click();
@@ -426,11 +434,11 @@ function uploadFile(fileType) {
 				console.log(file_url);
 
 				if (fileType == 'image') {
-					displayImage(file_url,CURRENT_IMAGE_POSITION);
-					$('input[name="image_'+CURRENT_IMAGE_POSITION+'"').attr('value', file_url);
+					displayImage(file_url,CURRENT_IMAGE_FLASHCARD_TYPE,CURRENT_IMAGE_POSITION);
+					$('input[name="'+CURRENT_IMAGE_FLASHCARD_TYPE+'_image_'+CURRENT_IMAGE_POSITION+'"').attr('value', file_url);
 				} else if (fileType == 'video') {
 					displayVideo(file_url);
-					//$('input[name="image_'+CURRENT_IMAGE_POSITION+'"').attr('value', file_url);
+					//$('input[name="image_'+CURRENT_IM AGE_POSITION+'"').attr('value', file_url);
 				}
 			})
 			.fail(function (response) {
@@ -443,14 +451,17 @@ function uploadFile(fileType) {
 	});
 }
 
-function displayImage(file_url,position) {
+function displayImage(file_url,flashcard_type,position) {
 	// Clear existing image
-	$('#image_output_'+position).html('');
+    output_div ='#'+flashcard_type+'_output_'+position 
+    console.log(file_url +" to => "+output_div)
+
+	$(output_div).html('');
 	var img = $('<img>');
 	img.attr('src', file_url);
-	img.appendTo('#image_output_'+position);
+    img.appendTo(output_div);
 	// Change button text
-	$('#upload-img-btn').attr('value', 'Upload new Image');
+	//$('#upload-img-btn').attr('value', 'Upload new Image');
 }
 
 function displayVideo(file_url) {
@@ -561,6 +572,7 @@ function addSignaturePad(isNew, id, sign_data, posU) {
 }
 
 function addImageFile(isNew, id, question, image, posU) {
+    tempIF = $("#image_file").html()
 	if (!isNew) {
 		$('#image_file').find('input').first().attr('value', question);
 		$('#image_file').find('input').last().attr('value', image);
@@ -569,7 +581,8 @@ function addImageFile(isNew, id, question, image, posU) {
 		$('#image_file').find('input').last().attr('data-id', id);
 
 		// Display Image
-		displayImage(image);
+		displayImage(image,"image_file",image_file_count);
+
 	} else {
 		$('#image_file').find('input').first().attr('value', '');
 		$('#image_file').find('input').last().attr('value', '');
@@ -578,21 +591,25 @@ function addImageFile(isNew, id, question, image, posU) {
 	$('#image_file')
 		.find('input')
 		.first()
-		.attr('name', 'image_question' + image_file_count);
+		.attr('name', 'image_question_' + image_file_count);
 
 	$('#image_file')
 		.find('input')
         .eq(1)
-		.attr('alt', 'handleImageUpload(' + image_file_count+')');
+		.attr('onclick', 'handleImageUpload("image_file",' + image_file_count+')');
 
-    // $('#image_file')
-	// 	.find('input')
-	// 	.last()
-	// 	.attr('name', 'image_' + image_file_count);
+    $('#image_file')
+		.find('input')
+		.last()
+		.attr('name', 'image_file_image_' + image_file_count);
+
+    $("#image_file #output")
+        .attr("id","image_file_output_"+image_file_count);
 
 	$('#sortable').append($('#image_file').html());
 	image_file_count++;
 	sortablePositionFunction(isNew, posU);
+    $("#image_file").html(tempIF)
 }
 
 function addVerifyPhone(isNew,id,question,image,posU){
