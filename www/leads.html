@@ -503,19 +503,22 @@
                               "Authorization": localStorage.getItem("token")
                          }
                     };
-                    $.ajax(settings).done(() => {
+                    $.ajax(settings).done(function (response) {
                          swal({
                               title: "Good job!",
                               icon: "success",
                               button: "Aww yiss!",
-                              text: "leasd are saved !",
+                              text: response,
+                              timer: 3000,
                          });
-                         location.reload()                    
-                    }).fail(() => {
+                         setTimeout(function(){location.reload()}, 3000);  
+                    }).fail(function (err)  {
                          swal({
                               title: "Error!",
-                              text: "upLoading failed! , duplicate key value -> give unique data.",
+                              text: JSON.parse(err.responseText).message,
                               icon: "warning",
+                              button: "do it again",
+                              timer: 4000,
                          });
                     });
                })
