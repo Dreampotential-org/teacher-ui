@@ -9,8 +9,12 @@
                integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+          <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css" />
 
           <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+          <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
           <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
           <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
@@ -22,6 +26,8 @@
           <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
           <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
           <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWJ2UbLhFeu3jVgd4ZwWMMNyGl4Kqx7V4"></script>
+          <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+
           <!-- user.html JS, CSS end -->
 
           <link rel="stylesheet" href="css/dashboard.css" />
@@ -55,11 +61,15 @@
                     -webkit-box-shadow: inset 0 0 10px #000000;
                     box-shadow:         inset 0 0 10px #000000;
                }
-               #userLeadData #add_lead{
+               #userLeadData #add_lead {
                     position: absolute;
-                    right: 16%;
+                    right: 32%;
                }
-               #userLeadData #edit_Lead{
+               #userLeadData #importCsv {
+                    position: absolute;
+                    right: 23%;
+               }
+               #userLeadData #deleteMultiple {
                     position: absolute;
                     right: 16%;
                }
@@ -105,11 +115,18 @@
                                         <button class="btn btn-info"  type="button" id="add_lead">
                                              ADD
                                         </button>
+                                        <button class="btn btn-info"  type="button" id="importCsv" >
+                                             Import csv
+                                        </button>
+                                        <button type="button"  class="btn btn-danger"  id='deleteMultiple'>
+                                             Delete
+                                        </button>
                                    </div>
                                    <div class="table-div">
                                         <table id="lead_table" class="table table-striped table-bordered" style="width: 100%">
                                              <thead>
                                                   <tr>
+                                                       <th>Action</th>
                                                        <th>Name</th>
                                                        <th>Phone</th>
                                                        <th>Last call</th>
@@ -244,8 +261,37 @@
                               </div>
                               
 
-                              <!-- 1'st overlay  select number -->
-                              <div class="modal fade" id="overlay_1" tabindex="-1" aria-labelledby="overlay_1" role="dialog" aria-hidden="true">
+                              <!-- overlay  csv uploder  -->
+                              <div class="modal fade" id="csvModel" tabindex="-1" aria-labelledby="csvModel" role="dialog" aria-hidden="true">
+                                   <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                             <div class="modal-header">
+                                                  <h5 class="modal-title">
+                                                       upload a csv file
+                                                  </h5>
+                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                       <span aria-hidden="true">&times;</span>
+                                                  </button>
+                                             </div>
+                                             <div class="modal-body">
+                                                  <div class="form-group" style="margin-top: 10px;">
+                                                       <div class="form-group">
+                                                            <label for="csvFile">choose csv file</label>
+                                                            <input type="file" name="csvFile" class="form-control" id="csvFile" required />
+                                                       </div>
+                                                       <div class="modal-footer">
+                                                            <button class="btn btn-primary float-right" id="uplodCsv" type="submit"><i class="fal fa-file-csv"></i>Upload</button> 
+                                                       </div>
+                                                  </div>
+                                             </div>
+                                        </div>
+                                   </div> 
+                              </div>
+                              <!-- csv uploder over -->
+
+
+                              <!--select number  1'st overlay  -->
+                              <div class="modal fade" id="selectNumberModel" tabindex="-1" aria-labelledby="selectNumberModel" role="dialog" aria-hidden="true">
                                    <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                              <div class="modal-header">
@@ -257,17 +303,24 @@
                                                   </button>
                                              </div>
                                              <div class="modal-body">
-                                                  <div class="form-group" , style="margin-top: 10px;">
+                                                  <div class="form-group" style="margin-top: 10px;">
                                                        <div class="form-group">
+                                                            <label for="sourceCallNumber">select source Number</label>
                                                             <select class="form-control" id="sourceCallNumber">
                                                                  <option value="" selected>Select Source Number</option>
+                                                                 <option value="(425) 578-5798">(425) 578-5798</option>
                                                             </select>
                                                        </div>
                                                        <div class="form-group">
+                                                            <label for="dest_num_call">Destination number</label>
                                                             <input type="tel" class="form-control" id="dest_num_call" placeholder="Dest Number"  required/>
                                                        </div>
+                                                       <div class="form-group">
+                                                            <label for="yourNumber">Destination number</label>
+                                                            <input type="tel" class="form-control" id="yourNumber" placeholder="Your Number for join_conference"  required/>
+                                                       </div>
                                                        <div class="modal-footer">
-                                                            <button class="btn btn-primary float-right" id="make_call_1" type="button"><i class="fa fa-phone-square"></i> Call</button> 
+                                                            <button class="btn btn-primary float-right" id="makeCall" type="button"><i class="fa fa-phone-square"></i> Call</button> 
                                                        </div>
                                                   </div>
                                              </div>
@@ -289,7 +342,7 @@
                                              </div>
                                              <div class="modal-body">
                                                   <div id="Zillow_url"></div>
-                                                  <div class="form-group" , style="margin-top: 10px;">
+                                                  <div class="form-group" style="margin-top: 10px;">
                                                        <label for="status_val">select status</label>
                                                        <select class="form-control" id="status_val">
                                                             <option value="-" selected="">-</option>
@@ -313,6 +366,7 @@
                </div>
           </div>
 
+          <!-- DataTable - filter -->
           <p id="table_filter" style="display:none">
                filter: 
                <select>
@@ -371,8 +425,6 @@
                var user_list = [];
                var selected_user_index;
                var user_leads;
-               var all_numbers;
-
                $(document).ready(function () {
                     $.ajax({
                          url : SERVER + "voip/api_voip/getlead",
@@ -386,6 +438,7 @@
                          user_leads = JSON.parse(response)
                          user_leads.forEach((item , index) => {
                               $("#lead_data").append(`<tr>
+                                   <td onclick=check_box(${item.pk})></td>
                                    <td id="editLead" onClick=editLead(${index})>${item.fields.name}</td>
                                    <td>${item.fields.phone}</td>
                                    <td>""</td>
@@ -393,11 +446,11 @@
                                    <td>${item.fields.state}</td>
                                    <td>${item.fields.status}</td>
                                    <td>${item.fields.notes}</td>
-                                   <td><button onclick="call_1('${index}')" class="btn btn-primary btn-edit" type="button"><i class="fa fa-phone-square"></i></button></td>
+                                   <td><button onclick="selectNum('${index}')" class="btn btn-primary btn-edit" type="button"><i class="fa fa-phone-square"></i></button></td>
                                    </tr>`);
                          })
-                         var table = $("#lead_table").DataTable( {
-               
+                         // DataTable and modification
+                         table = $("#lead_table").DataTable( {
                               dom: 'lr<"table-filter-container">tip',
                                    initComplete: function(settings){
                                         var api = new $.fn.dataTable.Api( settings );
@@ -407,34 +460,67 @@
                                         $('#table_filter select').on('change', function(){
                                              table.search(this.value).draw();   
                                         });
-                                   }
+                                   },
+                              columnDefs: [{
+                                   orderable: false,
+                                   className: 'select-checkbox',
+                                   targets: 0,
+                                   checkboxes: {
+                                                  'selectRow': true
+                                             }
+                              }],
+                              select: {
+                                   'style': 'multi',
+                                   'selector': 'td:first-child'
+                                   },
+                              order: [[1, 'asc']]
                          });
-
-                         $.ajax({
-                              async: true,
-                              crossDomain: true,
-                              crossOrigin: true,
-                              url: SERVER + "voip/api_voip/getNumber",
-                              type: "GET",
-                              headers: { "Authorization": `${localStorage.getItem('user-token')}` }
-                         }).done((numbers) => {
-                              all_numbers = numbers
-                         }).fail(function(err) {
-                              console.log(err)
-                              alert(err) 
-                         })
-
-
+                         var select = table.column(0).checkboxes;
                     }).fail((err) => {
                          console.log("errorss...",err)
                     })
                });
 
-               $("#add_lead").click( () => {
-                    $("#userLeadData").hide();
-                    $("#addLead").show();
+               // open csvUploder model
+               $('#importCsv').click( () =>{
+                    $('#csvModel').modal()
                })
 
+               // submit csvFile
+               $("#uplodCsv").click(function() {
+                    var form = new FormData();
+                    form.append("csvFile", document.getElementById("csvFile").files[0])
+                    var settings = {
+                         "async": true,
+                         "crossDomain": true,
+                         "url": SERVER + "voip/api_voip/csvUploder",
+                         "type": "POST",
+                         "processData": false,
+                         "contentType": false,
+                         "mimeType": "multipart/form-data",
+                         "data": form,
+                         "headers": {
+                              "Authorization": localStorage.getItem("token")
+                         }
+                    };
+                    $.ajax(settings).done(() => {
+                         swal({
+                              title: "Good job!",
+                              icon: "success",
+                              button: "Aww yiss!",
+                              text: "leasd are saved !",
+                         });
+                         location.reload()                    
+                    }).fail(() => {
+                         swal({
+                              title: "Error!",
+                              text: "upLoading failed! , duplicate key value -> give unique data.",
+                              icon: "warning",
+                         });
+                    });
+               })
+
+               // edit lead model open
                function editLead(index) {
                     $("#userLeadData").hide();
                     $('#editLeadModel').show();
@@ -449,10 +535,15 @@
                     $('#edit_url').val(user_leads[index].fields.url)
                }
 
+               // go back from editPage 
+               function goBackEdit() {
+                    $("#userLeadData").show();
+                    $("#editLeadModel").hide();
+               }
 
+               // delete lead from editPage
                $('#deleteLead').click( () => {
                     pk = $('#deleteLead').val()
-
                     $.ajax({
                          url : SERVER + "voip/api_voip/getlead",
                          async : true,
@@ -474,9 +565,9 @@
                     }).fail( (err) => {
                          console.log(err)
                     })
-
                })
 
+               // submit edited lead
                $("#submitLead").click( () => {
                     pk = $('#submitLead').val()
                     name = $('#edit_name').val()
@@ -487,7 +578,6 @@
                     notes = $('#edit_notes').val()
                     url = $('#edit_url').val()
                     status = $('#edit_status').val()
-                    
                     $.ajax({
                          url : SERVER + "voip/api_voip/getlead",
                          async : true,
@@ -518,17 +608,81 @@
                          console.log(err)
                     })
                }) 
+               
+               // checkbox - check & uncheck
+               var list_delete = []
+               function check_box(id){
+                    if (list_delete.indexOf(id) === -1) {  
+                         list_delete.push(id)
+                         console.log(list_delete)
+                    }
+                    else{
+                         console.log("else ke under...")
+                         const index = list_delete.indexOf(id);
+                         if (index > -1) {
+                              list_delete.splice(index, 1);
+                         }
+                         console.log(list_delete)
+                    }
+               }
 
+               //  select and delete multipleLead
+               $('#deleteMultiple').click( () =>{
+                    if ( list_delete.length !== 0 ){
+                         swal({
+                              title: "Are you sure?",
+                              text: "Once deleted, you will not be able to recover this leads Again!",
+                              icon: "warning",
+                              buttons: true,
+                              dangerMode: true,
+                         })
+                         .then((willDelete) => {
+                              if (willDelete) {
+                                   $.ajax({
+                                        url : SERVER + "voip/api_voip/getlead" + "?listPk="+ list_delete,
+                                        async : true,
+                                        crossDomain : true,
+                                        crossOrigin : true,
+                                        type : "DELETE",
+                                        headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+                                   }).done( () => {
+                                        swal({	
+                                             title: "multiple leads Deleted",
+                                             text: "You have successfully delete leads",	
+                                             icon: "success",
+                                             timer: 2000
+                                        })
+                                        location.reload()
+                                   }).fail( (err) => {
+                                        console.log(err)
+                                   }) 
+                              } else {
+                                   swal("Your selected leads are safe!");
+                              }
+                              });
+                    }
+                    else{
+                         swal({	
+                              text: "select lead to delete",	
+                              icon: 'warning',
+                              title: 'Oops...',
+                         })
+                    }
+               })
+
+               // open new lead page.
+               $("#add_lead").click( () => {
+                    $("#userLeadData").hide();
+                    $("#addLead").show();
+               })
+
+               // go back from newLead
                function goBack() {
                     $("#userLeadData").show();
                     $("#addLead").hide();
                }
 
-               function goBackEdit() {
-                    $("#userLeadData").show();
-                    $("#editLeadModel").hide();
-               }
-
+               // submit new lead
                $('#save_new_lead').click( () => {           
                     name = $('#name').val()
                     phone = $('#phone').val()
@@ -537,7 +691,6 @@
                     price = $('#price').val()
                     notes = $('#new_notes').val()
                     new_url = $('#new_url').val()
-                    console.log(name , phone , email , state , price , notes , new_url)
                     $.ajax({
                          url : SERVER + "voip/api_voip/getlead",
                          async : true,
@@ -567,40 +720,37 @@
                     })
                })
 
-               function call_1(index) {
-                    console.log("call_1 called...")
-                    $("#overlay_1").modal();
-                    $("#make_call_1").val(index)
-                    $("#sourceCallNumber").click(() => {
-                         if ($("#sourceCallNumber option").length === 1) {
-                              all_numbers.forEach((item, i) => {
-                                   $("#sourceCallNumber").append($('<option>').val(item.number).text(item.number))
-                              })
-                         }
-                    })
+               // open 1'st overlay
+               function selectNum(index) {
+                    $("#selectNumberModel").modal();
+                    $("#makeCall").val(index)
+                    $("#dest_num_call").val(user_leads[index].fields.phone)
                }
 
-
+               // makeCall and open overlay 2
+               var source_num;
                var dest_num;
                var index;
-               $("#make_call_1").click( () => {
-                    index = $("#make_call_1").val()
+               $("#makeCall").click( () => {
+                    index = $("#makeCall").val()
                     source_num = $('#sourceCallNumber').val()
                     dest_num = $("#dest_num_call").val()
+                    your_num = $("#yourNumber").val()
                     $("#save_notes").val(user_leads[index].pk)
                     $("#notesModal").modal();
-                    // $('#overlay_1').hide();
                     $("#Zillow_url").empty();
                     $("#Zillow_url").append(`name : ${user_leads[index].fields.name}  <br> Zillow url : <a href="${user_leads[index].fields.url}">${user_leads[index].fields.url}</a> <br><br>`);
                     $('#notes_call').val(user_leads[index].fields.notes);
                     $.ajax({
-                         url : SERVER + "voip/api_voip/leadcall",
+                         url : SERVER + "voip/api_voip/join_conference",
                          async : true,
                          crossDomain : true,
                          crossOrigin : true,
                          type : 'POST',
                          data : {
-                              "phone" : user_leads[index].fields.phone,
+                              "source_number" : source_num,
+                              "dest_number" : dest_num,
+                              "your_number" : yourNum,
                          },
                          headers: { "Authorization": `${localStorage.getItem('user-token')}` }
                     }).done( ()=> {                        
@@ -608,6 +758,7 @@
                     })
                })
 
+               // save notes and status to db
                $("#save_notes").click( () => {
                     status = $('#status_val').val();
                     notes = $('#notes_call').val();

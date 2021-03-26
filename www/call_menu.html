@@ -93,6 +93,7 @@
                           <div class="form-group">
                             <select class="form-control" id="sourceCallNumber">
                               <option value="" selected>Select Source Number</option>
+                              <option value="(425) 578-5798">(425) 578-5798</option>
                             </select>
                           </div>
                           <div class="form-group">
@@ -111,6 +112,7 @@
                           <div class="form-group">
                             <select class="form-control" id="sourceMsgNumber">
                               <option value="" selected>Select Source Number</option>
+                              <option value="(425) 578-5798">(425) 578-5798</option>
                             </select>
                           </div>
                           <div class="form-group">
@@ -137,7 +139,6 @@
     <script>
       var passwordResetToken = getParam("token");
       var userToken = localStorage.getItem("user-token");
-      var all_numbers;
 
       console.log("MODE: PASSWORD_RESET, Token - " + passwordResetToken);
 
@@ -159,16 +160,6 @@
       $(document).ready(function () {
         $("#left-sidebar").load("sidebar.html");
         $("#page-header").load("header.html");
-        $.ajax({
-              async: true,
-              crossDomain: true,
-              crossOrigin: true,
-              url: SERVER + "voip/api_voip/getNumber",
-              type: "GET",
-              headers: { "Authorization": `${localStorage.getItem('user-token')}` }
-          }).done((numbers) => {
-              all_numbers = numbers
-          }).fail(function(err) { alert(err) })
       });
       $("#body-row .collapse").collapse("hide");
 
@@ -268,23 +259,9 @@
         //$('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
       }
       
-      
       $("#sourceCallNumber").click(() => {
-          if ($("#sourceCallNumber option").length === 1) {
-              all_numbers.forEach((item, i) => {
-              $("#sourceCallNumber").append($('<option>').val(item.number).text(item.number))
-            }) 
-          }
-          var sourceCall_number_selected = $('#sourceCallNumber').val();
-          $("#call").val(sourceCall_number_selected);
-      })
-      $("#sourceMsgNumber").click(() => {
-          if ($("#sourceMsgNumber option").length === 1) {
-              all_numbers.forEach((item, i) => {
-              $("#sourceMsgNumber").append($('<option>').val(item.number).text(item.number))
-            })
-          }   
-          var sourceSms_number_selected = $('#sourceMsgNumber').val();
+        var sourceCall_number_selected = $('#sourceCallNumber').val();
+        $("#call").val(sourceCall_number_selected);
       })
     </script>
   </body>
