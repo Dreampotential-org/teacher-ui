@@ -14,6 +14,7 @@ var name_type_count =0;
 var sign_count = 0;
 var sortArray = [];
 var MODE;
+var CURRENT_IMAGE_POSITION = 0;
 var pos = 0;
 
 
@@ -21,6 +22,9 @@ window.addEventListener('DOMContentLoaded', init, false)
 
 var lesson_id = getParam('lesson_id');
 
+function getTotalFlashcardsNumber(){
+    return $("#sortable").children().length
+}
 function selectLesson() {
 	var thelesson_id = $('#select_lesson :selected').val();
 	window.location.href = '/lesson.html?lesson_id=' + thelesson_id;
@@ -188,10 +192,15 @@ function addQuestionChoices(isNew, id, question, choices, image, posU) {
             .attr('id', 'choices_' + question_choices_count);
         }
 
+    $("#question_choices")
+        .find("input[type=button]")
+        .attr("onclick","handleImageUpload("+getTotalFlashcardsNumber()+")")
+
 	$('#question_choices')
 		.find('input')
 		.last()
 		.attr('name', 'image_' + question_choices_count);
+
 	$('#question_choices')
         .find('button')
         .last()
@@ -220,6 +229,11 @@ function addQuestionChoices(isNew, id, question, choices, image, posU) {
 		$('#question_choices').find('text').html('');
 		$('#question_choices').find('input').last().attr('value', '');
 	}
+
+    $("#question_choices #output")
+    .attr("id","image_output_"+getTotalFlashcardsNumber())
+
+
 	$('#sortable').append($('#question_choices').html());
     sortablePositionFunction(isNew, posU);
     question_choices_count++;
@@ -268,12 +282,20 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
 		});
 
 		// Display image
-		displayImage(image);
+		displayImage(image,getTotalFlashcardsNumber());
 	} else {
 		$('#question_checkboxes').find('input').first().attr('value', '');
 		$('#question_checkboxes').find('text').html('');
 		$('#question_checkboxes').find('input').last().attr('value', '');
 	}
+
+    $("#question_checkboxes")
+        .find("input[type=button]")
+        .attr("onclick","handleImageUpload("+getTotalFlashcardsNumber()+")")
+
+    $("#question_checkboxes #output")
+        .attr("id","image_output_"+getTotalFlashcardsNumber())
+
 	$('#sortable').append($('#question_checkboxes').html());
     sortablePositionFunction(isNew, posU);
     question_checkboxes_count++;
@@ -281,21 +303,22 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
 
 }
 
-function handleImageUpload() {
-	// prompt for video upload
+function handleImageUpload(a) {
+    CURRENT_IMAGE_POSITION = a
+    // prompt for video upload
 	$('#imageUpload').click();
 }
 
 //handleImageSelect(this.value)
 function handleImageSelect(e) {
-	console.log('Selecting file', e, e.files[0]);
-	var file = e.files[0];
-	if (file) {
-		GLOBAL_FILE = file;
-		console.log('Submitting form', file.name);
-		//        $("#imageUploadForm").submit();
-		uploadFile('image');
-	}
+    console.log('Selecting file', e, e.files[0]);
+    var file = e.files[0];
+    if (file) {
+    	GLOBAL_FILE = file;
+    	console.log('Submitting form', file.name);
+    	//        $("#imageUploadForm").submit();
+    	uploadFile('image');
+    }
 }
 
 function handleVideoUpload() {
@@ -403,11 +426,11 @@ function uploadFile(fileType) {
 				console.log(file_url);
 
 				if (fileType == 'image') {
-					displayImage(file_url);
-					$('#image').attr('value', file_url);
+					displayImage(file_url,CURRENT_IMAGE_POSITION);
+					$('input[name="image_'+CURRENT_IMAGE_POSITION+'"').attr('value', file_url);
 				} else if (fileType == 'video') {
 					displayVideo(file_url);
-					$('#video').attr('value', file_url);
+					//$('input[name="image_'+CURRENT_IMAGE_POSITION+'"').attr('value', file_url);
 				}
 			})
 			.fail(function (response) {
@@ -420,12 +443,12 @@ function uploadFile(fileType) {
 	});
 }
 
-function displayImage(file_url) {
+function displayImage(file_url,position) {
 	// Clear existing image
-	$('#output').html('');
+	$('#image_output_'+position).html('');
 	var img = $('<img>');
 	img.attr('src', file_url);
-	img.appendTo('#output');
+	img.appendTo('#image_output_'+position);
 	// Change button text
 	$('#upload-img-btn').attr('value', 'Upload new Image');
 }
@@ -545,7 +568,7 @@ function addImageFile(isNew, id, question, image, posU) {
 		$('#image_file').find('input').first().attr('data-id', id);
 		$('#image_file').find('input').last().attr('data-id', id);
 
-		// Display Video
+		// Display Image
 		displayImage(image);
 	} else {
 		$('#image_file').find('input').first().attr('value', '');
@@ -556,10 +579,17 @@ function addImageFile(isNew, id, question, image, posU) {
 		.find('input')
 		.first()
 		.attr('name', 'image_question' + image_file_count);
+
 	$('#image_file')
 		.find('input')
-		.last()
-		.attr('name', 'image_' + image_file_count);
+        .eq(1)
+		.attr('alt', 'handleImageUpload(' + image_file_count+')');
+
+    // $('#image_file')
+	// 	.find('input')
+	// 	.last()
+	// 	.attr('name', 'image_' + image_file_count);
+
 	$('#sortable').append($('#image_file').html());
 	image_file_count++;
 	sortablePositionFunction(isNew, posU);

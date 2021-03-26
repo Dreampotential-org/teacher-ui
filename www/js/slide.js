@@ -79,7 +79,7 @@ function sendResponse(flashcard_id,answer){
         'contentType': 'application/json',
         'success': function (data){
             $.ajax({
-                "url": SERVER + 'courses_api/session/event/' + flashcard_id + '/' + sessionId + '/',
+                "url": SERVER + '/courses_api/session/event/' + flashcard_id + '/' + sessionId + '/',
                 "data": JSON.stringify(da_),
                 "type": 'POST',
                 "contentType": 'application/json',
@@ -377,7 +377,7 @@ function init() {
                             $("input[name=title_input_"+i).val(rf.answer)
                         }
                         if (f.lesson_type == 'question_choices') {
-                            $("input[name=choices_" + i + "][value=" + rf.answer + "]").attr("checked", true)
+                            $("input[name=choices_" + i + "][value='" + rf.answer + "']").attr("checked", true)
                         }
 
                         if (f.lesson_type == 'question_checkboxes') {
