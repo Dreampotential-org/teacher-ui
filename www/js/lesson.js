@@ -16,8 +16,8 @@ var sortArray = [];
 var MODE;
 var CURRENT_IMAGE_FLASHCARD_TYPE = 0;
 var CURRENT_IMAGE_TYPE;
-var CURRENT_IMAGE_FLASHCARD_TYPE = 0;
-var CURRENT_IMAGE_TYPE;
+var CURRENT_VIDEO_FLASHCARD_TYPE = 0;
+var CURRENT_VIDEO_TYPE;
 var pos = 0;
 
 
@@ -228,7 +228,6 @@ function addQuestionChoices(isNew, id, question, choices, image, posU) {
         })
 
 		// Display image
-		displayImage(image,"question_choices",question_choices_count);
 	} else {
 		$('#question_choices').find('input').first().attr('value', '');
 		$('#question_choices').find('text').html('');
@@ -240,6 +239,11 @@ function addQuestionChoices(isNew, id, question, choices, image, posU) {
 
 
 	$('#sortable').append($('#question_choices').html());
+
+    if(!isNew){
+        displayImage(image,"question_choices",question_choices_count);
+    }
+
     sortablePositionFunction(isNew, posU);
     question_choices_count++;
     $("#question_choices").html(tempQC)
@@ -287,8 +291,6 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
 			addCheckboxes(question_checkboxes_count, choice);
 		});
 
-		// Display image
-		displayImage(image,getTotalFlashcardsNumber());
 	} else {
 		$('#question_checkboxes').find('input').first().attr('value', '');
 		$('#question_checkboxes').find('text').html('');
@@ -305,6 +307,9 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
         .attr("id","question_checkboxes_output_"+question_checkboxes_count)
 
 	$('#sortable').append($('#question_checkboxes').html());
+    if(!isNew){
+		displayImage(image,getTotalFlashcardsNumber());
+    }
     sortablePositionFunction(isNew, posU);
     question_checkboxes_count++;
     $("#question_checkboxes").html(tempQ)
@@ -479,18 +484,8 @@ function displayVideo(file_url,flashcard_type,position){
     });
 
     video.appendTo(output_video_div);
-
-    // var img = $('<vidoe>');
-	// img.attr('src', file_url);
-    // img.appendTo(output_div);
-    
-	// $('#videoplayer').html(
-	// 	'<source src="' + file_url + '" type="' + strTYPE + '"></source>'
-	// );
-    // $('#video-output').css('display', 'block');
-	// $('#videoplayer')[0].load();
-
 	// Change button text
+    console.log(output_video_div)
 	$('#upload-vid-btn').attr('value', 'Upload new Video');
 }
 
@@ -504,7 +499,6 @@ function addVideoFile(isNew, id, question, choices, video, posU) {
 		$('#video_file').find('input').last().attr('data-id', id);
 
 		// Display Video
-		displayVideo(video);
 	} else {
 		$('#video_file').find('input').first().attr('value', '');
 		$('#video_file').find('input').last().attr('value', '');
@@ -535,10 +529,16 @@ function addVideoFile(isNew, id, question, choices, video, posU) {
 
 
 	$('#sortable').append($('#video_file').html());
-	video_file_count++;
+    
+    if(!isNew){
+        displayVideo(video,"video_file",video_file_count);
+
+    }
 
 	sortablePositionFunction(isNew, posU);
     $("#video_file").html(tempVF)
+    video_file_count++;
+
 }
 
 function addIframeLink(isNew, id, question, choices, image, posU) {
@@ -618,7 +618,6 @@ function addImageFile(isNew, id, question, image, posU) {
 		$('#image_file').find('input').last().attr('data-id', id);
 
 		// Display Image
-		displayImage(image,"image_file",image_file_count);
 
 	} else {
 		$('#image_file').find('input').first().attr('value', '');
@@ -644,9 +643,15 @@ function addImageFile(isNew, id, question, image, posU) {
         .attr("id","image_file_output_"+image_file_count);
 
 	$('#sortable').append($('#image_file').html());
+
+    if(!isNew){
+		displayImage(image,"image_file",image_file_count);
+    }
+
 	image_file_count++;
 	sortablePositionFunction(isNew, posU);
     $("#image_file").html(tempIF)
+    
 }
 
 function addVerifyPhone(isNew,id,question,image,posU){
@@ -761,14 +766,13 @@ function sendUpdates() {
 
         if(current_flashcard_elements.length < 4 ){         
             current_flashcard_elements.forEach(current_flashcard => {
-            console.log(current_flashcard)
+            
             this_element = current_flashcard.firstElementChild
-
             if(this_element.type == "textarea" || this_element.type == "text"){
                 attr_value = current_flashcard.firstElementChild.value
                 attr_array.push(attr_value)   
             }
-            
+
             else{
                 this_element = current_flashcard.lastElementChild
                 if(this_element.type == "textarea" || this_element.type == "text"){
