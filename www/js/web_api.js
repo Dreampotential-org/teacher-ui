@@ -1,6 +1,6 @@
 $.ajaxSetup({
     statusCode: {
-        401: function(jqxhr, textStatus, errorThrown) {
+        401: function (jqxhr, textStatus, errorThrown) {
             alert('You must login to proceed');
             localStorage.removeItem('user-token');
             $('body').load('student_login.html');
@@ -8,10 +8,10 @@ $.ajaxSetup({
     }
 });
 function get_users() {
-    get_user_list(function(users) {
+    get_user_list(function (users) {
         for (var user of users) {
             /// XXX @santosh add to users list section
-            console.log(user)
+
         }
     });
 }
@@ -28,29 +28,31 @@ function list_question_counters(callback) {
             "Authorization": 'Token ' + localStorage.getItem("user-token"),
         }
     }
-    $.ajax(settings).done(function(response) {
+    $.ajax(settings).done(function (response) {
         callback(JSON.parse(response))
-    }).fail(function(err) {
+    }).fail(function (err) {
         console.log(err)
         alert("ERROR")
     })
 }
 
-function list_inbound_calls(callback,pageSize,pageNumber) {
+function list_inbound_calls(callback) {
+
     var settings = {
         "async": true,
         "crossDomain": true,
-        "url": SERVER + `admin_backend/api_admin/list_calls/${pageSize}/${pageNumber}`,
+        "url": SERVER + "admin_backend/api_admin/list_calls/",
         "method": "GET",
+        // "processData": false,
+        // "contentType": false,
+        // "mimeType": "multipart/form-data",
         "headers": {
             "Authorization": 'Token ' + localStorage.getItem("user-token"),
         }
     }
-    $.ajax(settings).done(function(response) {
-        // console.log("reposne type is",typeof(response))
-        // callback(JSON.parse(response))
-        callback(response)
-    }).fail(function(err) {
+    $.ajax(settings).done(function (response) {
+        callback(JSON.parse(response))
+    }).fail(function (err) {
         console.log(err)
         alert("ERROR")
     })
@@ -66,9 +68,9 @@ function list_services(callback) {
         "contentType": false,
         "mimeType": "multipart/form-data",
     }
-    $.ajax(settings).done(function(response) {
+    $.ajax(settings).done(function (response) {
         callback(JSON.parse(response))
-    }).fail(function(err) {
+    }).fail(function (err) {
         console.log(err)
         alert("ERROR")
     })
@@ -89,9 +91,9 @@ function get_user_list(callback) {
             "Authorization": 'Token ' + localStorage.getItem("user-token"),
         },
     }
-    $.ajax(settings).done(function(response) {
+    $.ajax(settings).done(function (response) {
         callback(JSON.parse(response))
-    }).fail(function(err) {
+    }).fail(function (err) {
         console.log(err)
         alert("ERROR")
     })
@@ -102,7 +104,7 @@ function get_activity_list(phone, cb) {
     let settings = {
         "async": true,
         "crossDomain": true,
-        "url": SERVER + "sfapp2/api/checkin_activity_admin?phone="+phone,
+        "url": SERVER + "sfapp2/api/checkin_activity_admin?phone=" + phone,
         "method": "GET",
         "processData": false,
         "contentType": false,
@@ -111,19 +113,19 @@ function get_activity_list(phone, cb) {
             "Authorization": 'Token ' + localStorage.getItem("user-token"),
         },
     }
-    $.ajax(settings).done(function(response) {
+    $.ajax(settings).done(function (response) {
         cb(JSON.parse(response))
-    }).fail(function(err) {
+    }).fail(function (err) {
         console.log(err)
         alert("ERROR")
     })
 }
 
-function get_tags(member_id, cb){
+function get_tags(member_id, cb) {
     let settings = {
         "async": true,
         "crossDomain": true,
-        "url": SERVER + "sfapp2/api/get_user_tags?member_id="+member_id,
+        "url": SERVER + "sfapp2/api/get_user_tags?member_id=" + member_id,
         "method": "GET",
         "processData": false,
         "contentType": false,
@@ -132,15 +134,15 @@ function get_tags(member_id, cb){
             "Authorization": 'Token ' + localStorage.getItem("user-token"),
         },
     }
-    $.ajax(settings).done(function(response) {
+    $.ajax(settings).done(function (response) {
         cb(JSON.parse(response))
-    }).fail(function(err) {
+    }).fail(function (err) {
         console.log(err)
         alert("ERROR")
     })
 }
 
-function assignTag(tag, member_id ,cb){
+function assignTag(tag, member_id, cb) {
     var form = new FormData();
     form.append("tag", tag);
     form.append("member_id", member_id);
@@ -157,9 +159,9 @@ function assignTag(tag, member_id ,cb){
             "Authorization": 'Token ' + localStorage.getItem("user-token"),
         },
     }
-    $.ajax(settings).done(function(response) {
+    $.ajax(settings).done(function (response) {
         cb(JSON.parse(response, null));
-    }).fail(function(err) {
+    }).fail(function (err) {
         console.log(err);
         cb(null, err);
         // alert("ERROR");
@@ -184,18 +186,18 @@ function send_user_sms(to_number, msg, callback) {
             "Authorization": localStorage.getItem("token"),
         },
     }
-    $.ajax(settings).done(function(response) {
+    $.ajax(settings).done(function (response) {
         // change screen for code collecton
         callback(response, null);
         console.log(response)
-    }).fail(function(err) {
+    }).fail(function (err) {
         console.log(err)
         callback(null, err);
         //alert("ERROR")
     });
 }
 
-function send_feedback(msg,type, logId, callback) {
+function send_feedback(msg, type, logId, callback) {
     var form = new FormData();
     // form.append("to_number", to_number);
     form.append("msg", msg);
@@ -215,11 +217,11 @@ function send_feedback(msg,type, logId, callback) {
             "Authorization": 'Token ' + localStorage.getItem("user-token"),
         },
     }
-    $.ajax(settings).done(function(response) {
+    $.ajax(settings).done(function (response) {
         // change screen for code collecton
         callback(response, null);
         console.log(response)
-    }).fail(function(err) {
+    }).fail(function (err) {
         callback(null, err);
         //alert("ERROR")
     });
@@ -253,7 +255,7 @@ function send_image_twilio(callback) {
         }
     };
     console.log(settings);
-    $.ajax(settings).done(function(response) {
+    $.ajax(settings).done(function (response) {
         swal({
             title: "Good job!",
             text: "File uploaded successfully!",
@@ -266,18 +268,18 @@ function send_image_twilio(callback) {
         upload_to_twilio(file_url);
         
         // $('#output').html("<div> Uploaded to S3 Url: "+ file_url + "</div>");
-        
+
         // var img = $('<img>');
         // img.attr('src', file_url);
         // img.appendTo('#output');
-    }).fail(function(response) {
+    }).fail(function (response) {
         swal({
             title: "Error!",
             text: "File upload failed!",
             icon: "warning",
         });
     });
-    
+
 }
 
 function upload_to_twilio(image) {
@@ -299,9 +301,9 @@ function upload_to_twilio(image) {
             "Authorization": localStorage.getItem("token"),
         },
     }
-    $.ajax(settings).done(function(response) {
+    $.ajax(settings).done(function (response) {
         console.log(response)
-    }).fail(function(err) {
+    }).fail(function (err) {
         console.log(err)
         alert("ERROR")
     });
@@ -320,7 +322,7 @@ function get_sms_to_number(to_number, callback) {
         "url": SERVER + "voip/api_voip/list_sms",
         "method": "POST",
     }
-    $.ajax(settings).done(function(response) {
+    $.ajax(settings).done(function (response) {
         response = JSON.parse(response)
         // XXX Santosh here is what msg look like to populate
         // SMS chat interface.
@@ -328,7 +330,7 @@ function get_sms_to_number(to_number, callback) {
             console.log(msg);
         }
         callback(response.messages)
-    }).fail(function(err) {
+    }).fail(function (err) {
         console.log(err)
         alert("ERROR")
     })
@@ -346,64 +348,64 @@ function format_date(created_at) {
     return date.toLocaleDateString('en-US') + ' ' + strTime
 }
 
-function setup_activity_view_events () {
+function setup_activity_view_events() {
     $('body').delegate('.video_entry a.video-view', 'click', function (e) {
         $('#activityModal').modal('show')
-        
+
         var video_url = $(this).parent().attr('video_url');
-        
+
         $('#activity-body').html(
             '<video controls="" autoplay="" name="media" ' +
             'id="video">' +
             '<source src="' +
             video_url +
             '" type="video/mp4"></video>'
-            )
-        })
-        
-        $('body').delegate('.gps-entry a.gps-view', 'click', function (e) {
-            $('#activityModal').modal('show')
-            
-            $('#activity-body').html(
-                "<div id='gps-view' style='width:100%;height:400px;'></div>"
-                )
-                var spot = {
-                    lat: parseFloat($(this).parent().attr('lat')),
-                    lng: parseFloat($(this).parent().attr('lng'))
-                }
-                var name = ''
-                var latlng = spot
-                var geocoder = new google.maps.Geocoder()
-                
-                var panorama = new google.maps.Map(document.getElementById('gps-view'), {
-                    center: { lat: spot.lat, lng: spot.lng },
-                    zoom: 18
-                })
-                geocoder.geocode({ location: latlng }, function (results, status) {
-                    if (status === 'OK') {
-                        if (results[0]) {
-                            name = results[0].formatted_address
-                            // alert(name);
-                            var marker = new google.maps.Marker({
-                                position: spot,
-                                map: panorama,
-                                icon: 'images/map_icon.png'
-                            })
-                            var infowindow = new google.maps.InfoWindow({
-                                content: name
-                            })
-                            infowindow.setContent(results[0].formatted_address)
-                            infowindow.open(panorama, marker)
-                            marker.addListener('click', function () {
-                                infowindow.open(panorama, marker)
-                            })
-                        } else {
-                            window.alert('No results found')
-                        }
-                    } else {
-                        window.alert('Geocoder failed due to: ' + status)
-                    }
-                })
-            })
+        )
+    })
+
+    $('body').delegate('.gps-entry a.gps-view', 'click', function (e) {
+        $('#activityModal').modal('show')
+
+        $('#activity-body').html(
+            "<div id='gps-view' style='width:100%;height:400px;'></div>"
+        )
+        var spot = {
+            lat: parseFloat($(this).parent().attr('lat')),
+            lng: parseFloat($(this).parent().attr('lng'))
         }
-        
+        var name = ''
+        var latlng = spot
+        var geocoder = new google.maps.Geocoder()
+
+        var panorama = new google.maps.Map(document.getElementById('gps-view'), {
+            center: { lat: spot.lat, lng: spot.lng },
+            zoom: 18
+        })
+        geocoder.geocode({ location: latlng }, function (results, status) {
+            if (status === 'OK') {
+                if (results[0]) {
+                    name = results[0].formatted_address
+                    // alert(name);
+                    var marker = new google.maps.Marker({
+                        position: spot,
+                        map: panorama,
+                        icon: 'images/map_icon.png'
+                    })
+                    var infowindow = new google.maps.InfoWindow({
+                        content: name
+                    })
+                    infowindow.setContent(results[0].formatted_address)
+                    infowindow.open(panorama, marker)
+                    marker.addListener('click', function () {
+                        infowindow.open(panorama, marker)
+                    })
+                } else {
+                    window.alert('No results found')
+                }
+            } else {
+                window.alert('Geocoder failed due to: ' + status)
+            }
+        })
+    })
+}
+
