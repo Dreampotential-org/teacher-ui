@@ -112,6 +112,8 @@ function getParam(sParam){
         }
     }
 }
+
+let session_responses = []
 var lesson_id = getParam("lesson_id")
 $.get(SERVER+'courses_api/lesson/response/get/'+lesson_id+'/',function(response){
     response.forEach(function(r){
@@ -119,13 +121,28 @@ $.get(SERVER+'courses_api/lesson/response/get/'+lesson_id+'/',function(response)
         var a = r.answer
         var s_id = r.user_session[0].session_id
         var type = r.flashcard[0].lesson_type
-        if(type =="signature"){
-            $("#response-data").append("<tr><td>"+s_id+"</td><td>"+q+"</td><td><img src='"+a+"'></td></tr>")
-
-        }else{
-            $("#response-data").append("<tr><td>"+s_id+"</td><td>"+q+"</td><td>"+a+"</td></tr>")
-
-        }
+        if(!session_responses[s_id]){
+            session_responses[s_id] = new Array()
+        } 
+        session_responses[s_id].push([q,a,type])
     })
+
+    for (key in session_responses){
+        let sess_id = key
+        let sess_data = session_responses[key]
+        $("#response-data").append("<tr><td>"+sess_id+"</td><td id="+sess_id+"></td></tr>")
+
+        sess_data.forEach(sess_entry => {
+            let question_ = sess_entry[0]
+            let answer_ = sess_entry[1]
+            let type_ = sess_entry[2]
+
+            $('#'+sess_id).append(question_+'<br>'+answer_)
+
+        })
+
+
+    }
+
 })
 </script>

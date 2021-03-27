@@ -87,7 +87,7 @@ function sendResponse(flashcard_id,answer){
                     console.log("Session event duration")
                 }
             })
-            alert("FlashCard Response Sent")
+            
         },
         'error': function(res){
             // alert(JSON.stringify(res))
@@ -145,8 +145,8 @@ function nextSlide(){
 
     }else if(type == "title_input"){
         answer = $("input[name= title_input_"+(current_slide-1)+"]").val()
-        console.log("title inpt")
         sendResponse(flashcard_id,answer)
+
     }else if(type=='signature'){
         answer = $("input[name= input_signature_"+(current_slide-1)+"]").val()
         sendResponse(flashcard_id,answer)
