@@ -316,7 +316,7 @@
                                                             <input type="tel" class="form-control" id="dest_num_call" placeholder="Dest Number"  required/>
                                                        </div>
                                                        <div class="form-group">
-                                                            <label for="yourNumber">Destination number</label>
+                                                            <label for="yourNumber">your number</label>
                                                             <input type="tel" class="form-control" id="yourNumber" placeholder="Your Number for join_conference"  required/>
                                                        </div>
                                                        <div class="modal-footer">
@@ -753,7 +753,7 @@
                          data : {
                               "source_number" : source_num,
                               "dest_number" : dest_num,
-                              "your_number" : yourNum,
+                              "your_number" : your_num,
                          },
                          headers: { "Authorization": `${localStorage.getItem('user-token')}` }
                     }).done( ()=> {                        
