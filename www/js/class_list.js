@@ -287,7 +287,7 @@ function SidebarCollapse() {
                 type: "GET",
                 headers: { "Authorization": `Token ${localStorage.getItem('user-token')}` }
             }).done((data) => {
-                system_users[i].classLink = `http://localhost/teacher-ui/www/class_list.html?invitationId=${data.uuid}&class_id=${data.class_id}`;
+                system_users[i].classLink = `https://teacher.dreampotential.org/class_list.html?invitationId=${data.uuid}&class_id=${data.class_id}`;
                 $('#classLinkLoader').remove();
                 $('#classLinkForm').attr('hidden', false);
                 $('#classLinkInput').val(system_users[i].classLink);
