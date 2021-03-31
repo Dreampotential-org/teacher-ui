@@ -14,6 +14,10 @@ var name_type_count =0;
 var sign_count = 0;
 var sortArray = [];
 var MODE;
+var CURRENT_IMAGE_FLASHCARD_TYPE = 0;
+var CURRENT_IMAGE_TYPE;
+var CURRENT_VIDEO_FLASHCARD_TYPE = 0;
+var CURRENT_VIDEO_TYPE;
 var pos = 0;
 
 
@@ -21,6 +25,9 @@ window.addEventListener('DOMContentLoaded', init, false)
 
 var lesson_id = getParam('lesson_id');
 
+function getTotalFlashcardsNumber(){
+    return $("#sortable").children().length
+}
 function selectLesson() {
 	var thelesson_id = $('#select_lesson :selected').val();
 	window.location.href = '/lesson.html?lesson_id=' + thelesson_id;
@@ -188,10 +195,18 @@ function addQuestionChoices(isNew, id, question, choices, image, posU) {
             .attr('id', 'choices_' + question_choices_count);
         }
 
+    $("#question_choices")
+        .find("input[type=button]")
+        .attr("onclick","handleImageUpload('question_choices',"+question_checkboxes_count+")")
+
+    $("#question_checkboxes #output")
+        .attr("id","question_checkboxes_output_"+question_checkboxes_count)
+
 	$('#question_choices')
 		.find('input')
 		.last()
-		.attr('name', 'image_' + question_choices_count);
+		.attr('name', 'question_choices_image_' + question_choices_count);
+
 	$('#question_choices')
         .find('button')
         .last()
@@ -208,19 +223,27 @@ function addQuestionChoices(isNew, id, question, choices, image, posU) {
 			.find('input')
 			.remove();
 
-        console.log(choices);
         choices.map((choice) => {
 			addChoices(question_choices_count, choice);
         })
 
 		// Display image
-		displayImage(image);
 	} else {
 		$('#question_choices').find('input').first().attr('value', '');
 		$('#question_choices').find('text').html('');
 		$('#question_choices').find('input').last().attr('value', '');
 	}
+
+    $("#question_choices #output")
+    .attr("id","question_choices_output_"+question_choices_count)
+
+
 	$('#sortable').append($('#question_choices').html());
+
+    if(!isNew){
+        displayImage(image,"question_choices",question_choices_count);
+    }
+
     sortablePositionFunction(isNew, posU);
     question_choices_count++;
     $("#question_choices").html(tempQC)
@@ -228,6 +251,8 @@ function addQuestionChoices(isNew, id, question, choices, image, posU) {
 }
 
 function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
+    let tempQ = $("#question_checkboxes").html()
+
 	$('#question_checkboxes')
 		.find('input')
 		.first()
@@ -251,7 +276,6 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
         .find('button')
         .last()
 		.attr('onclick', 'addCheckboxes(' + question_checkboxes_count + ')');
-        let tempQ = $("#question_checkboxes").html()
 
 	if (!isNew) {
 		$('#question_checkboxes').find('input').first().attr('value', question);
@@ -267,38 +291,53 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
 			addCheckboxes(question_checkboxes_count, choice);
 		});
 
-		// Display image
-		displayImage(image);
 	} else {
 		$('#question_checkboxes').find('input').first().attr('value', '');
 		$('#question_checkboxes').find('text').html('');
 		$('#question_checkboxes').find('input').last().attr('value', '');
 	}
+
+    $('#question_checkboxes').find('input').last().attr('name', 'question_checkboxes_image_'+question_checkboxes_count);
+
+    $("#question_checkboxes")
+        .find("input[type=button]")
+        .attr("onclick","handleImageUpload('question_checkboxes',"+question_checkboxes_count+")")
+
+    $("#question_checkboxes #output")
+        .attr("id","question_checkboxes_output_"+question_checkboxes_count)
+
 	$('#sortable').append($('#question_checkboxes').html());
+    if(!isNew){
+		displayImage(image,getTotalFlashcardsNumber());
+    }
     sortablePositionFunction(isNew, posU);
     question_checkboxes_count++;
     $("#question_checkboxes").html(tempQ)
 
 }
 
-function handleImageUpload() {
-	// prompt for video upload
+function handleImageUpload(flashcard_type,a) {
+    CURRENT_IMAGE_FLASHCARD_TYPE = flashcard_type
+    CURRENT_IMAGE_POSITION = a
+    // prompt for video upload
 	$('#imageUpload').click();
 }
 
 //handleImageSelect(this.value)
 function handleImageSelect(e) {
-	console.log('Selecting file', e, e.files[0]);
-	var file = e.files[0];
-	if (file) {
-		GLOBAL_FILE = file;
-		console.log('Submitting form', file.name);
-		//        $("#imageUploadForm").submit();
-		uploadFile('image');
-	}
+    console.log('Selecting file', e, e.files[0]);
+    var file = e.files[0];
+    if (file) {
+    	GLOBAL_FILE = file;
+    	console.log('Submitting form', file.name);
+    	//        $("#imageUploadForm").submit();
+    	uploadFile('image');
+    }
 }
 
-function handleVideoUpload() {
+function handleVideoUpload(flashcard_type,a) {
+    CURRENT_VIDEO_FLASHCARD_TYPE = flashcard_type
+    CURRENT_VIDEO_POSITION = a
 	// prompt for video upload
 	$('#videoUpload').click();
 }
@@ -403,11 +442,11 @@ function uploadFile(fileType) {
 				console.log(file_url);
 
 				if (fileType == 'image') {
-					displayImage(file_url);
-					$('#image').attr('value', file_url);
+					displayImage(file_url,CURRENT_IMAGE_FLASHCARD_TYPE,CURRENT_IMAGE_POSITION);
+					$('input[name="'+CURRENT_IMAGE_FLASHCARD_TYPE+'_image_'+CURRENT_IMAGE_POSITION+'"').attr('value', file_url);
 				} else if (fileType == 'video') {
-					displayVideo(file_url);
-					$('#video').attr('value', file_url);
+					displayVideo(file_url,CURRENT_VIDEO_FLASHCARD_TYPE,CURRENT_VIDEO_POSITION);
+					$('input[name="'+CURRENT_VIDEO_FLASHCARD_TYPE+'_video_'+CURRENT_VIDEO_POSITION+'"').attr('value', file_url);
 				}
 			})
 			.fail(function (response) {
@@ -420,38 +459,46 @@ function uploadFile(fileType) {
 	});
 }
 
-function displayImage(file_url) {
+function displayImage(file_url,flashcard_type,position) {
 	// Clear existing image
-	$('#output').html('');
+    output_div ='#'+flashcard_type+'_output_'+position 
+    console.log(file_url +" to => "+output_div)
+
+	$(output_div).html('');
 	var img = $('<img>');
 	img.attr('src', file_url);
-	img.appendTo('#output');
+    img.appendTo(output_div);
 	// Change button text
-	$('#upload-img-btn').attr('value', 'Upload new Image');
+	//$('#upload-img-btn').attr('value', 'Upload new Image');
 }
 
-function displayVideo(file_url) {
+function displayVideo(file_url,flashcard_type,position){
+    output_video_div = "#"+flashcard_type+'_output_'+position
 	var strTYPE = 'video/mp4';
-	$('#videoplayer').html(
-		'<source src="' + file_url + '" type="' + strTYPE + '"></source>'
-	);
-    $('#video-output').css('display', 'block');
-	$('#videoplayer')[0].load();
+    $(output_video_div).html('')
 
+    var video = $('<video />', {
+        src: file_url,
+        type: strTYPE,
+        controls: true
+    });
+
+    video.appendTo(output_video_div);
 	// Change button text
+    console.log(output_video_div)
 	$('#upload-vid-btn').attr('value', 'Upload new Video');
 }
 
-function addVideoFile(isNew, id, question, choices, image, posU) {
+function addVideoFile(isNew, id, question, choices, video, posU) {
+    let tempVF = $("#video_file").html()
 	if (!isNew) {
 		$('#video_file').find('input').first().attr('value', question);
-		$('#video_file').find('input').last().attr('value', image);
+		$('#video_file').find('input').last().attr('value', video);
 
 		$('#video_file').find('input').first().attr('data-id', id);
 		$('#video_file').find('input').last().attr('data-id', id);
 
 		// Display Video
-		displayVideo(image);
 	} else {
 		$('#video_file').find('input').first().attr('value', '');
 		$('#video_file').find('input').last().attr('value', '');
@@ -461,13 +508,37 @@ function addVideoFile(isNew, id, question, choices, image, posU) {
 		.find('input')
 		.first()
 		.attr('name', 'video_question_' + video_file_count);
+
 	$('#video_file')
 		.find('input')
 		.last()
 		.attr('name', 'video_' + video_file_count);
+
+	$('#video_file')
+        .find('input')
+        .eq(1)
+        .attr('onclick', 'handleVideoUpload("video_file",' + video_file_count+')');
+
+    $('#video_file')
+        .find('input')
+        .last()
+        .attr('name', 'video_file_video_' + video_file_count);
+
+    $("#video_file #video-output")
+        .attr("id","video_file_output_"+video_file_count);
+
+
 	$('#sortable').append($('#video_file').html());
-	video_file_count++;
+    
+    if(!isNew){
+        displayVideo(video,"video_file",video_file_count);
+
+    }
+
 	sortablePositionFunction(isNew, posU);
+    $("#video_file").html(tempVF)
+    video_file_count++;
+
 }
 
 function addIframeLink(isNew, id, question, choices, image, posU) {
@@ -538,6 +609,7 @@ function addSignaturePad(isNew, id, sign_data, posU) {
 }
 
 function addImageFile(isNew, id, question, image, posU) {
+    tempIF = $("#image_file").html()
 	if (!isNew) {
 		$('#image_file').find('input').first().attr('value', question);
 		$('#image_file').find('input').last().attr('value', image);
@@ -545,8 +617,8 @@ function addImageFile(isNew, id, question, image, posU) {
 		$('#image_file').find('input').first().attr('data-id', id);
 		$('#image_file').find('input').last().attr('data-id', id);
 
-		// Display Video
-		displayImage(image);
+		// Display Image
+
 	} else {
 		$('#image_file').find('input').first().attr('value', '');
 		$('#image_file').find('input').last().attr('value', '');
@@ -555,14 +627,31 @@ function addImageFile(isNew, id, question, image, posU) {
 	$('#image_file')
 		.find('input')
 		.first()
-		.attr('name', 'image_question' + image_file_count);
+		.attr('name', 'image_question_' + image_file_count);
+
 	$('#image_file')
 		.find('input')
+        .eq(1)
+		.attr('onclick', 'handleImageUpload("image_file",' + image_file_count+')');
+
+    $('#image_file')
+		.find('input')
 		.last()
-		.attr('name', 'image_' + image_file_count);
+		.attr('name', 'image_file_image_' + image_file_count);
+
+    $("#image_file #output")
+        .attr("id","image_file_output_"+image_file_count);
+
 	$('#sortable').append($('#image_file').html());
+
+    if(!isNew){
+		displayImage(image,"image_file",image_file_count);
+    }
+
 	image_file_count++;
 	sortablePositionFunction(isNew, posU);
+    $("#image_file").html(tempIF)
+    
 }
 
 function addVerifyPhone(isNew,id,question,image,posU){
@@ -677,12 +766,13 @@ function sendUpdates() {
 
         if(current_flashcard_elements.length < 4 ){         
             current_flashcard_elements.forEach(current_flashcard => {
-            console.log(current_flashcard)
+            
             this_element = current_flashcard.firstElementChild
             if(this_element.type == "textarea" || this_element.type == "text"){
                 attr_value = current_flashcard.firstElementChild.value
                 attr_array.push(attr_value)   
             }
+
             else{
                 this_element = current_flashcard.lastElementChild
                 if(this_element.type == "textarea" || this_element.type == "text"){

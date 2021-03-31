@@ -79,7 +79,7 @@ function sendResponse(flashcard_id,answer){
         'contentType': 'application/json',
         'success': function (data){
             $.ajax({
-                "url": SERVER + 'courses_api/session/event/' + flashcard_id + '/' + sessionId + '/',
+                "url": SERVER + '/courses_api/session/event/' + flashcard_id + '/' + sessionId + '/',
                 "data": JSON.stringify(da_),
                 "type": 'POST',
                 "contentType": 'application/json',
@@ -87,7 +87,7 @@ function sendResponse(flashcard_id,answer){
                     console.log("Session event duration")
                 }
             })
-            alert("FlashCard Response Sent")
+            
         },
         'error': function(res){
             // alert(JSON.stringify(res))
@@ -145,8 +145,8 @@ function nextSlide(){
 
     }else if(type == "title_input"){
         answer = $("input[name= title_input_"+(current_slide-1)+"]").val()
-        console.log("title inpt")
         sendResponse(flashcard_id,answer)
+
     }else if(type=='signature'){
         answer = $("input[name= input_signature_"+(current_slide-1)+"]").val()
         sendResponse(flashcard_id,answer)
@@ -377,7 +377,7 @@ function init() {
                             $("input[name=title_input_"+i).val(rf.answer)
                         }
                         if (f.lesson_type == 'question_choices') {
-                            $("input[name=choices_" + i + "][value=" + rf.answer + "]").attr("checked", true)
+                            $("input[name=choices_" + i + "][value='" + rf.answer + "']").attr("checked", true)
                         }
 
                         if (f.lesson_type == 'question_checkboxes') {

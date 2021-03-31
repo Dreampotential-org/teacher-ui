@@ -34,6 +34,8 @@
     <link rel="stylesheet" href="css/lesson_list.css" />
 
     <script src="js/main.js"></script>
+    <script src="js/lesson_responses.js"></script>
+
       </head>
 <body>
     <div class="container-fluid p-0">
@@ -57,8 +59,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th>Session Id</th>
-                                                            <th>Question</th>
-                                                            <th>Answer</th>
+                                                            <th>Response</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody id="response-data"></tbody>
@@ -95,37 +96,3 @@
     </div>
 </body>
 </html>
-
-<script>
-        $(document).ready(function () {
-            $("#left-sidebar").load("sidebar.html");
-            $("#page-header").load("header.html");
-        });
-
-function getParam(sParam){
-    var sPageURL = window.location.search.substring(1);
-    var sURLVariables = sPageURL.split('&');
-    for (var i = 0; i < sURLVariables.length; i++){
-        var sParameterName = sURLVariables[i].split('=');
-        if (sParameterName[0] == sParam) {
-            return sParameterName[1];
-        }
-    }
-}
-var lesson_id = getParam("lesson_id")
-$.get(SERVER+'courses_api/lesson/response/get/'+lesson_id+'/',function(response){
-    response.forEach(function(r){
-        var q = r.flashcard[0].question
-        var a = r.answer
-        var s_id = r.user_session[0].session_id
-        var type = r.flashcard[0].lesson_type
-        if(type =="signature"){
-            $("#response-data").append("<tr><td>"+s_id+"</td><td>"+q+"</td><td><img src='"+a+"'></td></tr>")
-
-        }else{
-            $("#response-data").append("<tr><td>"+s_id+"</td><td>"+q+"</td><td>"+a+"</td></tr>")
-
-        }
-    })
-})
-</script>
