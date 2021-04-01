@@ -51,7 +51,7 @@ function list_inbound_calls(callback) {
         }
     }
     $.ajax(settings).done(function (response) {
-        callback(JSON.parse(response))
+        callback(response)
     }).fail(function (err) {
         console.log(err)
         alert("ERROR")
