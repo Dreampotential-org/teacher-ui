@@ -42,6 +42,10 @@
           <script src="js/main.js"></script>
           <script src="js/web_api.js"></script>
 
+          <!-- Country flags and code -->
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
           <style>
                .p-0 .container-fluid {
                     padding-left: 0px !important;
@@ -83,6 +87,10 @@
                     color:#5bc0de;
                     text-decoration: underline;
                }
+               .iti, iti--allow-dropdown{
+                    width: 100%!important;
+               }
+
           </style>
           
           <script>
@@ -110,7 +118,7 @@
                               <div id="userLeadData">
                                    <div class="row">
                                         <h2>
-                                             <b>Uaer leads</b>
+                                             <b>User leads</b>
                                         </h2>
                                         <button class="btn btn-info"  type="button" id="add_lead">
                                              ADD
@@ -172,7 +180,7 @@
                                              <input type="text" class="form-control" id="name" placeholder="Name" />
                                         </div>
                                         <div class="form-group">
-                                             <label for="phone">Phone</label>
+                                             <label class="d-block" for="phone">Phone</label>
                                              <input type="phone" class="form-control" id="phone" placeholder="Phone" />
                                         </div>
                                         <div class="form-group">
@@ -307,13 +315,13 @@
                                                        <div class="form-group">
                                                             <label for="sourceCallNumber">select source Number</label>
                                                             <select class="form-control" id="sourceCallNumber">
-                                                                 <option value="" selected>Select Source Number</option>
+                                                                 <option value="Select Source Number" selected>Select Source Number</option>
                                                                  <option value="(425) 578-5798">(425) 578-5798</option>
                                                             </select>
                                                        </div>
                                                        <div class="form-group">
                                                             <label for="dest_num_call">Destination number</label>
-                                                            <input type="tel" class="form-control" id="dest_num_call" placeholder="Dest Number"  required/>
+                                                            <input type="tel" class="form-control" id="dest_num_call" disabled placeholder="Dest Number"  required/>
                                                        </div>
                                                        <div class="form-group">
                                                             <label for="yourNumber">your number</label>
@@ -425,7 +433,16 @@
                var user_list = [];
                var selected_user_index;
                var user_leads;
+               var call_data;
                $(document).ready(function () {
+
+                    // list_inbound_calls(function (call_data) {
+                    //      console.log("response of the call logs from calls .....list")
+                    //      console.log("call_data..",call_data)
+                    // });
+
+
+
                     $.ajax({
                          url : SERVER + "voip/api_voip/getlead",
                          async : true,
@@ -686,9 +703,15 @@
                }
 
                // submit new lead
+               const phoneInputField = document.querySelector("#phone");
+               const phoneInput = window.intlTelInput(phoneInputField, {
+                 utilsScript:
+                   "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+               });
+               
                $('#save_new_lead').click( () => {           
                     name = $('#name').val()
-                    phone = $('#phone').val()
+                    phone = phoneInput.getNumber()
                     email = $('#email').val()
                     state = $('#state').val()
                     price = $('#price').val()
@@ -734,31 +757,54 @@
                var source_num;
                var dest_num;
                var index;
+               const yourNumberInputField = document.querySelector("#yourNumber");
+               const yourNumberInput = window.intlTelInput(yourNumberInputField, {
+                 utilsScript:
+                   "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+               });
                $("#makeCall").click( () => {
                     index = $("#makeCall").val()
-                    source_num = $('#sourceCallNumber').val()
+                    source_num = $('#sourceCallNumber option:selected').val()
                     dest_num = $("#dest_num_call").val()
-                    your_num = $("#yourNumber").val()
-                    $("#save_notes").val(user_leads[index].pk)
-                    $("#notesModal").modal();
-                    $("#Zillow_url").empty();
-                    $("#Zillow_url").append(`name : ${user_leads[index].fields.name}  <br> Zillow url : <a href="${user_leads[index].fields.url}">${user_leads[index].fields.url}</a> <br><br>`);
-                    $('#notes_call').val(user_leads[index].fields.notes);
-                    $.ajax({
-                         url : SERVER + "voip/api_voip/join_conference",
-                         async : true,
-                         crossDomain : true,
-                         crossOrigin : true,
-                         type : 'POST',
-                         data : {
-                              "source_number" : source_num,
-                              "dest_number" : dest_num,
-                              "your_number" : your_num,
+                    your_num = yourNumberInput.getNumber()
+
+                    if (source_num === 'Select Source Number'){
+                         swal({	
+                              title: "Select source number",
+                              text: "You have to select source number",	
+                              icon: "warning",
+                              timer: 2000
+                         })
+                    } else if (your_num === ''){
+                         swal({	
+                              title: "Enter designation number",
+                              text: "You have to enter  number",	
+                              icon: "warning",
+                              timer: 2000
+                         })
+                    } else{
+
+                         $("#save_notes").val(user_leads[index].pk)
+                         $("#notesModal").modal();
+                         $("#Zillow_url").empty();
+                         $("#Zillow_url").append(`name : ${user_leads[index].fields.name}  <br> Zillow url : <a href="${user_leads[index].fields.url}">${user_leads[index].fields.url}</a> <br><br>`);
+                         $('#notes_call').val(user_leads[index].fields.notes);
+                         $.ajax({
+                              url : SERVER + "voip/api_voip/join_conference",
+                              async : true,
+                              crossDomain : true,
+                              crossOrigin : true,
+                              type : 'POST',
+                              data : {
+                                   "source_number" : source_num,
+                                   "dest_number" : dest_num,
+                                   "your_number" : your_num,
                          },
                          headers: { "Authorization": `${localStorage.getItem('user-token')}` }
                     }).done( ()=> {                        
                         console.log("calling to lead")
                     })
+               }
                })
 
                // save notes and status to db
