@@ -100,7 +100,7 @@ function getParam(sParam) {
 
 function sortablePositionFunction(isNew, posU) {
     if(!posU){
-        posU = $('#sortable').children().lenght;
+        posU = $('#sortable').children().length;
         console.log('calculated len', posU)
     }
 	if (!isNew) {
@@ -261,10 +261,9 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
             $('#question_checkboxes')
             .find('#checkboxes')
             .attr('id', 'checkboxes_' + question_checkboxes_count);
-
         } else {
             $('#question_checkboxes')
-            .find('#checkboxes_'+(question_checkboxes_count-1))
+            .find('#checkboxes')
             .attr('id', 'checkboxes_' + question_checkboxes_count);
         }
 
@@ -305,7 +304,6 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
 
     $("#question_checkboxes #output")
         .attr("id","question_checkboxes_output_"+question_checkboxes_count)
-
 	$('#sortable').append($('#question_checkboxes').html());
     if(!isNew){
 		displayImage(image,getTotalFlashcardsNumber());
