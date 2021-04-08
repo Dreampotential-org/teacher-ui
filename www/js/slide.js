@@ -268,7 +268,7 @@ function init() {
                 `);
                 i++;
             }
-            
+
             if(flashcard.lesson_type == "quick_read"){
                 $("#prevButton").attr("data-type","quick_read");
                 $("#nextButton").attr("data-type","quick_read");
@@ -278,7 +278,7 @@ function init() {
             if(flashcard.lesson_type == "title_text") {
                 $("#prevButton").attr("data-type","title_text");
                 $("#nextButton").attr("data-type","title_text");
-                $("#theSlide").append('<div class="'+className+'"><div alt="title_text" style="height:500px"><h1> '+flashcard.question+'</h1><h3>'+flashcard.answer+'</h3></div></div>')
+                $("#theSlide").append('<div class="'+className+'"><div alt="title_text" style="height:500px"><h1> '+flashcard.question+'</h1><h3 style="white-space: pre-wrap;">'+flashcard.answer+'</h3></div></div>')
             }
             if(flashcard.lesson_type == "question_choices"){
                 $("#prevButton").attr("data-type","question_choices");
@@ -296,7 +296,6 @@ function init() {
                             $(b).append("<br><input type='radio' id='"+valu+"' value='"+valu+"' name='choices_"+i+"'> <label style='font-weight: normal;' for='"+valu+"'>"+valu+ "</lable>")
 
                         }
-                        
                 });
                     if($("#theSlide").find('ul').attr("alt") === "question_choices_"+i){
 
