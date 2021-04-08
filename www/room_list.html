@@ -410,7 +410,8 @@
             // console.log(index)
             // console.log(room_list[index].room_name, "123")
             // console.log(document.getElementById("quiz_link" + index).value)
-            var socket = new WebSocket('wss://' + HOST + '/notifications/' + room_list[index].room_name + '/');
+            console.log(WEBSOCKET_HOST);
+            var socket = new WebSocket(WEBSOCKET_HOST + '/notifications/' + room_list[index].room_name + '/');
             socket.onopen = function open() {
                 console.log('WebSockets connection created.');
                 var dict = {
