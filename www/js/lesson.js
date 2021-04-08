@@ -262,6 +262,7 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
             .find('#checkboxes')
             .attr('id', 'checkboxes_' + question_checkboxes_count);
         } else {
+            console.log($('#question_checkboxes').find('#checkboxes_'+(question_checkboxes_count-1)))
             $('#question_checkboxes')
             .find('#checkboxes')
             .attr('id', 'checkboxes_' + question_checkboxes_count);
@@ -758,22 +759,21 @@ function sendUpdates() {
         current_flashcard_elements.shift() // remove the header
         flashcard_type = flashcard.getAttribute("data-type")
         position_me +=1
-        console.log(current_flashcard_elements)
         //current_flashcard_elements has all the fields of current selected flashcard
         console.log(flashcard_type + " has length of "+current_flashcard_elements.length)
 
         if(current_flashcard_elements.length < 4 ){         
             current_flashcard_elements.forEach(current_flashcard => {
-            
+            console.log(current_flashcard)
             this_element = current_flashcard.firstElementChild
-            if(this_element.type == "textarea" || this_element.type == "text"){
+            if(this_element && (this_element.type == "textarea" || this_element.type == "text")){
                 attr_value = current_flashcard.firstElementChild.value
                 attr_array.push(attr_value)   
             }
 
             else{
                 this_element = current_flashcard.lastElementChild
-                if(this_element.type == "textarea" || this_element.type == "text"){
+                if(this_element && (this_element.type == "textarea" || this_element.type == "text")){
                     attr_value = current_flashcard.lastElementChild.value
                     attr_array.push(attr_value)   
             }
