@@ -315,7 +315,7 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
 
 }
 
-function handleImageUpload(flashcard_type,a) {
+function handleImageUpload(flashcard_type, a) {
     CURRENT_IMAGE_FLASHCARD_TYPE = flashcard_type
     CURRENT_IMAGE_POSITION = a
     // prompt for video upload
@@ -327,10 +327,10 @@ function handleImageSelect(e) {
     console.log('Selecting file', e, e.files[0]);
     var file = e.files[0];
     if (file) {
-    	GLOBAL_FILE = file;
-    	console.log('Submitting form', file.name);
-    	//        $("#imageUploadForm").submit();
-    	uploadFile('image');
+        GLOBAL_FILE = file;
+        console.log('Submitting form', file.name);
+        //        $("#imageUploadForm").submit();
+        uploadFile('image');
     }
 }
 
@@ -441,7 +441,9 @@ function uploadFile(fileType) {
 				console.log(file_url);
 
 				if (fileType == 'image') {
-					displayImage(file_url,CURRENT_IMAGE_FLASHCARD_TYPE,CURRENT_IMAGE_POSITION);
+					displayImage(
+                file_url, CURRENT_IMAGE_FLASHCARD_TYPE,
+                CURRENT_IMAGE_POSITION);
 					$('input[name="'+CURRENT_IMAGE_FLASHCARD_TYPE+'_image_'+CURRENT_IMAGE_POSITION+'"').attr('value', file_url);
 				} else if (fileType == 'video') {
 					displayVideo(file_url,CURRENT_VIDEO_FLASHCARD_TYPE,CURRENT_VIDEO_POSITION);
@@ -458,14 +460,15 @@ function uploadFile(fileType) {
 	});
 }
 
-function displayImage(file_url,flashcard_type,position) {
+function displayImage(file_url, flashcard_type, position) {
 	// Clear existing image
-    output_div ='#'+flashcard_type+'_output_'+position 
+    output_div ='#'+flashcard_type+'_output_'+position
     console.log(file_url +" to => "+output_div)
 
 	$(output_div).html('');
 	var img = $('<img>');
 	img.attr('src', file_url);
+	img.attr('style', "width:100%;");
     img.appendTo(output_div);
 	// Change button text
 	//$('#upload-img-btn').attr('value', 'Upload new Image');
@@ -639,7 +642,7 @@ function addImageFile(isNew, id, question, image, posU) {
 		.attr('name', 'image_file_image_' + image_file_count);
 
     $("#image_file #output")
-        .attr("id","image_file_output_"+image_file_count);
+        .attr("id", "image_file_output_" + image_file_count);
 
 	$('#sortable').append($('#image_file').html());
 
@@ -647,10 +650,9 @@ function addImageFile(isNew, id, question, image, posU) {
 		displayImage(image,"image_file",image_file_count);
     }
 
-	image_file_count++;
-	sortablePositionFunction(isNew, posU);
+    image_file_count++;
+    sortablePositionFunction(isNew, posU);
     $("#image_file").html(tempIF)
-    
 }
 
 function addVerifyPhone(isNew,id,question,image,posU){
