@@ -8,7 +8,7 @@ var completed = false
 var signature = [];
 var phone_verification_status =false;
 var session_id = null;
-var SERVER = 'https://sfapp-api.dreamstate-4-all.org/'
+var SERVER = 'https://api.dreampotential.org/'
 
 
 function updateProgressBar() {
@@ -87,7 +87,6 @@ function sendResponse(flashcard_id,answer){
                     console.log("Session event duration")
                 }
             })
-            
         },
         'error': function(res){
             // alert(JSON.stringify(res))
