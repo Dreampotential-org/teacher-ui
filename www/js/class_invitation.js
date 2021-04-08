@@ -20,7 +20,7 @@ $(document).ready(function() {
             $('#invalid_div').attr('hidden', false);
             swal({
                 title: "Warning",
-                text: er.responseJSON.msg||`Invalid class Id`,
+                text: `Invalid class Id`,
                 icon: "warning",
             });
         }

@@ -125,6 +125,7 @@ function SidebarCollapse() {
                 <button class="btn btn-primary btn-edit" onclick="showEmail('${i}')"><i class="fa fa-envelope"></i></button>
                 &nbsp
                 <button class="btn btn-primary btn-edit" onclick="showText('${i}')"><i class="fa fa-comment"></i></button>
+                &nbsp
                 <button class="btn btn-primary btn-edit" onclick="showClassLink('${i}')"><i class="fa fa-link"></i></button>
                 </td>
                 </tr>`);
@@ -297,6 +298,10 @@ function SidebarCollapse() {
                 alert('Unable to generate class link');
             })
         } 
+    }
+
+    function deleteClass(params) {
+        
     }
     
     function copyToClipboard(inputId) {
