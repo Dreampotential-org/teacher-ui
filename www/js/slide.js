@@ -334,7 +334,8 @@ function init() {
             }
 
             if(flashcard.lesson_type == "image_file"){
-                $("#theSlide").append('<div class="'+className+'"><div alt="title_text" style="height:500px"><h1> '+flashcard.question+'</h1><img src= "'+flashcard.image+'"></div></div>')
+                $("#theSlide").append(
+                    '<div class="' + className + '"><div alt="title_text" style="height:500px"><h1> '+flashcard.question+'</h1><img style="width:100%;" src= "'+flashcard.image+'"></div></div>')
             }
 
             if(flashcard.lesson_type == "title_textarea"){
