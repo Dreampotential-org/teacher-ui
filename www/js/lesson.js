@@ -100,7 +100,7 @@ function getParam(sParam) {
 
 function sortablePositionFunction(isNew, posU) {
     if(!posU){
-        posU = $('#sortable').children().lenght;
+        posU = $('#sortable').children().length;
         console.log('calculated len', posU)
     }
 	if (!isNew) {
@@ -261,10 +261,10 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
             $('#question_checkboxes')
             .find('#checkboxes')
             .attr('id', 'checkboxes_' + question_checkboxes_count);
-
         } else {
+            console.log($('#question_checkboxes').find('#checkboxes_'+(question_checkboxes_count-1)))
             $('#question_checkboxes')
-            .find('#checkboxes_'+(question_checkboxes_count-1))
+            .find('#checkboxes')
             .attr('id', 'checkboxes_' + question_checkboxes_count);
         }
 
@@ -305,7 +305,6 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
 
     $("#question_checkboxes #output")
         .attr("id","question_checkboxes_output_"+question_checkboxes_count)
-
 	$('#sortable').append($('#question_checkboxes').html());
     if(!isNew){
 		displayImage(image,getTotalFlashcardsNumber());
@@ -316,7 +315,7 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
 
 }
 
-function handleImageUpload(flashcard_type,a) {
+function handleImageUpload(flashcard_type, a) {
     CURRENT_IMAGE_FLASHCARD_TYPE = flashcard_type
     CURRENT_IMAGE_POSITION = a
     // prompt for video upload
@@ -328,10 +327,10 @@ function handleImageSelect(e) {
     console.log('Selecting file', e, e.files[0]);
     var file = e.files[0];
     if (file) {
-    	GLOBAL_FILE = file;
-    	console.log('Submitting form', file.name);
-    	//        $("#imageUploadForm").submit();
-    	uploadFile('image');
+        GLOBAL_FILE = file;
+        console.log('Submitting form', file.name);
+        //        $("#imageUploadForm").submit();
+        uploadFile('image');
     }
 }
 
@@ -442,7 +441,9 @@ function uploadFile(fileType) {
 				console.log(file_url);
 
 				if (fileType == 'image') {
-					displayImage(file_url,CURRENT_IMAGE_FLASHCARD_TYPE,CURRENT_IMAGE_POSITION);
+					displayImage(
+                file_url, CURRENT_IMAGE_FLASHCARD_TYPE,
+                CURRENT_IMAGE_POSITION);
 					$('input[name="'+CURRENT_IMAGE_FLASHCARD_TYPE+'_image_'+CURRENT_IMAGE_POSITION+'"').attr('value', file_url);
 				} else if (fileType == 'video') {
 					displayVideo(file_url,CURRENT_VIDEO_FLASHCARD_TYPE,CURRENT_VIDEO_POSITION);
@@ -459,14 +460,15 @@ function uploadFile(fileType) {
 	});
 }
 
-function displayImage(file_url,flashcard_type,position) {
+function displayImage(file_url, flashcard_type, position) {
 	// Clear existing image
-    output_div ='#'+flashcard_type+'_output_'+position 
+    output_div ='#'+flashcard_type+'_output_'+position
     console.log(file_url +" to => "+output_div)
 
 	$(output_div).html('');
 	var img = $('<img>');
 	img.attr('src', file_url);
+	img.attr('style', "width:100%;");
     img.appendTo(output_div);
 	// Change button text
 	//$('#upload-img-btn').attr('value', 'Upload new Image');
@@ -640,7 +642,7 @@ function addImageFile(isNew, id, question, image, posU) {
 		.attr('name', 'image_file_image_' + image_file_count);
 
     $("#image_file #output")
-        .attr("id","image_file_output_"+image_file_count);
+        .attr("id", "image_file_output_" + image_file_count);
 
 	$('#sortable').append($('#image_file').html());
 
@@ -648,10 +650,9 @@ function addImageFile(isNew, id, question, image, posU) {
 		displayImage(image,"image_file",image_file_count);
     }
 
-	image_file_count++;
-	sortablePositionFunction(isNew, posU);
+    image_file_count++;
+    sortablePositionFunction(isNew, posU);
     $("#image_file").html(tempIF)
-    
 }
 
 function addVerifyPhone(isNew,id,question,image,posU){
@@ -760,22 +761,21 @@ function sendUpdates() {
         current_flashcard_elements.shift() // remove the header
         flashcard_type = flashcard.getAttribute("data-type")
         position_me +=1
-        console.log(current_flashcard_elements)
         //current_flashcard_elements has all the fields of current selected flashcard
         console.log(flashcard_type + " has length of "+current_flashcard_elements.length)
 
         if(current_flashcard_elements.length < 4 ){         
             current_flashcard_elements.forEach(current_flashcard => {
-            
+            console.log(current_flashcard)
             this_element = current_flashcard.firstElementChild
-            if(this_element.type == "textarea" || this_element.type == "text"){
+            if(this_element && (this_element.type == "textarea" || this_element.type == "text")){
                 attr_value = current_flashcard.firstElementChild.value
                 attr_array.push(attr_value)   
             }
 
             else{
                 this_element = current_flashcard.lastElementChild
-                if(this_element.type == "textarea" || this_element.type == "text"){
+                if(this_element && (this_element.type == "textarea" || this_element.type == "text")){
                     attr_value = current_flashcard.lastElementChild.value
                     attr_array.push(attr_value)   
             }

@@ -410,7 +410,8 @@
             // console.log(index)
             // console.log(room_list[index].room_name, "123")
             // console.log(document.getElementById("quiz_link" + index).value)
-            var socket = new WebSocket('wss://' + HOST + '/notifications/' + room_list[index].room_name + '/');
+            console.log(WEBSOCKET_HOST);
+            var socket = new WebSocket(WEBSOCKET_HOST + '/notifications/' + room_list[index].room_name + '/');
             socket.onopen = function open() {
                 console.log('WebSockets connection created.');
                 var dict = {
@@ -450,7 +451,7 @@
             var settings = {
                 "async": true,
                 "crossDomain": true,
-                "url": SERVER + 's3_uploader/upload/room_logo/',
+                "url": SERVER + 'vconf_api/upload/room_logo/',
                 "method": "GET",
                 "type": "GET",
                 "processData": false,
@@ -597,7 +598,7 @@
                 var settings1 = {
                     "async": true,
                     "crossDomain": true,
-                    "url": SERVER + 's3_uploader/upload/room_logo/',
+                    "url": SERVER + 'vconf_api/upload/room_logo/',
                     "method": "POST",
                     "type": "POST",
                     "processData": false,
@@ -650,7 +651,7 @@
             $.ajax({
                 async: true,
                 crossDomain: true,
-                url: SERVER + 's3_uploader/edit/room_logo/',
+                url: SERVER + 'vconf_api/edit/room_logo/',
                 type: "PUT",
                 processData: false,
                 contentType: false,
@@ -670,7 +671,7 @@
             $.ajax({
                 async: true,
                 crossDomain: true,
-                url: SERVER + 's3_uploader/edit/room_logo/',
+                url: SERVER + 'vconf_api/edit/room_logo/',
                 type: "DELETE",
                 data: {"room_id" : $("#room_id").val()},
                 headers: {
