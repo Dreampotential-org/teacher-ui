@@ -1,7 +1,8 @@
 $.ajaxSetup({
     statusCode: {
         401: function (jqxhr, textStatus, errorThrown) {
-            alert('You must login to proceed');
+            // XXX maybe remove token is not right move?
+            // XXX debug what url route was called
             localStorage.removeItem('user-token');
             $('body').load('student_login.html');
         }
