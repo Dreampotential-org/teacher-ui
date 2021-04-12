@@ -234,8 +234,11 @@ function init() {
         loaded_flashcards = flashcards;
         var i = 0;
         var className = "item";
-        // XXX refactor code below into smaller processing chunk
 
+        // This should be name of page title some where later is updated? XXX
+        $("title").text(response.lesson_name)
+
+        // XXX refactor code below into smaller processing chunk
         flashcards.forEach((flashcard) => {
             if (i == 0) {
                 className = "item active"
