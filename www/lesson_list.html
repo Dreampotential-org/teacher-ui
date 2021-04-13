@@ -238,9 +238,9 @@
                                     <button onclick="goBack()" class="btn">
                                         <i class="fa fa-chevron-left"></i> Back
                                     </button>
-                                    <button class="btn btn-danger float-right" id="lessonDelete">
+                                    <!-- <button class="btn btn-danger float-right" id="lessonDelete">
                                         <i class="fa fa-trash"></i> Delete
-                                    </button>
+                                    </button> -->
                                 </div>
 
                                 <h2 class="text-center">
@@ -556,7 +556,9 @@
                         <td>${item.coursename}</td>
                         <td><button onclick="editSystemUser('${item.courseid}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
                           <button onclick="openStudentLesson('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-eye"></i></button>
-                          <button onclick="on('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-user-plus"></i></button></td>
+                          <button onclick="on('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-user-plus"></i></button>
+                          <button onclick="lessonDelete('${item.courseid}')" class="btn btn-primary btn-edit"><i class="fa fa-trash"></i></button>
+                        </td>
                         </tr>`);
                 });
                 $.ajax({	
@@ -623,14 +625,15 @@
             })
         })
 
-        $("#lessonDelete").click(() => {
+        //  delete lesson.
+        function lessonDelete(id) {
             $.ajax({
-                url: SERVER + "courses_api/lesson/all",
+                url: SERVER + "courses_api/lesson/all"+"?lesson_id="+id,
                 async: true,
                 crossDomain: true,
                 crossOrigin: true,
                 type: "DELETE",
-                data : {lesson_id :$("#courseid").val()},
+                // data : {lesson_id :$("#courseid").val()},
                 headers: { "Authorization": `${localStorage.getItem('user-token')}` }
 
             }).done( () => {
@@ -650,7 +653,7 @@
                     });	
                console.log(err)
             })
-        })
+        }
 
         $("#list").change(() => {	
             initValue = $("#list option:selected").val()	
