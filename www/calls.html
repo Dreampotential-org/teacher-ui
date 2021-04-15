@@ -205,20 +205,22 @@
         $('#inboundCallsLoader').remove();
         users.forEach((item) => {
           $("#inbound-data").append(`<tr>
-                        <td>${item.date_created}</td>
-                        <td>${item.from}</td>
-                        <td>${item.to}</td>
-                        <td><audio controls >
-                        <source src="${item.recording}">
+                        <td>${item.fields.date}</td>
+                        <td>${item.fields.from_number}</td>
+                        <td>${item.fields.to_number}</td>
+                        <td><audio controls preload="auto">
+                        <source src="${item.fields.recording_url}">
                         </audio></td>
+                        <td> <audio src="${item.fields.recording_url}">Play</audio>
+                        </td>
                         </tr>`);
           $('#outboundCallsLoader').remove();
           $("#outbound-data").append(`<tr>
-                        <td>${item.date_created}</td>
-                        <td>${item.from}</td>
-                        <td>${item.to}</td>
-                        <td><audio controls >
-                        <source src="${item.recording}">
+                        <td>${item.fields.date}</td>
+                        <td>${item.fields.from_number}</td>
+                        <td>${item.fields.to_number}</td>
+                        <td><audio controls preload="auto">
+                        <source src="/teacher-ui/www/sample.mp3">
                         </audio></td>
                         </tr>`);
         });
