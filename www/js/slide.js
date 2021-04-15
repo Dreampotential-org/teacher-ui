@@ -8,7 +8,7 @@ var completed = false
 var signature = [];
 var phone_verification_status =false;
 var session_id = null;
-var SERVER = 'https://sfapp-api.dreamstate-4-all.org/'
+var SERVER = 'https://api.dreampotential.org/'
 
 
 function updateProgressBar() {
@@ -87,7 +87,6 @@ function sendResponse(flashcard_id,answer){
                     console.log("Session event duration")
                 }
             })
-            
         },
         'error': function(res){
             // alert(JSON.stringify(res))
@@ -235,8 +234,11 @@ function init() {
         loaded_flashcards = flashcards;
         var i = 0;
         var className = "item";
-        // XXX refactor code below into smaller processing chunk
 
+        // This should be name of page title some where later is updated? XXX
+        $("title").text(response.lesson_name)
+
+        // XXX refactor code below into smaller processing chunk
         flashcards.forEach((flashcard) => {
             if (i == 0) {
                 className = "item active"
@@ -268,7 +270,7 @@ function init() {
                 `);
                 i++;
             }
-            
+
             if(flashcard.lesson_type == "quick_read"){
                 $("#prevButton").attr("data-type","quick_read");
                 $("#nextButton").attr("data-type","quick_read");
@@ -278,7 +280,7 @@ function init() {
             if(flashcard.lesson_type == "title_text") {
                 $("#prevButton").attr("data-type","title_text");
                 $("#nextButton").attr("data-type","title_text");
-                $("#theSlide").append('<div class="'+className+'"><div alt="title_text" style="height:500px"><h1> '+flashcard.question+'</h1><h3>'+flashcard.answer+'</h3></div></div>')
+                $("#theSlide").append('<div class="'+className+'"><div alt="title_text" style="height:500px"><h1> '+flashcard.question+'</h1><h3 style="white-space: pre-wrap;">'+flashcard.answer+'</h3></div></div>')
             }
             if(flashcard.lesson_type == "question_choices"){
                 $("#prevButton").attr("data-type","question_choices");
@@ -296,7 +298,6 @@ function init() {
                             $(b).append("<br><input type='radio' id='"+valu+"' value='"+valu+"' name='choices_"+i+"'> <label style='font-weight: normal;' for='"+valu+"'>"+valu+ "</lable>")
 
                         }
-                        
                 });
                     if($("#theSlide").find('ul').attr("alt") === "question_choices_"+i){
 
@@ -334,7 +335,8 @@ function init() {
             }
 
             if(flashcard.lesson_type == "image_file"){
-                $("#theSlide").append('<div class="'+className+'"><div alt="title_text" style="height:500px"><h1> '+flashcard.question+'</h1><img src= "'+flashcard.image+'"></div></div>')
+                $("#theSlide").append(
+                    '<div class="' + className + '"><div alt="title_text" style="height:500px"><h1> '+flashcard.question+'</h1><img style="width:100%;" src= "'+flashcard.image+'"></div></div>')
             }
 
             if(flashcard.lesson_type == "title_textarea"){

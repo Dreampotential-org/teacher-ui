@@ -1,7 +1,8 @@
 $.ajaxSetup({
     statusCode: {
         401: function (jqxhr, textStatus, errorThrown) {
-            alert('You must login to proceed');
+            // XXX maybe remove token is not right move?
+            // XXX debug what url route was called
             localStorage.removeItem('user-token');
             $('body').load('student_login.html');
         }
@@ -43,15 +44,15 @@ function list_inbound_calls(callback) {
         "crossDomain": true,
         "url": SERVER + "admin_backend/api_admin/list_calls/",
         "method": "GET",
-        // "processData": false,
-        // "contentType": false,
-        // "mimeType": "multipart/form-data",
+        "processData": false,
+        "contentType": false,
+        "mimeType": "multipart/form-data",
         "headers": {
             "Authorization": 'Token ' + localStorage.getItem("user-token"),
         }
     }
     $.ajax(settings).done(function (response) {
-        callback(response)
+        callback(JSON.parse(response))
     }).fail(function (err) {
         console.log(err)
         alert("ERROR")
