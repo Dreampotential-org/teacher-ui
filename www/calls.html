@@ -209,17 +209,19 @@
                         <td>${item.fields.date}</td>
                         <td>${item.fields.from_number}</td>
                         <td>${item.fields.to_number}</td>
-                        <td><audio controls >
+                        <td><audio controls preload="auto">
                         <source src="${item.fields.recording_url}">
                         </audio></td>
+                        <td> <audio src="${item.fields.recording_url}">Play</audio>
+                        </td>
                         </tr>`);
           $('#outboundCallsLoader').remove();
           $("#outbound-data").append(`<tr>
                         <td>${item.fields.date}</td>
                         <td>${item.fields.from_number}</td>
                         <td>${item.fields.to_number}</td>
-                        <td><audio controls >
-                        <source src="${item.fields.recording_url}">
+                        <td><audio controls preload="auto">
+                        <source src="/teacher-ui/www/sample.mp3">
                         </audio></td>
                         </tr>`);
         });
