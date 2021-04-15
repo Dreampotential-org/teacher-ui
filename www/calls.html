@@ -201,8 +201,7 @@
 
 
     $(document).ready(function () {
-      list_inbound_calls(function (response) {
-        var users = JSON.parse(response)
+      list_inbound_calls(function (users) {
         $('#inboundCallsLoader').remove();
         users.forEach((item) => {
           $("#inbound-data").append(`<tr>
@@ -225,7 +224,7 @@
                         </audio></td>
                         </tr>`);
         });
-        
+
         $("#inboundCall").DataTable();
         $("#outboundCall").DataTable();
       });
@@ -233,4 +232,5 @@
 
   </script>
 </body>
+
 </html>

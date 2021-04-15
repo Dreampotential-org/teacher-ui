@@ -16,7 +16,6 @@ function getParam(sParam){
 
 let session_responses = []
 var lesson_id = getParam("lesson_id")
-
 $.get(SERVER+'courses_api/lesson/response/get/'+lesson_id+'/',function(response){
     response.forEach(function(r){
         var q = r.flashcard[0].question
