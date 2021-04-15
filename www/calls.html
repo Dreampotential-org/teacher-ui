@@ -201,29 +201,28 @@
 
 
     $(document).ready(function () {
-      list_inbound_calls(function (response) {
-        var users = JSON.parse(response)
+      list_inbound_calls(function (users) {
         $('#inboundCallsLoader').remove();
         users.forEach((item) => {
           $("#inbound-data").append(`<tr>
-                        <td>${item.fields.date}</td>
-                        <td>${item.fields.from_number}</td>
-                        <td>${item.fields.to_number}</td>
+                        <td>${item.date_created}</td>
+                        <td>${item.from}</td>
+                        <td>${item.to}</td>
                         <td><audio controls >
-                        <source src="${item.fields.recording_url}">
+                        <source src="${item.recording}">
                         </audio></td>
                         </tr>`);
           $('#outboundCallsLoader').remove();
           $("#outbound-data").append(`<tr>
-                        <td>${item.fields.date}</td>
-                        <td>${item.fields.from_number}</td>
-                        <td>${item.fields.to_number}</td>
+                        <td>${item.date_created}</td>
+                        <td>${item.from}</td>
+                        <td>${item.to}</td>
                         <td><audio controls >
-                        <source src="${item.fields.recording_url}">
+                        <source src="${item.recording}">
                         </audio></td>
                         </tr>`);
         });
-        
+
         $("#inboundCall").DataTable();
         $("#outboundCall").DataTable();
       });
@@ -231,4 +230,5 @@
 
   </script>
 </body>
+
 </html>

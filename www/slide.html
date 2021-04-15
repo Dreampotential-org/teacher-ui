@@ -1,38 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title id="lesson_title" >My Flashcards</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/slide.css">
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-        <script src="js/main.js"></script>
-        <script src="js/slide.js"></script>
-    </head>
-    <body>
-        <div class="container">
-            <br>
-            <div id="myCarousel" class="carousel" data-ride="carousel" data-interval="false" data-wrap="false" >
-                <!-- Wrapper for slides -->
-                <div class="carousel-inner" id="theSlide" style="height:600px;border:2px;border-style:solid;padding:10px;min-height:500px" role="listbox"></div>
-                <div class="col-lg-6" style="margin-top:10px">
-                    <button id="nextButton" onclick="nextSlide()">Next</button>
-                    <button id="prevButton" onclick="prevSlide()">Previous</button>
-                </div>
-                <div class="col-lg-6" style="margin-top:10px;" id="progress-section">
-                    <p style="color: #777777;">Progress: <span id="progress"> </span> answered</p>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                </div>
-            </div>
+<head>
+  <title id="lesson_title">My Flashcards</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/slide.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/slide.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <br>
+    <!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button> -->
+    <div id="myCarousel" class="carousel" data-ride="carousel" data-interval="false" data-wrap="false">
+      <!-- Wrapper for slides -->
+      <div class="carousel-inner" id="theSlide"
+        style="height:600px;border:2px;border-style:solid;padding:10px;min-height:500px" role="listbox"></div>
+      <div class="col-lg-6" style="margin-top:10px">
+        <button id="nextButton" onclick="nextSlide()">Next</button>
+        <button id="prevButton" onclick="prevSlide()">Previous</button>
+      </div>
+      <div class="col-lg-6" style="margin-top:10px;" id="progress-section">
+        <p style="color: #777777;">Progress: <span id="progress"> </span> answered</p>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0"
+            aria-valuemax="100"></div>
         </div>
-        <div id="sign-modal"></div>
-        <div id="verify-phone-modal"></div>
-    </body>
+      </div>
+    </div>
+  </div>
+  <div id="sign-modal"></div>
+  <div id="verify-phone-modal"></div>
+  <div id="video-modal"></div>
+  <div id="gps-modal"></div>
+
+  <div class="row" id="map-check" style="display: none">
+    <div class="col-xs-12">
+        <h1> GPS Check-In</h1>
+        <form>
+            <textarea class="form-control" rows="10" name="note"> Note</textarea>
+            <br>
+            <button type="button" class="btn btn-primary btn-lg btn-block">Submit</button>
+            <br>
+            <br>
+        </form>
+    </div>
+</div>
+
+
+</body>
 </html>
