@@ -218,14 +218,16 @@ function radioOnClick(valu) {
                 handle_gps_click();
             }
         }
-    }else{
-        swal({
-            title: "Error",
-            text: "You must first login to your profile",
-            icon: "warning",
-          });
-        window.location.replace("student_login.html");
     }
+    // [TO FIX REDIRECT] ignore for now
+    // else{
+    //     swal({
+    //         title: "Error",
+    //         text: "You must first login to your profile",
+    //         icon: "warning",
+    //       });
+    //     // window.location.replace("student_login.html");
+    // }
 }
 
 function init() {
@@ -321,8 +323,12 @@ function init() {
                         console.log("valu" + JSON.stringify(valu))
                         $("#theSlide").find("ul").each((a, b, c) => {
                             if ($(b).attr("alt") == "question_choices_" + i) {
-                                $(b).append("<br><input type='radio' id='" + valu + "' value='" + valu + "'onclick='radioOnClick(`" + valu + "`)' name='choices_" + i + "'> <label style='font-weight: normal;' for='" + valu + "'>" + valu + "</lable>")
-
+                                $(b).append(`
+                                    <div class="grid-2">
+                                     <input type=radio id="${valu}" value="${valu}" onclick="radioOnClick('${valu}')" name=choices_${i}>
+                                     <label style="font-weight: normal;" for="${valu}"> ${valu} </label>
+                                    </div> 
+                                `)
 
                             }
                         });
@@ -343,7 +349,7 @@ function init() {
                     flashcard.options.forEach(function (valu) {
                         $("#theSlide").find("ul").each((a, b, c) => {
                             if ($(b).attr("alt") == "question_checkboxes_" + i) {
-                                $(b).append("<br><input type='checkbox' id='" + valu + "' value='" + valu + "' name='checkboxes_" + i + "'> <label style='font-weight: normal;' for='" + valu + "'>" + valu + "</lable>")
+                                $(b).append("<br><input type='checkbox' id='" + valu + "' value='" + valu + "' name='checkboxes_" + i + "'> <label style='font-weight: normal;' for='" + valu + "'>" + valu + "</label>")
 
                             }
 
