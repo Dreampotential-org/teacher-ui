@@ -8,7 +8,6 @@ var completed = false
 var signature = [];
 var phone_verification_status = false;
 var session_id = null;
-var SERVER = 'https://api.dreampotential.org/'
 
 var imported = document.createElement('script');
 imported.src = 'js/gps.js';
