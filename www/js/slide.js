@@ -8,7 +8,7 @@ var completed = false;
 var signature = [];
 var phone_verification_status = false;
 var session_id = null;
-var SERVER = 'https://sfapp-api.dreamstate-4-all.org/'
+var SERVER = 'https://sfapp-api.dreamstate-4-all.org/';
 // var SERVER = 'http://localhost:8000/';
 
 function updateProgressBar() {
@@ -535,6 +535,12 @@ function init() {
         .done((res) => console.log('Invitaion res', res))
         .fail((err) => console.log('Invitation err', err));
     }
+  }).fail((err) => {
+    swal({
+      title: 'Access Denied!',
+      text: err.responseJSON.msg,
+      icon: 'error',
+    });
   });
 }
 
