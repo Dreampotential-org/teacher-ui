@@ -201,26 +201,25 @@
 
 
     $(document).ready(function () {
-      list_inbound_calls(function (users) {
+      list_inbound_calls(function (response) {
+        var users = JSON.parse(response)
         $('#inboundCallsLoader').remove();
         users.forEach((item) => {
           $("#inbound-data").append(`<tr>
                         <td>${item.fields.date}</td>
                         <td>${item.fields.from_number}</td>
                         <td>${item.fields.to_number}</td>
-                        <td><audio controls preload="auto">
-                        <source src="${item.fields.recording_url}">
+                        <td><audio controls >
+                        <source src="${item.fields.recording_url}" type="audio/mpeg">
                         </audio></td>
-                        <td> <audio src="${item.fields.recording_url}">Play</audio>
-                        </td>
                         </tr>`);
           $('#outboundCallsLoader').remove();
           $("#outbound-data").append(`<tr>
                         <td>${item.fields.date}</td>
                         <td>${item.fields.from_number}</td>
                         <td>${item.fields.to_number}</td>
-                        <td><audio controls preload="auto">
-                        <source src="/teacher-ui/www/sample.mp3">
+                        <td><audio controls >
+                        <source src="${item.fields.recording_url}" type="audio/mpeg">
                         </audio></td>
                         </tr>`);
         });

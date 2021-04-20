@@ -1,30 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<head>
+  <script src="js/video.js"></script>
+</head>
+
 <body id="phone-verification-body">
-    <div class="modal" id="videoModal" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal" id="videoModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title">Upload Video</h4>
+          <h4 class="modal-title">Upload Video</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          
-                    <!-- <video width="400" controls autoplay>
-                        <source src="mov_bbb.mp4" type="video/mp4">
-                      </video> -->
-                      <input type="file" id="myFile" name="filename" class="form-control">
+          <input type="file" id="myFile" name="filename" class="form-control" >
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Upload</button>
+          <button type="button" class="btn btn-primary" onclick="handleVideoUpload()">Upload</button>
         </div>
       </div>
     </div>
-    </div>
-   
+  </div>
+
 </body>
+
 </html>
