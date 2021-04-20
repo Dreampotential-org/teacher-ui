@@ -1,7 +1,7 @@
-var SERVER = 'https://sfapp-api.dreamstate-4-all.org/';
+var SERVER = 'https://api.dreampotential.org/';
 // var SERVER = 'http://localhost:8000/'
-var HOST = 'sfapp-api.dreamstate-4-all.org';
-var WEBSOCKET_HOST = 'wss://sfapp-api.dreamstate-4-all.org';
+var HOST = 'api.dreampotential.org';
+var WEBSOCKET_HOST = 'wss://api.dreampotential.org';
 
 function init() {}
 
