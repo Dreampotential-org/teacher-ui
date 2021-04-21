@@ -2,7 +2,7 @@ $.ajaxSetup({
     statusCode: {
         401: function (jqxhr, textStatus, errorThrown) {
             // alert('You must login to proceed');
-            // localStorage.removeItem('user-token');
+            localStorage.removeItem('user-token');
             $('body').load('student_login.html');
         }
     }
