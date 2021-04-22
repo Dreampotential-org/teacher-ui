@@ -12,8 +12,6 @@ var session_id = null;
 var imported = document.createElement('script');
 imported.src = 'js/gps.js';
 document.head.appendChild(imported);
-var SERVER = 'https://sfapp-api.dreamstate-4-all.org/';
-// var SERVER = 'http://localhost:8000/';
 
 function updateProgressBar() {
   pct = (current_slide / total_slides) * 100;
@@ -82,12 +80,16 @@ function sendResponse(flashcard_id, answer) {
     contentType: 'application/json',
     success: function (data) {
       $.ajax({
-        url: SERVER + 'courses_api/session/event/' + flashcard_id + '/' + sessionId + '/',
+        // url: 'http://localhost:8000/courses_api/session/event/'+ flashcard_id + '/' + sessionId,
+        url: SERVER + 'courses_api/session/event/' + flashcard_id + '/' + sessionId,
         data: JSON.stringify(da_),
         type: 'POST',
         contentType: 'application/json',
         success: function (da_) {
           console.log('Session event duration');
+        },
+        fail:function(res){
+          alert(res)
         },
       });
       alert('FlashCard Response Sent');
@@ -266,7 +268,8 @@ function init() {
   console.log('Starting');
   $('#sign-modal').load('signature/index.html');
   $('#verify-phone-modal').load('phone/index.html');
-
+  $("#video-modal").load('video/index.html');
+  $("#gps-modal").load('gps/index.html');
   $('#progress-section').hide();
   var lesson_id = getParam('lesson_id');
 
@@ -380,7 +383,7 @@ function init() {
                     valu +
                     "' value='" +
                     valu +
-                    "' name='choices_" +
+                    "' onclick='radioOnClick(`" + valu + "`)' name='choices_" +
                     i +
                     "'> <label style='font-weight: normal;' for='" +
                     valu +
@@ -539,7 +542,13 @@ function init() {
                 $('input[name=title_input_' + i).val(rf.answer);
               }
               if (f.lesson_type == 'question_choices') {
-                $('input[name=choices_' + i + '][value=' + rf.answer ? rf.answer : '' + ']').attr('checked', true);
+                if (rf.answer == ""){
+
+                  $('input[name=choices_' + i + '][value=' + rf.answer ? rf.answer : '' + ']').attr('checked', true);
+                }else{
+                  var strTYPE = "video/mp4";
+                  $("#theSlide #flashcard_"+ current_slide +"").append('<p> Video URL : '+ rf.answer +'</p><video id="videoplayer" style="height:500px;width:100%"; controls> <source src="' + rf.answer + '" type="' + strTYPE + '"></source></video>')
+                }
               }
 
               if (f.lesson_type == 'question_checkboxes') {
