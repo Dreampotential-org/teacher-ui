@@ -207,7 +207,6 @@ function get_session() {
   }
   $.ajax({
     url: SERVER + '/courses_api/session/get',
-    // data: JSON.stringify(data_),
     type: 'GET',
     async: false,
     contentType: 'application/json',
@@ -218,11 +217,7 @@ function get_session() {
       phone_verification_status = false;
     },
   });
-  // console.log(SERVER + '/courses_api/session/get');
-  // $.get(SERVER + '/courses_api/session/get', function (resp) {
-  //   console.log(resp);
-  //   localStorage.setItem('session_id', resp.session_id);
-  // });
+
 }
 
 function verifyPhone(event) {
@@ -232,47 +227,45 @@ function verifyPhone(event) {
 
   document.addEventListener('phoneVerified', function (e) {
     $('#verify_phone').modal('hide');
-    // document.getElementById('phone_verification_status').innerHTML="Verified";
     phone_verification_status = true;
   });
 }
 
 function radioOnClick(valu) {
-    if(userToken){
-        if (valu == "Video" || valu == "video") {
-            if ($('#videoModal')) {
-                $('#videoModal').modal('show');
-            }
-        }
-        else if(valu == "GPS + note" || valu == "GPS + note"){
-            if ($('#gpsModal')) {
-                $('#gpsModal').modal('show');
-                handle_gps_click();
-            }
-        }
+  if (userToken) {
+    if (valu == 'Video' || valu == 'video') {
+      if ($('#videoModal')) {
+        $('#videoModal').modal('show');
+      }
+    } else if (valu == 'GPS + note' || valu == 'GPS + note') {
+      if ($('#gpsModal')) {
+        $('#gpsModal').modal('show');
+        handle_gps_click();
+      }
     }
-    // [TO FIX REDIRECT] ignore for now
-    // else{
-    //     swal({
-    //         title: "Error",
-    //         text: "You must first login to your profile",
-    //         icon: "warning",
-    //       });
-    //     // window.location.replace("student_login.html");
-    // }
+  }
+  // [TO FIX REDIRECT] ignore for now
+  // else{
+  //     swal({
+  //         title: "Error",
+  //         text: "You must first login to your profile",
+  //         icon: "warning",
+  //       });
+  //     // window.location.replace("student_login.html");
+  // }
 }
 
 function init() {
-  console.log('Starting');
   $('#sign-modal').load('signature/index.html');
   $('#verify-phone-modal').load('phone/index.html');
 
   $('#progress-section').hide();
   var lesson_id = getParam('lesson_id');
 
-  $.get(SERVER + 'courses_api/lesson/read/' + lesson_id, function (response) {
+  $.get(SERVER + 'courses_api/slide/read/' + lesson_id, function (response, status, xhr) {
     get_session();
     phone_verification_check();
+    console.log('>>>>>>>>>>>>>> slide', response);
 
     //let sign_flashcard = {lesson_type: 'input_signature'}
     //response.flashcards.push(sign_flashcard)
@@ -564,13 +557,7 @@ function init() {
         .done((res) => console.log('Invitaion res', res))
         .fail((err) => console.log('Invitation err', err));
     }
-  }).fail((err) => {
-    swal({
-      title: 'Access Denied!',
-      text: err.responseJSON.msg,
-      icon: 'error',
-    });
-  });
+  })
 }
 
 window.addEventListener('DOMContentLoaded', init, false);
