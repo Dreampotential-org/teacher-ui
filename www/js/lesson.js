@@ -60,7 +60,7 @@ function addChoices(id, value) {
       next_id +
       '"rows="7" placeholder="Choices" value="' +
       value +
-      '"><button onclick="$(this).parent().remove()">Remove Choice</button></div>'
+      '"><button onclick="$(this).parent().remove()" class="btn btn-danger">Remove Choice</button></div>'
   );
 }
 
@@ -79,7 +79,7 @@ function addCheckboxes(id, value) {
       next_id +
       '"rows="7" placeholder="Choices" value="' +
       value +
-      '"><button onclick="$(this).parent().remove()">Remove Choice</button></div>'
+      '"><button onclick="$(this).parent().remove()" class="btn btn-danger">Remove Choice</button></div>'
   );
 }
 

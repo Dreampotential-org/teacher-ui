@@ -31,7 +31,7 @@ function handleVideoUpload() {
           title: 'File Not Select',
           text: response.message,
           icon: "warning",
-          timer: 500,
+          timer: 2000,
         });
       } else {
           console.log("this is else part")
@@ -39,7 +39,7 @@ function handleVideoUpload() {
           title: 'Good job!',
           text: 'Video uploaded successfully!',
           icon: 'success',
-          timer: 500,
+          timer: 2000,
         });
         const file_url = response.file_url;
         displayVideo(file_url);
@@ -60,7 +60,7 @@ function handleVideoUpload() {
         title: 'Error!',
         text: 'Video upload failed!',
         icon: 'warning',
-        timer: 200,
+        timer: 2000,
       });
 
     });

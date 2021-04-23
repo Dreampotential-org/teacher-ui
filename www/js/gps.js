@@ -130,7 +130,8 @@ function found_gps_or_timeout() {
 
 function gps_checkin() {
   var form = new FormData();
-  form.append("msg", $("#map-check textarea").val());
+  // form.append("msg", $("#map-check textarea").val());
+  form.append("msg", $("#gpsModal textarea").val());
   if (CURRENT_POSITION != null) {
     form.append("lat", CURRENT_POSITION.coords.latitude);
     form.append("lng", CURRENT_POSITION.coords.longitude);
@@ -160,8 +161,8 @@ function gps_checkin() {
         text: "Boom - Checkin Complete",
         icon: "success",
       });
-      $("#map-check textarea").val("");
-      home();
+      $("#gpsModal textarea").val("");
+      $('#gpsModal').modal('hide');
     })
     .fail(function (err) {
       alert("ERROR");

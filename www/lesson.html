@@ -150,15 +150,16 @@
                                 <div class="form-group">
                                     <input type="text" class="form-control" placeholder="Question">
                                 </div>
-                                <div class="form-group" id="choices">
+                                <div class="form-group chkbox-cls" id="choices">
                                     <div>
-                                        <input type="text" class="form-control" rows="7" placeholder="Choices"><button onclick="$(this).parent().remove()">Remove Choice</button>
+                                        <input type="text" class="form-control" rows="7" placeholder="Choices">
+                                        <button onclick="$(this).parent().remove()" class="btn btn-danger">Remove Choice</button>
                                     </div>
                                 </div>
-                                <button>Add Choice</button>
+                                <button class="btn btn-success">Add Choice</button>
                                 <div class="form-group">
                                     <hr>
-                                    <input type="button" class="upload_image_button" value="Upload Image"/>
+                                    <input type="button" class="upload_image_button btn btn-info" value="Upload Image"/>
                                     <input type="text" class="form-control" placeholder="Image Link" />
                                     <div id="output"></div>
                                 </div>
@@ -176,15 +177,16 @@
                                 <div class="form-group">
                                     <input type="text" class="form-control" placeholder="Question">
                                 </div>
-                                <div class="form-group" id="checkboxes">
+                                <div class="form-group chkbox-cls" id="checkboxes">
                                     <div>
-                                        <input type="text" class="form-control" rows="7" placeholder="Choices"><button onclick="$(this).parent().remove()">Remove Choice</button>
+                                        <input type="text" class="form-control" rows="7" placeholder="Choices">
+                                        <button onclick="$(this).parent().remove()" class="btn btn-danger">Remove Choice</button>
                                     </div>
                                 </div>
-                                <button>Add Choice</button>
+                                <button class="btn btn-success">Add Choice</button>
                                 <div class="form-group">
                                     <hr>
-                                    <input type="button" id="upload-img-btn" onclick="handleImageUpload()" value="Upload Image"/>
+                                    <input type="button" id="upload-img-btn" onclick="handleImageUpload()" value="Upload Image" class="btn btn-info"/>
                                     <input type="text" class="form-control" placeholder="Image Link" />
                                     <div id="output"></div>
                                 </div>
@@ -223,7 +225,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="button" class="image_upload_button" value="Upload Image"/>
+                                    <input type="button" class="image_upload_button btn btn-info" value="Upload Image"/>
                                     <input type="text" class="form-control" placeholder="Image Link" />
                                 </div>
                                 <div id="output"></div>
