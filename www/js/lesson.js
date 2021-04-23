@@ -870,6 +870,7 @@ function sendUpdates() {
       url: SERVER + 'courses_api/lesson/update/' + lesson_id + '/',
       data: JSON.stringify(data_),
       type: 'POST',
+      headers: { Authorization: `${localStorage.getItem('user-token')}` },
       contentType: 'application/json',
       success: function (data) {
         swal({
@@ -877,6 +878,13 @@ function sendUpdates() {
           text: 'You have updated created a lesson',
           icon: 'success',
           timer: 2000,
+        });
+      },
+      error: function (err) {
+        swal({
+          title: 'Error Creating Lesson',
+          text: err.responseJSON.msg,
+          icon: 'error',
         });
       },
     });

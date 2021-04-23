@@ -529,12 +529,12 @@
         }
 
         $(document).ready(function () {
-            $("#left-sidebar").load("sidebar.html");
-            $("#page-header").load("header.html");
+            // $("#left-sidebar").load("sidebar.html");
+            // $("#page-header").load("header.html");
 
             $.ajax({
                 url: SERVER + "courses_api/lesson/all",
-                async: true,
+                // async: true,
                 crossDomain: true,
                 crossOrigin: true,
                 type: "GET",
