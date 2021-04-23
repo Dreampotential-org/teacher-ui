@@ -22,23 +22,29 @@ $.get(SERVER+'courses_api/lesson/response/get/'+lesson_id+'/',function(response)
         var a = r.answer
         var s_id = r.user_session[0].session_id
         var type = r.flashcard[0].lesson_type
+        var start_time = r.flashcard[0].usersessionevent[0].start_time
+        var end_time = r.flashcard[0].usersessionevent[0].end_time
         if(!session_responses[s_id]){
             session_responses[s_id] = new Array()
         } 
-        session_responses[s_id].push([q,a,type])
+        session_responses[s_id].push([q,a,type,start_time,end_time])
     })
 
     for (key in session_responses){
         let sess_id = key
         let sess_data = session_responses[key]
-        $("#response-data").append("<tr><td>"+sess_id+"</td><td id="+sess_id+"></td></tr>")
+        $("#response-data").append("<tr><td>"+sess_id+"</td><td id="+sess_id+"></td><td id="+sess_id +'-time' +"></td></tr>")
 
         sess_data.forEach(sess_entry => {
             let question_ = sess_entry[0]
             let answer_ = sess_entry[1]
             let type_ = sess_entry[2]
-
+            let start_time_ = sess_entry[3]
+            let end_time_ = sess_entry[4]
+            // appending question and answer
             $('#'+sess_id).append('<b>'+question_+'</b><hr>'+answer_+'<br><hr><br>')
+            // appending time
+            $('#'+sess_id+'-time').append('<b>'+start_time_+'</b><hr>'+end_time_+'<br><hr><br>') 
 
         })
 
