@@ -11,6 +11,8 @@ var braintree_count = 0;
 var question_checkboxes_count = 0;
 var question_text_count = 0;
 var name_type_count = 0;
+var user_video_upload_count = 0;
+var user_gps_count = 0;
 var sign_count = 0;
 var sortArray = [];
 var MODE;
@@ -162,6 +164,8 @@ function addTitleInput(isNew, id, title, text, posU) {
 }
 
 function addNameType(isNew, id, title, text, posU) {
+  console.log('addNameType => ');
+  console.log(isNew, id, title, text, posU);
   if (!isNew) {
     $('#name_type').find('textarea').html(title);
     $('#name_type').find('teaxtarea').attr('data-id', id);
@@ -577,6 +581,43 @@ function addVerifyPhone(isNew, id, question, image, posU) {
   sortablePositionFunction(isNew, posU);
 }
 
+function addUserVideoUpload(isNew, id, question, choices, image, posU){
+  console.log('addUserVideoUpload(isNew, id, question, choices, image, posU)');
+  console.log(isNew, ' , ' , id, ' , ', question,' , ',choices, ' , ', image,' , ', posU);
+
+  if (!isNew) {
+    $('#user_video_upload').find('myFile').html(title);
+    $('#user_video_upload').find('myFile').attr('data-id', id);
+  } else {
+    $('#user_video_upload').find('myFile').html('');
+  }
+  $('#user_video_upload')
+    .find('myFile')
+    .attr('name', 'user_video_upload_myFile_' + title_input_count);
+  $('#sortable').append($('#user_video_upload').html());
+  sortablePositionFunction(isNew, posU);
+
+  user_video_upload_count++;
+
+  
+}
+
+function addUserGps(isNew, id, question, image, posU){
+  if (!isNew) {
+  } else {
+    $('#user_gps').find('textarea').first().html('');
+  }
+  $('#user_gps')
+    .find('input')
+    .first()
+    .attr('name', 'user_gps' +user_gps_count);
+  $('#sortable').append($('#user_gps').html());
+
+  user_gps_count++;
+  sortablePositionFunction(isNew, posU);
+  handle_gps_click();
+}
+
 function addBrainTree(isNew, id, merchant_ID, braintree_public_key, braintree_private_key, braintree_item_name, braintree_item_price, posU) {
   console.log(isNew);
   if (!isNew) {
@@ -683,16 +724,19 @@ function sendUpdates() {
       current_flashcard_elements.forEach((current_flashcard) => {
         console.log(current_flashcard);
         this_element = current_flashcard.firstElementChild;
-        if (this_element.type == 'textarea' || this_element.type == 'text') {
-          attr_value = current_flashcard.firstElementChild.value;
-          attr_array.push(attr_value);
-        } else {
-          this_element = current_flashcard.lastElementChild;
+        if(this_element){
           if (this_element.type == 'textarea' || this_element.type == 'text') {
-            attr_value = current_flashcard.lastElementChild.value;
+            attr_value = current_flashcard.firstElementChild.value;
             attr_array.push(attr_value);
+          } else {
+            this_element = current_flashcard.lastElementChild;
+            if (this_element.type == 'textarea' || this_element.type == 'text') {
+              attr_value = current_flashcard.lastElementChild.value;
+              attr_array.push(attr_value);
+            }
           }
         }
+        
       });
     } else {
       real_flashcard_elements = [];
@@ -831,6 +875,25 @@ function sendUpdates() {
         };
         flashcards.push(temp);
         break;
+
+      case 'user_video_upload':
+          temp = {
+          lesson_type: 'user_video_upload',
+          question: attr_array[0],
+          image: attr_array[1],
+          position: position_me,
+          };
+          flashcards.push(temp);
+          break;
+
+     case 'user_gps':
+        temp = {
+          lesson_type: 'user_gps',
+          question: attr_array[0],
+          position: position_me,
+        };
+        flashcards.push(temp);
+        break; 
     }
 
     attr_array = [];
@@ -1016,6 +1079,12 @@ $(document).ready(function () {
           if (flashcard.lesson_type == 'verify_phone') {
             addVerifyPhone(false, flashcard.id, null, flashcard.position + 1);
           }
+          if (flashcard.lesson_type == 'user_video_upload') {
+            addUserVideoUpload(false, flashcard.id, flashcard.question, flashcard.options, flashcard.image, flashcard.position);
+          }
+          if (flashcard.lesson_type == 'user_gps') {
+            addUserGps(false, flashcard.id, flashcard.question, flashcard.options, flashcard.position);
+          }
         });
 
         getAllLessons();
@@ -1172,6 +1241,12 @@ $(document).ready(function () {
     }
     if ($('#selectsegment').val() == 'verify_phone') {
       addVerifyPhone(true);
+    }
+    if($('#selectsegment').val() == 'user_video_upload'){
+      addUserVideoUpload(true);
+    }
+    if($('#selectsegment').val() == 'user_gps'){
+      addUserGps(true);
     }
     if ($('#selectsegment').val() == 'select_type') {
       swal({
