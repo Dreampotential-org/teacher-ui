@@ -543,11 +543,12 @@ function init() {
               }
               if (f.lesson_type == 'question_choices') {
                 if (rf.answer == ""){
-
                   $('input[name=choices_' + i + '][value=' + rf.answer ? rf.answer : '' + ']').attr('checked', true);
                 }else{
                   var strTYPE = "video/mp4";
-                  $("#theSlide #flashcard_"+ current_slide +"").append('<p> Video URL : '+ rf.answer +'</p><video id="videoplayer" style="height:500px;width:100%"; controls> <source src="' + rf.answer + '" type="' + strTYPE + '"></source></video>')
+                  $('#myCarousel #video').val(rf.answer);
+                  $("#video_url").html(" ")
+                  $("#theSlide #flashcard_"+ current_slide +"").append('<div id="video_url"><p> Video URL : '+ rf.answer +'</p><video id="videoplayer" style="height:500px;width:100%"; controls> <source src="' + rf.answer + '" type="' + strTYPE + '"></source></video><div>')
                 }
               }
 
@@ -624,10 +625,10 @@ function handleVideoUpload() {
         const file_url = response.file_url;
         displayVideo(file_url);
         function displayVideo(file_url) {
-            if (file_url) {
+          if (file_url) {
                 var strTYPE = "video/mp4";
                 $('#myCarousel #video').val(file_url);
-                $("#theSlide #flashcard_"+ current_slide +"").append('<p> Video URL : '+ file_url +'</p><video id="videoplayer" style="height:500px;width:100%"; controls> <source src="' + file_url + '" type="' + strTYPE + '"></source></video>')
+                $("#theSlide #flashcard_"+ current_slide +"").append('<div id="video_url"><p> Video URL : '+ file_url +'</p><video id="videoplayer" style="height:500px;width:100%"; controls> <source src="' + file_url + '" type="' + strTYPE + '"></source></video></div>')
             }
           $("#videoplayer")[0].load();
         }
@@ -646,4 +647,5 @@ function handleVideoUpload() {
     });
 
 }
+
 window.addEventListener('DOMContentLoaded', init, false);

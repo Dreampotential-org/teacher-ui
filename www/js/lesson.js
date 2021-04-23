@@ -96,7 +96,7 @@ function getParam(sParam) {
 
 function sortablePositionFunction(isNew, posU) {
   if (!posU) {
-    posU = $('#sortable').children().lenght;
+    posU = $('#sortable').children().length;
     console.log('calculated len', posU);
   }
   if (!isNew) {
@@ -420,7 +420,7 @@ function uploadFile(fileType) {
 function displayImage(file_url) {
   // Clear existing image
   $('#output').html('');
-  var img = $('<img>');
+  var img = $('<img style="height:100%;width:100%">');
   img.attr('src', file_url);
   img.appendTo('#output');
   // Change button text
