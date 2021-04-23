@@ -59,3 +59,11 @@ button {
 #send {
     display: none;
 }
+
+.chkbox-cls button{
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+.upload_image_button{
+    margin-bottom:5px;
+}
