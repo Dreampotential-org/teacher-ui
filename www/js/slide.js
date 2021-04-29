@@ -74,7 +74,7 @@ function sendResponse(flashcard_id, answer) {
 
   console.log(data_);
   $.ajax({
-    url: SERVER + '/courses_api/flashcard/response',
+    url: SERVER + 'courses_api/flashcard/response',
     data: JSON.stringify(data_),
     type: 'POST',
     contentType: 'application/json',
@@ -186,9 +186,9 @@ function phone_verification_check() {
   var data_ = {
     session_id: session_id,
   };
-  console.log(SERVER + '/courses_api/verify/phone-verify');
+  console.log(SERVER + 'courses_api/verify/phone-verify');
   $.ajax({
-    url: SERVER + '/courses_api/verify/phone-verify',
+    url: SERVER + 'courses_api/verify/phone-verify',
     data: JSON.stringify(data_),
     type: 'POST',
     async: false,
@@ -208,7 +208,7 @@ function get_session() {
     return session_id;
   }
   $.ajax({
-    url: SERVER + '/courses_api/session/get',
+    url: SERVER + 'courses_api/session/get',
     type: 'GET',
     async: false,
     contentType: 'application/json',
@@ -522,7 +522,7 @@ function init() {
       '<div class="item"><div alt="quick_read" style="height:500px"><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1></div></div>'
     );
     if (session_id) {
-      $.get(SERVER + '/courses_api/lesson/response/get/' + lesson_id + '/' + localStorage.getItem('session_id'), function (response) {
+      $.get(SERVER + 'courses_api/lesson/response/get/' + lesson_id + '/' + localStorage.getItem('session_id'), function (response) {
         console.log(response);
         response.forEach(function (rf) {
           console.log(rf);
