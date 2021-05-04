@@ -21,6 +21,7 @@ var CURRENT_IMAGE_TYPE;
 var CURRENT_VIDEO_FLASHCARD_TYPE = 0;
 var CURRENT_VIDEO_TYPE;
 var pos = 0;
+var image_type ="";
 
 window.addEventListener('DOMContentLoaded', init, false);
 var lesson_id = getParam('lesson_id');
@@ -285,7 +286,10 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
   $('#question_checkboxes').html(tempQ);
 }
 
-function handleImageUpload() {
+function handleImageUpload(key) {
+
+  image_type = key;
+  console.log("image_type => ", key);
   // prompt for video upload
   $('#imageUpload').click();
 }
@@ -321,6 +325,7 @@ function handleVideoSelect(e) {
 
 function uploadFile(fileType) {
   console.log('Submitted');
+  console.log('image_type : ', image_type);
 
   swal({
     title: '0%',
@@ -405,11 +410,22 @@ function uploadFile(fileType) {
 
         if (fileType == 'image') {
           displayImage(file_url);
-          $('#image').attr('value', file_url);
+
+          if(image_type=="questionChoices"){
+            $('#image-question-choices').attr('value', file_url);
+          }
+          else if(image_type=="questionCheckboxes"){
+           $('#image-question-checkboxes').attr('value', file_url);
+          }
+          else if(image_type=="imageFile"){
+           $('#image-file').attr('value', file_url);
+          }
+
         } else if (fileType == 'video') {
           displayVideo(file_url);
           $('#video').attr('value', file_url);
         }
+
       })
       .fail(function (response) {
         swal({
@@ -423,12 +439,37 @@ function uploadFile(fileType) {
 
 function displayImage(file_url) {
   // Clear existing image
-  $('#output').html('');
+  // $('#output').html('');
+
+ //
+  if(image_type=="questionChoices"){
+    $('#output-question-choices').html('');
+    var img = $('<img style="height:100%;width:100%">');
+    img.attr('src', file_url);  
+    img.appendTo('#output-question-choices');
+    $('#upload-img-btn-question-choices').attr('value', 'Upload new Image');
+  }
+  else if(image_type=="questionCheckboxes"){
+    $('#output-question-checkboxes').html('');
+    var img = $('<img style="height:100%;width:100%">');
+    img.attr('src', file_url);  
+    img.appendTo('#output-question-checkboxes');
+    $('#upload-img-btn-question-checkboxes').attr('value', 'Upload new Image');
+  }
+  else if(image_type=="imageFile"){
+    $('#output-image-file').html('');
+    var img = $('<img style="height:100%;width:100%">');
+    img.attr('src', file_url);  
+    img.appendTo('#output-image-file');
+  }
+ //
+  /*$('#output-image-file').html('');
   var img = $('<img style="height:100%;width:100%">');
-  img.attr('src', file_url);
-  img.appendTo('#output');
-  // Change button text
-  $('#upload-img-btn').attr('value', 'Upload new Image');
+  img.attr('src', file_url);*/
+    // img.appendTo('#output');
+  /*img.appendTo('#output-image-file');
+    // Change button text
+   $('#upload-img-btn').attr('value', 'Upload new Image');*/
 }
 
 function displayVideo(file_url) {
@@ -607,10 +648,7 @@ function addUserGps(isNew, id, question, image, posU){
   } else {
     $('#user_gps').find('textarea').first().html('');
   }
-  $('#user_gps')
-    .find('input')
-    .first()
-    .attr('name', 'user_gps' +user_gps_count);
+
   $('#sortable').append($('#user_gps').html());
 
   user_gps_count++;
@@ -664,6 +702,7 @@ function addBrainTree(isNew, id, merchant_ID, braintree_public_key, braintree_pr
 }
 
 function sendUpdates() {
+  console.log("send updates method is called....");
   // console.log($('form#lesson_form').serializeArray());
   var lesson_name = $('#lesson_name').val();
   var lesson_visiblity = $('#lesson_is_public').prop('checked');
@@ -890,6 +929,8 @@ function sendUpdates() {
         temp = {
           lesson_type: 'user_gps',
           question: attr_array[0],
+          latitude:CURRENT_POSITION.coords.latitude,
+          longitude:CURRENT_POSITION.coords.longitude,
           position: position_me,
         };
         flashcards.push(temp);

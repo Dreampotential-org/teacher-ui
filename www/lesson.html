@@ -164,7 +164,7 @@
                                     <a class="remove_flashcard col-xs-2 col-lg-2" style="color:rgb(46, 46, 46);font-size:16px;text-align:right;"> X </a>
                                 </div>
                                 <div class="form-group">
-                                    <textarea class="form-control" rows="10" name="note"></textarea>
+                                    <textarea class="form-control" rows="10" name="note" placeholder="note"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -187,9 +187,9 @@
                                 <button class="btn btn-success">Add Choice</button>
                                 <div class="form-group">
                                     <hr>
-                                    <input type="button" class="upload_image_button btn btn-info" id="upload-img-btn" onclick="handleImageUpload()" value="Upload Image"/>
-                                    <input type="text" class="form-control" id="image" placeholder="Image Link" />
-                                    <div id="output"></div>
+                                    <input type="button" class="upload_image_button btn btn-info" id="upload-img-btn-question-choices" onclick="handleImageUpload('questionChoices')" value="Upload Image"/>
+                                    <input type="text" class="form-control" id="image-question-choices" placeholder="Image Link" />
+                                    <div id="output-question-choices"></div>
                                 </div>
 
                             </div>
@@ -214,9 +214,9 @@
                                 <button class="btn btn-success">Add Choice</button>
                                 <div class="form-group">
                                     <hr>
-                                    <input type="button" id="upload-img-btn" onclick="handleImageUpload()" value="Upload Image" class="btn btn-info"/>
-                                    <input type="text" class="form-control" id="image" placeholder="Image Link" />
-                                    <div id="output"></div>
+                                    <input type="button" id="upload-img-btn-question-checkboxes" onclick="handleImageUpload('questionCheckboxes')" value="Upload Image" class="btn btn-info"/>
+                                    <input type="text" class="form-control" id="image-question-checkboxes" placeholder="Image Link" />
+                                    <div id="output-question-checkboxes"></div>
                                 </div>
 
                             </div>
@@ -247,7 +247,7 @@
                         <div class="speed_read" id="image_file" style="display: none; padding-top: 15px">
                             <div data-type="image_file" style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
                                 <div class="row">
-                                    <h4 class="col-xs-10 col-lg-10">Image File</h4>
+                                    <h4 class="col-xs-10 col-lg-10">Image File TEST</h4>
                                     <a class="remove_flashcard col-xs-2 col-lg-2" style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;"> x </a>
                                 </div>
                                 <div class="form-group">
@@ -255,14 +255,14 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="button" class="image_upload_button btn btn-info" onclick="handleImageUpload()" value="Upload Image"/>
-                                    <input type="text" class="form-control" id="image" placeholder="Image Link" />
+                                    <input type="button" class="image_upload_button btn btn-info" onclick="handleImageUpload('imageFile')" value="Upload Image"/>
+                                    <input type="text" class="form-control" id="image-file" placeholder="Image Link" />
                                 </div>
-                                <div id="output"></div>
+                                <div id="output-image-file"></div>
                             </div>
                         </div>
 
-                        <div class="speed_read" id="iframe_link" style="display: none; ping-top: 15px">
+                        <div class="speed_read" id="iframe_link" style="display: none; padding-top: 15px">
                             <div data-type="iframe_link" style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
                                 <div class="row">
                                     <h4 class="col-xs-10 col-lg-10">Iframe Link</h4>
@@ -305,7 +305,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="speed_read" id="brain_tree" style="display: none; ping-top: 15px">
+                        <div class="speed_read" id="brain_tree" style="display: none; padding-top: 15px">
                             <div style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
                                 <div class="row">
                                     <h4 class="col-xs-10 col-lg-10">BrainTree Info</h4>
