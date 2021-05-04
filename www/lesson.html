@@ -152,7 +152,13 @@
                                     <a class="remove_flashcard col-xs-2 col-lg-2" style="color:rgb(46, 46, 46);font-size:16px;text-align:right;"> X </a>
                                 </div>
                                 <div class="form-group">
-                                    <input type="file" id="myFile" name="filename" class="form-control" >
+                                    <!-- <input type="file" id="myFile" name="filename" class="form-control" onchange="handleVideoUpload('user_video_upload')"> -->
+                                    <button onclick="handleVideoUpload('user_video_upload')" class="btn btn-info">Upload video</button>
+                                </div>
+                                <div id="user-video-output">
+                                    <input type="text" id="txt-user-video" class="form-control" placeholder="Video Link" />
+                                    <video id="userVideoplayer" controls preload="none" height="360" style="width: 100%;">
+                                    </video>
                                 </div>
                             </div>
                         </div>
@@ -234,7 +240,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="button" id="upload-vid-btn" onclick="handleVideoUpload()" value="Upload Video"/>
+                                    <input type="button" id="upload-vid-btn" onclick="handleVideoUpload('video_file')" value="Upload Video"/>
                                     <input type="text" id="video" class="form-control" placeholder="Video Link" />
                                 </div>
                                 <div id="video-output">
@@ -247,7 +253,7 @@
                         <div class="speed_read" id="image_file" style="display: none; padding-top: 15px">
                             <div data-type="image_file" style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
                                 <div class="row">
-                                    <h4 class="col-xs-10 col-lg-10">Image File TEST</h4>
+                                    <h4 class="col-xs-10 col-lg-10">Image File</h4>
                                     <a class="remove_flashcard col-xs-2 col-lg-2" style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;"> x </a>
                                 </div>
                                 <div class="form-group">
