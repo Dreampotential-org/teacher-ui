@@ -63,6 +63,16 @@ $(document).ready(function () {
             })
         }
     })
+    
+    $.get(SERVER+'courses_api/user/response/get/'+lesson_id+'/',function(response){
+    console.log("🚀 ~ file: lesson_responses.js ~ line 67 ~ $.get ~ response", response)
+        $("#UserSession_Table").DataTable({
+            data:response,
+            columns:[{data: 'name'},
+                {data: "email"},
+                {data: "phone"}]
+        });
+    })
 });
 
 function getParam(sParam){
