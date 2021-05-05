@@ -23,6 +23,7 @@ var CURRENT_VIDEO_TYPE;
 var pos = 0;
 var image_type ="";
 var video_type ="";
+var data_id_value="";
 
 window.addEventListener('DOMContentLoaded', init, false);
 var lesson_id = getParam('lesson_id');
@@ -221,9 +222,9 @@ function addQuestionChoices(isNew, id, question, choices, image, posU) {
     choices.map((choice) => {
       addChoices(question_choices_count, choice);
     });
-
+    image_type = "questionChoices";
     // Display image
-    displayImage(image);
+    displayImage(image,"");
   } else {
     $('#question_choices').find('input').first().attr('value', '');
     $('#question_choices').find('text').html('');
@@ -273,9 +274,9 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
       //console.log(choice)
       addCheckboxes(question_checkboxes_count, choice);
     });
-
+    image_type = "questionCheckboxes";
     // Display image
-    displayImage(image);
+    displayImage(image,"");
   } else {
     $('#question_checkboxes').find('input').first().attr('value', '');
     $('#question_checkboxes').find('text').html('');
@@ -290,8 +291,10 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
 function handleImageUpload(key) {
 
   image_type = key;
-  console.log("image_type => ", key);
-  // prompt for video upload
+  // console.log("image_type => ", key);
+  // // prompt for video upload
+  // alert($(this).attr('class'));
+  // console.log( "$this == > ",$(this));
   $('#imageUpload').click();
 }
 
@@ -413,7 +416,8 @@ function uploadFile(fileType) {
         console.log(file_url);
 
         if (fileType == 'image') {
-          displayImage(file_url);
+          // displayImage(file_url,"");
+          displayImage(file_url,data_id_value);
 
           if(image_type=="questionChoices"){
             $('#image-question-choices').attr('value', file_url);
@@ -422,7 +426,15 @@ function uploadFile(fileType) {
            $('#image-question-checkboxes').attr('value', file_url);
           }
           else if(image_type=="imageFile"){
-           $('#image-file').attr('value', file_url);
+           //$('#image-file').attr('value', file_url);
+            if(data_id_value!=undefined){
+              $("input[data-id='"+data_id_value+"']").attr('value', file_url);
+            }
+            else{
+              $('#image-file').attr('value', file_url);
+            }
+
+
           }
 
         } else if (fileType == 'video') {
@@ -448,31 +460,56 @@ function uploadFile(fileType) {
   });
 }
 
-function displayImage(file_url) {
+function displayImage(file_url,data_id) {
   // Clear existing image
   // $('#output').html('');
-
  //
+ if(file_url!=""){
   if(image_type=="questionChoices"){
     $('#output-question-choices').html('');
-    var img = $('<img style="height:100%;width:100%">');
+    // var img = $('<img style="height:100%;width:100%">');
+    var img = $('<img style="width:400px">');
     img.attr('src', file_url);  
     img.appendTo('#output-question-choices');
     $('#upload-img-btn-question-choices').attr('value', 'Upload new Image');
   }
   else if(image_type=="questionCheckboxes"){
     $('#output-question-checkboxes').html('');
-    var img = $('<img style="height:100%;width:100%">');
+    var img = $('<img style="width:400px">');
     img.attr('src', file_url);  
     img.appendTo('#output-question-checkboxes');
     $('#upload-img-btn-question-checkboxes').attr('value', 'Upload new Image');
   }
   else if(image_type=="imageFile"){
-    $('#output-image-file').html('');
-    var img = $('<img style="height:100%;width:100%">');
+    // $('#output-image-file').html('');
+    //$('.output-image-file').html('');
+    var img = $('<img style="width:400px">');
+    //$('#image_file').find('input').first().attr('data-id')
     img.attr('src', file_url);  
-    img.appendTo('#output-image-file');
+    img.attr('data-id', data_id);
+    img.attr('id', data_id);
+    if(data_id == undefined)
+    {
+      img.appendTo('.output-image-file');
+    }
+    else{
+      $("input[data-id='"+data_id+"']").parent().siblings('.output-image-file').html('')
+      var parent = $("input[data-id='"+data_id+"']").parent().siblings('.output-image-file');
+      img.appendTo(parent);
+    }
+    
+
+    //
+    // $('.output-image-file').each(function(i, e){
+    //   $('<img style="width:400px">')
+    //       .attr("id", "id_" + i)
+    //       .attr('src', file_url)
+    //       .attr('data-id', data_id)
+    //       .appendTo(this);
+    // });
+    //
   }
+ }
  //
   /*$('#output-image-file').html('');
   var img = $('<img style="height:100%;width:100%">');
@@ -487,7 +524,7 @@ function displayVideo(file_url) {
   var strTYPE = 'video/mp4';
 
   if(video_type=="user_video_upload"){
-    $('#userVideoplayer').html('<source src="' + file_url + '" type="' + strTYPE + '"></source>');
+    $('#userVideoplayer').html('<source src="' + file_url + '#t=0.5' + '" type="' + strTYPE + '"></source>');
     $('#user-video-output').css('display', 'block');
     $('#userVideoplayer')[0].load();
     
@@ -496,7 +533,7 @@ function displayVideo(file_url) {
     // $('#upload-vid-btn').attr('value', 'Upload new Video');
   }
   else{
-    $('#videoplayer').html('<source src="' + file_url + '" type="' + strTYPE + '"></source>');
+    $('#videoplayer').html('<source src="' + file_url + '#t=0.5'+ '" type="' + strTYPE + '"></source>');
     $('#video-output').css('display', 'block');
     $('#videoplayer')[0].load();
   
@@ -607,29 +644,45 @@ function addImageFile(isNew, id, question, image, posU) {
   console.log("addImageFile ==> ");
   console.log("isNew, id, question, image, posU ");
   console.log(isNew,' , ' ,id, ' , ' ,question, ' , ' ,image, ' , ' ,posU);
-
   if (!isNew) {
     $('#image_file').find('input').first().attr('value', question);
     $('#image_file').find('input').last().attr('value', image);
 
     $('#image_file').find('input').first().attr('data-id', id);
     $('#image_file').find('input').last().attr('data-id', id);
-
+    
+    $('#image_file').find('output-image-file').attr('data-id', id);
+    image_type = "imageFile";
     // Display Video
-    displayImage(image);
+    displayImage(image,$('#image_file').find('output-image-file').attr('data-id'));
   } else {
     $('#image_file').find('input').first().attr('value', '');
     $('#image_file').find('input').last().attr('value', '');
+    // $('#image_file').find('#output-image-file').find('img').attr('src','');
+    $('#image_file').find('.output-image-file').find('img').attr('src','');
+    image_type = "imageFile";
+    displayImage("","");
   }
 
   $('#image_file')
     .find('input')
     .first()
     .attr('name', 'image_question' + image_file_count);
+
   $('#image_file')
     .find('input')
     .last()
-    .attr('name', 'image_' + image_file_count);
+    .attr('name', 'image_' + image_file_count)
+    .attr('data-id',$('#image_file').find('input').first().attr('data-id')+"_"+ image_file_count);
+
+  //
+  // $('#image_file')
+  //   .find('img')
+  //   .last()
+  //   .attr('name', 'image_' + image_file_count)
+  //   .attr('data-id',$('#image_file').find('input').first().attr('data-id')+"_"+ image_file_count);
+  //  
+
   $('#sortable').append($('#image_file').html());
   image_file_count++;
   sortablePositionFunction(isNew, posU);
@@ -1343,4 +1396,10 @@ $(document).ready(function () {
       });
     }
   });
+});
+
+$(document).on('click', '.image_upload_button', function (e) {
+  $('#imageUpload').click();
+  data_id_value = $(this).siblings("input[type=text]").attr("data-id");
+  image_type = "imageFile";
 });

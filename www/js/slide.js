@@ -453,8 +453,8 @@ function init() {
             className +
             '"><div alt="title_text" style="height:500px"><h1> ' +
             flashcard.question +
-            '</h1><video style="height:500px;width:1000px"; controls> <source src= "' +
-            flashcard.image +
+            '</h1><video style="height:500px;width:1000px"; controls preload="metadata"> <source src= "' +
+            flashcard.image + '#t=0.5' +
             '"></video></div></div>'
         );
       }
@@ -463,7 +463,7 @@ function init() {
         $('#theSlide').append(
           '<div class="' +
             className +
-            '"><div alt="title_text" style="height:500px"><h1> ' +
+            '"><div alt="title_text" style="height:500px"><h1>Image File</h1><h1> ' +
             flashcard.question +
             '</h1><img src= "' +
             flashcard.image +
@@ -488,8 +488,8 @@ function init() {
         $('#theSlide').append(
           '<div class="' +
             className +
-            '"><h1>User Video</h1><div alt="title_text" style="height:500px"><video style="height:500px;width:1000px"; controls> <source src= "' +
-            flashcard.image +
+            '"><h1>User Video</h1><div alt="title_text" style="height:500px"><video style="height:500px;width:1000px"; controls preload="metadata"> <source src= "' +
+            flashcard.image + '#t=0.5' +
             '"></video></div></div>'
         );
       }
@@ -564,7 +564,7 @@ function init() {
                   var strTYPE = "video/mp4";
                   $('#myCarousel #video').val(rf.answer);
                   $("#video_url").html(" ")
-                  $("#theSlide #flashcard_"+ current_slide +"").append('<div id="video_url"><p> Video URL : '+ rf.answer +'</p><video id="videoplayer" style="height:500px;width:100%"; controls> <source src="' + rf.answer + '" type="' + strTYPE + '"></source></video><div>')
+                  $("#theSlide #flashcard_"+ current_slide +"").append('<div id="video_url"><p> Video URL : '+ rf.answer +'</p><video id="videoplayer" style="height:500px;width:100%"; controls preload="metadata"> <source src="' + rf.answer + '#t=0.5' + '" type="' + strTYPE + '"></source></video><div>')
                 }
               }
 
@@ -638,7 +638,7 @@ function handleVideoUpload() {
           if (file_url) {
                 var strTYPE = "video/mp4";
                 $('#myCarousel #video').val(file_url);
-                $("#theSlide #flashcard_"+ current_slide +"").append('<div id="video_url"><p> Video URL : '+ file_url +'</p><video id="videoplayer" style="height:500px;width:100%"; controls> <source src="' + file_url + '" type="' + strTYPE + '"></source></video></div>')
+                $("#theSlide #flashcard_"+ current_slide +"").append('<div id="video_url"><p> Video URL : '+ file_url +'</p><video id="videoplayer" style="height:500px;width:100%"; controls preload="metadata"> <source src="' + file_url + '#t=0.5' +'" type="' + strTYPE + '"></source></video></div>')
             }
           $("#videoplayer")[0].load();
         }
