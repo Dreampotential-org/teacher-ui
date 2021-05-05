@@ -22,6 +22,7 @@ var CURRENT_VIDEO_FLASHCARD_TYPE = 0;
 var CURRENT_VIDEO_TYPE;
 var pos = 0;
 var image_type ="";
+var video_type ="";
 
 window.addEventListener('DOMContentLoaded', init, false);
 var lesson_id = getParam('lesson_id');
@@ -306,13 +307,16 @@ function handleImageSelect(e) {
   }
 }
 
-function handleVideoUpload() {
+function handleVideoUpload(key) {
+  video_type = key;
+  console.log("video_type ===> ", video_type);
   // prompt for video upload
   $('#videoUpload').click();
 }
 
 //handleVideoSelect(this.value)
 function handleVideoSelect(e) {
+  console.log("handleVideoSelect :  video_type ===> ", video_type);
   console.log('Selecting file', e, e.files[0]);
   var file = e.files[0];
   if (file) {
@@ -422,10 +426,17 @@ function uploadFile(fileType) {
           }
 
         } else if (fileType == 'video') {
+          console.log("video_type ==> ", video_type);
+    
           displayVideo(file_url);
-          $('#video').attr('value', file_url);
+          
+          if(video_type=="user_video_upload"){
+            $('#txt-user-video').attr('value', file_url);
+          }
+          else{
+            $('#video').attr('value', file_url);
+          }
         }
-
       })
       .fail(function (response) {
         swal({
@@ -474,12 +485,26 @@ function displayImage(file_url) {
 
 function displayVideo(file_url) {
   var strTYPE = 'video/mp4';
-  $('#videoplayer').html('<source src="' + file_url + '" type="' + strTYPE + '"></source>');
-  $('#video-output').css('display', 'block');
-  $('#videoplayer')[0].load();
 
-  // Change button text
-  $('#upload-vid-btn').attr('value', 'Upload new Video');
+  if(video_type=="user_video_upload"){
+    $('#userVideoplayer').html('<source src="' + file_url + '" type="' + strTYPE + '"></source>');
+    $('#user-video-output').css('display', 'block');
+    $('#userVideoplayer')[0].load();
+    
+    $('#user_video_upload').find('#txt-user-video').first().attr('value',file_url);
+    // Change button text
+    // $('#upload-vid-btn').attr('value', 'Upload new Video');
+  }
+  else{
+    $('#videoplayer').html('<source src="' + file_url + '" type="' + strTYPE + '"></source>');
+    $('#video-output').css('display', 'block');
+    $('#videoplayer')[0].load();
+  
+    // Change button text
+    $('#upload-vid-btn').attr('value', 'Upload new Video');
+  }
+
+
 }
 
 function addVideoFile(isNew, id, question, choices, image, posU) {
@@ -579,6 +604,10 @@ function addSignaturePad(isNew, id, sign_data, posU) {
 }
 
 function addImageFile(isNew, id, question, image, posU) {
+  console.log("addImageFile ==> ");
+  console.log("isNew, id, question, image, posU ");
+  console.log(isNew,' , ' ,id, ' , ' ,question, ' , ' ,image, ' , ' ,posU);
+
   if (!isNew) {
     $('#image_file').find('input').first().attr('value', question);
     $('#image_file').find('input').last().attr('value', image);
@@ -625,17 +654,22 @@ function addVerifyPhone(isNew, id, question, image, posU) {
 function addUserVideoUpload(isNew, id, question, choices, image, posU){
   console.log('addUserVideoUpload(isNew, id, question, choices, image, posU)');
   console.log(isNew, ' , ' , id, ' , ', question,' , ',choices, ' , ', image,' , ', posU);
-
   if (!isNew) {
-    $('#user_video_upload').find('myFile').html(title);
-    $('#user_video_upload').find('myFile').attr('data-id', id);
+    $('#user_video_upload').find('txt-user-video').html(image);
+    $('#user_video_upload').find('txt-user-video').attr('data-id', id);
+    video_type = "user_video_upload";
+    // Display Video
+    displayVideo(image);
   } else {
-    $('#user_video_upload').find('myFile').html('');
+    $('#user_video_upload').find('txt-user-video').html('');
   }
   $('#user_video_upload')
     .find('myFile')
     .attr('name', 'user_video_upload_myFile_' + title_input_count);
+
   $('#sortable').append($('#user_video_upload').html());
+
+
   sortablePositionFunction(isNew, posU);
 
   user_video_upload_count++;
@@ -645,6 +679,8 @@ function addUserVideoUpload(isNew, id, question, choices, image, posU){
 
 function addUserGps(isNew, id, question, image, posU){
   if (!isNew) {
+    $('#user_gps').find('textarea').first().html(question);
+    $('#user_gps').find('textarea').last().attr('data-id', id);
   } else {
     $('#user_gps').find('textarea').first().html('');
   }
@@ -801,6 +837,7 @@ function sendUpdates() {
         }
       });
     }
+    console.log("attr_array ==> ", attr_array);
     switch (flashcard_type) {
       case 'speed_read':
         temp = {
@@ -918,8 +955,8 @@ function sendUpdates() {
       case 'user_video_upload':
           temp = {
           lesson_type: 'user_video_upload',
-          question: attr_array[0],
-          image: attr_array[1],
+          question: 'User Video Upload',
+          image: attr_array[0],
           position: position_me,
           };
           flashcards.push(temp);

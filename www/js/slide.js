@@ -129,7 +129,7 @@ function nextSlide() {
 
   if (!completed) {
     var type = current_flashcard.lesson_type;
-    console.log(type);
+    console.log("SLIDE JS TYPE ===> ",type);
 
     if (type == 'question_choices') {
       answer = $('input[name= choices_' + (current_slide - 1) + ']:checked').val();
@@ -468,6 +468,29 @@ function init() {
             '</h1><img src= "' +
             flashcard.image +
             '"></div></div>'
+        );
+      }
+
+      if(flashcard.lesson_type == 'user_gps'){
+        console.log("flashcard.lesson_type == 'user_gps'");
+        console.log("flashcard value ===> ", flashcard);
+        $('#theSlide').append(
+        '<div class="' +
+            className +
+            '"><div class="title_input"><div alt="title_input" style="height:500px"><h1>GPS Note:</h1><h1> ' +
+            flashcard.question +
+            '</h1></div></div></div>'
+        );
+      }
+
+      if(flashcard.lesson_type == 'user_video_upload'){
+        console.log("user_video_upload flashcard.lesson_type ===> ", flashcard.lesson_type);
+        $('#theSlide').append(
+          '<div class="' +
+            className +
+            '"><h1>User Video</h1><div alt="title_text" style="height:500px"><video style="height:500px;width:1000px"; controls> <source src= "' +
+            flashcard.image +
+            '"></video></div></div>'
         );
       }
 
