@@ -267,7 +267,7 @@ function init() {
 
   $.get(SERVER + 'courses_api/slide/read/' + lesson_id, function (response, status, xhr) {
     get_session();
-    phone_verification_check();
+    // phone_verification_check();
     console.log('>>>>>>>>>>>>>> slide', response);
 
     //let sign_flashcard = {lesson_type: 'input_signature'}
