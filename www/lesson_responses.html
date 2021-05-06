@@ -22,6 +22,7 @@
           <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
           <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
           <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+          <script src="//cdn.rawgit.com/ashl1/datatables-rowsgroup/v1.0.0/dataTables.rowsGroup.js"></script>
           <!-- user.html JS, CSS end -->
 
           <link rel="stylesheet" href="css/dashboard.css" />
@@ -35,6 +36,21 @@
 
           <script src="js/main.js"></script>
           <script src="js/lesson_responses.js"></script>
+          <style>
+               body {
+                    font: 90%/1.45em "Helvetica Neue", HelveticaNeue, Verdana, Arial, Helvetica, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: #333;
+                    background-color: #fff;
+                    }
+
+
+                    div.container {
+                    min-width: 980px;
+                    margin: 0 auto;
+                    }
+          </style>
      </head>
 
      <body>
@@ -74,7 +90,7 @@
                                                                       </thead>
                                                                       <tbody id="FlashCardRespons_data"></tbody>
                                                                  </table>
-                                                                 <div id="FlashCardResponse_Loader" class="d-flex justify-content-center">
+                                                                 <!-- <div id="FlashCardResponse_Loader" class="d-flex justify-content-center">
                                                                       <svg style="height: auto; width: 120px;" version="1.1" xmlns="http://www.w3.org/2000/svg"
                                                                            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="25 25 50 50">
                                                                            <circle cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke="#132644"
@@ -85,7 +101,7 @@
                                                                                 repeatCount="indefinite" />
                                                                            </circle>
                                                                       </svg>
-                                                                 </div>
+                                                                 </div> -->
                                                             </div>
                                                        </div>
                                                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
