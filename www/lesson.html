@@ -157,7 +157,8 @@
                                 </div>
                                 <div id="user-video-output">
                                     <input type="text" id="txt-user-video" class="form-control" placeholder="Video Link" />
-                                    <video id="userVideoplayer" controls preload="none" height="360" style="width: 100%;">
+                                    <video id="userVideoplayer" controls height="360" style="width: 100%;" preload="metadata"
+                                    >
                                     </video>
                                 </div>
                             </div>
@@ -240,11 +241,17 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="button" id="upload-vid-btn" onclick="handleVideoUpload('video_file')" value="Upload Video"/>
+                                    <!-- <input type="button" id="upload-vid-btn" onclick="handleVideoUpload('video_file')" value="Upload Video"/> -->
+                                    <input type="button" class="upload_vid_btn btn btn-info" value="Upload Video"/> 
                                     <input type="text" id="video" class="form-control" placeholder="Video Link" />
                                 </div>
-                                <div id="video-output">
-                                    <video id="videoplayer" controls preload="none" height="360" style="width: 100%;">
+                                <!-- <div id="video-output"> -->
+                                <div class="video-output">
+                                    <!-- <video id="videoplayer" controls preload="none" height="360" style="width: 100%;" preload="metadata"
+                                    >
+                                    </video> -->
+                                    <video class="videoplayer" controls preload="none" height="360" style="width: 100%;" preload="metadata"
+                                    >
                                     </video>
                                 </div>
                             </div>
@@ -261,10 +268,12 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="button" class="image_upload_button btn btn-info" onclick="handleImageUpload('imageFile')" value="Upload Image"/>
+                                    <!-- <input type="button" class="image_upload_button btn btn-info" onclick="handleImageUpload('imageFile')" value="Upload Image"/> -->
+                                    <input type="button" class="image_upload_button btn btn-info" value="Upload Image"/> 
                                     <input type="text" class="form-control" id="image-file" placeholder="Image Link" />
                                 </div>
-                                <div id="output-image-file"></div>
+                                <!-- <div id="output-image-file"></div> -->
+                                <div class="output-image-file"></div>
                             </div>
                         </div>
 
