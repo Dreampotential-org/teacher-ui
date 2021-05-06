@@ -24,6 +24,7 @@ var pos = 0;
 var image_type ="";
 var video_type ="";
 var data_id_value="";
+var video_data_id_value="";
 
 window.addEventListener('DOMContentLoaded', init, false);
 var lesson_id = getParam('lesson_id');
@@ -102,7 +103,6 @@ function getParam(sParam) {
 function sortablePositionFunction(isNew, posU) {
   if (!posU) {
     posU = $('#sortable').children().length;
-    console.log('calculated len', posU);
   }
   if (!isNew) {
     $('#sortable').children().last().attr('data-position', posU);
@@ -167,8 +167,6 @@ function addTitleInput(isNew, id, title, text, posU) {
 }
 
 function addNameType(isNew, id, title, text, posU) {
-  console.log('addNameType => ');
-  console.log(isNew, id, title, text, posU);
   if (!isNew) {
     $('#name_type').find('textarea').html(title);
     $('#name_type').find('teaxtarea').attr('data-id', id);
@@ -300,11 +298,9 @@ function handleImageUpload(key) {
 
 //handleImageSelect(this.value)
 function handleImageSelect(e) {
-  console.log('Selecting file', e, e.files[0]);
   var file = e.files[0];
   if (file) {
     GLOBAL_FILE = file;
-    console.log('Submitting form', file.name);
     //        $("#imageUploadForm").submit();
     uploadFile('image');
   }
@@ -319,19 +315,15 @@ function handleVideoUpload(key) {
 
 //handleVideoSelect(this.value)
 function handleVideoSelect(e) {
-  console.log("handleVideoSelect :  video_type ===> ", video_type);
-  console.log('Selecting file', e, e.files[0]);
   var file = e.files[0];
   if (file) {
     GLOBAL_FILE = file;
-    console.log('Submitting form', file.name);
     //        $("#imageUploadForm").submit();
     uploadFile('video');
   }
 }
 
 function uploadFile(fileType) {
-  console.log('Submitted');
   console.log('image_type : ', image_type);
 
   swal({
@@ -379,7 +371,6 @@ function uploadFile(fileType) {
           function (evt) {
             if (evt.lengthComputable) {
               var percentComplete = evt.loaded / evt.total;
-              console.log('percentComplete:', percentComplete);
               $('.swal-title').text(parseInt(percentComplete * 100) + '%');
             }
           },
@@ -401,7 +392,6 @@ function uploadFile(fileType) {
       },
     };
 
-    console.log(settings);
     $.ajax(settings)
       .done(function (response) {
         swal({
@@ -411,7 +401,6 @@ function uploadFile(fileType) {
         });
 
         response = JSON.parse(response);
-        console.log(response);
         const file_url = response['file_url'];
         console.log(file_url);
 
@@ -440,7 +429,7 @@ function uploadFile(fileType) {
         } else if (fileType == 'video') {
           console.log("video_type ==> ", video_type);
     
-          displayVideo(file_url);
+          displayVideo(file_url,video_data_id_value);
           
           if(video_type=="user_video_upload"){
             $('#txt-user-video').attr('value', file_url);
@@ -459,7 +448,74 @@ function uploadFile(fileType) {
       });
   });
 }
+function displayVideo(file_url,video_data_id) {
+  var strTYPE = 'video/mp4';
 
+  if(video_type=="user_video_upload"){
+    $('#userVideoplayer').html('<source src="' + file_url + '#t=0.5' + '" type="' + strTYPE + '"></source>');
+    $('#user-video-output').css('display', 'block');
+    $('#userVideoplayer')[0].load();
+    
+    $('#user_video_upload').find('#txt-user-video').first().attr('value',file_url);
+    // Change button text
+    // $('#upload-vid-btn').attr('value', 'Upload new Video');
+  }
+  else{
+
+
+   /* $('#videoplayer').html('<source src="' + file_url + '#t=0.5'+ '" type="' + strTYPE + '"></source>');
+    $('#video-output').css('display', 'block');
+    $('#videoplayer')[0].load();
+    $('#upload-vid-btn').attr('value', 'Upload new Video');*/
+
+
+    //
+    if(!file_url){
+
+    }
+    else{
+      console.log("$('.videoplayer') => ", $('.videoplayer'));
+
+     // $("input[data-id='"+video_data_id+"']").parent().siblings('.video-output').html('')
+      var parent = $("input[data-id='"+video_data_id+"']").parent().siblings('.video-output');
+      console.log("Parent ====> ", parent);
+      
+
+      
+      if(!video_data_id){
+
+      $('.videoplayer').html('<source src="' + file_url + '#t=0.5'+ '" type="' + strTYPE + '"></source>');
+      $('.video-output').css('display', 'block');
+      $('.videoplayer')[0].load();
+      $('.upload_vid_btn').attr('value', 'Upload new Video');
+
+      }
+      else{
+        //findout the perticular id using video_data_id?
+        /*var vid = $('<source src="' + file_url + '#t=0.5'+ '" type="' + strTYPE + '" id="'+video_data_id+'"></source>');
+        $("input[data-id='"+video_data_id+"']").parent().siblings('.video-output').html('')
+        var parent = $("input[data-id='"+video_data_id+"']").parent().siblings('.video-output');
+        $('.video-output').css('display', 'block');
+       
+        vid.appendTo(parent);*/
+        // vid.load();
+
+        //
+      
+      $("input[data-id='"+video_data_id+"']").parent().siblings('.video-output').html(' <video class="videoplayer" controls preload="none" height="360" style="width: 100%;" preload="metadata"><source src="' + file_url + '#t=0.5'+ '" type="' + strTYPE + '" id="'+video_data_id+'"></source></video>');
+      $('.video-output').css('display', 'block');
+      $('.videoplayer')[0].load();
+      $('.upload_vid_btn').attr('value', 'Upload new Video');
+
+      }
+
+
+    }
+
+//
+
+  }
+}
 function displayImage(file_url,data_id) {
   // Clear existing image
   // $('#output').html('');
@@ -488,7 +544,7 @@ function displayImage(file_url,data_id) {
     img.attr('src', file_url);  
     img.attr('data-id', data_id);
     img.attr('id', data_id);
-    if(data_id == undefined)
+    if(!data_id)
     {
       img.appendTo('.output-image-file');
     }
@@ -520,57 +576,9 @@ function displayImage(file_url,data_id) {
    $('#upload-img-btn').attr('value', 'Upload new Image');*/
 }
 
-function displayVideo(file_url) {
-  var strTYPE = 'video/mp4';
-
-  if(video_type=="user_video_upload"){
-    $('#userVideoplayer').html('<source src="' + file_url + '#t=0.5' + '" type="' + strTYPE + '"></source>');
-    $('#user-video-output').css('display', 'block');
-    $('#userVideoplayer')[0].load();
-    
-    $('#user_video_upload').find('#txt-user-video').first().attr('value',file_url);
-    // Change button text
-    // $('#upload-vid-btn').attr('value', 'Upload new Video');
-  }
-  else{
-    $('#videoplayer').html('<source src="' + file_url + '#t=0.5'+ '" type="' + strTYPE + '"></source>');
-    $('#video-output').css('display', 'block');
-    $('#videoplayer')[0].load();
-  
-    // Change button text
-    $('#upload-vid-btn').attr('value', 'Upload new Video');
-  }
 
 
-}
 
-function addVideoFile(isNew, id, question, choices, image, posU) {
-  if (!isNew) {
-    $('#video_file').find('input').first().attr('value', question);
-    $('#video_file').find('input').last().attr('value', image);
-
-    $('#video_file').find('input').first().attr('data-id', id);
-    $('#video_file').find('input').last().attr('data-id', id);
-
-    // Display Video
-    displayVideo(image);
-  } else {
-    $('#video_file').find('input').first().attr('value', '');
-    $('#video_file').find('input').last().attr('value', '');
-  }
-
-  $('#video_file')
-    .find('input')
-    .first()
-    .attr('name', 'video_question_' + video_file_count);
-  $('#video_file')
-    .find('input')
-    .last()
-    .attr('name', 'video_' + video_file_count);
-  $('#sortable').append($('#video_file').html());
-  video_file_count++;
-  sortablePositionFunction(isNew, posU);
-}
 
 function addIframeLink(isNew, id, question, choices, image, posU) {
   if (!isNew) {
@@ -639,6 +647,73 @@ function addSignaturePad(isNew, id, sign_data, posU) {
   sign_count++;
   sortablePositionFunction(isNew, posU);
 }
+function addUserVideoUpload(isNew, id, question, choices, image, posU){
+  if (!isNew) {
+    $('#user_video_upload').find('txt-user-video').html(image);
+    $('#user_video_upload').find('txt-user-video').attr('data-id', id);
+    video_type = "user_video_upload";
+    // Display Video
+    displayVideo(image,"");
+  } else {
+    $('#user_video_upload').find('txt-user-video').html('');
+  }
+  $('#user_video_upload')
+    .find('myFile')
+    .attr('name', 'user_video_upload_myFile_' + title_input_count);
+
+  $('#sortable').append($('#user_video_upload').html());
+
+
+  sortablePositionFunction(isNew, posU);
+
+  user_video_upload_count++;
+
+  
+}
+
+function addVideoFile(isNew, id, question, choices, image, posU) {
+  if (!isNew) {
+    $('#video_file').find('input').first().attr('value', question);
+    $('#video_file').find('input').last().attr('value', image);
+
+    $('#video_file').find('input').first().attr('data-id', id);
+    $('#video_file').find('input').last().attr('data-id', id);
+
+    $('#video_file').find('.video-output').attr('data-id', id);
+    // Display Video
+    // displayVideo(image);
+    displayVideo(image,id);
+  } else {
+    $('#video_file').find('input').first().attr('value', '');
+    $('#video_file').find('input').last().attr('value', '');
+
+    //
+   // $('.video-output').children('video').children('source').attr('src','');
+    //alert($('#video_file').children('.video-output').children('.videoplayer').children('source').attr('id'));
+    displayVideo("","");
+    //
+  }
+
+  $('#video_file')
+    .find('input')
+    .first()
+    .attr('name', 'video_question_' + video_file_count);
+  $('#video_file')
+    .find('input')
+    .last()
+    .attr('name', 'video_' + video_file_count)
+    .attr('data-id',$('#video_file').find('input').first().attr('data-id')+"_"+ video_file_count);
+    if(video_file_count > 0)
+    {
+      $('#sortable').append($('#video_file').html()).find('video').last().remove();
+    }
+    else{
+      $('#sortable').append($('#video_file').html());
+    }
+  
+  video_file_count++;
+  sortablePositionFunction(isNew, posU);
+}
 
 function addImageFile(isNew, id, question, image, posU) {
   console.log("addImageFile ==> ");
@@ -653,8 +728,8 @@ function addImageFile(isNew, id, question, image, posU) {
     
     $('#image_file').find('output-image-file').attr('data-id', id);
     image_type = "imageFile";
-    // Display Video
-    displayImage(image,$('#image_file').find('output-image-file').attr('data-id'));
+    // displayImage(image,$('#image_file').find('output-image-file').attr('data-id'));
+    displayImage(image,id);
   } else {
     $('#image_file').find('input').first().attr('value', '');
     $('#image_file').find('input').last().attr('value', '');
@@ -704,31 +779,7 @@ function addVerifyPhone(isNew, id, question, image, posU) {
   sortablePositionFunction(isNew, posU);
 }
 
-function addUserVideoUpload(isNew, id, question, choices, image, posU){
-  console.log('addUserVideoUpload(isNew, id, question, choices, image, posU)');
-  console.log(isNew, ' , ' , id, ' , ', question,' , ',choices, ' , ', image,' , ', posU);
-  if (!isNew) {
-    $('#user_video_upload').find('txt-user-video').html(image);
-    $('#user_video_upload').find('txt-user-video').attr('data-id', id);
-    video_type = "user_video_upload";
-    // Display Video
-    displayVideo(image);
-  } else {
-    $('#user_video_upload').find('txt-user-video').html('');
-  }
-  $('#user_video_upload')
-    .find('myFile')
-    .attr('name', 'user_video_upload_myFile_' + title_input_count);
 
-  $('#sortable').append($('#user_video_upload').html());
-
-
-  sortablePositionFunction(isNew, posU);
-
-  user_video_upload_count++;
-
-  
-}
 
 function addUserGps(isNew, id, question, image, posU){
   if (!isNew) {
@@ -746,7 +797,6 @@ function addUserGps(isNew, id, question, image, posU){
 }
 
 function addBrainTree(isNew, id, merchant_ID, braintree_public_key, braintree_private_key, braintree_item_name, braintree_item_price, posU) {
-  console.log(isNew);
   if (!isNew) {
     console.log(id, merchant_ID, braintree_public_key, braintree_private_key, braintree_item_name, braintree_item_price, posU);
     $('#brain_tree').find('#braintree_merchant_ID').attr('value', merchant_ID);
@@ -791,7 +841,6 @@ function addBrainTree(isNew, id, merchant_ID, braintree_public_key, braintree_pr
 }
 
 function sendUpdates() {
-  console.log("send updates method is called....");
   // console.log($('form#lesson_form').serializeArray());
   var lesson_name = $('#lesson_name').val();
   var lesson_visiblity = $('#lesson_is_public').prop('checked');
@@ -844,13 +893,10 @@ function sendUpdates() {
     current_flashcard_elements.shift(); // remove the header
     flashcard_type = flashcard.getAttribute('data-type');
     position_me += 1;
-    console.log(current_flashcard_elements);
     //current_flashcard_elements has all the fields of current selected flashcard
-    console.log(flashcard_type + ' has length of ' + current_flashcard_elements.length);
 
     if (current_flashcard_elements.length < 4) {
       current_flashcard_elements.forEach((current_flashcard) => {
-        console.log(current_flashcard);
         this_element = current_flashcard.firstElementChild;
         if(this_element){
           if (this_element.type == 'textarea' || this_element.type == 'text') {
@@ -890,7 +936,6 @@ function sendUpdates() {
         }
       });
     }
-    console.log("attr_array ==> ", attr_array);
     switch (flashcard_type) {
       case 'speed_read':
         temp = {
@@ -902,7 +947,6 @@ function sendUpdates() {
         break;
 
       case 'title_text':
-        console.log('This is a titletext');
         temp = {
           lesson_type: 'title_text',
           question: attr_array[0],
@@ -1031,7 +1075,6 @@ function sendUpdates() {
   });
   data_.flashcards = flashcards;
   data_.meta_attributes = meta_attributes.join(',');
-  console.log(data_);
 
   if (MODE == 'CREATE') {
     $.ajax({
@@ -1041,7 +1084,6 @@ function sendUpdates() {
       contentType: 'application/json',
       headers: { Authorization: `${localStorage.getItem('user-token')}` },
       success: function (data) {
-        //console.log(data.id)
         var currentPathName = window.location.pathname;
         window.location.replace(currentPathName + '?lesson_id=' + data.id);
         swal({
@@ -1143,7 +1185,6 @@ $(document).ready(function () {
         });
 
         flashcards.forEach((flashcard) => {
-          console.log('update check2');
           if (pos < flashcard.position) {
             pos = flashcard.position + 1;
           }
@@ -1205,13 +1246,11 @@ $(document).ready(function () {
             addIframeLink(false, flashcard.id, flashcard.question, flashcard.options, flashcard.image, flashcard.position);
           }
           if (flashcard.lesson_type == 'title_textarea') {
-            console.log('Question Text Added');
 
             addTitleTextarea(false, flashcard.id, flashcard.question, flashcard.position);
           }
 
           if (flashcard.lesson_type == 'signature') {
-            console.log('signature adding');
             addSignaturePad(false, flashcard.id, null, flashcard.position + 1);
           }
 
@@ -1402,4 +1441,10 @@ $(document).on('click', '.image_upload_button', function (e) {
   $('#imageUpload').click();
   data_id_value = $(this).siblings("input[type=text]").attr("data-id");
   image_type = "imageFile";
+});
+
+$(document).on('click', '.upload_vid_btn', function (e) {
+  $('#videoUpload').click();
+  video_data_id_value = $(this).siblings("input[type=text]").attr("data-id");
+  video_type = "video_file";
 });
