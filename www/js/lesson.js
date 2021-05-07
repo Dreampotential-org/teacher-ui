@@ -269,7 +269,6 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
       .find('input')
       .remove();
     options.map((choice) => {
-      //console.log(choice)
       addCheckboxes(question_checkboxes_count, choice);
     });
     image_type = "questionCheckboxes";
@@ -287,12 +286,7 @@ function addQuestionCheckboxes(isNew, id, question, options, image, posU) {
 }
 
 function handleImageUpload(key) {
-
-  image_type = key;
-  // console.log("image_type => ", key);
-  // // prompt for video upload
-  // alert($(this).attr('class'));
-  // console.log( "$this == > ",$(this));
+  image_type = key;//imageFile, questionChoices, questionCheckboxes
   $('#imageUpload').click();
 }
 
@@ -307,7 +301,7 @@ function handleImageSelect(e) {
 }
 
 function handleVideoUpload(key) {
-  video_type = key;
+  video_type = key; //user_video_upload
   console.log("video_type ===> ", video_type);
   // prompt for video upload
   $('#videoUpload').click();
@@ -324,8 +318,6 @@ function handleVideoSelect(e) {
 }
 
 function uploadFile(fileType) {
-  console.log('image_type : ', image_type);
-
   swal({
     title: '0%',
     text: 'File uploading please wait.',
@@ -402,10 +394,9 @@ function uploadFile(fileType) {
 
         response = JSON.parse(response);
         const file_url = response['file_url'];
-        console.log(file_url);
 
+        debugger;
         if (fileType == 'image') {
-          // displayImage(file_url,"");
           displayImage(file_url,data_id_value);
 
           if(image_type=="questionChoices"){
@@ -415,7 +406,6 @@ function uploadFile(fileType) {
            $('#image-question-checkboxes').attr('value', file_url);
           }
           else if(image_type=="imageFile"){
-           //$('#image-file').attr('value', file_url);
             if(data_id_value!=undefined){
               $("input[data-id='"+data_id_value+"']").attr('value', file_url);
             }
@@ -427,7 +417,6 @@ function uploadFile(fileType) {
           }
 
         } else if (fileType == 'video') {
-          console.log("video_type ==> ", video_type);
     
           displayVideo(file_url,video_data_id_value);
           
@@ -435,7 +424,12 @@ function uploadFile(fileType) {
             $('#txt-user-video').attr('value', file_url);
           }
           else{
-            $('#video').attr('value', file_url);
+            if(video_data_id_value!=undefined){
+              $("input[data-id='"+video_data_id_value+"']").attr('value', file_url);
+            }
+            else{
+              $('#video').attr('value', file_url);
+            }
           }
         }
       })
@@ -448,11 +442,11 @@ function uploadFile(fileType) {
       });
   });
 }
+
 function displayVideo(file_url,video_data_id) {
   var strTYPE = 'video/mp4';
-
   if(video_type=="user_video_upload"){
-    $('#userVideoplayer').html('<source src="' + file_url + '#t=0.5' + '" type="' + strTYPE + '"></source>');
+    $('#userVideoplayer').html('<source src="' + file_url + '#t=0.1' + '" type="' + strTYPE + '"></source>');
     $('#user-video-output').css('display', 'block');
     $('#userVideoplayer')[0].load();
     
@@ -461,14 +455,10 @@ function displayVideo(file_url,video_data_id) {
     // $('#upload-vid-btn').attr('value', 'Upload new Video');
   }
   else{
-
-
    /* $('#videoplayer').html('<source src="' + file_url + '#t=0.5'+ '" type="' + strTYPE + '"></source>');
     $('#video-output').css('display', 'block');
     $('#videoplayer')[0].load();
     $('#upload-vid-btn').attr('value', 'Upload new Video');*/
-
-
     //
     if(!file_url){
 
@@ -480,42 +470,23 @@ function displayVideo(file_url,video_data_id) {
       var parent = $("input[data-id='"+video_data_id+"']").parent().siblings('.video-output');
       console.log("Parent ====> ", parent);
       
-
-      
       if(!video_data_id){
-
-      $('.videoplayer').html('<source src="' + file_url + '#t=0.5'+ '" type="' + strTYPE + '"></source>');
+      $('.videoplayer').html('<source src="' + file_url + '#t=0.1'+ '" type="' + strTYPE + '"></source>');
       $('.video-output').css('display', 'block');
       $('.videoplayer')[0].load();
       $('.upload_vid_btn').attr('value', 'Upload new Video');
-
       }
       else{
-        //findout the perticular id using video_data_id?
-        /*var vid = $('<source src="' + file_url + '#t=0.5'+ '" type="' + strTYPE + '" id="'+video_data_id+'"></source>');
-        $("input[data-id='"+video_data_id+"']").parent().siblings('.video-output').html('')
-        var parent = $("input[data-id='"+video_data_id+"']").parent().siblings('.video-output');
-        $('.video-output').css('display', 'block');
-       
-        vid.appendTo(parent);*/
-        // vid.load();
-
-        //
-      
-      $("input[data-id='"+video_data_id+"']").parent().siblings('.video-output').html(' <video class="videoplayer" controls preload="none" height="360" style="width: 100%;" preload="metadata"><source src="' + file_url + '#t=0.5'+ '" type="' + strTYPE + '" id="'+video_data_id+'"></source></video>');
+      $("input[data-id='"+video_data_id+"']").parent().siblings('.video-output').html(' <video class="videoplayer" controls height="360" style="width: 100%;" preload="metadata"><source src="' + file_url + '#t=0.1'+ '" type="' + strTYPE + '" id="'+video_data_id+'"></source></video>');
       $('.video-output').css('display', 'block');
       $('.videoplayer')[0].load();
       $('.upload_vid_btn').attr('value', 'Upload new Video');
-
       }
-
-
     }
-
 //
-
   }
 }
+
 function displayImage(file_url,data_id) {
   // Clear existing image
   // $('#output').html('');
@@ -523,7 +494,6 @@ function displayImage(file_url,data_id) {
  if(file_url!=""){
   if(image_type=="questionChoices"){
     $('#output-question-choices').html('');
-    // var img = $('<img style="height:100%;width:100%">');
     var img = $('<img style="width:400px">');
     img.attr('src', file_url);  
     img.appendTo('#output-question-choices');
@@ -538,9 +508,7 @@ function displayImage(file_url,data_id) {
   }
   else if(image_type=="imageFile"){
     // $('#output-image-file').html('');
-    //$('.output-image-file').html('');
     var img = $('<img style="width:400px">');
-    //$('#image_file').find('input').first().attr('data-id')
     img.attr('src', file_url);  
     img.attr('data-id', data_id);
     img.attr('id', data_id);
@@ -553,8 +521,6 @@ function displayImage(file_url,data_id) {
       var parent = $("input[data-id='"+data_id+"']").parent().siblings('.output-image-file');
       img.appendTo(parent);
     }
-    
-
     //
     // $('.output-image-file').each(function(i, e){
     //   $('<img style="width:400px">')
@@ -575,10 +541,6 @@ function displayImage(file_url,data_id) {
     // Change button text
    $('#upload-img-btn').attr('value', 'Upload new Image');*/
 }
-
-
-
-
 
 function addIframeLink(isNew, id, question, choices, image, posU) {
   if (!isNew) {
@@ -662,16 +624,12 @@ function addUserVideoUpload(isNew, id, question, choices, image, posU){
     .attr('name', 'user_video_upload_myFile_' + title_input_count);
 
   $('#sortable').append($('#user_video_upload').html());
-
-
   sortablePositionFunction(isNew, posU);
-
   user_video_upload_count++;
-
-  
 }
 
 function addVideoFile(isNew, id, question, choices, image, posU) {
+  video_type = "";
   if (!isNew) {
     $('#video_file').find('input').first().attr('value', question);
     $('#video_file').find('input').last().attr('value', image);
@@ -686,10 +644,8 @@ function addVideoFile(isNew, id, question, choices, image, posU) {
   } else {
     $('#video_file').find('input').first().attr('value', '');
     $('#video_file').find('input').last().attr('value', '');
-
     //
-   // $('.video-output').children('video').children('source').attr('src','');
-    //alert($('#video_file').children('.video-output').children('.videoplayer').children('source').attr('id'));
+    // $('.video-output').children('video').children('source').attr('src','');
     displayVideo("","");
     //
   }
@@ -703,14 +659,22 @@ function addVideoFile(isNew, id, question, choices, image, posU) {
     .last()
     .attr('name', 'video_' + video_file_count)
     .attr('data-id',$('#video_file').find('input').first().attr('data-id')+"_"+ video_file_count);
-    if(video_file_count > 0)
+    
+    /*if(video_file_count > 0)
     {
       $('#sortable').append($('#video_file').html()).find('video').last().remove();
     }
     else{
       $('#sortable').append($('#video_file').html());
+    }*/
+
+    if(posU==undefined){
+      $('#sortable').append($('#video_file').html()).find('video').last().remove();
+    }else{
+      $('#sortable').append($('#video_file').html());
     }
-  
+
+  // $('#sortable').append($('#video_file').html());
   video_file_count++;
   sortablePositionFunction(isNew, posU);
 }
@@ -779,8 +743,6 @@ function addVerifyPhone(isNew, id, question, image, posU) {
   sortablePositionFunction(isNew, posU);
 }
 
-
-
 function addUserGps(isNew, id, question, image, posU){
   if (!isNew) {
     $('#user_gps').find('textarea').first().html(question);
@@ -788,9 +750,7 @@ function addUserGps(isNew, id, question, image, posU){
   } else {
     $('#user_gps').find('textarea').first().html('');
   }
-
   $('#sortable').append($('#user_gps').html());
-
   user_gps_count++;
   sortablePositionFunction(isNew, posU);
   handle_gps_click();
@@ -841,7 +801,6 @@ function addBrainTree(isNew, id, merchant_ID, braintree_public_key, braintree_pr
 }
 
 function sendUpdates() {
-  // console.log($('form#lesson_form').serializeArray());
   var lesson_name = $('#lesson_name').val();
   var lesson_visiblity = $('#lesson_is_public').prop('checked');
   var meta_attributes = [];
