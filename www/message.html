@@ -91,7 +91,18 @@
             <section id="tabs">
               <!-- ####### messages ####### -->
               <!-- <div class="container"> -->
-                <h3 class=" text-center">Messaging</h3>
+                <div class="text-right mt-2">
+                  <h3 class=" text-center" style="float: center;">Messaging</h3> 
+                  <button
+                  type="button"
+                  id="startConversationModal"
+                  data-toggle="modal"
+                  data-target="#startConversationModal"
+                  class="btn btn-primary"
+                  >
+                  <i class="fa fa-plus"></i> Start Conversation
+                </button>
+              </div>
                 <div class="messaging">
                       <div class="inbox_msg">
                         <div class="inbox_people">
@@ -159,6 +170,34 @@
         </div>
       </div>
     </div>
+    <!-- start conversation Modal -->
+    <div
+      class="modal fade"
+      id="startConversationModal"
+      tabindex="-1"
+      role="dialog"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Start Conversation</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="messageStartConversationList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end start conversation model -->
     <script src="js/message.js"></script>
     <!-- Update this script to in js/class_list.js file -->
 
