@@ -1,7 +1,3 @@
-
-
-
-
 var passwordResetToken = getParam("token");
 var userToken = localStorage.getItem("user-token");
 
@@ -46,3 +42,4 @@ $(document).ready(function () {
   //   location.reload();
   // });
 });
+
