@@ -360,7 +360,7 @@ function init() {
         );
         if (flashcard.image) {
           $('#flashcard_' + i).prepend(
-            '<center><img src="' + flashcard.image + '" alt="Chania" style="height:300px;border:5px;border-style:solid;border-color:black"></center>'
+            '<center><img src="' + flashcard.image + '" alt="Chania" style="width:400px;border:5px;border-style:solid;border-color:black"></center>'
           );
         }
         if (typeof flashcard.options == 'string') {
@@ -407,7 +407,7 @@ function init() {
         );
         if (flashcard.image) {
           $('#flashcard_' + i).prepend(
-            '<center><img src="' + flashcard.image + '" alt="Chania" style="height:300px;border:5px;border-style:solid;border-color:black"></center>'
+            '<center><img src="' + flashcard.image + '" alt="Chania" style="width:400px;border:5px;border-style:solid;border-color:black"></center>'
           );
         }
 
@@ -467,7 +467,7 @@ function init() {
             flashcard.question +
             '</h1><img src= "' +
             flashcard.image +
-            '"></div></div>'
+            '" width=400px></div></div>'
         );
       }
 
