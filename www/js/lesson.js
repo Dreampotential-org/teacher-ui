@@ -302,7 +302,6 @@ function handleImageSelect(e) {
 
 function handleVideoUpload(key) {
   video_type = key; //user_video_upload
-  console.log("video_type ===> ", video_type);
   // prompt for video upload
   $('#videoUpload').click();
 }
@@ -395,7 +394,6 @@ function uploadFile(fileType) {
         response = JSON.parse(response);
         const file_url = response['file_url'];
 
-        debugger;
         if (fileType == 'image') {
           displayImage(file_url,data_id_value);
 
@@ -464,11 +462,9 @@ function displayVideo(file_url,video_data_id) {
 
     }
     else{
-      console.log("$('.videoplayer') => ", $('.videoplayer'));
 
      // $("input[data-id='"+video_data_id+"']").parent().siblings('.video-output').html('')
-      var parent = $("input[data-id='"+video_data_id+"']").parent().siblings('.video-output');
-      console.log("Parent ====> ", parent);
+     // var parent = $("input[data-id='"+video_data_id+"']").parent().siblings('.video-output');
       
       if(!video_data_id){
       $('.videoplayer').html('<source src="' + file_url + '#t=0.1'+ '" type="' + strTYPE + '"></source>');

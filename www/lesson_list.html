@@ -552,7 +552,7 @@
                 })
 
                 $('#lessonLoader').remove();
-
+                //need to check its user role 'student' or 'anyother', and append users-data.
                 user_lessons.forEach((item, i) => {
                     $("#users-data").append(`<tr>
                         <td>${item.courseid}</td>

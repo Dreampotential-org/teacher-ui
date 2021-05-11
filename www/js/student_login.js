@@ -82,7 +82,6 @@ $(document).ready(function() {
             success: function(response) {
                 // Whatever you want to do after the form is successfully submitted
                 loginResponse = response;
-                console.log("Response", response)
                 localStorage.setItem("user-token", response.token);
 
                 swal({
