@@ -444,11 +444,11 @@ function uploadFile(fileType) {
 function displayVideo(file_url,video_data_id) {
   var strTYPE = 'video/mp4';
   if(video_type=="user_video_upload"){
-    $('#userVideoplayer').html('<source src="' + file_url + '#t=0.1' + '" type="' + strTYPE + '"></source>');
+   /* $('#userVideoplayer').html('<source src="' + file_url + '#t=0.1' + '" type="' + strTYPE + '"></source>');
     $('#user-video-output').css('display', 'block');
     $('#userVideoplayer')[0].load();
     
-    $('#user_video_upload').find('#txt-user-video').first().attr('value',file_url);
+    $('#user_video_upload').find('#txt-user-video').first().attr('value',file_url);*/
     // Change button text
     // $('#upload-vid-btn').attr('value', 'Upload new Video');
   }
@@ -607,8 +607,8 @@ function addSignaturePad(isNew, id, sign_data, posU) {
 }
 function addUserVideoUpload(isNew, id, question, choices, image, posU){
   if (!isNew) {
-    $('#user_video_upload').find('txt-user-video').html(image);
-    $('#user_video_upload').find('txt-user-video').attr('data-id', id);
+    /*$('#user_video_upload').find('txt-user-video').html(image);
+    $('#user_video_upload').find('txt-user-video').attr('data-id', id);*/
     video_type = "user_video_upload";
     // Display Video
     displayVideo(image,"");
@@ -1008,7 +1008,8 @@ function sendUpdates() {
           temp = {
           lesson_type: 'user_video_upload',
           question: 'User Video Upload',
-          image: attr_array[0],
+          // image: attr_array[0],
+          image: '',
           position: position_me,
           };
           flashcards.push(temp);

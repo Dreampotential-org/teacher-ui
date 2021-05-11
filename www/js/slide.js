@@ -88,7 +88,7 @@ function sendResponse(flashcard_id, answer) {
         success: function (da_) {
           console.log('Session event duration');
         },
-        fail:function(res){
+        fail: function (res) {
           alert(res)
         },
       });
@@ -129,7 +129,7 @@ function nextSlide() {
 
   if (!completed) {
     var type = current_flashcard.lesson_type;
-    console.log("SLIDE JS TYPE ===> ",type);
+    console.log("SLIDE JS TYPE ===> ", type);
 
     if (type == 'question_choices') {
       answer = $('input[name= choices_' + (current_slide - 1) + ']:checked').val();
@@ -154,6 +154,9 @@ function nextSlide() {
       sendResponse(flashcard_id, answer);
     } else if (type == 'name_type') {
       answer = $('input[name= name_type_' + (current_slide - 1) + ']').val();
+      sendResponse(flashcard_id, answer);
+    } else if (type == 'user_video_upload') {
+      answer = $('#user-video-tag').find('source').attr('src');
       sendResponse(flashcard_id, answer);
     }
 
@@ -336,12 +339,12 @@ function init() {
         $('#nextButton').attr('data-type', 'title_text');
         $('#theSlide').append(
           '<div class="' +
-            className +
-            '"><div alt="title_text" style="height:500px"><h1> ' +
-            flashcard.question +
-            '</h1><h3>' +
-            flashcard.answer +
-            '</h3></div></div>'
+          className +
+          '"><div alt="title_text" style="height:500px"><h1> ' +
+          flashcard.question +
+          '</h1><h3>' +
+          flashcard.answer +
+          '</h3></div></div>'
         );
       }
       if (flashcard.lesson_type == 'question_choices') {
@@ -349,14 +352,14 @@ function init() {
         $('#nextButton').attr('data-type', 'question_choices');
         $('#theSlide').append(
           '<div class="' +
-            className +
-            '" id="flashcard_' +
-            i +
-            '"><div class="question_choices"><h1>' +
-            flashcard.question +
-            '</h1><ul alt="question_choices_' +
-            i +
-            '"></ul></div></div>'
+          className +
+          '" id="flashcard_' +
+          i +
+          '"><div class="question_choices"><h1>' +
+          flashcard.question +
+          '</h1><ul alt="question_choices_' +
+          i +
+          '"></ul></div></div>'
         );
         if (flashcard.image) {
           $('#flashcard_' + i).prepend(
@@ -373,16 +376,16 @@ function init() {
               if ($(b).attr('alt') == 'question_choices_' + i) {
                 $(b).append(
                   "<br><input type='radio' id='" +
-                    valu +
-                    "' value='" +
-                    valu +
-                    "' onclick='radioOnClick(`" + valu + "`)' name='choices_" +
-                    i +
-                    "'> <label style='font-weight: normal;' for='" +
-                    valu +
-                    "'>" +
-                    valu +
-                    '</lable>'
+                  valu +
+                  "' value='" +
+                  valu +
+                  "' onclick='radioOnClick(`" + valu + "`)' name='choices_" +
+                  i +
+                  "'> <label style='font-weight: normal;' for='" +
+                  valu +
+                  "'>" +
+                  valu +
+                  '</lable>'
                 );
               }
             });
@@ -396,14 +399,14 @@ function init() {
         $('#nextButton').attr('data-type', 'question_checkboxes');
         $('#theSlide').append(
           '<div class="' +
-            className +
-            '" id="flashcard_' +
-            i +
-            '"><div class="question_checkboxes"><h1>' +
-            flashcard.question +
-            '</h1><ul alt="question_checkboxes_' +
-            i +
-            '"></ul></div></div>'
+          className +
+          '" id="flashcard_' +
+          i +
+          '"><div class="question_checkboxes"><h1>' +
+          flashcard.question +
+          '</h1><ul alt="question_checkboxes_' +
+          i +
+          '"></ul></div></div>'
         );
         if (flashcard.image) {
           $('#flashcard_' + i).prepend(
@@ -418,16 +421,16 @@ function init() {
               if ($(b).attr('alt') == 'question_checkboxes_' + i) {
                 $(b).append(
                   "<br><input type='checkbox' id='" +
-                    valu +
-                    "' value='" +
-                    valu +
-                    "' name='checkboxes_" +
-                    i +
-                    "'> <label style='font-weight: normal;' for='" +
-                    valu +
-                    "'>" +
-                    valu +
-                    '</lable>'
+                  valu +
+                  "' value='" +
+                  valu +
+                  "' name='checkboxes_" +
+                  i +
+                  "'> <label style='font-weight: normal;' for='" +
+                  valu +
+                  "'>" +
+                  valu +
+                  '</lable>'
                 );
               }
             });
@@ -439,91 +442,110 @@ function init() {
       if (flashcard.lesson_type == 'iframe_link') {
         $('#theSlide').append(
           '<div class="' +
-            className +
-            '"><div alt="iframe_link" class="iframe_div"><h1> ' +
-            flashcard.question +
-            '</h1><iframe  class="iframe_screen" src= "' +
-            flashcard.image +
-            '"></iframe></div></div>'
+          className +
+          '"><div alt="iframe_link" class="iframe_div"><h1> ' +
+          flashcard.question +
+          '</h1><iframe  class="iframe_screen" src= "' +
+          flashcard.image +
+          '"></iframe></div></div>'
         );
       }
       if (flashcard.lesson_type == 'video_file') {
         $('#theSlide').append(
           '<div class="' +
-            className +
-            '"><div alt="title_text" style="height:500px"><h1> ' +
-            flashcard.question +
-            '</h1><video style="height:500px;width:1000px"; controls preload="metadata"> <source src= "' +
-            flashcard.image + '#t=0.5' +
-            '"></video></div></div>'
+          className +
+          '"><div alt="title_text" style="height:500px"><h1> ' +
+          flashcard.question +
+          '</h1><video style="height:500px;width:1000px"; controls preload="metadata"> <source src= "' +
+          flashcard.image + '#t=0.5' +
+          '"></video></div></div>'
         );
       }
 
       if (flashcard.lesson_type == 'image_file') {
         $('#theSlide').append(
           '<div class="' +
-            className +
-            '"><div alt="title_text" style="height:500px"><h1>Image File</h1><h1> ' +
-            flashcard.question +
-            '</h1><img src= "' +
-            flashcard.image +
-            '" width=400px></div></div>'
+          className +
+          '"><div alt="title_text" style="height:500px"><h1>Image File</h1><h1> ' +
+          flashcard.question +
+          '</h1><img src= "' +
+          flashcard.image +
+          '" width=400px></div></div>'
         );
       }
 
-      if(flashcard.lesson_type == 'user_gps'){
+      if (flashcard.lesson_type == 'user_gps') {
         console.log("flashcard.lesson_type == 'user_gps'");
         console.log("flashcard value ===> ", flashcard);
         $('#theSlide').append(
-        '<div class="' +
-            className +
-            '"><div class="title_input"><div alt="title_input" style="height:500px"><h1>GPS Note:</h1><h1> ' +
-            flashcard.question +
-            '</h1></div></div></div>'
+          '<div class="' +
+          className +
+          '"><div class="title_input"><div alt="title_input" style="height:500px"><h1>GPS Note:</h1><h1> ' +
+          flashcard.question +
+          '</h1></div></div></div>'
         );
       }
 
-      if(flashcard.lesson_type == 'user_video_upload'){
+      if (flashcard.lesson_type == 'user_video_upload') {
         console.log("user_video_upload flashcard.lesson_type ===> ", flashcard.lesson_type);
         $('#theSlide').append(
-          '<div class="' +
-            className +
-            '"><h1>User Video</h1><div alt="title_text" style="height:500px"><video style="height:500px;width:1000px"; controls preload="metadata"> <source src= "' +
-            flashcard.image + '#t=0.5' +
-            '"></video></div></div>'
+          // '<div class="' +
+          //   className +
+          //   '"><h1>User Video</h1><div alt="title_text" style="height:500px"><video style="height:500px;width:1000px"; controls preload="metadata"> <source src= "' +
+          //   flashcard.image + '#t=0.5' +
+          //   '"></video></div></div>'
+
+          `<div class="${className}">
+            <h1>User Video Upload</h1>
+            <div alt="title_text" style="height:500px">
+
+            <input type="file" class="form-control" value="Choose File" id="myFile"/> 
+
+            <input type="button" class="upload_vid_btn btn btn-info" value="Upload Video" onclick="handleVideoUpload('user_video_upload')" /> 
+            
+            <video style="height:500px;width:1000px"; controls preload="metadata" id="user-video-tag">
+            
+            </video>
+
+            </div>
+          </div>
+            
+
+          `
+
         );
       }
 
       if (flashcard.lesson_type == 'title_textarea') {
         $('#theSlide').append(
           '<div class="' +
-            className +
-            '"><div class="title_textarea"><div alt="title_text" style="height:500px"><h1> ' +
-            flashcard.question +
-            '</h1><textarea name ="textarea_' +
-            i +
-            '" class="form-control" placeholder="Enter you answer here"></textarea></div></div></div>'
+          className +
+          '"><div class="title_textarea"><div alt="title_text" style="height:500px"><h1> ' +
+          flashcard.question +
+          '</h1><textarea name ="textarea_' +
+          i +
+          '" class="form-control" placeholder="Enter you answer here"></textarea></div></div></div>'
         );
       }
       if (flashcard.lesson_type == 'title_input') {
         $('#theSlide').append(
           '<div class="' +
-            className +
-            '"><div class="title_input"><div alt="title_input" style="height:500px"><h1> ' +
-            flashcard.question +
-            '</h1><input name ="title_input_' +
-            i +
-            '" class="form-control" placeholder="Enter you answer here"></div></div></div>'
+          className +
+          '"><div class="title_input"><div alt="title_input" style="height:500px"><h1> ' +
+          flashcard.question +
+          '</h1><input name ="title_input_' +
+          i +
+          '" class="form-control" placeholder="Enter you answer here"></div></div></div>'
         );
       }
 
       if (flashcard.lesson_type == 'name_type') {
         $('#theSlide').append(
           '<div class="' +
-            className +
-            '"><div class="name_type"><div alt="name_type" style="height:500px"><h1> Enter your name: </h1><input name ="name_type_' +
-            i +
-            '" class="form-control" placeholder="Enter you name here"></div></div></div>'
+          className +
+          '"><div class="name_type"><div alt="name_type" style="height:500px"><h1> Enter your name: </h1><input name ="name_type_' +
+          i +
+          '" class="form-control" placeholder="Enter you name here"></div></div></div>'
         );
       }
 
@@ -558,13 +580,13 @@ function init() {
                 $('input[name=title_input_' + i).val(rf.answer);
               }
               if (f.lesson_type == 'question_choices') {
-                if (rf.answer == ""){
+                if (rf.answer == "") {
                   $('input[name=choices_' + i + '][value=' + rf.answer ? rf.answer : '' + ']').attr('checked', true);
-                }else{
+                } else {
                   var strTYPE = "video/mp4";
                   $('#myCarousel #video').val(rf.answer);
                   $("#video_url").html(" ")
-                  $("#theSlide #flashcard_"+ current_slide +"").append('<div id="video_url"><p> Video URL : '+ rf.answer +'</p><video id="videoplayer" style="height:500px;width:100%"; controls preload="metadata"> <source src="' + rf.answer + '#t=0.5' + '" type="' + strTYPE + '"></source></video><div>')
+                  $("#theSlide #flashcard_" + current_slide + "").append('<div id="video_url"><p> Video URL : ' + rf.answer + '</p><video id="videoplayer" style="height:500px;width:100%"; controls preload="metadata"> <source src="' + rf.answer + '#t=0.5' + '" type="' + strTYPE + '"></source></video><div>')
                 }
               }
 
@@ -592,69 +614,77 @@ function init() {
     }
   })
 }
-function handleVideoUpload() {
-    var file = $('#myFile').prop('files');
-    console.log("🚀 ~ file: index.html ~ line 33 ~ handleVideoUpload ~ file", file[0])
-    GLOBAL_FILE = file[0];
-    var form = new FormData();
-    form.append('file', GLOBAL_FILE);
+function handleVideoUpload(key) {
+  var file = $('#myFile').prop('files');
+  console.log("🚀 ~ file: index.html ~ line 33 ~ handleVideoUpload ~ file", file[0])
+  GLOBAL_FILE = file[0];
+  var form = new FormData();
+  form.append('file', GLOBAL_FILE);
 
-    var settings = {
-      async: true,
-                 "crossDomain": true,
-      url: SERVER + '/s3_uploader/upload',
-      method: 'POST',
-      type: 'POST',
-      processData: false,
-      contentType: false,
-      enctype: 'multipart/form-data',
-      data: form,
-      headers: {
-        Authorization: localStorage.getItem('token'),
-      },
-    }
+  var settings = {
+    async: true,
+    "crossDomain": true,
+    url: SERVER + 's3_uploader/upload',
+    method: 'POST',
+    type: 'POST',
+    processData: false,
+    contentType: false,
+    enctype: 'multipart/form-data',
+    data: form,
+    headers: {
+      Authorization: localStorage.getItem('token'),
+    },
+  }
 
-    console.log(settings);
-    $.ajax(settings).done(function (response) {
-      console.log("🚀 ~ file: index.html ~ line 57 ~ response", response)
-      if (response.message == "No file provided!") {
-        swal({
-          title: 'File Not Select',
-          text: response.message,
-          icon: "warning",
-          timer: 1000,
-        });
-      } else {
-          console.log("this is else part")
-        swal({
-          title: 'Good job!',
-          text: 'Video uploaded successfully!',
-          icon: 'success',
-          timer: 1000,
-        });
-        const file_url = response.file_url;
-        displayVideo(file_url);
-        function displayVideo(file_url) {
-          if (file_url) {
-                var strTYPE = "video/mp4";
-                $('#myCarousel #video').val(file_url);
-                $("#theSlide #flashcard_"+ current_slide +"").append('<div id="video_url"><p> Video URL : '+ file_url +'</p><video id="videoplayer" style="height:500px;width:100%"; controls preload="metadata"> <source src="' + file_url + '#t=0.5' +'" type="' + strTYPE + '"></source></video></div>')
-            }
-          $("#videoplayer")[0].load();
-        }
-    //   $("#video-modal").hide();
-    //   setTimeout(() => { location.reload() }, 5000);
-      }
-    }).fail(function (error) {
-      console.log("🚀 ~ file: index.html ~ line 56 ~ error", error)
+  console.log(settings);
+  $.ajax(settings).done(function (response) {
+    console.log("🚀 ~ file: index.html ~ line 57 ~ response", response)
+    if (response.message == "No file provided!") {
       swal({
-        title: 'Error!',
-        text: 'Video upload failed!',
-        icon: 'warning',
+        title: 'File Not Select',
+        text: response.message,
+        icon: "warning",
         timer: 1000,
       });
+    } else {
+      console.log("this is else part")
+      swal({
+        title: 'Good job!',
+        text: 'Video uploaded successfully!',
+        icon: 'success',
+        timer: 1000,
+      });
+      const file_url = response.file_url;
+      displayVideo(file_url);
+      function displayVideo(file_url) {
+        if (file_url) {
+          if (key == 'user_video_upload') {
+            var strTYPE = "video/mp4";
+            $("#user-video-tag").append('<source src="' + file_url + '#t=0.5" type="' + strTYPE + '"></source>');
+            $("#user-video-tag")[0].load();
+          }
+          else {
+            var strTYPE = "video/mp4";
+            $('#myCarousel #video').val(file_url);
+            $("#theSlide #flashcard_" + current_slide + "").append('<div id="video_url"><p> Video URL : ' + file_url + '</p><video id="videoplayer" style="height:500px;width:100%"; controls preload="metadata"> <source src="' + file_url + '#t=0.5' + '" type="' + strTYPE + '"></source></video></div>')
 
+            $("#videoplayer")[0].load();
+          }
+        }
+      }
+      //   $("#video-modal").hide();
+      //   setTimeout(() => { location.reload() }, 5000);
+    }
+  }).fail(function (error) {
+    console.log("🚀 ~ file: index.html ~ line 56 ~ error", error)
+    swal({
+      title: 'Error!',
+      text: 'Video upload failed!',
+      icon: 'warning',
+      timer: 1000,
     });
+
+  });
 
 }
 
