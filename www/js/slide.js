@@ -327,12 +327,95 @@ function init() {
       }
 
       if (flashcard.lesson_type == 'quick_read') {
+        
         $('#prevButton').attr('data-type', 'quick_read');
         $('#nextButton').attr('data-type', 'quick_read');
 
         $('#theSlide').append(
-          '<div class="' + className + '"><div alt="quick_read" style="height:500px"><h1>' + flashcard.question + '</h1></div></div>'
+          '<div class="' + className + '">' +
+            '<div class="quick-read-container">' +
+
+              '<div class="speedreader-txt" alt="quick_read"><h1 class="speedrdr-txt">' + flashcard.question + '</h1></div>' +
+              '<div class="word-display text-center"><div class="txt"></div></div>' +
+              
+              '<div class="box card p-4">' +
+                '<div class="form-group arrow-group d-flex justify-content-center">' +
+                  '<div class="timer-field field-control d-flex align-items-center">' +
+                      '<div class="field-arrow text-center">' +
+                          '<div class="monitor d-flex">' +
+                              '<div class="timer-length txt-num">1</div>' +
+                              '<div class="word-speed">min</div>' +
+                          '</div>' +
+                      '</div>' +
+                  '</div>' +
+                  '<div class="wpm-field field-control d-flex align-items-center">' +
+                    '<div class="field-txt">WPM</div>'+
+                    '<div class="field-arrow text-center">' +
+                      '<button class="btn btn-plus btn-arrow" type="button">' +
+                        '<i class="fa fa-angle-up" aria-hidden="true"></i>'+
+                      '</button>'+
+                      '<div class="monitor d-flex">' +
+                        '<input type="text" class="word-length txt-input-num form-control">'+
+                        '<div class="word-speed">x1</div>'+
+                      '</div>' +
+                      '<button class="btn btn-minus btn-arrow" type="button">' +
+                        '<i class="fa fa-angle-down" aria-hidden="true"></i>'+
+                      '</button>'+
+                    '</div>' +
+                  '</div>' +
+                  '<div class="wordcount-field field-control d-flex align-items-center">' +
+                    '<div class="field-txt">Words at a time</div>' +
+                    '<div class="field-arrow text-center">' +
+                      '<button class="btn btn-plus btn-arrow" type="button">' +
+                        '<i class="fa fa-angle-up" aria-hidden="true"></i>' +
+                      '</button>' +
+                      '<div class="monitor text-center">' +
+                        '<div class="word-num txt-num">1</div>' +
+                      '</div>' +
+                      '<button class="btn btn-minus btn-arrow" type="button">' +
+                        '<i class="fa fa-angle-down" aria-hidden="true"></i>' +
+                      '</button>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>' +
+
+                '<div class="form-group mb-0 text-center">' +
+                  '<button type="button" class="btn btn-primary start-btn disabled">START NOW</button>' +
+                '</div>' +
+
+                '<div class="form-group text-center slider-group">' +
+                  '<div id="slider"></div>' +
+                '</div>' +
+
+                '<div class="form-group mb-0 text-center pt-3 btm-options">' +
+                  '<button type="button" class="btn btn-danger stop-btn">Stop</button>' +
+                  '<div class="sound-btn-container d-flex align-items-center">' +
+                    '<button type="button" class="btn btn-secondary speak-btn">'+
+                      '<span class="speak"><i class="fa fa-volume-up" aria-hidden="true"></i></span>' +
+                      '<span class="mute"><i class="fa fa-volume-off" aria-hidden="true"></i></span>' +
+                    '</button>' +
+                    '<div class="sound-select position-relative">'+
+                      '<button class="btn light-btn" type="button">' +
+                        '<span class="icon"><i class="fa fa-microphone" aria-hidden="true"></i></span>' +
+                        '<span class="txt"></span>' +
+                        '<span class="icon arrow-icon"><i class="fa fa-caret-down" aria-hidden="true"></i></span>' +
+                      '</button>' +
+                      '<div class="drop-list voice-drop-list user-select-none">' +
+                    '</div>' +
+                  '</div>' +
+                  '</div>' +
+                  '<div class="timer">00:00</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>'
         );
+
+        setTimeout(function() {
+          $('head').append('<script src="js/jquery-ui.min.js"></script>');
+          $('head').append('<script src="js/speed-reader.js"></script>');
+        },1);
+
       }
       if (flashcard.lesson_type == 'title_text') {
         $('#prevButton').attr('data-type', 'title_text');
