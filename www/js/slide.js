@@ -45,6 +45,8 @@ function signLesson(event, imgId, signInput) {
 }
 
 function sendResponse(flashcard_id, answer) {
+  var current_flashcard = loaded_flashcards[current_slide - 1];
+  console.log("current_flashcard.lesson_type => ", current_flashcard.lesson_type);
   var sessionId = localStorage.getItem('session_id');
   var ip_address = '172.0.0.1';
   var user_device = 'self device';
@@ -65,11 +67,23 @@ function sendResponse(flashcard_id, answer) {
       params: params,
     };
   } else {
-    var data_ = {
-      flashcard: flashcard_id,
-      session_id: localStorage.getItem('session_id'),
-      answer: answer ? answer : '',
-    };
+    if(current_flashcard.lesson_type=='user_gps'){
+      var data_ = {
+        flashcard: flashcard_id,
+        session_id: localStorage.getItem('session_id'),
+        answer: answer ? answer : '',
+        latitude:CURRENT_POSITION!=null?CURRENT_POSITION.coords.latitude:'',
+        longitude:CURRENT_POSITION!=null?CURRENT_POSITION.coords.longitude:'',
+      };
+    }
+    else{
+      var data_ = {
+        flashcard: flashcard_id,
+        session_id: localStorage.getItem('session_id'),
+        answer: answer ? answer : '',
+      };
+    }
+    
   }
 
   console.log(data_);
@@ -157,6 +171,11 @@ function nextSlide() {
       sendResponse(flashcard_id, answer);
     } else if (type == 'user_video_upload') {
       answer = $('#user-video-tag').find('source').attr('src');
+      sendResponse(flashcard_id, answer);
+    }
+    else if(type=="user_gps"){
+      console.log("User-GPS slide page");
+      answer = $('#note').val();
       sendResponse(flashcard_id, answer);
     }
 
@@ -560,13 +579,28 @@ function init() {
       if (flashcard.lesson_type == 'user_gps') {
         console.log("flashcard.lesson_type == 'user_gps'");
         console.log("flashcard value ===> ", flashcard);
-        $('#theSlide').append(
+        /*$('#theSlide').append(
           '<div class="' +
           className +
           '"><div class="title_input"><div alt="title_input" style="height:500px"><h1>GPS Note:</h1><h1> ' +
           flashcard.question +
           '</h1></div></div></div>'
+        );*/
+
+        $('#theSlide').append(
+          `
+          <div class="' +
+          ${className} +'"><div class="title_input">
+          <div alt="title_input" style="height:500px"><h1>GPS Note:</h1>
+          <div class="form-group">
+           <textarea class="form-control" rows="10" name="note" placeholder="note" id="note"></textarea>
+          </div>
+          </div>
+          </div>
+          </div>
+          `
         );
+        handle_gps_click();
       }
 
       if (flashcard.lesson_type == 'user_video_upload') {
