@@ -107,12 +107,32 @@ function updateMeta(type, answer) {
 }
 
 function nextSlide() {
+  var lesson_id = getParam('lesson_id');
   console.log(current_slide);
   if (current_slide < total_slides) {
     current_slide++;
     completed = false;
-  } else {
+    if(current_slide == total_slides){
+      $('#nextButton').html('Submit');
+    }
+  }
+  else {
     completed = true;
+    $(document).ready(function () {
+      $.ajax({
+          url : SERVER + "courses_api/lesson/student/get/mail/" + lesson_id,
+          async : true,
+          crossDomain : true,
+          crossOrigin : true,
+          type : 'GET',
+          headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+      }).done( (response)=> {
+      console.log("🚀 ~ file: settings.html ~ line 202 ~ response", response)
+      }).fail((err) => {
+          // console.log("errorss...",err)
+          console.log("🚀 ~ file: settings.html ~ line 129 ~ errorss", err)
+      })
+      });
     swal({
       title: 'Submitted',
       text: 'You have successfully completed the lesson. Thank you.',
@@ -167,6 +187,7 @@ function nextSlide() {
 function prevSlide() {
   if (current_slide > 0) {
     current_slide--;
+    $('#nextButton').html('Next');
   }
   updateProgressBar();
   console.log(current_slide);
@@ -692,7 +713,9 @@ function init() {
           });
         });
       })
-        .done((res) => console.log('Invitaion res', res))
+        .done((res) => 
+        console.log("🚀 ~ file: slide.js ~ line 727 ~ res", res)
+        )
         .fail((err) => console.log('Invitation err', err));
     }
   })

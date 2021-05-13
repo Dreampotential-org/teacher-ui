@@ -1392,6 +1392,10 @@ $(document).ready(function () {
     }
   });
 });
+$(document).on('click', '#settingshtml', function (e) {
+  
+  $('#settingshtml').attr('href', '/settings.html?lesson_id=' + lesson_id);
+});
 
 $(document).on('click', '.image_upload_button', function (e) {
   $('#imageUpload').click();
