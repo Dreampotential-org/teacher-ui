@@ -5,32 +5,19 @@ var userToken = localStorage.getItem("user-token");
 $("body").delegate("#post_gps", "click", function (e) {
   gps_checkin();
 });
-
+setup_gps_events();
 function setup_gps_events() {
- 
-  $("body").delegate(".video_entry", "click", function (e) {
-    $("#journalModal").modal("show");
-
-    var video_url = $(this).attr("video_url");
-
-    $("#journal-body").html(
-      '<video controls="" autoplay="" name="media" ' +
-        'id="video" height="100%" width="100%">' +
-        '<source src="' +
-        video_url +
-        '" type="video/mp4"></video>'
-    );
-  });
-
   $("body").delegate(".gps-entry", "click", function (e) {
-    $("#journalModal").modal("show");
+    console.log('gps-entry is called...');
+    // $("#journalModal").modal("show");
+    $("#journalModal").show();
 
     $("#journal-body").html(
       "<div id='gps-view' style='width:100%;height:400px;'></div>"
     );
     var spot = {
-      lat: parseFloat($(this).attr("lat")),
-      lng: parseFloat($(this).attr("lng")),
+      lat: CURRENT_POSITION.coords.latitude,
+      lng: CURRENT_POSITION.coords.longitude,
     };
     var name = "";
     var latlng = spot;
@@ -120,7 +107,7 @@ function found_gps_or_timeout() {
           text: "Now, enter event and submit",
           icon: "success",
         });
-
+        setup_gps_events();
         clearInterval(i);
       }
       counter++;
