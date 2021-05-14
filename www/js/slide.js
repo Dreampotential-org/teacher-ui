@@ -333,9 +333,8 @@ function init() {
     // phone_verification_check();
     console.log('>>>>>>>>>>>>>> slide', response);
 
-    //let sign_flashcard = {lesson_type: 'input_signature'}
-    //response.flashcards.push(sign_flashcard)
     total_slides = response.flashcards.length;
+    $('head').append(`<title>${response.lesson_name?response.lesson_name:"Lesson - "+lesson_id}</title>`)
     // Updating Meta Attribute states
     $('#progress-section').show();
 
@@ -768,7 +767,12 @@ function init() {
                 }
               }
               if (f.lesson_type == 'user_gps') {
-                let ans = JSON.parse(rf.answer)
+                let ans = {}
+                try {
+                  ans = JSON.parse(rf.answer)
+              } catch (e) {
+                  // return false;
+              }
                 $('#lat_'+i).val(ans.lat);
                 $('#long_'+i).val(ans.lng);
                 console.log('set previos gps value');
