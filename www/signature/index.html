@@ -30,9 +30,15 @@
                 $('#signature').modal('show');
             }
             var canvas = document.getElementById('signature-pad');
-            var signaturePad = new SignaturePad(canvas, {
-                backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
-            });
+            var signaturePad = undefined;
+            var i = setInterval(() => {
+                if (SignaturePad){
+                    clearInterval(i);
+                    signaturePad = new SignaturePad(canvas, {
+                        backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
+                    });
+                }                
+            }, 1000);           
             
             $('#save-sign').on('click', function () {
                 if (signaturePad.isEmpty()) {

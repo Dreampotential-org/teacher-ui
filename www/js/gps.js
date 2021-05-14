@@ -120,11 +120,10 @@ function found_gps_or_timeout() {
           text: "Now, enter event and submit",
           icon: "success",
         });
-
         clearInterval(i);
       }
       counter++;
-    }, 200);
+    }, 500);
   }, 20);
 }
 
@@ -143,7 +142,7 @@ function gps_checkin() {
   var settings = {
     async: true,
     crossDomain: true,
-    url: SERVER + "/sfapp2/api/do_checkin_gps",
+    url: SERVER + "sfapp2/api/do_checkin_gps",
     method: "POST",
     processData: false,
     contentType: false,
@@ -267,15 +266,19 @@ function start_gps() {
       err.code == err.PERMISSION_DENIED ||
       err.code == err.UNKNOWN_ERROR
     ) {
-      swal({
-        title: "GPS Issue.",
-        text: "Please allow gps permission",
-        icon: "warning",
-      });
+      setTimeout(() => {
+        swal({
+          title: "GPS Issue.",
+          text: "Please allow gps permission",
+          icon: "warning",
+        });
+      }, 1000);
     }
-    console.log("errror no gps");
-    console.warn("ERROR(" + err.code + "): " + err.message);
-    start_gps();
+    // console.log("errror no gps");
+    // console.warn("ERROR(" + err.code + "): " + err.message);
+    setTimeout(() => {
+      start_gps();
+    }, 500);
   }
 
   geo_options = {
@@ -302,11 +305,15 @@ function start_gps() {
 
   function geo_success_low(position) {
     CURRENT_POSITION_LOW = position;
+    var event = new Event('gpsPosition', {lat:position.coords.latitude, long: position.coords.longitude})
+    document.dispatchEvent(event)
     console.log(position.coords.latitude + " " + position.coords.longitude);
   }
 
   function geo_success(position) {
     CURRENT_POSITION = position;
+    var event = new Event('gpsPosition', {lat:position.coords.latitude, long: position.coords.longitude})
+    document.dispatchEvent(event)
     console.log(position.coords.latitude + " " + position.coords.longitude);
   }
 }

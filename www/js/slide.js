@@ -158,6 +158,22 @@ function nextSlide() {
     } else if (type == 'user_video_upload') {
       answer = $('#user-video-tag').find('source').attr('src');
       sendResponse(flashcard_id, answer);
+    }else if (type == 'user_gps') {
+      answer = JSON.stringify({lat: $('#lat_'+(current_slide-1)).val(), lng: $('#long_'+(current_slide-1)).val()});
+      sendResponse(flashcard_id, answer);
+      // console.log('flashcard_id',flashcard_id)
+      document.removeEventListener('gpsPosition',()=>{});
+    }
+
+    if(current_slide!=total_slides && loaded_flashcards[current_slide].lesson_type == 'user_gps'){
+      handle_gps_click();
+      document.addEventListener('gpsPosition', d=>{
+         console.log('pos',CURRENT_POSITION, CURRENT_POSITION_LOW)
+         let lat = CURRENT_POSITION?CURRENT_POSITION.coords.latitude:CURRENT_POSITION_LOW.coords.latitude
+         let long = CURRENT_POSITION?CURRENT_POSITION.coords.longitude:CURRENT_POSITION_LOW.coords.longitude
+         $('#lat_'+current_slide).val(lat);
+         $('#long_'+current_slide).val(long);
+      });
     }
 
     $('#myCarousel').carousel('next');
@@ -563,9 +579,13 @@ function init() {
         $('#theSlide').append(
           '<div class="' +
           className +
-          '"><div class="title_input"><div alt="title_input" style="height:500px"><h1>GPS Note:</h1><h1> ' +
+          '"><div class="title_input"><div alt="title_input" id="flashcard_'+i+'" style="height:500px"><h1>GPS Note:</h1><p> ' +
           flashcard.question +
-          '</h1></div></div></div>'
+          `</p><div><label>Lattitude: </label>
+          <input id="lat_${i}" value="0" disabled></div>
+          <div style="margin-top:16px;"><label>Longitude: </label>
+          <input id="long_${i}" value="0" disabled></div>`+
+          '</div></div></div>'
         );
       }
 
@@ -633,6 +653,7 @@ function init() {
       }
 
       if (flashcard.lesson_type == 'signature') {
+        $('head').append('<script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>');
         $('#theSlide').append(`
                 <div class="${className}" id="flashcard_${i}">
                 <div class="text-center alt="signature">
@@ -688,12 +709,28 @@ function init() {
                   $('#flashcard_' + i).find('button')[0].innerText = 'Update Signature';
                 }
               }
+              if (f.lesson_type == 'user_gps') {
+                let ans = JSON.parse(rf.answer)
+                $('#lat_'+i).val(ans.lat);
+                $('#long_'+i).val(ans.lng);
+                console.log('set previos gps value');
+              }
             }
           });
         });
       })
         .done((res) => console.log('Invitaion res', res))
         .fail((err) => console.log('Invitation err', err));
+    }
+    if(total_slides && flashcards[0].lesson_type == 'user_gps'){
+      handle_gps_click();
+      document.addEventListener('gpsPosition', d=>{
+         console.log('pos',CURRENT_POSITION, CURRENT_POSITION_LOW)
+         let lat = CURRENT_POSITION?CURRENT_POSITION.coords.latitude:CURRENT_POSITION_LOW.coords.latitude
+         let long = CURRENT_POSITION?CURRENT_POSITION.coords.longitude:CURRENT_POSITION_LOW.coords.longitude
+         $('#lat_0').val(lat);
+         $('#long_0').val(long);
+      });
     }
   })
 }
