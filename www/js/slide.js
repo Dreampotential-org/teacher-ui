@@ -13,6 +13,10 @@ var imported = document.createElement('script');
 imported.src = 'js/gps.js';
 document.head.appendChild(imported);
 
+var imported = document.createElement('script');
+imported.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCEYIL86ek3icvHx6F-55qSFCfhe2fynfg';
+document.head.appendChild(imported);
+
 function updateProgressBar() {
   pct = (current_slide / total_slides) * 100;
   $('.progress-bar').css('width', pct + '%');
@@ -609,13 +613,18 @@ function init() {
         );*/
 
         $('#theSlide').append(
-          `
-          <div class="' +
+          `<div class="' +
           ${className} +'"><div class="title_input">
           <div alt="title_input" style="height:500px"><h1>GPS Note:</h1>
           <div class="form-group">
            <textarea class="form-control" rows="10" name="note" placeholder="note" id="note"></textarea>
-          </div>
+           </div>
+           <div class="form-group">
+           <button class='btn btn-info gps-entry'>View Map</button>
+           </div>
+           <div id="journalModal">
+           <div id='journal-body'></div>
+           </div>
           </div>
           </div>
           </div>
