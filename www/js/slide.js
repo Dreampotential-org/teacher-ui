@@ -13,6 +13,10 @@ var imported = document.createElement('script');
 imported.src = 'js/gps.js';
 document.head.appendChild(imported);
 
+var imported = document.createElement('script');
+imported.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCEYIL86ek3icvHx6F-55qSFCfhe2fynfg';
+document.head.appendChild(imported);
+
 function updateProgressBar() {
   pct = (current_slide / total_slides) * 100;
   $('.progress-bar').css('width', pct + '%');
@@ -45,6 +49,8 @@ function signLesson(event, imgId, signInput) {
 }
 
 function sendResponse(flashcard_id, answer) {
+  var current_flashcard = loaded_flashcards[current_slide - 1];
+  console.log("current_flashcard.lesson_type => ", current_flashcard.lesson_type);
   var sessionId = localStorage.getItem('session_id');
   var ip_address = '172.0.0.1';
   var user_device = 'self device';
@@ -65,11 +71,23 @@ function sendResponse(flashcard_id, answer) {
       params: params,
     };
   } else {
-    var data_ = {
-      flashcard: flashcard_id,
-      session_id: localStorage.getItem('session_id'),
-      answer: answer ? answer : '',
-    };
+    if(current_flashcard.lesson_type=='user_gps'){
+      var data_ = {
+        flashcard: flashcard_id,
+        session_id: localStorage.getItem('session_id'),
+        answer: answer ? answer : '',
+        latitude:CURRENT_POSITION!=null?CURRENT_POSITION.coords.latitude:'',
+        longitude:CURRENT_POSITION!=null?CURRENT_POSITION.coords.longitude:'',
+      };
+    }
+    else{
+      var data_ = {
+        flashcard: flashcard_id,
+        session_id: localStorage.getItem('session_id'),
+        answer: answer ? answer : '',
+      };
+    }
+    
   }
 
   console.log(data_);
@@ -107,12 +125,32 @@ function updateMeta(type, answer) {
 }
 
 function nextSlide() {
+  var lesson_id = getParam('lesson_id');
   console.log(current_slide);
   if (current_slide < total_slides) {
     current_slide++;
     completed = false;
-  } else {
+    if(current_slide == total_slides){
+      $('#nextButton').html('Submit');
+    }
+  }
+  else {
     completed = true;
+    $(document).ready(function () {
+      $.ajax({
+          url : SERVER + "courses_api/lesson/student/get/mail/" + lesson_id,
+          async : true,
+          crossDomain : true,
+          crossOrigin : true,
+          type : 'GET',
+          headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+      }).done( (response)=> {
+      console.log("🚀 ~ file: settings.html ~ line 202 ~ response", response)
+      }).fail((err) => {
+          // console.log("errorss...",err)
+          console.log("🚀 ~ file: settings.html ~ line 129 ~ errorss", err)
+      })
+      });
     swal({
       title: 'Submitted',
       text: 'You have successfully completed the lesson. Thank you.',
@@ -175,6 +213,11 @@ function nextSlide() {
          $('#long_'+current_slide).val(long);
       });
     }
+    else if(type=="user_gps"){
+      console.log("User-GPS slide page");
+      answer = $('#note').val();
+      sendResponse(flashcard_id, answer);
+    }
 
     $('#myCarousel').carousel('next');
   }
@@ -183,6 +226,7 @@ function nextSlide() {
 function prevSlide() {
   if (current_slide > 0) {
     current_slide--;
+    $('#nextButton').html('Next');
   }
   updateProgressBar();
   console.log(current_slide);
@@ -576,17 +620,31 @@ function init() {
       if (flashcard.lesson_type == 'user_gps') {
         console.log("flashcard.lesson_type == 'user_gps'");
         console.log("flashcard value ===> ", flashcard);
+
         $('#theSlide').append(
-          '<div class="' +
-          className +
-          '"><div class="title_input"><div alt="title_input" id="flashcard_'+i+'" style="height:500px"><h1>GPS Note:</h1><p> ' +
-          flashcard.question +
-          `</p><div><label>Lattitude: </label>
+          `<div class="' +
+          ${className} +'"><div class="title_input">
+          <div alt="title_input" style="height:500px"><h1>GPS Note:</h1>
+          <p> ${flashcard.question}</p>
+          <div><label>Lattitude: </label>
           <input id="lat_${i}" value="0" disabled></div>
           <div style="margin-top:16px;"><label>Longitude: </label>
-          <input id="long_${i}" value="0" disabled></div>`+
-          '</div></div></div>'
+          <input id="long_${i}" value="0" disabled></div>
+          <div class="form-group">
+           <textarea class="form-control" rows="10" name="note" placeholder="note" id="note"></textarea>
+           </div>
+           <div class="form-group">
+           <button class='btn btn-info gps-entry'>View Map</button>
+           </div>
+           <div id="journalModal">
+           <div id='journal-body'></div>
+           </div>
+          </div>
+          </div>
+          </div>
+          `
         );
+        handle_gps_click();
       }
 
       if (flashcard.lesson_type == 'user_video_upload') {
@@ -719,7 +777,9 @@ function init() {
           });
         });
       })
-        .done((res) => console.log('Invitaion res', res))
+        .done((res) => 
+        console.log("🚀 ~ file: slide.js ~ line 727 ~ res", res)
+        )
         .fail((err) => console.log('Invitation err', err));
     }
     if(total_slides && flashcards[0].lesson_type == 'user_gps'){

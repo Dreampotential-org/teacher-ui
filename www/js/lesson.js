@@ -741,15 +741,15 @@ function addVerifyPhone(isNew, id, question, image, posU) {
 
 function addUserGps(isNew, id, question, image, posU){
   if (!isNew) {
-    $('#user_gps').find('textarea').first().html(question);
-    $('#user_gps').find('textarea').last().attr('data-id', id);
+    // $('#user_gps').find('textarea').first().html(question);
+    // $('#user_gps').find('textarea').last().attr('data-id', id);
   } else {
-    $('#user_gps').find('textarea').first().html('');
+    // $('#user_gps').find('textarea').first().html('');
   }
   $('#sortable').append($('#user_gps').html());
   user_gps_count++;
   sortablePositionFunction(isNew, posU);
-  handle_gps_click();
+  // handle_gps_click();
 }
 
 function addBrainTree(isNew, id, merchant_ID, braintree_public_key, braintree_private_key, braintree_item_name, braintree_item_price, posU) {
@@ -1018,9 +1018,10 @@ function sendUpdates() {
      case 'user_gps':
         temp = {
           lesson_type: 'user_gps',
-          question: attr_array[0],
-          latitude:CURRENT_POSITION.coords.latitude,
-          longitude:CURRENT_POSITION.coords.longitude,
+          // question: attr_array[0],
+          question: 'User GPS',
+          // latitude:CURRENT_POSITION.coords.latitude,
+          // longitude:CURRENT_POSITION.coords.longitude,
           position: position_me,
         };
         flashcards.push(temp);
@@ -1391,6 +1392,10 @@ $(document).ready(function () {
       });
     }
   });
+});
+$(document).on('click', '#settingshtml', function (e) {
+  
+  $('#settingshtml').attr('href', '/settings.html?lesson_id=' + lesson_id);
 });
 
 $(document).on('click', '.image_upload_button', function (e) {
