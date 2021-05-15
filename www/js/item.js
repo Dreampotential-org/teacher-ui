@@ -20,15 +20,12 @@ function getParam(sParam) {
 
 
 $(document).ready(function () {
-
 $("#left-sidebar").load("sidebar.html");
 $("#page-header").load("header.html");
 $("#tabDiv").show();
 $("#systemUserDetail").hide();
 $("#buyItem").hide();
 $("#NeighbourDiv").hide();
-// console.log("ajax call started");
-// var SERVER = 'http://127.0.0.1:8000/';
 var images = [];
 var addImages = [];
 var settings = {
@@ -47,6 +44,8 @@ var settings = {
 };
 $.ajax(settings).done(function (response) {
   // response = JSON.parse(response);
+  console.log("123");
+  console.log(localStorage.getItem("user-token"));
   console.log(response);
     response.forEach((item,i) => {
       var image_temp = '';
@@ -400,6 +399,7 @@ function neighbourhoodItems(){
         </div>
         </td>
         <td><button onclick="buyItem(${item.pk})" class="btn btn-primary">Buy</button></td>
+        <td><button type="button" data-id="${item.pk}" data-toggle="modal" data-target="#messageModal" class="messageModal btn btn-primary">Send Message</button></td>
         </tr>`);
     })
     $('#Neighbour_item_data_table').DataTable({
@@ -423,6 +423,58 @@ function neighbourhoodItems(){
     });
   });
 }
+// assign value
+$(document).on("click", ".messageModal", function (e) {
+
+	e.preventDefault();
+
+	var _self = $(this);
+
+	var itemId = _self.data('id');
+	$("#messageItemId").val(itemId);
+
+	// $(_self.attr('href')).modal('show');
+});
+//Send Message form submit
+$("#messageItemform").submit((event) => {
+  event.preventDefault()
+  // craete item
+  console.log($("#messageItemId").val());
+  console.log($("#itemMessage").val());
+  var messageItem_form = new FormData();
+  messageItem_form.append("messageItemId", $("#messageItemId").val());
+  messageItem_form.append("itemMessage", $("#itemMessage").val());
+  messageItem_form.append("messageItemIdStatus",true)
+  console.log(messageItem_form);
+  var settings_sendMessage_item = {
+    "async": true,
+    "crossDomain": true,
+    "url": SERVER + 'store/sendMessage',
+    "method": "POST",
+    "type": "POST",
+    "processData": false,
+    "contentType": false,
+    // "mimeType": "multipart/form-data",
+    "data": messageItem_form,
+    "headers": {
+        "Authorization": localStorage.getItem("user-token")
+    }
+  };
+  $.ajax(settings_sendMessage_item).done(function (response) {
+    // response = JSON.parse(response);
+    console.log(response);
+    location.reload()
+  }).fail(function (response) {
+          console.log(response,"send Message item Failed!");
+    swal({
+        title: "Error!",
+        text: "Send Message is failed!",
+        icon: "warning",
+    });
+  });
+
+})
+//////end form submit Message Send
 function usersitems(){
   $("#tabDiv").show();
   $("#systemUserDetail").hide();

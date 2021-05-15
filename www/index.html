@@ -18,8 +18,14 @@
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
         <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+        <!-- firebase -->
+        <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
         <!-- user.html JS, CSS end -->
-
+        <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEYIL86ek3icvHx6F-55qSFCfhe2fynfg">
+        </script> -->
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEYIL86ek3icvHx6F-55qSFCfhe2fynfg&callback=initMap"
+        type="text/javascript"></script>
         <link rel="stylesheet" href="css/dashboard.css">
         <link rel="stylesheet" href="css/sidebar.css">
         <link rel="stylesheet" href="css/setting.css">
@@ -30,7 +36,11 @@
 
         <script src="js/main.js"></script>
         <script src="js/web_api.js"></script>
-
+       
+      <script>
+          google.maps.event.addDomListener(window, 'load', initialize);
+      </script>
+        
         <style>
             .p-0 .container-fluid {
                 padding-left: 0px !important;
@@ -51,7 +61,6 @@
 
     </head>
     <body>
-
         <div id="page-container">
 
         </div>

@@ -21,6 +21,9 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
   <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+  <!-- firebase -->
+  <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
   <!-- user.html JS, CSS end -->
 
   <link rel="stylesheet" href="css/dashboard.css" />
@@ -210,7 +213,7 @@
                         <td>${item.fields.from_number}</td>
                         <td>${item.fields.to_number}</td>
                         <td><audio controls >
-                        <source src="${item.fields.recording_url}">
+                        <source src="${item.fields.recording_url}" type="audio/mpeg">
                         </audio></td>
                         </tr>`);
           $('#outboundCallsLoader').remove();
@@ -219,11 +222,11 @@
                         <td>${item.fields.from_number}</td>
                         <td>${item.fields.to_number}</td>
                         <td><audio controls >
-                        <source src="${item.fields.recording_url}">
+                        <source src="${item.fields.recording_url}" type="audio/mpeg">
                         </audio></td>
                         </tr>`);
         });
-        
+
         $("#inboundCall").DataTable();
         $("#outboundCall").DataTable();
       });
@@ -231,4 +234,5 @@
 
   </script>
 </body>
+
 </html>

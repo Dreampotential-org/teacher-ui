@@ -37,6 +37,10 @@
     />
     <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+    <!-- firebase -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
     <!-- user.html JS, CSS end -->
 
     <link rel="stylesheet" href="css/dashboard.css" />
@@ -104,7 +108,7 @@
                               <input type="tel" class="form-control" id="call" placeholder="Your Number"  required/>
                           </div>
                         
-                          <button class="btn btn-primary float-right" id="make_call" type="submit"><i class="fa fa-phone-square"></i> Call</button>
+                          <button class="btn btn-primary float-right" id="make_call" type="button"><i class="fa fa-phone-square"></i> Call</button>
                         </form>
                       </div>
                       <div class="tab-pane fade" id="nav-sms" role="tabpanel" aria-labelledby="nav-sms-tab">
@@ -189,16 +193,16 @@
         }).done( () => {
             swal({	
                 title: "Calling",
-                text: "You have successfully make_call",	
+                text: "You have successfully make_call", 
                 icon: "success",
-                timer: 2000
+                timer: 3000
                 })
         }).fail( (err) => {
             swal({	
                 title: "not calling",	
                 text: "somthing went wrong.",	
-                icon: "error",	
-                timer: 2000
+                icon: "error", 
+                timer: 3000
                 });	
             console.log(err)
         })

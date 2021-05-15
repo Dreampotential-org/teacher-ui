@@ -1,4 +1,4 @@
-SERVER = 'https://sfapp-api.dreamstate-4-all.org/'
+SERVER = 'https://api.dreampotential.org/'
 
 const urlParams = new URLSearchParams(window.location.search);
 var classData = {}

@@ -24,6 +24,9 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
     <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+    <!-- firebase -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
     <!-- user.html JS, CSS end -->
 
     <link rel="stylesheet" href="css/dashboard.css" />
@@ -238,9 +241,9 @@
                                     <button onclick="goBack()" class="btn">
                                         <i class="fa fa-chevron-left"></i> Back
                                     </button>
-                                    <!-- <button class="btn btn-danger float-right" id="lessonDelete">
+                                    <button class="btn btn-danger float-right" id="lessonDelete">
                                         <i class="fa fa-trash"></i> Delete
-                                    </button> -->
+                                    </button>
                                 </div>
 
                                 <h2 class="text-center">
@@ -534,7 +537,7 @@
 
             $.ajax({
                 url: SERVER + "courses_api/lesson/all",
-                async: true,
+                // async: true,
                 crossDomain: true,
                 crossOrigin: true,
                 type: "GET",
@@ -549,16 +552,14 @@
                 })
 
                 $('#lessonLoader').remove();
-
+                //need to check its user role 'student' or 'anyother', and append users-data.
                 user_lessons.forEach((item, i) => {
                     $("#users-data").append(`<tr>
                         <td>${item.courseid}</td>
                         <td>${item.coursename}</td>
                         <td><button onclick="editSystemUser('${item.courseid}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
                           <button onclick="openStudentLesson('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-eye"></i></button>
-                          <button onclick="on('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-user-plus"></i></button>
-                          <button onclick="lessonDelete('${item.courseid}')" class="btn btn-primary btn-edit"><i class="fa fa-trash"></i></button>
-                        </td>
+                          <button onclick="on('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-user-plus"></i></button></td>
                         </tr>`);
                 });
                 $.ajax({	
@@ -625,15 +626,14 @@
             })
         })
 
-        //  delete lesson.
-        function lessonDelete(id) {
+        $("#lessonDelete").click(() => {
             $.ajax({
-                url: SERVER + "courses_api/lesson/all"+"?lesson_id="+id,
+                url: SERVER + "courses_api/lesson/all",
                 async: true,
                 crossDomain: true,
                 crossOrigin: true,
                 type: "DELETE",
-                // data : {lesson_id :$("#courseid").val()},
+                data : {lesson_id :$("#courseid").val()},
                 headers: { "Authorization": `${localStorage.getItem('user-token')}` }
 
             }).done( () => {
@@ -653,7 +653,7 @@
                     });	
                console.log(err)
             })
-        }
+        })
 
         $("#list").change(() => {	
             initValue = $("#list option:selected").val()	

@@ -233,7 +233,7 @@
       /*
         this function is responsible on joining a channel for audio room. 
       */
-      var SERVER ='https://sfapp-api.dreamstate-4-all.org/'
+      var SERVER ='https://api.dreampotential.org/'
       var response;
       $.ajax({
             url: SERVER + "token/api/get_token/",

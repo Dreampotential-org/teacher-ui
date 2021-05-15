@@ -54,6 +54,9 @@
 
     <script src="js/main.js"></script>
     <script src="js/web_api.js"></script>
+    <!-- firebase -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
 
     <style>
       .p-0 .container-fluid {
@@ -181,6 +184,7 @@
                                 <th>Price</th>
                                 <th>Images</th>
                                 <th>Buy</th>
+                                <th>Message</th>
                               </tr>
                             </thead>
                             <tbody id="Neighbour_item-data"></tbody>
@@ -356,6 +360,47 @@
               </div>
             </div>
             <!-- end edit item model -->
+            <!-- Message Modal -->
+            <div
+              class="modal fade"
+              id="messageModal"
+              tabindex="-1"
+              role="dialog"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Send Message</h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form class="px-2" id="messageItemform" >
+                      <div class="form-group">
+                        <label for="Message">Message</label>
+                        <input type="text" name="messageItemId" id="messageItemId" value="" />
+                        <textarea class="form-control" placeholder="Message For Item" 
+                        id="itemMessage" name="itemMessage" rows="4" cols="50" required></textarea>
+                      </div>
+                      <button
+                        type="submit"
+                        class="btn btn-primary float-right"
+                      >
+                        Submit
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- end message model -->
           </div>
         </div>
       </div>

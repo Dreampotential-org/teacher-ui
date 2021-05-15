@@ -1,0 +1,100 @@
+:root {
+    --first-color: #411c71;
+    --second-color: #260f43;
+    --third-color: #ffffff;
+    --fourth-color: #af4d55;
+    --fifth-color: #e6d3ff;
+    --success-color: #4BB543;
+    --gray-color: #aaa;
+    --light-gray-color: #ccc;
+    --dark-color: #000;
+    --first-tr-color: #411c71cc;
+    --bg-hover-color: #5a289bff;
+    --input-bg-color: #5a289b99;
+    --third-tr-color: #ffffffaa;
+    --placeholder-color: #ffffff66;
+    --link-bg-color: #ffffff22;
+    --overlay-bg-color: #ffffff33;
+    --font-first: 'Roboto', sans-serif;
+    --navbar-height: 150px;
+}
+
+html, body {
+    font-family: var(--font-first);
+    background-color: var(--first-color);
+}
+
+button, h1,h2,h3,h4,p {
+    font-family: var(--font-first);
+}
+
+#theSlide{
+    display: block;
+    /* border: 1px solid var(--fifth-color); */
+    padding: 1.5rem;
+    min-height: 300px;
+}
+
+.c-btn {
+    background: var(--link-bg-color);
+    color: var(--third-color);
+    font-size: 1.3rem;
+    padding: 0.6rem 1rem;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 2px;
+    text-decoration: none;
+}
+
+input.form-control,
+textarea.form-control {
+    margin-top: 0.3rem;
+    box-sizing: border-box;
+    width: 100%;
+    background: var(--input-bg-color);
+    padding: 0.5rem;
+    border: none;
+    outline: none;
+    font-size: 1.3rem;
+    resize: none;
+    color: var(--third-color);
+    border-radius: 2px;
+}
+
+textarea.form-control {
+    height: 9.375rem;
+    font-family: sans-serif;
+}
+
+input.form-control::placeholder,
+textarea.form-control::placeholder {
+    color: var(--placeholder-color);
+}
+
+.carousel-inner{
+    color: var(--fifth-color);
+}
+
+.progress{
+    background-color: var(--overlay-bg-color);
+    border-radius: 0;
+    height: 5px;
+}
+
+.progress-bar{
+    background-color: var(--fifth-color);
+}
+
+.txt-light{
+    color: var(--overlay-bg-color);
+}
+
+
+input[type=checkbox], input[type=radio] {
+    margin-right: 1rem;
+    transform: scale(1.5);
+    margin: 10px;
+    cursor: pointer;
+    filter: hue-rotate(60deg);
+}

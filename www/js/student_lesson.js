@@ -17,7 +17,7 @@ function selectLesson() {
   var thelesson_id = $("#select_lesson :selected").val();
   //   window.location.href = "/lesson.html?lesson_id=" + thelesson_id;
   window.location.href =
-    "https://sfapp.dreamstate-4-all.org" +
+    "https://api.dreampotential.org" +
     "/student_lesson.html?lesson_id=" +
     thelesson_id;
 }

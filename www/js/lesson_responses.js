@@ -1,7 +1,53 @@
-        $(document).ready(function () {
-            $("#left-sidebar").load("sidebar.html");
-            $("#page-header").load("header.html");
-        });
+let session_responses = []
+var lesson_id = getParam("lesson_id")
+
+$(document).ready(function () {
+    $("#left-sidebar").load("sidebar.html");
+    $("#page-header").load("header.html");
+    $.ajax({
+        type: "GET",
+        url: SERVER+'courses_api/lesson/response/get/'+lesson_id+'/',
+        dataType: 'json',
+        async: true,	
+        crossDomain: true,	
+        crossOrigin: true,
+        headers: {	
+            "Authorization": `${localStorage.getItem('user-token')}`	
+        },	
+        success: function (obj, textstatus) {
+        console.log("🚀 ~ file: lesson_responses.js ~ line 83 ~ obj", obj)
+        var columnsObj = [
+            { data: "user_session.0.session_id", "sWidth": "25%"},
+            { data: "flashcard.0.id", "sWidth": "25%"},
+            { data: "answer", "sWidth": "25%" },
+            { data: "flashcard.0.usersessionevent.0.duration", "sWidth": "25%" },
+        ];
+        // console.log("🚀 ~ file: lesson_responses.js ~ line 100 ~ obj", obj)
+                $('#FlashCardResponse_Table').DataTable({
+                    data: obj,
+                    columns: columnsObj,
+                    rowsGroup: [
+                            1,
+                            0,
+                            2,
+                            3
+                        ]
+                });
+                $('#UserSession_Table').DataTable({
+                    data: obj,
+                    columns: [
+                        { data: 'user_session.0.name', "sWidth": "25%"  },
+                        { data: 'user_session.0.email', "sWidth": "25%" },
+                        { data: 'user_session.0.phone', "sWidth": "25%" }
+                    ]
+                });
+        },
+        // error: function (obj, textstatus) {
+        //     alert(obj.msg);
+        // }
+    });
+    $.fn.dataTable.ext.errMode = 'none';
+});
 
 function getParam(sParam){
     var sPageURL = window.location.search.substring(1);
@@ -13,37 +59,3 @@ function getParam(sParam){
         }
     }
 }
-
-let session_responses = []
-var lesson_id = getParam("lesson_id")
-
-$.get(SERVER+'courses_api/lesson/response/get/'+lesson_id+'/',function(response){
-    response.forEach(function(r){
-        var q = r.flashcard[0].question
-        var a = r.answer
-        var s_id = r.user_session[0].session_id
-        var type = r.flashcard[0].lesson_type
-        if(!session_responses[s_id]){
-            session_responses[s_id] = new Array()
-        } 
-        session_responses[s_id].push([q,a,type])
-    })
-
-    for (key in session_responses){
-        let sess_id = key
-        let sess_data = session_responses[key]
-        $("#response-data").append("<tr><td>"+sess_id+"</td><td id="+sess_id+"></td></tr>")
-
-        sess_data.forEach(sess_entry => {
-            let question_ = sess_entry[0]
-            let answer_ = sess_entry[1]
-            let type_ = sess_entry[2]
-
-            $('#'+sess_id).append('<b>'+question_+'</b><hr>'+answer_+'<br><hr><br>')
-
-        })
-
-
-    }
-
-})

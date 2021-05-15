@@ -25,6 +25,9 @@
           <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"/>
           <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
           <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+          <!-- firebase -->
+          <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
+          <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
           <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWJ2UbLhFeu3jVgd4ZwWMMNyGl4Kqx7V4"></script>
           <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
 
@@ -350,6 +353,8 @@
                                                   </button>
                                              </div>
                                              <div class="modal-body">
+                                                  <div id="music_files"></div>  
+                                                  <br><br>
                                                   <div id="Zillow_url"></div>
                                                   <div class="form-group" style="margin-top: 10px;">
                                                        <label for="status_val">select status</label>
@@ -435,15 +440,8 @@
                var selected_user_index;
                var user_leads;
                var call_data;
-               let table;
+               var table;
                $(document).ready(function () {
-
-                    // list_inbound_calls(function (call_data) {
-                    //      console.log("response of the call logs from calls .....list")
-                    //      console.log("call_data..",call_data)
-                    // });
-
-
 
                     $.ajax({
                          url : SERVER + "voip/api_voip/getlead",
@@ -455,14 +453,13 @@
                     }).done( (response)=> {
                          document.getElementById("lead_loader").remove();
                          user_leads = JSON.parse(response)
-                         console.log("userleadd------",user_leads)
                          user_leads.forEach((item , index) => {
                               $("#lead_data").append(`<tr>
                                    <td onclick=check_box(${item.pk})></td>
                                    <td id="editLead" onClick=editLead(${index})>${item.fields.name}</td>
                                    <td>${item.fields.phone}</td>
                                    <td>${item.fields.last_call}</td>
-                                   <td>""</td>
+                                   <td>${item.fields.recording_url}</td>
                                    <td>${item.fields.state}</td>
                                    <td>${item.fields.status}</td>
                                    <td>${item.fields.ask}</td>
@@ -638,15 +635,12 @@
                function check_box(id){
                     if (list_delete.indexOf(id) === -1) {  
                          list_delete.push(id)
-                         console.log(list_delete)
                     }
                     else{
-                         console.log("else ke under...")
                          const index = list_delete.indexOf(id);
                          if (index > -1) {
                               list_delete.splice(index, 1);
                          }
-                         console.log(list_delete)
                     }
                }
 
@@ -809,11 +803,47 @@
                          },
                          headers: { "Authorization": `${localStorage.getItem('user-token')}` }
                     }).done( ()=> {                        
-                        console.log("calling to lead")
                         table.reload();
                     })
                }
                })
+
+               // play pause music on conference call.
+               var audio_files = {
+                    'koyal_bird' : "https://audio-previews.elements.envatousercontent.com/files/237106115/preview.mp3",
+                    'insects_voice' : "https://assets.mixkit.co/sfx/preview/mixkit-small-birds-in-the-nest-29.mp3",
+                    'one_bird' : "https://orangefreesounds.com/wp-content/uploads/2021/04/Bird-tweeting-sound-effect.mp3",
+                    'picock_bird' : "http://seh-audio.s3.amazonaws.com/peacock_sounds_long.wav",
+                    'koyal_bird' : "https://nf1f8200-a.akamaihd.net/downloads/ringtones/files/mp3/beautiful-koyal-real-sound-mp3-good-morning-songsindia-net-9993.mp3",
+                    'insects_voice_2' : "https://assets.mixkit.co/sfx/preview/mixkit-little-birds-singing-in-the-trees-17.mp3"
+               }
+
+               for (let file in audio_files) {
+                    console.log(file + ' is ' + audio_files[file])
+                    $("#music_files").append(
+                         `<div>
+                              <audio id='${file}'>
+                              <source src=${audio_files[file]} type="audio/mpeg">
+                                   Your browser does not support the audio element.
+                              </audio>
+                              <button class="btn btn-info" onclick="playAudio('${file}')" type="button"> <i class="fa fa-play" aria-hidden="true"></i></button>
+                              <button class="btn btn-primary" onclick="pauseAudio('${file}')" type="button"><i class="fa fa-pause" aria-hidden="true"></i></button> 
+                              ${file}                                                  
+                         </div>`
+                    )
+               }
+               // function to play audio
+               function playAudio(key) {
+                    console.log(key)
+                    var x = document.getElementById(key);
+                    x.play(); 
+               } 
+               // function to pause audio
+               function pauseAudio(key) { 
+                    console.log(key)
+                    var x = document.getElementById(key);
+                    x.pause(); 
+               } 
 
                // save notes and status to db
                $("#save_notes").click( () => {

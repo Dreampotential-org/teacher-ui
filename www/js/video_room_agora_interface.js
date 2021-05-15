@@ -33,7 +33,7 @@ function initClientAndJoinChannel(channel, uid) {
 
   // call from api
   $.ajax({
-      url: 'https://sfapp-api.dreamstate-4-all.org/token/api/get_token/',
+      url: 'https://api.dreampotential.org/token/api/get_token/',
       type: "POST",
       data: {
         'channel_name': channel

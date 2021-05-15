@@ -1,8 +1,7 @@
 $.ajaxSetup({
     statusCode: {
         401: function (jqxhr, textStatus, errorThrown) {
-            // XXX maybe remove token is not right move?
-            // XXX debug what url route was called
+            // alert('You must login to proceed');
             localStorage.removeItem('user-token');
             $('body').load('student_login.html');
         }
@@ -33,7 +32,7 @@ function list_question_counters(callback) {
         callback(JSON.parse(response))
     }).fail(function (err) {
         console.log(err)
-        alert("ERROR")
+        // alert("ERROR")
     })
 }
 
@@ -55,7 +54,7 @@ function list_inbound_calls(callback) {
         callback(JSON.parse(response))
     }).fail(function (err) {
         console.log(err)
-        alert("ERROR")
+        // alert("ERROR")
     })
 }
 
@@ -73,7 +72,7 @@ function list_services(callback) {
         callback(JSON.parse(response))
     }).fail(function (err) {
         console.log(err)
-        alert("ERROR")
+        // alert("ERROR")
     })
 }
 
@@ -96,7 +95,7 @@ function get_user_list(callback) {
         callback(JSON.parse(response))
     }).fail(function (err) {
         console.log(err)
-        alert("ERROR")
+        // alert("ERROR")
     })
 }
 
@@ -118,7 +117,7 @@ function get_activity_list(phone, cb) {
         cb(JSON.parse(response))
     }).fail(function (err) {
         console.log(err)
-        alert("ERROR")
+        // alert("ERROR")
     })
 }
 
@@ -139,7 +138,7 @@ function get_tags(member_id, cb) {
         cb(JSON.parse(response))
     }).fail(function (err) {
         console.log(err)
-        alert("ERROR")
+        // alert("ERROR")
     })
 }
 
@@ -333,7 +332,7 @@ function get_sms_to_number(to_number, callback) {
         callback(response.messages)
     }).fail(function (err) {
         console.log(err)
-        alert("ERROR")
+        // alert("ERROR")
     })
 }
 
