@@ -150,6 +150,29 @@ function addTitleText(isNew, id, title, text, posU) {
   title_text_count++;
 }
 
+function addJitsiMeet(isNew, id, title, text, posU) {
+  console.log(isNew, id, title, posU)
+  if (!isNew) {
+    $('#jitsi_meet').find('input[type=text]').attr('value', title);
+    $('#jitsi_meet').find('textarea').html(text);
+    $('#jitsi_meet').find('input[type=text]').attr('data-id', id);
+    $('#jitsi_meet').find('textarea').attr('data-id', id);
+  } else {
+    $('#jitsi_meet').find('input[type=text]').attr('value', '');
+    $('#jitsi_meet').find('textarea').html('');
+  }
+  $('#jitsi_meet')
+    .find('textarea')
+    .attr('name', 'text_' + title_text_count);
+  $('#jitsi_meet')
+    .find('input[type=text]')
+    .attr('name', 'title_' + title_text_count);
+  $('#sortable').append($('#jitsi_meet').html());
+  sortablePositionFunction(isNew, posU);
+
+  title_text_count++;
+}
+
 function addTitleInput(isNew, id, title, text, posU) {
   if (!isNew) {
     $('#title_input').find('textarea').html(title);
@@ -892,6 +915,15 @@ function sendUpdates() {
       });
     }
     switch (flashcard_type) {
+      case 'jitsi_meet':
+        temp = {
+          lesson_type: 'jitsi_meet',
+          question: attr_array[0],
+          position: position_me,
+        };
+        flashcards.push(temp);
+        break;
+        
       case 'speed_read':
         temp = {
           lesson_type: 'quick_read',
@@ -1174,7 +1206,9 @@ $(document).ready(function () {
               flashcard.position
             );
           }
-
+          if (flashcard.lesson_type == 'jitsi_meet') {
+            addJitsiMeet(false, flashcard.id, flashcard.question, flashcard.answer, flashcard.position);
+          }
           if (flashcard.lesson_type == 'title_input') {
             addTitleInput(false, flashcard.id, flashcard.question, flashcard.answer, flashcard.position);
           }
@@ -1332,6 +1366,9 @@ $(document).ready(function () {
   });
 
   $('#add').click(function (e) {
+    if ($('#selectsegment').val() == 'jitsi_meet') {
+      addJitsiMeet(true);
+    }
     if ($('#selectsegment').val() == 'speed_read') {
       addSpeedRead(true);
     }
