@@ -71,23 +71,23 @@ function sendResponse(flashcard_id, answer) {
       params: params,
     };
   } else {
-    if(current_flashcard.lesson_type=='user_gps'){
+    if (current_flashcard.lesson_type == 'user_gps') {
       var data_ = {
         flashcard: flashcard_id,
         session_id: localStorage.getItem('session_id'),
         answer: answer ? answer : '',
-        latitude:CURRENT_POSITION!=null?CURRENT_POSITION.coords.latitude:'',
-        longitude:CURRENT_POSITION!=null?CURRENT_POSITION.coords.longitude:'',
+        latitude: CURRENT_POSITION != null ? CURRENT_POSITION.coords.latitude : '',
+        longitude: CURRENT_POSITION != null ? CURRENT_POSITION.coords.longitude : '',
       };
     }
-    else{
+    else {
       var data_ = {
         flashcard: flashcard_id,
         session_id: localStorage.getItem('session_id'),
         answer: answer ? answer : '',
       };
     }
-    
+
   }
 
   console.log(data_);
@@ -130,7 +130,7 @@ function nextSlide() {
   if (current_slide < total_slides) {
     current_slide++;
     completed = false;
-    if(current_slide == total_slides){
+    if (current_slide == total_slides) {
       $('#nextButton').html('Submit');
     }
   }
@@ -138,19 +138,19 @@ function nextSlide() {
     completed = true;
     $(document).ready(function () {
       $.ajax({
-          url : SERVER + "courses_api/lesson/student/get/mail/" + lesson_id,
-          async : true,
-          crossDomain : true,
-          crossOrigin : true,
-          type : 'GET',
-          headers: { "Authorization": `${localStorage.getItem('user-token')}` }
-      }).done( (response)=> {
-      console.log("🚀 ~ file: settings.html ~ line 202 ~ response", response)
+        url: SERVER + "courses_api/lesson/student/get/mail/" + lesson_id,
+        async: true,
+        crossDomain: true,
+        crossOrigin: true,
+        type: 'GET',
+        headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+      }).done((response) => {
+        console.log("🚀 ~ file: settings.html ~ line 202 ~ response", response)
       }).fail((err) => {
-          // console.log("errorss...",err)
-          console.log("🚀 ~ file: settings.html ~ line 129 ~ errorss", err)
+        // console.log("errorss...",err)
+        console.log("🚀 ~ file: settings.html ~ line 129 ~ errorss", err)
       })
-      });
+    });
     swal({
       title: 'Submitted',
       text: 'You have successfully completed the lesson. Thank you.',
@@ -196,24 +196,24 @@ function nextSlide() {
     } else if (type == 'user_video_upload') {
       answer = $('#user-video-tag').find('source').attr('src');
       sendResponse(flashcard_id, answer);
-    }else if (type == 'user_gps') {
-      answer = JSON.stringify({lat: $('#lat_'+(current_slide-1)).val(), lng: $('#long_'+(current_slide-1)).val()});
+    } else if (type == 'user_gps') {
+      answer = JSON.stringify({ lat: $('#lat_' + (current_slide - 1)).val(), lng: $('#long_' + (current_slide - 1)).val() });
       sendResponse(flashcard_id, answer);
       // console.log('flashcard_id',flashcard_id)
-      document.removeEventListener('gpsPosition',()=>{});
+      document.removeEventListener('gpsPosition', () => { });
     }
 
-    if(current_slide!=total_slides && loaded_flashcards[current_slide].lesson_type == 'user_gps'){
+    if (current_slide != total_slides && loaded_flashcards[current_slide].lesson_type == 'user_gps') {
       handle_gps_click();
-      document.addEventListener('gpsPosition', d=>{
-         console.log('pos',CURRENT_POSITION, CURRENT_POSITION_LOW)
-         let lat = CURRENT_POSITION?CURRENT_POSITION.coords.latitude:CURRENT_POSITION_LOW.coords.latitude
-         let long = CURRENT_POSITION?CURRENT_POSITION.coords.longitude:CURRENT_POSITION_LOW.coords.longitude
-         $('#lat_'+current_slide).val(lat);
-         $('#long_'+current_slide).val(long);
+      document.addEventListener('gpsPosition', d => {
+        console.log('pos', CURRENT_POSITION, CURRENT_POSITION_LOW)
+        let lat = CURRENT_POSITION ? CURRENT_POSITION.coords.latitude : CURRENT_POSITION_LOW.coords.latitude
+        let long = CURRENT_POSITION ? CURRENT_POSITION.coords.longitude : CURRENT_POSITION_LOW.coords.longitude
+        $('#lat_' + current_slide).val(lat);
+        $('#long_' + current_slide).val(long);
       });
     }
-    else if(type=="user_gps"){
+    else if (type == "user_gps") {
       console.log("User-GPS slide page");
       answer = $('#note').val();
       sendResponse(flashcard_id, answer);
@@ -334,7 +334,7 @@ function init() {
     console.log('>>>>>>>>>>>>>> slide', response);
 
     total_slides = response.flashcards.length;
-    $('head').append(`<title>${response.lesson_name?response.lesson_name:"Lesson - "+lesson_id}</title>`)
+    $('head').append(`<title>${response.lesson_name ? response.lesson_name : "Lesson - " + lesson_id}</title>`)
     // Updating Meta Attribute states
     $('#progress-section').show();
 
@@ -376,6 +376,49 @@ function init() {
         i++;
       }
 
+      if (flashcard.lesson_type == 'jitsi_meet') {
+        //         $('#theSlide').append(`<div class="${className} ${i == 0 ? 'active' : ''}" id="flashcard_${i}" id="verify_email">
+        //         <html itemscope itemtype="http://schema.org/Product" prefix="og: http://ogp.me/ns#" xmlns="http://www.w3.org/1999/html">
+        //     <head>
+        //         <meta charset="utf-8">
+        //         <meta http-equiv="content-type" content="text/html;charset=utf-8">
+        //     </head>
+        //     <body>
+        //         <script src="https://meet.jit.si/external_api.js"></script>
+        //         <script>
+        //             var domain = "meet.jit.si";
+        //             var options = {
+        //                 roomName: "JitsiMeetAPIExample",
+        //                 width: 700,
+        //                 height: 180,
+        //                 parentNode: undefined,
+        //                 configOverwrite: {},
+        //                 interfaceConfigOverwrite: {}
+        //             }
+        //             var  api  =  new  JitsiMeetExternalAPI ( domain ,  options ) ;
+        //         </script>
+        //     </body>
+        // </html> </div>
+        //         `);
+        $('#theSlide').append(`<div class="${className} ${i == 0 ? 'active' : ''}" id="flashcard_${i}" id="verify_email">
+        
+        </div>`);
+        var domain = "vstream.lifeforceenergy.us";
+        var options = {
+          roomName: `${flashcard.question}`,
+          // width: 700,
+          configOverwrite: {
+            startWithAudioMuted: true, prejoinPageEnabled: false,
+            startWithVideoMuted: false
+          },
+          height: 570,
+          parentNode: document.querySelector(`#flashcard_${i}`),
+          configOverwrite: {},
+          interfaceConfigOverwrite: {}
+        }
+        var api = new JitsiMeetExternalAPI(domain, options);
+      }
+
       if (flashcard.lesson_type == 'verify_email') {
         $('#theSlide').append(`
                     <duv class="${className} ${i == 0 ? 'active' : ''}" id="flashcard_${i}" id="verify_email">
@@ -386,94 +429,94 @@ function init() {
       }
 
       if (flashcard.lesson_type == 'quick_read') {
-        
+
         $('#prevButton').attr('data-type', 'quick_read');
         $('#nextButton').attr('data-type', 'quick_read');
 
         $('#theSlide').append(
           '<div class="' + className + '">' +
-            '<div class="quick-read-container">' +
+          '<div class="quick-read-container">' +
 
-              '<div class="speedreader-txt" alt="quick_read"><h1 class="speedrdr-txt">' + flashcard.question + '</h1></div>' +
-              '<div class="word-display text-center"><div class="txt"></div></div>' +
-              
-              '<div class="box card p-4">' +
-                '<div class="form-group arrow-group d-flex justify-content-center">' +
-                  '<div class="timer-field field-control d-flex align-items-center">' +
-                      '<div class="field-arrow text-center">' +
-                          '<div class="monitor d-flex">' +
-                              '<div class="timer-length txt-num">1</div>' +
-                              '<div class="word-speed">min</div>' +
-                          '</div>' +
-                      '</div>' +
-                  '</div>' +
-                  '<div class="wpm-field field-control d-flex align-items-center">' +
-                    '<div class="field-txt">WPM</div>'+
-                    '<div class="field-arrow text-center">' +
-                      '<button class="btn btn-plus btn-arrow" type="button">' +
-                        '<i class="fa fa-angle-up" aria-hidden="true"></i>'+
-                      '</button>'+
-                      '<div class="monitor d-flex">' +
-                        '<input type="text" class="word-length txt-input-num form-control">'+
-                        '<div class="word-speed">x1</div>'+
-                      '</div>' +
-                      '<button class="btn btn-minus btn-arrow" type="button">' +
-                        '<i class="fa fa-angle-down" aria-hidden="true"></i>'+
-                      '</button>'+
-                    '</div>' +
-                  '</div>' +
-                  '<div class="wordcount-field field-control d-flex align-items-center">' +
-                    '<div class="field-txt">Words at a time</div>' +
-                    '<div class="field-arrow text-center">' +
-                      '<button class="btn btn-plus btn-arrow" type="button">' +
-                        '<i class="fa fa-angle-up" aria-hidden="true"></i>' +
-                      '</button>' +
-                      '<div class="monitor text-center">' +
-                        '<div class="word-num txt-num">1</div>' +
-                      '</div>' +
-                      '<button class="btn btn-minus btn-arrow" type="button">' +
-                        '<i class="fa fa-angle-down" aria-hidden="true"></i>' +
-                      '</button>' +
-                    '</div>' +
-                  '</div>' +
-                '</div>' +
+          '<div class="speedreader-txt" alt="quick_read"><h1 class="speedrdr-txt">' + flashcard.question + '</h1></div>' +
+          '<div class="word-display text-center"><div class="txt"></div></div>' +
 
-                '<div class="form-group mb-0 text-center">' +
-                  '<button type="button" class="btn btn-primary start-btn disabled">START NOW</button>' +
-                '</div>' +
+          '<div class="box card p-4">' +
+          '<div class="form-group arrow-group d-flex justify-content-center">' +
+          '<div class="timer-field field-control d-flex align-items-center">' +
+          '<div class="field-arrow text-center">' +
+          '<div class="monitor d-flex">' +
+          '<div class="timer-length txt-num">1</div>' +
+          '<div class="word-speed">min</div>' +
+          '</div>' +
+          '</div>' +
+          '</div>' +
+          '<div class="wpm-field field-control d-flex align-items-center">' +
+          '<div class="field-txt">WPM</div>' +
+          '<div class="field-arrow text-center">' +
+          '<button class="btn btn-plus btn-arrow" type="button">' +
+          '<i class="fa fa-angle-up" aria-hidden="true"></i>' +
+          '</button>' +
+          '<div class="monitor d-flex">' +
+          '<input type="text" class="word-length txt-input-num form-control">' +
+          '<div class="word-speed">x1</div>' +
+          '</div>' +
+          '<button class="btn btn-minus btn-arrow" type="button">' +
+          '<i class="fa fa-angle-down" aria-hidden="true"></i>' +
+          '</button>' +
+          '</div>' +
+          '</div>' +
+          '<div class="wordcount-field field-control d-flex align-items-center">' +
+          '<div class="field-txt">Words at a time</div>' +
+          '<div class="field-arrow text-center">' +
+          '<button class="btn btn-plus btn-arrow" type="button">' +
+          '<i class="fa fa-angle-up" aria-hidden="true"></i>' +
+          '</button>' +
+          '<div class="monitor text-center">' +
+          '<div class="word-num txt-num">1</div>' +
+          '</div>' +
+          '<button class="btn btn-minus btn-arrow" type="button">' +
+          '<i class="fa fa-angle-down" aria-hidden="true"></i>' +
+          '</button>' +
+          '</div>' +
+          '</div>' +
+          '</div>' +
 
-                '<div class="form-group text-center slider-group">' +
-                  '<div id="slider"></div>' +
-                '</div>' +
+          '<div class="form-group mb-0 text-center">' +
+          '<button type="button" class="btn btn-primary start-btn disabled">START NOW</button>' +
+          '</div>' +
 
-                '<div class="form-group mb-0 text-center pt-3 btm-options">' +
-                  '<button type="button" class="btn btn-danger stop-btn">Stop</button>' +
-                  '<div class="sound-btn-container d-flex align-items-center">' +
-                    '<button type="button" class="btn btn-secondary speak-btn">'+
-                      '<span class="speak"><i class="fa fa-volume-up" aria-hidden="true"></i></span>' +
-                      '<span class="mute"><i class="fa fa-volume-off" aria-hidden="true"></i></span>' +
-                    '</button>' +
-                    '<div class="sound-select position-relative">'+
-                      '<button class="btn light-btn" type="button">' +
-                        '<span class="icon"><i class="fa fa-microphone" aria-hidden="true"></i></span>' +
-                        '<span class="txt"></span>' +
-                        '<span class="icon arrow-icon"><i class="fa fa-caret-down" aria-hidden="true"></i></span>' +
-                      '</button>' +
-                      '<div class="drop-list voice-drop-list user-select-none">' +
-                    '</div>' +
-                  '</div>' +
-                  '</div>' +
-                  '<div class="timer">00:00</div>' +
-                '</div>' +
-              '</div>' +
-            '</div>' +
+          '<div class="form-group text-center slider-group">' +
+          '<div id="slider"></div>' +
+          '</div>' +
+
+          '<div class="form-group mb-0 text-center pt-3 btm-options">' +
+          '<button type="button" class="btn btn-danger stop-btn">Stop</button>' +
+          '<div class="sound-btn-container d-flex align-items-center">' +
+          '<button type="button" class="btn btn-secondary speak-btn">' +
+          '<span class="speak"><i class="fa fa-volume-up" aria-hidden="true"></i></span>' +
+          '<span class="mute"><i class="fa fa-volume-off" aria-hidden="true"></i></span>' +
+          '</button>' +
+          '<div class="sound-select position-relative">' +
+          '<button class="btn light-btn" type="button">' +
+          '<span class="icon"><i class="fa fa-microphone" aria-hidden="true"></i></span>' +
+          '<span class="txt"></span>' +
+          '<span class="icon arrow-icon"><i class="fa fa-caret-down" aria-hidden="true"></i></span>' +
+          '</button>' +
+          '<div class="drop-list voice-drop-list user-select-none">' +
+          '</div>' +
+          '</div>' +
+          '</div>' +
+          '<div class="timer">00:00</div>' +
+          '</div>' +
+          '</div>' +
+          '</div>' +
           '</div>'
         );
 
-        setTimeout(function() {
+        setTimeout(function () {
           $('head').append('<script src="js/jquery-ui.min.js"></script>');
           $('head').append('<script src="js/speed-reader.js"></script>');
-        },1);
+        }, 1);
 
       }
       if (flashcard.lesson_type == 'title_text') {
@@ -770,30 +813,30 @@ function init() {
                 let ans = {}
                 try {
                   ans = JSON.parse(rf.answer)
-              } catch (e) {
+                } catch (e) {
                   // return false;
-              }
-                $('#lat_'+i).val(ans.lat);
-                $('#long_'+i).val(ans.lng);
+                }
+                $('#lat_' + i).val(ans.lat);
+                $('#long_' + i).val(ans.lng);
                 console.log('set previos gps value');
               }
             }
           });
         });
       })
-        .done((res) => 
-        console.log("🚀 ~ file: slide.js ~ line 727 ~ res", res)
+        .done((res) =>
+          console.log("🚀 ~ file: slide.js ~ line 727 ~ res", res)
         )
         .fail((err) => console.log('Invitation err', err));
     }
-    if(total_slides && flashcards[0].lesson_type == 'user_gps'){
+    if (total_slides && flashcards[0].lesson_type == 'user_gps') {
       handle_gps_click();
-      document.addEventListener('gpsPosition', d=>{
-         console.log('pos',CURRENT_POSITION, CURRENT_POSITION_LOW)
-         let lat = CURRENT_POSITION?CURRENT_POSITION.coords.latitude:CURRENT_POSITION_LOW.coords.latitude
-         let long = CURRENT_POSITION?CURRENT_POSITION.coords.longitude:CURRENT_POSITION_LOW.coords.longitude
-         $('#lat_0').val(lat);
-         $('#long_0').val(long);
+      document.addEventListener('gpsPosition', d => {
+        console.log('pos', CURRENT_POSITION, CURRENT_POSITION_LOW)
+        let lat = CURRENT_POSITION ? CURRENT_POSITION.coords.latitude : CURRENT_POSITION_LOW.coords.latitude
+        let long = CURRENT_POSITION ? CURRENT_POSITION.coords.longitude : CURRENT_POSITION_LOW.coords.longitude
+        $('#lat_0').val(lat);
+        $('#long_0').val(long);
       });
     }
   })
