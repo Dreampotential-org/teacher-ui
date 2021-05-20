@@ -488,8 +488,8 @@ function displayVideo(file_url,video_data_id) {
 
      // $("input[data-id='"+video_data_id+"']").parent().siblings('.video-output').html('')
      // var parent = $("input[data-id='"+video_data_id+"']").parent().siblings('.video-output');
-      
       if(!video_data_id){
+      $('.videoplayer').css("display","block");
       $('.videoplayer').html('<source src="' + file_url + '#t=0.1'+ '" type="' + strTYPE + '"></source>');
       $('.video-output').css('display', 'block');
       $('.videoplayer')[0].load();
