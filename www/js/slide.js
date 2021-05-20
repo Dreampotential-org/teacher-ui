@@ -331,7 +331,7 @@ function init() {
   $.get(SERVER + 'courses_api/slide/read/' + lesson_id, function (response, status, xhr) {
     get_session();
     // phone_verification_check();
-    console.log('>>>>>>>>>>>>>> slide', response);
+    // console.log('>>>>>>>>>>>>>> slide', response);
 
     total_slides = response.flashcards.length;
     $('head').append(`<title>${response.lesson_name ? response.lesson_name : "Lesson - " + lesson_id}</title>`)
@@ -340,6 +340,7 @@ function init() {
 
     $('#progress').html(current_slide + ' out of ' + total_slides);
     var flashcards = response.flashcards;
+    console.log("🚀 ~ file: slide.js ~ line 343 ~ flashcards", flashcards)
     //console.log(flashcards)
     // XXX make api DO THIS
     flashcards.sort(function (a, b) {
@@ -772,27 +773,28 @@ function init() {
     );
     if (session_id) {
       $.get(SERVER + 'courses_api/lesson/response/get/' + lesson_id + '/' + localStorage.getItem('session_id'), function (response) {
-        console.log(response);
+        // console.log(response);
         response.forEach(function (rf) {
-          console.log(rf);
+          // console.log("🚀 ~ file: slide.js ~ line 777 ~ rf", rf)
+          // console.log(rf);
           loaded_flashcards.forEach(function (f, i) {
             if (rf.flashcard[0].id == f.id) {
               if (f.lesson_type == 'title_textarea') {
                 $('textarea[name=textarea_' + i).val(rf.answer);
               }
+              if (f.lesson_type == 'user_video_upload') {
+                if (rf.answer){
+                  $("#user-video-tag").attr("src",rf.answer);
+                  $("#user-video-tag")[0].load()
+                }
+              }
               if (f.lesson_type == 'title_input') {
                 $('input[name=title_input_' + i).val(rf.answer);
               }
               if (f.lesson_type == 'question_choices') {
-                if (rf.answer == "") {
+                  // $('#'+ rf.answer +'[name=choices_' + i + ']').attr('checked', 'checked');
                   $('input[name=choices_' + i + '][value=' + rf.answer ? rf.answer : '' + ']').attr('checked', true);
-                } else {
-                  var strTYPE = "video/mp4";
-                  $('#myCarousel #video').val(rf.answer);
-                  $("#video_url").html(" ")
-                  $("#theSlide #flashcard_" + current_slide + "").append('<div id="video_url"><p> Video URL : ' + rf.answer + '</p><video id="videoplayer" style="height:500px;width:100%"; controls preload="metadata"> <source src="' + rf.answer + '#t=0.5' + '" type="' + strTYPE + '"></source></video><div>')
                 }
-              }
 
               if (f.lesson_type == 'question_checkboxes') {
                 rf.answer.split(',').forEach((v) => {
