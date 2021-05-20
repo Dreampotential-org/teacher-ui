@@ -639,11 +639,11 @@ function init() {
         $('#theSlide').append(
           '<div class="' +
           className +
-          '"><div alt="title_text" style="height:500px"><h1> ' +
+          '"><div alt="title_text" style="height:500px"><h1>Video File</h1><h1> ' +
           flashcard.question +
-          '</h1><video style="height:500px;width:1000px"; controls preload="metadata"> <source src= "' +
+          '</h1>'+(flashcard.image?'<video style="height:500px;width:1000px"; controls preload="metadata"> <source src= "' +
           flashcard.image + '#t=0.5' +
-          '"></video></div></div>'
+          '"></video>':'<h5>No file uploaded.</h5>')+'</div></div>'
         );
       }
 
@@ -692,30 +692,18 @@ function init() {
       if (flashcard.lesson_type == 'user_video_upload') {
         console.log("user_video_upload flashcard.lesson_type ===> ", flashcard.lesson_type);
         $('#theSlide').append(
-          // '<div class="' +
-          //   className +
-          //   '"><h1>User Video</h1><div alt="title_text" style="height:500px"><video style="height:500px;width:1000px"; controls preload="metadata"> <source src= "' +
-          //   flashcard.image + '#t=0.5' +
-          //   '"></video></div></div>'
-
           `<div class="${className}">
             <h1>User Video Upload</h1>
             <div alt="title_text" style="height:500px">
 
-            <input type="file" class="form-control" value="Choose File" id="myFile"/> 
+            <input type="file" class="form-control" value="Choose File" id="myFile" onchange="handleVideoUpload('user_video_upload')"/> 
 
-            <input type="button" class="upload_vid_btn btn btn-info" value="Upload Video" onclick="handleVideoUpload('user_video_upload')" /> 
-            
-            <video style="height:500px;width:1000px"; controls preload="metadata" id="user-video-tag">
-            
+            <video style="height:500px;width:1000px;display:none"; controls preload="metadata" id="user-video-tag">
             </video>
 
             </div>
           </div>
-            
-
           `
-
         );
       }
 
@@ -887,6 +875,7 @@ function handleVideoUpload(key) {
         if (file_url) {
           if (key == 'user_video_upload') {
             var strTYPE = "video/mp4";
+            $('#user-video-tag').css("display","block");
             $("#user-video-tag").append('<source src="' + file_url + '#t=0.5" type="' + strTYPE + '"></source>');
             $("#user-video-tag")[0].load();
           }
