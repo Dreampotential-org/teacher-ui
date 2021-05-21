@@ -110,7 +110,7 @@ function sendResponse(flashcard_id, answer) {
           alert(res)
         },
       });
-      alert('FlashCard Response Sent');
+      //alert('FlashCard Response Sent');
     },
     error: function (res) {
       // alert(JSON.stringify(res))
