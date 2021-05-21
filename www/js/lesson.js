@@ -133,7 +133,7 @@ function addChiroFront(isNew,id,value,posU){
     sortablePositionFunction(isNew, posU);
 }
 
-function addChiroFront(isNew,id,value,posU){
+function addChiroSide(isNew,id,value,posU){
     $('#sortable').append($('#chiro_side').html())
     sortablePositionFunction(isNew, posU);
 }
@@ -943,7 +943,16 @@ function sendUpdates() {
         };
         flashcards.push(temp);
         break;
-        
+
+    case 'chiro_side':
+      temp = {
+          lesson_type: 'chiro_side',
+          question: attr_array[0],
+          position: position_me,
+      };
+      flashcards.push(temp);
+      break;
+      
       case 'speed_read':
         temp = {
           lesson_type: 'quick_read',
