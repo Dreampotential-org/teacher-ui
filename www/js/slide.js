@@ -695,6 +695,7 @@ function init() {
         $('#theSlide').append(
           `<div class="${className}">
             <h1>User Video Upload</h1>
+            <h1>${flashcard.question}</h1>
             <div alt="title_text" style="height:500px">
 
             <input type="file" class="form-control" value="Choose File" id="myFile" onchange="handleVideoUpload('user_video_upload')"/> 
