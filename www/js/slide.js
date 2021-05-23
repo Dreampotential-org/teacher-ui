@@ -696,7 +696,25 @@ function init() {
           `<div class="${className}">
             <h1>User Video Upload</h1>
             <div alt="title_text" style="height:500px">
+            <p> ${flashcard.question}</p>
+            <input type="file" class="form-control" value="Choose File" id="myFile" onchange="handleVideoUpload('user_video_upload')"/> 
 
+            <video style="height:500px;width:1000px;display:none"; controls preload="metadata" id="user-video-tag">
+            </video>
+
+            </div>
+          </div>
+          `
+        );
+      }
+
+      if (flashcard.lesson_type == 'user_image_upload') {
+        console.log("user_image_upload flashcard.lesson_type ===> ", flashcard.lesson_type);
+        $('#theSlide').append(
+          `<div class="${className}">
+            <h1>User Video Upload</h1>
+            <div alt="title_text" style="height:500px">
+            <p> ${flashcard.question}</p>
             <input type="file" class="form-control" value="Choose File" id="myFile" onchange="handleVideoUpload('user_video_upload')"/> 
 
             <video style="height:500px;width:1000px;display:none"; controls preload="metadata" id="user-video-tag">

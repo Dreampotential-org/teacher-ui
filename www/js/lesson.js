@@ -12,6 +12,7 @@ var question_checkboxes_count = 0;
 var question_text_count = 0;
 var name_type_count = 0;
 var user_video_upload_count = 0;
+var user_image_upload_count = 0;
 var user_gps_count = 0;
 var sign_count = 0;
 var sortArray = [];
@@ -1136,7 +1137,7 @@ $(document).ready(function () {
       type: 'GET',
       crossDomain: true,
       contentType: 'application/json',
-      headers: { Authorization: `${localStorage.getItem('user-token')}` },
+      headers: { Authorization: `Token ${localStorage.getItem('user-token')}` },
       success: function (response) {
         if (params) {
           $('#lesson_slide').attr('href', `/slide.html?lesson_id=${lesson_id}&params=${params}`);

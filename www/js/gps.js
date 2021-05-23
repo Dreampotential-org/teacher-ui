@@ -5,7 +5,7 @@ var userToken = localStorage.getItem("user-token");
 $("body").delegate("#post_gps", "click", function (e) {
   gps_checkin();
 });
-setup_gps_events();
+// setup_gps_events();
 function setup_gps_events() {
   $("body").delegate(".gps-entry", "click", function (e) {
     console.log('gps-entry is called...');
