@@ -296,6 +296,63 @@ function verifyPhone(event) {
   });
 }
 
+function chiroFront(event){
+  event.preventDefault();
+
+  var formData = new FormData($("#chirofront_form")[0]);
+  var body_height =[...formData][1][1];
+  var fileData = [...formData][0][1];
+  formData.append("label",0);
+  formData.append("image_type",0);
+  var chiroFrontReq ={
+    url :"https://admin.chiropractortech.com/api/single/execution/",
+    method: "post",
+    data :formData,
+    processData: false,
+    contentType: false
+  }
+
+  $.ajax(chiroFrontReq).done(response => {
+    var img = $('<img/>')
+    img.attr("src",response.processed_file)
+    img.attr("height","300px");
+    img.appendTo($("#chirofront_processed"));
+    response.details.forEach((detail) => {      
+      $("<p>"+detail.text+"</p>").appendTo($("#chirofront_details"))
+    })
+  })
+  
+}
+
+
+function chiroSide(event){
+  event.preventDefault();
+  var formData = new FormData($("#chiroside_form")[0]);
+  formData.append("label",1);
+  formData.append("image_type",0);
+  
+  var chiroSideReq ={
+    url :"https://admin.chiropractortech.com/api/single/execution/",
+    method: "post",
+    data :formData,
+    processData: false,
+    contentType: false
+  }
+
+  $.ajax(chiroSideReq).done(response => {
+    var img = $('<img/>')
+    img.attr("src",response.processed_file)
+    img.attr("height","300px");
+    img.appendTo($("#chiroside_processed"));
+    response.details.forEach((detail) => {      
+      $("<p>"+detail.text+"</p>").appendTo($("#chiroside_details"))
+    })
+  })
+  
+}
+
+
+
 function radioOnClick(valu) {
   if (userToken) {
     if (valu == 'Video' || valu == 'video') {
@@ -376,6 +433,52 @@ function init() {
                 `);
         i++;
       }
+
+
+      if (flashcard.lesson_type == 'chiro_front') {
+        $('#theSlide').append(`
+                    <duv class="${className} ${i == 0 ? 'active' : ''}" id="flahscard_${i}" id="chiro_front">
+                        <div alt="chiro_front">
+                        <h1>Chiro Front</h1>
+
+                          <form id="chirofront_form" onsubmit="chiroFront(event)" enctype="multipart/form-data" method="post">
+                            <input name="file" type="file">
+                            <label>Height:</label>
+                            <input name="body_height">
+                            <button class="btn">Submit</button>
+                          </form>
+                          <div id="chirofront_processed">
+                          </div>
+                          <div id="chirofront_details">
+                          </div>
+                        </div>
+                    </div>
+                `);
+        i++;
+      }
+
+
+      if (flashcard.lesson_type == 'chiro_side') {
+        $('#theSlide').append(`
+                    <duv class="${className} ${i == 0 ? 'active' : ''}" id="flahscard_${i}" id="chiro_side">
+                        <div alt="chiro_side">
+                        <h1>Chiro Side</h1>
+                          <form id="chiroside_form" onsubmit="chiroSide(event)" enctype="multipart/form-data" method="post">
+                            <input name="file" type="file">
+                            <label>Height:</label>
+                            <input name="body_height">
+                            <button class="btn">Submit</button>
+                          </form>
+                          <div id="chiroside_processed">
+                          </div>
+                          <div id="chiroside_details">
+                          </div>
+                        </div>
+                    </div>
+                `);
+        i++;
+      }
+
 
       if (flashcard.lesson_type == 'jitsi_meet') {
         //         $('#theSlide').append(`<div class="${className} ${i == 0 ? 'active' : ''}" id="flashcard_${i}" id="verify_email">
