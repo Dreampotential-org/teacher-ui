@@ -443,7 +443,7 @@ function uploadFile(fileType) {
           displayVideo(file_url,video_data_id_value);
           
           if(video_type=="user_video_upload"){
-            $('#txt-user-video').attr('value', file_url);
+            // $('#txt-user-video').attr('value', file_url);
           }
           else{
             if(video_data_id_value!=undefined){
@@ -1040,9 +1040,9 @@ function sendUpdates() {
       case 'user_video_upload':
           temp = {
           lesson_type: 'user_video_upload',
-          question: 'User Video Upload',
+          question: attr_array[0],
           // image: attr_array[0],
-          image: '',
+          image:  '',
           position: position_me,
           };
           flashcards.push(temp);
