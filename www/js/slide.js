@@ -222,7 +222,7 @@ function nextSlide() {
       answer = $('#note').val();
       sendResponse(flashcard_id, answer);
     }
-    else if(current_slide != total_slides && loaded_flashcards[current_slide].lesson_type == 'jitsi_meet'){
+    if(current_slide != total_slides && loaded_flashcards[current_slide].lesson_type == 'jitsi_meet'){
       var domain = "vstream.lifeforceenergy.us";
         var options = {
           roomName: `${loaded_flashcards[current_slide].question}`,
