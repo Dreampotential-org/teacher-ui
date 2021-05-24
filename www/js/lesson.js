@@ -150,6 +150,14 @@ function addTitleText(isNew, id, title, text, posU) {
   title_text_count++;
 }
 
+function addRecordWebCam(isNew, id, title, text, posU) {
+  console.log(isNew, id, title, posU);
+  $('#sortable').append($('#record_webcam').html());
+  sortablePositionFunction(isNew, posU);
+
+  title_text_count++;
+}
+
 function addJitsiMeet(isNew, id, title, text, posU) {
   console.log(isNew, id, title, posU)
   if (!isNew) {
@@ -923,6 +931,14 @@ function sendUpdates() {
         };
         flashcards.push(temp);
         break;
+      case 'record_webcam':
+        temp = {
+          lesson_type: 'record_webcam',
+          question: attr_array[0],
+          position: position_me,
+        };
+        flashcards.push(temp);
+        break;
         
       case 'speed_read':
         temp = {
@@ -1209,6 +1225,9 @@ $(document).ready(function () {
           if (flashcard.lesson_type == 'jitsi_meet') {
             addJitsiMeet(false, flashcard.id, flashcard.question, flashcard.answer, flashcard.position);
           }
+          if (flashcard.lesson_type == 'record_webcam') {
+            addRecordWebCam(false, flashcard.id, flashcard.question, flashcard.answer, flashcard.position);
+          }
           if (flashcard.lesson_type == 'title_input') {
             addTitleInput(false, flashcard.id, flashcard.question, flashcard.answer, flashcard.position);
           }
@@ -1368,6 +1387,9 @@ $(document).ready(function () {
   $('#add').click(function (e) {
     if ($('#selectsegment').val() == 'jitsi_meet') {
       addJitsiMeet(true);
+    }
+    if ($('#selectsegment').val() == 'record_webcam') {
+      addRecordWebCam(true);
     }
     if ($('#selectsegment').val() == 'speed_read') {
       addSpeedRead(true);
