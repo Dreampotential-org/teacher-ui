@@ -110,7 +110,7 @@ function sendResponse(flashcard_id, answer) {
           alert(res)
         },
       });
-      alert('FlashCard Response Sent');
+      //alert('FlashCard Response Sent');
     },
     error: function (res) {
       // alert(JSON.stringify(res))
@@ -296,6 +296,63 @@ function verifyPhone(event) {
   });
 }
 
+function chiroFront(event){
+  event.preventDefault();
+
+  var formData = new FormData($("#chirofront_form")[0]);
+  var body_height =[...formData][1][1];
+  var fileData = [...formData][0][1];
+  formData.append("label",0);
+  formData.append("image_type",0);
+  var chiroFrontReq ={
+    url :"https://admin.chiropractortech.com/api/single/execution/",
+    method: "post",
+    data :formData,
+    processData: false,
+    contentType: false
+  }
+
+  $.ajax(chiroFrontReq).done(response => {
+    var img = $('<img/>')
+    img.attr("src",response.processed_file)
+    img.attr("height","300px");
+    img.appendTo($("#chirofront_processed"));
+    response.details.forEach((detail) => {      
+      $("<p>"+detail.text+"</p>").appendTo($("#chirofront_details"))
+    })
+  })
+  
+}
+
+
+function chiroSide(event){
+  event.preventDefault();
+  var formData = new FormData($("#chiroside_form")[0]);
+  formData.append("label",1);
+  formData.append("image_type",0);
+  
+  var chiroSideReq ={
+    url :"https://admin.chiropractortech.com/api/single/execution/",
+    method: "post",
+    data :formData,
+    processData: false,
+    contentType: false
+  }
+
+  $.ajax(chiroSideReq).done(response => {
+    var img = $('<img/>')
+    img.attr("src",response.processed_file)
+    img.attr("height","300px");
+    img.appendTo($("#chiroside_processed"));
+    response.details.forEach((detail) => {      
+      $("<p>"+detail.text+"</p>").appendTo($("#chiroside_details"))
+    })
+  })
+  
+}
+
+
+
 function radioOnClick(valu) {
   if (userToken) {
     if (valu == 'Video' || valu == 'video') {
@@ -331,7 +388,7 @@ function init() {
   $.get(SERVER + 'courses_api/slide/read/' + lesson_id, function (response, status, xhr) {
     get_session();
     // phone_verification_check();
-    console.log('>>>>>>>>>>>>>> slide', response);
+    // console.log('>>>>>>>>>>>>>> slide', response);
 
     total_slides = response.flashcards.length;
     $('head').append(`<title>${response.lesson_name ? response.lesson_name : "Lesson - " + lesson_id}</title>`)
@@ -340,6 +397,7 @@ function init() {
 
     $('#progress').html(current_slide + ' out of ' + total_slides);
     var flashcards = response.flashcards;
+    console.log("🚀 ~ file: slide.js ~ line 343 ~ flashcards", flashcards)
     //console.log(flashcards)
     // XXX make api DO THIS
     flashcards.sort(function (a, b) {
@@ -375,6 +433,52 @@ function init() {
                 `);
         i++;
       }
+
+
+      if (flashcard.lesson_type == 'chiro_front') {
+        $('#theSlide').append(`
+                    <duv class="${className} ${i == 0 ? 'active' : ''}" id="flahscard_${i}" id="chiro_front">
+                        <div alt="chiro_front">
+                        <h1>Chiro Front</h1>
+
+                          <form id="chirofront_form" onsubmit="chiroFront(event)" enctype="multipart/form-data" method="post">
+                            <input name="file" type="file">
+                            <label>Height:</label>
+                            <input name="body_height">
+                            <button class="btn">Submit</button>
+                          </form>
+                          <div id="chirofront_processed">
+                          </div>
+                          <div id="chirofront_details">
+                          </div>
+                        </div>
+                    </div>
+                `);
+        i++;
+      }
+
+
+      if (flashcard.lesson_type == 'chiro_side') {
+        $('#theSlide').append(`
+                    <duv class="${className} ${i == 0 ? 'active' : ''}" id="flahscard_${i}" id="chiro_side">
+                        <div alt="chiro_side">
+                        <h1>Chiro Side</h1>
+                          <form id="chiroside_form" onsubmit="chiroSide(event)" enctype="multipart/form-data" method="post">
+                            <input name="file" type="file">
+                            <label>Height:</label>
+                            <input name="body_height">
+                            <button class="btn">Submit</button>
+                          </form>
+                          <div id="chiroside_processed">
+                          </div>
+                          <div id="chiroside_details">
+                          </div>
+                        </div>
+                    </div>
+                `);
+        i++;
+      }
+
 
       if (flashcard.lesson_type == 'jitsi_meet') {
         //         $('#theSlide').append(`<div class="${className} ${i == 0 ? 'active' : ''}" id="flashcard_${i}" id="verify_email">
@@ -639,11 +743,11 @@ function init() {
         $('#theSlide').append(
           '<div class="' +
           className +
-          '"><div alt="title_text" style="height:500px"><h1> ' +
+          '"><div alt="title_text" style="height:500px"><h1>Video File</h1><h1> ' +
           flashcard.question +
-          '</h1><video style="height:500px;width:1000px"; controls preload="metadata"> <source src= "' +
+          '</h1>'+(flashcard.image?'<video style="height:500px;width:1000px"; controls preload="metadata"> <source src= "' +
           flashcard.image + '#t=0.5' +
-          '"></video></div></div>'
+          '"></video>':'<h5>No file uploaded.</h5>')+'</div></div>'
         );
       }
 
@@ -692,30 +796,19 @@ function init() {
       if (flashcard.lesson_type == 'user_video_upload') {
         console.log("user_video_upload flashcard.lesson_type ===> ", flashcard.lesson_type);
         $('#theSlide').append(
-          // '<div class="' +
-          //   className +
-          //   '"><h1>User Video</h1><div alt="title_text" style="height:500px"><video style="height:500px;width:1000px"; controls preload="metadata"> <source src= "' +
-          //   flashcard.image + '#t=0.5' +
-          //   '"></video></div></div>'
-
           `<div class="${className}">
             <h1>User Video Upload</h1>
+            <h1>${flashcard.question}</h1>
             <div alt="title_text" style="height:500px">
 
-            <input type="file" class="form-control" value="Choose File" id="myFile"/> 
+            <input type="file" class="form-control" value="Choose File" id="myFile" onchange="handleVideoUpload('user_video_upload')"/> 
 
-            <input type="button" class="upload_vid_btn btn btn-info" value="Upload Video" onclick="handleVideoUpload('user_video_upload')" /> 
-            
-            <video style="height:500px;width:1000px"; controls preload="metadata" id="user-video-tag">
-            
+            <video style="height:500px;width:1000px;display:none"; controls preload="metadata" id="user-video-tag">
             </video>
 
             </div>
           </div>
-            
-
           `
-
         );
       }
 
@@ -772,27 +865,28 @@ function init() {
     );
     if (session_id) {
       $.get(SERVER + 'courses_api/lesson/response/get/' + lesson_id + '/' + localStorage.getItem('session_id'), function (response) {
-        console.log(response);
+        // console.log(response);
         response.forEach(function (rf) {
-          console.log(rf);
+          // console.log("🚀 ~ file: slide.js ~ line 777 ~ rf", rf)
+          // console.log(rf);
           loaded_flashcards.forEach(function (f, i) {
             if (rf.flashcard[0].id == f.id) {
               if (f.lesson_type == 'title_textarea') {
                 $('textarea[name=textarea_' + i).val(rf.answer);
               }
+              if (f.lesson_type == 'user_video_upload') {
+                if (rf.answer){
+                  $("#user-video-tag").attr("src",rf.answer);
+                  $("#user-video-tag")[0].load()
+                }
+              }
               if (f.lesson_type == 'title_input') {
                 $('input[name=title_input_' + i).val(rf.answer);
               }
               if (f.lesson_type == 'question_choices') {
-                if (rf.answer == "") {
+                  // $('#'+ rf.answer +'[name=choices_' + i + ']').attr('checked', 'checked');
                   $('input[name=choices_' + i + '][value=' + rf.answer ? rf.answer : '' + ']').attr('checked', true);
-                } else {
-                  var strTYPE = "video/mp4";
-                  $('#myCarousel #video').val(rf.answer);
-                  $("#video_url").html(" ")
-                  $("#theSlide #flashcard_" + current_slide + "").append('<div id="video_url"><p> Video URL : ' + rf.answer + '</p><video id="videoplayer" style="height:500px;width:100%"; controls preload="metadata"> <source src="' + rf.answer + '#t=0.5' + '" type="' + strTYPE + '"></source></video><div>')
                 }
-              }
 
               if (f.lesson_type == 'question_checkboxes') {
                 rf.answer.split(',').forEach((v) => {
@@ -887,6 +981,7 @@ function handleVideoUpload(key) {
         if (file_url) {
           if (key == 'user_video_upload') {
             var strTYPE = "video/mp4";
+            $('#user-video-tag').css("display","block");
             $("#user-video-tag").append('<source src="' + file_url + '#t=0.5" type="' + strTYPE + '"></source>');
             $("#user-video-tag")[0].load();
           }

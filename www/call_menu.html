@@ -42,7 +42,9 @@
     <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
     <!-- user.html JS, CSS end -->
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    
     <link rel="stylesheet" href="css/dashboard.css" />
     <link rel="stylesheet" href="css/sidebar.css" />
     <link rel="stylesheet" href="css/setting.css" />
@@ -174,20 +176,28 @@
       function left_sidebar() {
         SidebarCollapse();
       }
-
+      const yourNumberInputField = document.querySelector("#call");
+      const yourNumberInput = window.intlTelInput(yourNumberInputField, {
+        utilsScript:
+          "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+      });
       $("#make_call").click (() => {
         source_num_call = $('#sourceCallNumber').val();
+        console.log("🚀 ~ file: call_menu.html ~ line 186 ~ $ ~ source_num_call", source_num_call)
         dest_num_call = $("#dest_num_call").val()
-
+        console.log("🚀 ~ file: call_menu.html ~ line 188 ~ $ ~ dest_num_call", dest_num_call)
+        your_num = yourNumberInput.getNumber()
+        console.log("🚀 ~ file: call_menu.html ~ line 190 ~ $ ~ your_num", your_num)
         $.ajax({
-          url: SERVER + "voip/api_voip/make_call",
+          url: SERVER + "voip/api_voip/join_conference",
           async: true,
           crossDomain: true,
           crossOrigin: true,
           type: "POST",
           data : {
-            "from_num" : source_num_call,
-            "to_num" : dest_num_call,
+            "source_number" : source_num_call,
+            "dest_number" : dest_num_call,
+            "your_number" : your_num,
           },
           headers: { "Authorization": `${localStorage.getItem('user-token')}` }
         }).done( () => {
@@ -263,10 +273,10 @@
         //$('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
       }
       
-      $("#sourceCallNumber").click(() => {
-        var sourceCall_number_selected = $('#sourceCallNumber').val();
-        $("#call").val(sourceCall_number_selected);
-      })
+      // $("#sourceCallNumber").click(() => {
+      //   var sourceCall_number_selected = $('#sourceCallNumber').val();
+      //   $("#call").val(sourceCall_number_selected);
+      // })
     </script>
   </body>
 </html>

@@ -128,6 +128,17 @@ function addSpeedRead(isNew, id, value, posU) {
   quick_read_count++;
 }
 
+function addChiroFront(isNew,id,value,posU){
+    $('#sortable').append($('#chiro_front').html())
+    sortablePositionFunction(isNew, posU);
+}
+
+function addChiroSide(isNew,id,value,posU){
+    $('#sortable').append($('#chiro_side').html())
+    sortablePositionFunction(isNew, posU);
+}
+
+
 function addTitleText(isNew, id, title, text, posU) {
   if (!isNew) {
     $('#title_text').find('input[type=text]').attr('value', title);
@@ -450,7 +461,7 @@ function uploadFile(fileType) {
           displayVideo(file_url,video_data_id_value);
           
           if(video_type=="user_video_upload"){
-            $('#txt-user-video').attr('value', file_url);
+            // $('#txt-user-video').attr('value', file_url);
           }
           else{
             if(video_data_id_value!=undefined){
@@ -496,8 +507,8 @@ function displayVideo(file_url,video_data_id) {
 
      // $("input[data-id='"+video_data_id+"']").parent().siblings('.video-output').html('')
      // var parent = $("input[data-id='"+video_data_id+"']").parent().siblings('.video-output');
-      
       if(!video_data_id){
+      $('.videoplayer').css("display","block");
       $('.videoplayer').html('<source src="' + file_url + '#t=0.1'+ '" type="' + strTYPE + '"></source>');
       $('.video-output').css('display', 'block');
       $('.videoplayer')[0].load();
@@ -939,7 +950,24 @@ function sendUpdates() {
         };
         flashcards.push(temp);
         break;
-        
+    case 'chiro_front':
+        temp = {
+            lesson_type: 'chiro_front',
+            question: attr_array[0],
+            position: position_me,
+        };
+        flashcards.push(temp);
+        break;
+
+    case 'chiro_side':
+      temp = {
+          lesson_type: 'chiro_side',
+          question: attr_array[0],
+          position: position_me,
+      };
+      flashcards.push(temp);
+      break;
+      
       case 'speed_read':
         temp = {
           lesson_type: 'quick_read',
@@ -1055,9 +1083,9 @@ function sendUpdates() {
       case 'user_video_upload':
           temp = {
           lesson_type: 'user_video_upload',
-          question: 'User Video Upload',
+          question: attr_array[0],
           // image: attr_array[0],
-          image: '',
+          image:  '',
           position: position_me,
           };
           flashcards.push(temp);
@@ -1273,6 +1301,12 @@ $(document).ready(function () {
           if (flashcard.lesson_type == 'user_gps') {
             addUserGps(false, flashcard.id, flashcard.question, flashcard.options, flashcard.position);
           }
+          if (flashcard.lesson_type == 'chiro_front') {
+            addChiroFront(false, flashcard.id, flashcard.question, flashcard.options, flashcard.position);
+          }
+          if (flashcard.lesson_type == 'chiro_side') {
+            addChiroSide(false, flashcard.id, flashcard.question, flashcard.options, flashcard.position);
+          }
         });
 
         getAllLessons();
@@ -1441,6 +1475,14 @@ $(document).ready(function () {
     }
     if($('#selectsegment').val() == 'user_gps'){
       addUserGps(true);
+    }
+    if($('#selectsegment').val() == 'chiro_front'){
+        console.log("Chiro Front Added")
+        addChiroFront(true);
+      }
+    if($('#selectsegment').val() == 'chiro_side'){
+    console.log("Chiro Side Added")
+    addChiroSide(true);
     }
     if ($('#selectsegment').val() == 'select_type') {
       swal({

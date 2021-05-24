@@ -76,6 +76,8 @@
                     <option value="user_gps">User Gps</option>
                     <option value="jitsi_meet">Jitsi Meet</option>
                     <option value="record_webcam">Record WebCam</option>
+                    <option value="chiro_front">Chiroposture Front</option>
+                    <option value="chiro_side">Chiroposture Side</option>
                 </select>
                 <button class="btn form-control btn-success" style="margin-top: 20px;margin-bottom: 10px;"
                     id="add">Add</button>
@@ -117,7 +119,7 @@
                         <div data-type="speed_read"
                             style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
                             <div class="row">
-                                <h4 class="col-xs-10 col-lg-10">Speed Read</h4>
+                                <h4 class="col-xs-10 col-lg-10s">Speed Read</h4>
                                 <a class="remove_flashcard col-xs-2 col-lg-2"
                                     style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
                                     x </a>
@@ -200,6 +202,9 @@
                                 <h4 class="col-xs-10 col-lg-10">User Video Upload</h4>
                                 <a class="remove_flashcard col-xs-2 col-lg-2"
                                     style="color:rgb(46, 46, 46);font-size:16px;text-align:right;"> X </a>
+                            </div>
+                            <div id="user-video-output">
+                                <input type="text" id="txt-user-video" class="form-control" placeholder="Title" />
                             </div>
                             <!-- <div class="form-group">
                                     <button onclick="handleVideoUpload('user_video_upload')" class="btn btn-info">Upload video</button>
@@ -315,9 +320,12 @@
                             </div>
                             <!-- <div id="video-output"> -->
                             <div class="video-output">
-                                <video class="videoplayer" controls height="360" style="width: 100%;"
+                                <!-- <video class="videoplayer" controls height="360" style="width: 100%;"
                                     preload="metadata">
-                                </video>
+                                </video> -->
+                                <video class="videoplayer" controls height="360" style="width: 100%;display:none"
+                                preload="metadata">
+                            </video>
                             </div>
                         </div>
                     </div>
@@ -397,6 +405,31 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="speed_read" id="chiro_front" style="display: none; padding-top: 15px">
+                        <div data-type="chiro_front"
+                            style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div class="row">
+                                <h4 class="col-xs-10 col-lg-10">Chiroposture front</h4>
+                                <a class="remove_flashcard col-xs-2 col-lg-2"
+                                    style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                    x </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="speed_read" id="chiro_side" style="display: none; padding-top: 15px">
+                        <div data-type="chiro_side"
+                            style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div class="row">
+                                <h4 class="col-xs-10 col-lg-10">Chiroposture Side</h4>
+                                <a class="remove_flashcard col-xs-2 col-lg-2"
+                                    style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                    x </a>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="speed_read" id="brain_tree" style="display: none; padding-top: 15px">
                         <div
                             style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
