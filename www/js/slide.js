@@ -90,7 +90,8 @@ function sendResponse(flashcard_id, answer) {
 
   }
 
-  console.log(data_);
+  console.log("data passed to API => ",data_);
+
   $.ajax({
     url: SERVER + 'courses_api/flashcard/response',
     data: JSON.stringify(data_),
@@ -378,7 +379,7 @@ function radioOnClick(valu) {
 }
 
 function init() {
-  $('#sign-modal').load('signature/index.html');
+  // $('#sign-modal').load('signature/index.html');
   $('#verify-phone-modal').load('phone/index.html');
   $("#video-modal").load('video/index.html');
   $("#gps-modal").load('gps/index.html');
@@ -790,7 +791,7 @@ function init() {
           </div>
           `
         );
-        handle_gps_click();
+        // handle_gps_click();
       }
 
       if (flashcard.lesson_type == 'user_video_upload') {
