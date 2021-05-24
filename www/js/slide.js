@@ -196,6 +196,9 @@ function nextSlide() {
     } else if (type == 'user_video_upload') {
       answer = $('#user-video-tag').find('source').attr('src');
       sendResponse(flashcard_id, answer);
+    }else if (type == 'user_image_upload') {
+        answer = $(`#user-image-display_${flashcard_id}`).attr('src');
+        sendResponse(flashcard_id, answer);
     } else if (type == 'user_gps') {
       answer = JSON.stringify({ lat: $('#lat_' + (current_slide - 1)).val(), lng: $('#long_' + (current_slide - 1)).val() });
       sendResponse(flashcard_id, answer);
@@ -217,6 +220,27 @@ function nextSlide() {
       console.log("User-GPS slide page");
       answer = $('#note').val();
       sendResponse(flashcard_id, answer);
+    }
+    else if(current_slide != total_slides && loaded_flashcards[current_slide].lesson_type == 'jitsi_meet'){
+      var domain = "vstream.lifeforceenergy.us";
+        var options = {
+          roomName: `${loaded_flashcards[current_slide].question}`,
+          // width: 700,
+          configOverwrite: {
+            startWithAudioMuted: true, prejoinPageEnabled: false,
+            startWithVideoMuted: false
+          },
+          height: 570,
+          parentNode: document.querySelector(`#flashcard_${loaded_flashcards[current_slide].id}`),
+          configOverwrite: {},
+          interfaceConfigOverwrite: {}
+        }
+        window.api = new JitsiMeetExternalAPI(domain, options);
+        console.log(api)
+    }
+    else if(type == 'jitsi_meet'){
+      window.api.executeCommand('hangup');
+      api.dispose();
     }
 
     $('#myCarousel').carousel('next');
@@ -355,7 +379,7 @@ function init() {
     var className = 'item';
     // XXX refactor code below into smaller processing chunk
 
-    flashcards.forEach((flashcard) => {
+    flashcards.forEach((flashcard, index) => {
       if (i == 0) {
         className = 'item active';
       } else {
@@ -401,23 +425,9 @@ function init() {
         //     </body>
         // </html> </div>
         //         `);
-        $('#theSlide').append(`<div class="${className} ${i == 0 ? 'active' : ''}" id="flashcard_${i}" id="verify_email">
+        $('#theSlide').append(`<div class="${className} ${i == 0 ? 'active' : ''}" id="flashcard_${flashcard.id}" id="verify_email">
         
         </div>`);
-        var domain = "vstream.lifeforceenergy.us";
-        var options = {
-          roomName: `${flashcard.question}`,
-          // width: 700,
-          configOverwrite: {
-            startWithAudioMuted: true, prejoinPageEnabled: false,
-            startWithVideoMuted: false
-          },
-          height: 570,
-          parentNode: document.querySelector(`#flashcard_${i}`),
-          configOverwrite: {},
-          interfaceConfigOverwrite: {}
-        }
-        var api = new JitsiMeetExternalAPI(domain, options);
       }
 
       if (flashcard.lesson_type == 'verify_email') {
@@ -713,13 +723,12 @@ function init() {
         console.log("user_image_upload flashcard.lesson_type ===> ", flashcard.lesson_type);
         $('#theSlide').append(
           `<div class="${className}">
-            <h1>User Video Upload</h1>
+            <h1>User Image Upload</h1>
             <div alt="title_text" style="height:500px">
             <p> ${flashcard.question}</p>
-            <input type="file" class="form-control" value="Choose File" id="myFile" onchange="handleVideoUpload('user_video_upload')"/> 
+            <input type="file" class="form-control" value="Choose File" id="image_upload_${flashcard.id}" onchange="handleImageUpload('user_image_upload',${flashcard.id})"/> 
 
-            <video style="height:500px;width:1000px;display:none"; controls preload="metadata" id="user-video-tag">
-            </video>
+            <img style="height:500px; width:auto; margin:auto; display:none;" id="user-image-display_${flashcard.id}">
 
             </div>
           </div>
@@ -793,6 +802,12 @@ function init() {
                 if (rf.answer){
                   $("#user-video-tag").attr("src",rf.answer);
                   $("#user-video-tag")[0].load()
+                }
+              }
+              if (f.lesson_type == 'user_image_upload') {
+                if (rf.answer){
+                  $(`#user-image-display_${f.id}`).attr("src",rf.answer);
+                  $(`#user-image-display_${f.id}`).css("display",'block');
                 }
               }
               if (f.lesson_type == 'title_input') {
@@ -911,6 +926,71 @@ function handleVideoUpload(key) {
       }
       //   $("#video-modal").hide();
       //   setTimeout(() => { location.reload() }, 5000);
+    }
+  }).fail(function (error) {
+    console.log("🚀 ~ file: index.html ~ line 56 ~ error", error)
+    swal({
+      title: 'Error!',
+      text: 'Video upload failed!',
+      icon: 'warning',
+      timer: 1000,
+    });
+
+  });
+
+}
+
+function handleImageUpload(key, id) {
+  var file = $(`#image_upload_${id}`).prop('files');
+  console.log("🚀 ~ file: slide.js ~ line 929 ~ handleImageUpload ~ file", file[0])
+  GLOBAL_FILE = file[0];
+  var form = new FormData();
+  form.append('file', GLOBAL_FILE);
+
+  var settings = {
+    async: true,
+    "crossDomain": true,
+    url: SERVER + 's3_uploader/upload',
+    method: 'POST',
+    type: 'POST',
+    processData: false,
+    contentType: false,
+    enctype: 'multipart/form-data',
+    data: form,
+    headers: {
+      Authorization: localStorage.getItem('token'),
+    },
+  }
+
+  console.log(settings);
+  $.ajax(settings).done(function (response) {
+    console.log("🚀 ~ file: slide.js ~ line 951 ~ response", response)
+    if (response.message == "No file provided!") {
+      swal({
+        title: 'File Not Select',
+        text: response.message,
+        icon: "warning",
+        timer: 1000,
+      });
+    } else {
+      console.log("this is else part")
+      swal({
+        title: 'Good job!',
+        text: 'Video uploaded successfully!',
+        icon: 'success',
+        timer: 1000,
+      });
+      const file_url = response.file_url;
+      displayImage(file_url);
+
+      function displayImage(file_url) {
+        if (file_url) {
+          if (key == 'user_image_upload') {
+            $(`#user-image-display_${id}`).css("display","block");
+            $(`#user-image-display_${id}`).attr("src",file_url);
+          }
+        }
+      }
     }
   }).fail(function (error) {
     console.log("🚀 ~ file: index.html ~ line 56 ~ error", error)

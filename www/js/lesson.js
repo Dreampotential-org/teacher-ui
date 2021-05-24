@@ -648,6 +648,25 @@ function addUserVideoUpload(isNew, id, question, choices, image, posU){
   user_video_upload_count++;
 }
 
+function addUserImageUpload(isNew, id, question, choices, image, posU){
+  if (!isNew) {
+    image_type = "user_image_upload";
+    console.log(question)
+    $('#user_image_upload').find('input').first().attr('value', question);
+    $('#user_image_upload').find('input').first().attr('data-id', id);
+    displayImage(image,"");
+  } else {
+    $('#user_image_upload').find('user-image-question').html('');
+  }
+  $('#user_image_upload')
+    .find('myFile')
+    .attr('name', 'user_video_upload_myFile_' + title_input_count);
+
+  $('#sortable').append($('#user_image_upload').html());
+  sortablePositionFunction(isNew, posU);
+  user_image_upload_count++;
+}
+
 function addVideoFile(isNew, id, question, choices, image, posU) {
   video_type = "";
   if (!isNew) {
@@ -1048,6 +1067,16 @@ function sendUpdates() {
           flashcards.push(temp);
           break;
 
+      case 'user_image_upload':
+          temp = {
+          lesson_type: 'user_image_upload',
+          question: attr_array[0],
+          image:  '',
+          position: position_me,
+          };
+          flashcards.push(temp);
+          break;
+
      case 'user_gps':
         temp = {
           lesson_type: 'user_gps',
@@ -1252,6 +1281,9 @@ $(document).ready(function () {
           if (flashcard.lesson_type == 'user_video_upload') {
             addUserVideoUpload(false, flashcard.id, flashcard.question, flashcard.options, flashcard.image, flashcard.position);
           }
+          if (flashcard.lesson_type == 'user_image_upload') {
+            addUserImageUpload(false, flashcard.id, flashcard.question, flashcard.options, flashcard.image, flashcard.position);
+          }
           if (flashcard.lesson_type == 'user_gps') {
             addUserGps(false, flashcard.id, flashcard.question, flashcard.options, flashcard.position);
           }
@@ -1417,6 +1449,9 @@ $(document).ready(function () {
     }
     if($('#selectsegment').val() == 'user_video_upload'){
       addUserVideoUpload(true);
+    }
+    if($('#selectsegment').val() == 'user_image_upload'){
+      addUserImageUpload(true);
     }
     if($('#selectsegment').val() == 'user_gps'){
       addUserGps(true);
