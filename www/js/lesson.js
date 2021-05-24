@@ -129,6 +129,17 @@ function addSpeedRead(isNew, id, value, posU) {
   quick_read_count++;
 }
 
+function addChiroFront(isNew,id,value,posU){
+    $('#sortable').append($('#chiro_front').html())
+    sortablePositionFunction(isNew, posU);
+}
+
+function addChiroSide(isNew,id,value,posU){
+    $('#sortable').append($('#chiro_side').html())
+    sortablePositionFunction(isNew, posU);
+}
+
+
 function addTitleText(isNew, id, title, text, posU) {
   if (!isNew) {
     $('#title_text').find('input[type=text]').attr('value', title);
@@ -146,6 +157,14 @@ function addTitleText(isNew, id, title, text, posU) {
     .find('input[type=text]')
     .attr('name', 'title_' + title_text_count);
   $('#sortable').append($('#title_text').html());
+  sortablePositionFunction(isNew, posU);
+
+  title_text_count++;
+}
+
+function addRecordWebCam(isNew, id, title, text, posU) {
+  console.log(isNew, id, title, posU);
+  $('#sortable').append($('#record_webcam').html());
   sortablePositionFunction(isNew, posU);
 
   title_text_count++;
@@ -943,7 +962,32 @@ function sendUpdates() {
         };
         flashcards.push(temp);
         break;
-        
+      case 'record_webcam':
+        temp = {
+          lesson_type: 'record_webcam',
+          question: attr_array[0],
+          position: position_me,
+        };
+        flashcards.push(temp);
+        break;
+    case 'chiro_front':
+        temp = {
+            lesson_type: 'chiro_front',
+            question: attr_array[0],
+            position: position_me,
+        };
+        flashcards.push(temp);
+        break;
+
+    case 'chiro_side':
+      temp = {
+          lesson_type: 'chiro_side',
+          question: attr_array[0],
+          position: position_me,
+      };
+      flashcards.push(temp);
+      break;
+      
       case 'speed_read':
         temp = {
           lesson_type: 'quick_read',
@@ -1239,6 +1283,9 @@ $(document).ready(function () {
           if (flashcard.lesson_type == 'jitsi_meet') {
             addJitsiMeet(false, flashcard.id, flashcard.question, flashcard.answer, flashcard.position);
           }
+          if (flashcard.lesson_type == 'record_webcam') {
+            addRecordWebCam(false, flashcard.id, flashcard.question, flashcard.answer, flashcard.position);
+          }
           if (flashcard.lesson_type == 'title_input') {
             addTitleInput(false, flashcard.id, flashcard.question, flashcard.answer, flashcard.position);
           }
@@ -1286,6 +1333,12 @@ $(document).ready(function () {
           }
           if (flashcard.lesson_type == 'user_gps') {
             addUserGps(false, flashcard.id, flashcard.question, flashcard.options, flashcard.position);
+          }
+          if (flashcard.lesson_type == 'chiro_front') {
+            addChiroFront(false, flashcard.id, flashcard.question, flashcard.options, flashcard.position);
+          }
+          if (flashcard.lesson_type == 'chiro_side') {
+            addChiroSide(false, flashcard.id, flashcard.question, flashcard.options, flashcard.position);
           }
         });
 
@@ -1402,6 +1455,9 @@ $(document).ready(function () {
     if ($('#selectsegment').val() == 'jitsi_meet') {
       addJitsiMeet(true);
     }
+    if ($('#selectsegment').val() == 'record_webcam') {
+      addRecordWebCam(true);
+    }
     if ($('#selectsegment').val() == 'speed_read') {
       addSpeedRead(true);
     }
@@ -1455,6 +1511,14 @@ $(document).ready(function () {
     }
     if($('#selectsegment').val() == 'user_gps'){
       addUserGps(true);
+    }
+    if($('#selectsegment').val() == 'chiro_front'){
+        console.log("Chiro Front Added")
+        addChiroFront(true);
+      }
+    if($('#selectsegment').val() == 'chiro_side'){
+    console.log("Chiro Side Added")
+    addChiroSide(true);
     }
     if ($('#selectsegment').val() == 'select_type') {
       swal({
