@@ -495,6 +495,7 @@
                          });
                          var select = table.column(0).checkboxes;
                     }).fail((err) => {
+                         console.log("🚀 ~ file: leads.html ~ line 522 ~ err", err)
                          console.log("errorss...",err)
                     })
                });
@@ -517,16 +518,16 @@
                          "contentType": false,
                          "mimeType": "multipart/form-data",
                          "data": form,
-                         "headers": {
-                              "Authorization": localStorage.getItem("token")
-                         }
+                         "headers": {	
+                              "Authorization": `${localStorage.getItem('user-token')}`	
+                         },
                     };
                     $.ajax(settings).done(function (response) {
                          swal({
                               title: "Good job!",
                               icon: "success",
-                              button: "Aww yiss!",
-                              text: response,
+                              button: "Aww yess!",
+                              text: JSON.parse(response).message,
                               timer: 3000,
                          });
                          setTimeout(function(){location.reload()}, 3000);  
@@ -554,6 +555,7 @@
                     $('#edit_ask').val(user_leads[index].fields.ask)
                     $('#edit_notes').val(user_leads[index].fields.notes)
                     $('#edit_url').val(user_leads[index].fields.url)
+                    $('#edit_status').val(user_leads[index].fields.status)
                }
 
                // go back from editPage 
