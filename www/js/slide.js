@@ -414,9 +414,9 @@ function init() {
     get_session();
     // phone_verification_check();
     // console.log('>>>>>>>>>>>>>> slide', response);
-
+    document.getElementById('lesson_title').innerHTML =  response.lesson_name ? response.lesson_name : "Lesson - " + lesson_id ;
     total_slides = response.flashcards.length;
-    $('head').append(`<title>${response.lesson_name ? response.lesson_name : "Lesson - " + lesson_id}</title>`)
+    // $('head').append(`<title>${response.lesson_name ? response.lesson_name : "Lesson - " + lesson_id}</title>`)
     // Updating Meta Attribute states
     $('#progress-section').show();
 
@@ -443,7 +443,6 @@ function init() {
       } else {
         className = 'item';
       }
-      document.getElementById('lesson_title').innerHTML = flashcard.lesson_type;
       $('#carousel-indicators').append('<li data-target="#myCarousel" data-slide-to="' + i + '" class="active"></li>');
 
       if (flashcard.lesson_type == 'verify_phone') {

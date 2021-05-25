@@ -168,10 +168,10 @@
         $("#page-header").load("header.html");
       });
       $("#body-row .collapse").collapse("hide");
-
+      
       // Collapse/Expand icon
       //$('#collapse-icon').addClass('fa-angle-double-left');
-
+      
       // Collapse click
       function left_sidebar() {
         SidebarCollapse();
@@ -179,7 +179,7 @@
       const yourNumberInputField = document.querySelector("#call");
       const yourNumberInput = window.intlTelInput(yourNumberInputField, {
         utilsScript:
-          "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
       });
       $("#make_call").click (() => {
         source_num_call = $('#sourceCallNumber').val();
@@ -188,6 +188,7 @@
         console.log("🚀 ~ file: call_menu.html ~ line 188 ~ $ ~ dest_num_call", dest_num_call)
         your_num = yourNumberInput.getNumber()
         console.log("🚀 ~ file: call_menu.html ~ line 190 ~ $ ~ your_num", your_num)
+        console.log("🚀 ~ file: call_menu.html ~ line 219 ~ $ ~ SERVER", SERVER)
         $.ajax({
           url: SERVER + "voip/api_voip/join_conference",
           async: true,
