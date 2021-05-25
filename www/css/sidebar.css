@@ -9,7 +9,7 @@
 }
 
 #sidebar-container {
-    min-height: 100vh;
+    min-height: 100%;
     background-color: #132644;
     padding: 0;
     /* flex: unset; */

@@ -98,3 +98,7 @@ body {
 .hidden-md{
     display:none;
   }
+
+.container {
+    height: auto !important;
+}

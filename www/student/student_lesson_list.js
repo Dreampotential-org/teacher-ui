@@ -1,32 +1,36 @@
 
 $(document).ready(function () {
-    var student_lesson_list = [
-    {
-        courseId: 1,
-        courseTitle: 'course 1'
-    },
-    {
-        courseId: 2,
-        courseTitle: 'course 2'
-    },
-    {
-        courseId: 3,
-        courseTitle: 'course 3'
-    },
-    {
-        courseId: 4,
-        courseTitle: 'course 4'
-    },
-    ];
 
-    student_lesson_list.forEach((item, i) => {
-        $("#student-lesson-list").append(
-            `<tr>
-            <td>${item.courseId}</td>
-            <td>${item.courseTitle}</td>
-            </tr>`
-        );
-    });
+    getStudentLessonList(91);
+
+    function getStudentLessonList(student_id) {
+        console.log("Student_id => ", student_id);
+        try{
+            $.ajax({
+                url: SERVER + 'courses_api/lesson/student/get/' + student_id,
+                async: true,
+                crossDomain: true,
+                crossOrigin: true,
+                type: 'GET',
+              //   headers: { Authorization: `${localStorage.getItem('user-token')}` },
+              }).done((response2) => {
+                console.log("response => ",response2);
+               
+                  for (var lessonDt of response2) {
+                    $("#student-lesson-list").append(
+                        `<tr>
+                        <td>${lessonDt.lesson?.id}</td>
+                        <td>${lessonDt.lesson?.lesson_name}</td>
+                        </tr>`
+                        );
+                }
+              });
+        }
+        catch(e){
+            console.log("Error=> : ", e);
+        }
+
+      }
 
 });
 
