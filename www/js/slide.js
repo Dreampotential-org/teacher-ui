@@ -49,6 +49,7 @@ function signLesson(event, imgId, signInput) {
 }
 
 function sendResponse(flashcard_id, answer) {
+  console.log("response....", flashcard_id, answer);
   var current_flashcard = loaded_flashcards[current_slide - 1];
   console.log("current_flashcard.lesson_type => ", current_flashcard.lesson_type);
   var sessionId = localStorage.getItem('session_id');
@@ -553,13 +554,9 @@ function init() {
         <video controls autoplay id="record_webcam">
 
         </video>
-        <video controls autoplay id="record_video">
-
-        </video>
+        
         </div>`);
         var video = document.querySelector("#record_webcam");
-        var video_recorded = document.querySelector("#record_video");
-
 
         if (navigator.mediaDevices.getUserMedia) {
           navigator.mediaDevices.getUserMedia({ video: true })
@@ -567,7 +564,8 @@ function init() {
               video.srcObject = stream;
               let start = document.getElementById("start_recording");
               let stop = document.getElementById("stop_recording");
-              let mediaRecorder = new MediaRecorder(stream);
+              let options = { mimeType: "video/webm;codecs=vp9" };
+              let mediaRecorder = new MediaRecorder(stream, options);
               let chunks = [];
 
               start.addEventListener('click', (ev) => {
@@ -582,20 +580,24 @@ function init() {
                 chunks.push(ev.data);
               }
               mediaRecorder.onstop = (ev) => {
-                let blob = new Blob(chunks, { type: 'video/webm', mimeType: "video/mp4" });
+                let blob = new Blob(chunks);
                 chunks = []
-                let videoUrl = window.URL.createObjectURL(blob);
-                console.log("video url..", videoUrl);
-                video_recorded.src = videoUrl;
-                stop.href = video_recorded.src;
-                stop.download = `${flashcard.id}.webm`;
+                // let videoUrl = window.URL.createObjectURL(blob);
+                // console.log("video url..", videoUrl);
+                // video_recorded.src = videoUrl;
+                // stop.href = video_recorded.src;
+                // stop.download = `${flashcard.id}.webm`;
                 // flashcard id, video url from s3
+                var file = new File([blob], `${flashcard.id}.mp4`, {type: 'video', lastModified: Date.now()});
+                // let videoUrl = window.URL.createObjectURL(file);
+                // video_recorded.src = videoUrl;
+                // console.log("video url..", videoUrl);
                 var form = new FormData();
-                form.append('file', blob);
+                form.append('file', file);
 
                 var settings = {
                   async: true,
-                  // "crossDomain": true,
+                  crossDomain: true,
                   url: SERVER + 's3_uploader/upload',
                   method: 'POST',
                   type: 'POST',
@@ -607,37 +609,40 @@ function init() {
                     Authorization: localStorage.getItem('token'),
                   },
                 };
-                // $.ajax(settings).done(function (response) {
-                //   console.log("🚀 ~ file: index.html ~ line 57 ~ response", response)
-                //   if (response.message == "No file provided!") {
-                //     swal({
-                //       title: 'File Not Select',
-                //       text: response.message,
-                //       icon: "warning",
-                //       timer: 1000,
-                //     });
-                //   } else {
-                //     console.log("this is else part")
-                //     swal({
-                //       title: 'Good job!',
-                //       text: 'Video uploaded successfully!',
-                //       icon: 'success',
-                //       timer: 1000,
-                //     });
-                //     const file_url = response.file_url;
-                //     video_recorded.src = file_url;                 
-                //   }
-                // }).fail(function (error) {
-                //   console.log("🚀 ~ file: index.html ~ line 56 ~ error", error)
-                //   swal({
-                //     title: 'Error!',
-                //     text: 'Video upload failed!',
-                //     icon: 'warning',
-                //     timer: 1000,
-                //   });
+                $.ajax(settings).done(function (response) {
+                  console.log("🚀 ~ file: index.html ~ line 57 ~ response", response)
+                  let resp = JSON.parse(response);
+                  if (resp.message == "No file provided!") {
+                    swal({
+                      title: 'File Not Select',
+                      text: resp.message,
+                      icon: "warning",
+                      timer: 1000,
+                    });
+                  } else {
+                    console.log("this is else part")
+                    sendResponse(flashcard.id, resp.file_url);
+                    swal({
+                      title: 'Good job!',
+                      text: 'Video uploaded successfully!',
+                      icon: 'success',
+                      timer: 1000,
+                    });
+                    // const file_url = response.file_url;
+                    
+                                    
+                  }
+                }).fail(function (error) {
+                  console.log("🚀 ~ file: index.html ~ line 56 ~ error", error)
+                  swal({
+                    title: 'Error!',
+                    text: 'Video upload failed!',
+                    icon: 'warning',
+                    timer: 1000,
+                  });
 
-                // });
-                // sendResponse(flashcard.id, videoUrl);
+                });
+                
 
               }
             })
