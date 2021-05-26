@@ -87,7 +87,6 @@ function sendResponse(flashcard_id, answer) {
         answer: answer ? answer : '',
       };
     }
-
   }
 
   console.log("data passed to API => ",data_);
@@ -307,7 +306,51 @@ function get_session() {
       phone_verification_status = false;
     },
   });
+}
 
+function viewMapLocations(latitude,longitude){
+
+    $("#journal-body-tour").html(
+      "<div id='gps-view-tour' style='width:100%;height:400px;'></div>"
+    );
+
+    var spot = {
+      lat: parseFloat(latitude),
+      lng: parseFloat(longitude),
+    };
+    var name = "";
+    var latlng = spot;
+    var geocoder = new google.maps.Geocoder();
+
+    var panorama = new google.maps.Map(document.getElementById("gps-view-tour"), {
+      center: { lat: spot.lat, lng: spot.lng },
+      zoom: 18,
+    });
+    geocoder.geocode({ location: latlng }, function (results, status) {
+      if (status === "OK") {
+        if (results[0]) {
+          name = results[0].formatted_address;
+          // alert(name);
+          var marker = new google.maps.Marker({
+            position: spot,
+            map: panorama,
+            icon: "images/map_icon.png",
+          });
+          var infowindow = new google.maps.InfoWindow({
+            content: name,
+          });
+          infowindow.setContent(results[0].formatted_address);
+          infowindow.open(panorama, marker);
+          marker.addListener("click", function () {
+            infowindow.open(panorama, marker);
+          });
+        } else {
+          window.alert("No results found");
+        }
+      } else {
+        window.alert("Geocoder failed due to: " + status);
+      }
+    });
 }
 
 function verifyPhone(event) {
@@ -438,6 +481,7 @@ function init() {
     // XXX refactor code below into smaller processing chunk
 
     flashcards.forEach((flashcard, index) => {
+      console.log("flashcard=>",flashcard);
       if (i == 0) {
         className = 'item active';
       } else {
@@ -773,6 +817,29 @@ function init() {
         );
       }
 
+      if (flashcard.lesson_type == 'user_tour') {
+        $('#theSlide').append(
+          '<div class="' +
+          className +
+          '"><div alt="title_text" style="height:100%"><h1>User Tour</h1><h1> ' +
+          flashcard.question +
+          '<div alt="title_text" style="height:100%; padding-top:20px; font-size:18px">' +
+          flashcard.answer +
+          '</h1><img src= "' +
+          flashcard.image +
+          '" width=400px></div><div style="padding-top:20px;"><label>Latitude: </label>"'+
+          `<input id="lat_" value="${flashcard.latitude}" disabled></div>
+          <div style="margin-top:16px;"><label>Longitude: </label>
+          <input id="long_" value="${flashcard.longitude}" disabled></div>
+          <div style="margin-top:16px;"class="form-group">
+          <button class='btn btn-info gps-entry' 
+          onclick="viewMapLocations('${flashcard.latitude}','${flashcard.longitude}')">View Map</button>
+          </div><div id="journalModalTour">
+          <div id='journal-body-tour'></div>
+          </div></div>`
+        );
+      }
+
       if (flashcard.lesson_type == 'user_gps') {
         console.log("flashcard.lesson_type == 'user_gps'");
         console.log("flashcard value ===> ", flashcard);
@@ -782,7 +849,7 @@ function init() {
           ${className} +'"><div class="title_input">
           <div alt="title_input" style="height:500px"><h1>GPS Note:</h1>
           <p> ${flashcard.question}</p>
-          <div><label>Lattitude: </label>
+          <div><label>Latitude: </label>
           <input id="lat_${i}" value="0" disabled></div>
           <div style="margin-top:16px;"><label>Longitude: </label>
           <input id="long_${i}" value="0" disabled></div>

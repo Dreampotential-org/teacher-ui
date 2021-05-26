@@ -772,15 +772,67 @@ function addImageFile(isNew, id, question, image, posU) {
     .attr('name', 'image_' + image_file_count)
     .attr('data-id',$('#image_file').find('input').first().attr('data-id')+"_"+ image_file_count);
 
-  //
-  // $('#image_file')
-  //   .find('img')
-  //   .last()
-  //   .attr('name', 'image_' + image_file_count)
-  //   .attr('data-id',$('#image_file').find('input').first().attr('data-id')+"_"+ image_file_count);
-  //  
-
   $('#sortable').append($('#image_file').html());
+  image_file_count++;
+  sortablePositionFunction(isNew, posU);
+}
+
+function addUserTour(isNew, id, question,text,latitude,longitude, image, posU) {
+  console.log("addUserTour ==> ");
+  console.log("isNew, id, question, image, posU ");
+  console.log(isNew,' , ' ,id, ' , ' ,question, ' , ' ,image, ' , ' ,posU);
+  if (!isNew) {
+    $('#user_tour').find('input').first().attr('value', question);
+    $('#user_tour').find('input').last().attr('value', image);
+
+    $('#user_tour').find('input').first().attr('data-id', id);
+    $('#user_tour').find('input').last().attr('data-id', id);
+
+    $('#user_tour').find('#latitude').attr('value', latitude);
+    $('#user_tour').find('#longitude').attr('value', longitude);
+    
+    $('#user_tour').find('output-image-file').attr('data-id', id);
+
+    $('#user_tour').find('textarea').html(text);
+    $('#user_tour').find('textarea').attr('data-id', id);
+
+    image_type = "imageFile";
+    // displayImage(image,$('#image_file').find('output-image-file').attr('data-id'));
+    displayImage(image,id);
+  } else {
+    $('#user_tour').find('input').first().attr('value', '');
+    $('#user_tour').find('input').last().attr('value', '');
+    // $('#image_file').find('#output-image-file').find('img').attr('src','');
+    $('#user_tour').find('.output-image-file').find('img').attr('src','');
+    image_type = "imageFile";
+    displayImage("","");
+  }
+
+  $('#user_tour')
+    .find('input')
+    .first()
+    .attr('name', 'image_question' + image_file_count);
+
+    $('#user_tour')
+    .find('textarea')
+    .first()
+    .attr('name', 'image_answer' + image_file_count);
+
+    $('#user_tour')
+    .find('#latitude')
+    .attr('name', 'latitude' + latitude);
+
+    $('#user_tour')
+    .find('#longitude')
+    .attr('name', 'longitude' + longitude);
+
+  $('#user_tour')
+    .find('input')
+    .last()
+    .attr('name', 'image_' + image_file_count)
+    .attr('data-id',$('#image_file').find('input').first().attr('data-id')+"_"+ image_file_count);
+
+  $('#sortable').append($('#user_tour').html());
   image_file_count++;
   sortablePositionFunction(isNew, posU);
 }
@@ -912,7 +964,7 @@ function sendUpdates() {
     position_me += 1;
     //current_flashcard_elements has all the fields of current selected flashcard
 
-    if (current_flashcard_elements.length < 4) {
+    if (current_flashcard_elements.length <= 6) {
       current_flashcard_elements.forEach((current_flashcard) => {
         this_element = current_flashcard.firstElementChild;
         if(this_element){
@@ -953,12 +1005,17 @@ function sendUpdates() {
         }
       });
     }
+
+    console.log("attr_array=>",attr_array)
+
     switch (flashcard_type) {
       case 'jitsi_meet':
         temp = {
           lesson_type: 'jitsi_meet',
           question: attr_array[0],
           position: position_me,
+          latitude: 0,
+          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -967,6 +1024,8 @@ function sendUpdates() {
           lesson_type: 'record_webcam',
           question: attr_array[0],
           position: position_me,
+          latitude: 0,
+          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -975,6 +1034,8 @@ function sendUpdates() {
             lesson_type: 'chiro_front',
             question: attr_array[0],
             position: position_me,
+            latitude: 0,
+            longitude:0
         };
         flashcards.push(temp);
         break;
@@ -984,6 +1045,8 @@ function sendUpdates() {
           lesson_type: 'chiro_side',
           question: attr_array[0],
           position: position_me,
+          latitude: 0,
+          longitude:0
       };
       flashcards.push(temp);
       break;
@@ -993,6 +1056,8 @@ function sendUpdates() {
           lesson_type: 'quick_read',
           question: attr_array[0],
           position: position_me,
+          latitude: 0,
+          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1003,6 +1068,8 @@ function sendUpdates() {
           question: attr_array[0],
           answer: attr_array[1],
           position: position_me,
+          latitude: 0,
+          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1012,6 +1079,8 @@ function sendUpdates() {
           lesson_type: 'title_input',
           question: attr_array[0],
           position: position_me,
+          latitude: 0,
+          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1022,6 +1091,8 @@ function sendUpdates() {
           question: attr_array[0],
           image: attr_array[1],
           position: position_me,
+          latitude: 0,
+          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1031,6 +1102,8 @@ function sendUpdates() {
           lesson_type: 'title_textarea',
           question: attr_array[0],
           position: position_me,
+          latitude: 0,
+          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1041,9 +1114,24 @@ function sendUpdates() {
           question: attr_array[0],
           image: attr_array[1],
           position: position_me,
+          latitude: 0,
+          longitude:0
         };
         flashcards.push(temp);
         break;
+
+        case 'user_tour':
+          temp = {
+            lesson_type: 'user_tour',
+            question: attr_array[0],
+            answer: attr_array[1],
+            latitude: attr_array[2],
+            longitude:attr_array[3],
+            image: attr_array[4],
+            position: position_me,
+          };
+          flashcards.push(temp);
+          break;
 
       case 'video_file':
         temp = {
@@ -1051,6 +1139,8 @@ function sendUpdates() {
           question: attr_array[0],
           image: attr_array[1],
           position: position_me,
+          latitude: 0,
+          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1062,6 +1152,8 @@ function sendUpdates() {
           options: choices_array,
           image: attr_array[1],
           position: position_me,
+          latitude: 0,
+          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1073,6 +1165,8 @@ function sendUpdates() {
           options: choices_array,
           image: attr_array[1],
           position: position_me,
+          latitude: 0,
+          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1080,6 +1174,8 @@ function sendUpdates() {
         temp = {
           lesson_type: 'signature',
           position: position_me,
+          latitude: 0,
+          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1088,6 +1184,8 @@ function sendUpdates() {
           lesson_type: 'name_type',
           question: attr_array[0],
           position: position_me,
+          latitude: 0,
+          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1096,6 +1194,8 @@ function sendUpdates() {
         temp = {
           lesson_type: 'verify_phone',
           position: position_me,
+          latitude: 0,
+          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1107,6 +1207,8 @@ function sendUpdates() {
           // image: attr_array[0],
           image:  '',
           position: position_me,
+          latitude: 0,
+          longitude:0
           };
           flashcards.push(temp);
           break;
@@ -1117,6 +1219,8 @@ function sendUpdates() {
           question: attr_array[0],
           image:  '',
           position: position_me,
+          latitude: 0,
+          longitude:0
           };
           flashcards.push(temp);
           break;
@@ -1129,6 +1233,8 @@ function sendUpdates() {
           // latitude:CURRENT_POSITION.coords.latitude,
           // longitude:CURRENT_POSITION.coords.longitude,
           position: position_me,
+               latitude: 0,
+          longitude:0
         };
         flashcards.push(temp);
         break; 
@@ -1310,6 +1416,11 @@ $(document).ready(function () {
             addImageFile(false, flashcard.id, flashcard.question, flashcard.image, flashcard.position);
           }
 
+          if (flashcard.lesson_type == 'user_tour') {
+            addUserTour(false, flashcard.id, flashcard.question,flashcard.answer,flashcard.latitude,
+              flashcard.longitude,flashcard.image, flashcard.position);
+          }
+
           if (flashcard.lesson_type == 'iframe_link') {
             addIframeLink(false, flashcard.id, flashcard.question, flashcard.options, flashcard.image, flashcard.position);
           }
@@ -1488,6 +1599,11 @@ $(document).ready(function () {
     if ($('#selectsegment').val() == 'image_file') {
       addImageFile(true);
     }
+
+    if ($('#selectsegment').val() == 'user_tour') {
+      addUserTour(true);
+    }
+
     if ($('#selectsegment').val() == 'iframe_link') {
       addIframeLink(true);
     }
