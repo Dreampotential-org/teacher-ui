@@ -42,7 +42,7 @@
             $("#submit-code").show()
             $("#send-sms").hide()
             $("#phone_number").attr("disabled","true");
-        }   
+        }
 
         $(window).ready(function() {
             $("#code_block").hide()
@@ -88,13 +88,15 @@
                     }
 
                     $.ajax({
-                        "url": SERVER +"/courses_api/verify/phone",
+                        "url": SERVER + "courses_api/verify/phone",
                         'data': JSON.stringify(data_),
                         'type': 'POST',
                         'contentType': 'application/json',
                         'success': function (data){
                             alert("Code Verified")
-                            const evt = new Event("phoneVerified", {"bubbles":true, "cancelable":false});
+                            const evt = new Event(
+                              "phoneVerified",
+                              {"bubbles":true, "cancelable":false});
                             document.dispatchEvent(evt);
 
                         },
