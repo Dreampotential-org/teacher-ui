@@ -8,6 +8,7 @@ var completed = false;
 var signature = [];
 var phone_verification_status = false;
 var session_id = null;
+var user_tour_array=[];
 
 var imported = document.createElement('script');
 imported.src = 'js/gps.js';
@@ -267,6 +268,7 @@ function getParam(sParam) {
     }
   }
 }
+
 function phone_verification_check() {
   session_id = localStorage.getItem('session_id');
   console.log('phone verification check running');
@@ -311,46 +313,49 @@ function get_session() {
 function viewMapLocations(latitude,longitude){
 
     $("#journal-body-tour").html(
-      "<div id='gps-view-tour' style='width:100%;height:400px;'></div>"
+      "<div id='gps-view-tour' style='width:100%;height:450px;'></div>"
     );
 
-    var spot = {
-      lat: parseFloat(latitude),
-      lng: parseFloat(longitude),
-    };
-    var name = "";
-    var latlng = spot;
-    var geocoder = new google.maps.Geocoder();
+    console.log("user_tour_array=>",user_tour_array);
 
-    var panorama = new google.maps.Map(document.getElementById("gps-view-tour"), {
-      center: { lat: spot.lat, lng: spot.lng },
-      zoom: 18,
+    let lat=0,long=0;
+    //question, answer , lat , long
+    let locations=[];
+     for(var i=0;i<user_tour_array.length;i++){
+        let dt = [user_tour_array[i]['question'],user_tour_array[i]['answer'],user_tour_array[i]['image'],
+        user_tour_array[i]['latitude'],user_tour_array[i]['longitude']];
+        locations.push(dt);
+
+        lat=locations[i][3];
+        long=locations[i][4];
+     }
+
+    var map = new google.maps.Map(document.getElementById('gps-view-tour'), {
+      zoom: 10,
+      center: new google.maps.LatLng(lat,long),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
     });
-    geocoder.geocode({ location: latlng }, function (results, status) {
-      if (status === "OK") {
-        if (results[0]) {
-          name = results[0].formatted_address;
-          // alert(name);
-          var marker = new google.maps.Marker({
-            position: spot,
-            map: panorama,
-            icon: "images/map_icon.png",
-          });
-          var infowindow = new google.maps.InfoWindow({
-            content: name,
-          });
-          infowindow.setContent(results[0].formatted_address);
-          infowindow.open(panorama, marker);
-          marker.addListener("click", function () {
-            infowindow.open(panorama, marker);
-          });
-        } else {
-          window.alert("No results found");
+    
+    var infowindow = new google.maps.InfoWindow();
+    
+    var marker, i;
+    
+    for (i = 0; i < locations.length; i++) {  
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][3], locations[i][4]),
+        map: map
+      });
+    
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          // Create content  
+          var contentString = locations[i][0] + "<br /><br />" + locations[i][1]+ `<br /><br />
+          <a href=${locations[i][2]} target="black_">${locations[i][2]}</a>`;
+          infowindow.setContent(contentString);
+          infowindow.open(map, marker);
         }
-      } else {
-        window.alert("Geocoder failed due to: " + status);
-      }
-    });
+      })(marker, i));
+    }
 }
 
 function verifyPhone(event) {
@@ -818,26 +823,23 @@ function init() {
       }
 
       if (flashcard.lesson_type == 'user_tour') {
-        $('#theSlide').append(
-          '<div class="' +
-          className +
-          '"><div alt="title_text" style="height:100%"><h1>User Tour</h1><h1> ' +
-          flashcard.question +
-          '<div alt="title_text" style="height:100%; padding-top:20px; font-size:18px">' +
-          flashcard.answer +
-          '</h1><img src= "' +
-          flashcard.image +
-          '" width=400px></div><div style="padding-top:20px;"><label>Latitude: </label>"'+
-          `<input id="lat_" value="${flashcard.latitude}" disabled></div>
-          <div style="margin-top:16px;"><label>Longitude: </label>
-          <input id="long_" value="${flashcard.longitude}" disabled></div>
-          <div style="margin-top:16px;"class="form-group">
-          <button class='btn btn-info gps-entry' 
-          onclick="viewMapLocations('${flashcard.latitude}','${flashcard.longitude}')">View Map</button>
-          </div><div id="journalModalTour">
-          <div id='journal-body-tour'></div>
-          </div></div>`
-        );
+
+        user_tour_array.push(flashcard);
+
+        if (user_tour_array.length <= 1) {
+          $('#theSlide').append(
+            '<div class="' +
+            className +
+            '"><div alt="title_text" style="height:100%"><h1>User Tour</h1><h1> ' +
+            `<div style="margin-top:16px;"class="form-group">
+            <button class='btn btn-info gps-entry' 
+            onclick="viewMapLocations('${flashcard.latitude}','${flashcard.longitude}')">View Map</button>
+            </div><div id="journalModalTour">
+            <div id='journal-body-tour'></div>
+            </div></div>`
+          );
+
+        }
       }
 
       if (flashcard.lesson_type == 'user_gps') {
