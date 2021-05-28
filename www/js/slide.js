@@ -8,6 +8,7 @@ var completed = false;
 var signature = [];
 var phone_verification_status = false;
 var session_id = null;
+var user_tour_array=[];
 
 var imported = document.createElement('script');
 imported.src = 'js/gps.js';
@@ -88,7 +89,6 @@ function sendResponse(flashcard_id, answer) {
         answer: answer ? answer : '',
       };
     }
-
   }
 
   console.log("data passed to API => ", data_);
@@ -269,6 +269,7 @@ function getParam(sParam) {
     }
   }
 }
+
 function phone_verification_check() {
   session_id = localStorage.getItem('session_id');
   console.log('phone verification check running');
@@ -308,7 +309,59 @@ function get_session() {
       phone_verification_status = false;
     },
   });
+}
 
+function viewMapLocations(latitude,longitude){
+
+    $("#journal-body-tour").html(
+      "<div id='gps-view-tour' style='width:100%;height:450px;'></div>"
+    );
+
+    console.log("user_tour_array=>",user_tour_array);
+
+    let lat=0,long=0;
+    //question, answer , lat , long
+    let locations=[];
+     for(var i=0;i<user_tour_array.length;i++){
+        let dt = [user_tour_array[i]['question'],user_tour_array[i]['answer'],user_tour_array[i]['image'],
+        user_tour_array[i]['latitude'],user_tour_array[i]['longitude']];
+        locations.push(dt);
+
+        lat=locations[i][3];
+        long=locations[i][4];
+     }
+
+    var map = new google.maps.Map(document.getElementById('gps-view-tour'), {
+      zoom: 10,
+      center: new google.maps.LatLng(lat,long),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+    
+    var infowindow = new google.maps.InfoWindow();
+    
+    var marker, i;
+    
+    for (i = 0; i < locations.length; i++) {  
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][3], locations[i][4]),
+        draggable: true,
+        animation: google.maps.Animation.DROP,
+        map: map
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          // Create content  
+          var contentString = `<div style="font-weight:600;font-size: 16px;">${locations[i][0]}</div>`
+          + "<br />" + locations[i][1]+ `<br /><br />
+          <img width="auto" height="auto" 
+          src=${locations[i][2]}
+          <="" div="">`;
+          infowindow.setContent(contentString);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+    }
 }
 
 function verifyPhone(event) {
@@ -439,6 +492,7 @@ function init() {
     // XXX refactor code below into smaller processing chunk
 
     flashcards.forEach((flashcard, index) => {
+      console.log("flashcard=>",flashcard);
       if (i == 0) {
         className = 'item active';
       } else {
@@ -892,6 +946,27 @@ function init() {
         );
       }
 
+      if (flashcard.lesson_type == 'user_tour') {
+
+        user_tour_array.push(flashcard);
+
+        if (user_tour_array.length <= 1) {
+          $('#theSlide').append(
+            '<div class="' +
+            className +
+            '"><div alt="title_text" style="height:100%"><h1>User Tour</h1><h1> ' +
+            `<div style="margin-top:16px;"class="form-group">
+            <button class='btn btn-info gps-entry' 
+            onclick="viewMapLocations('${flashcard.latitude}','${flashcard.longitude}')">View Map</button>
+            </div><div id="journalModalTour">
+            <div id='journal-body-tour'></div>
+            </div></div>`
+          );
+        }
+
+        viewMapLocations(flashcard.latitude,flashcard.longitude);
+      }
+
       if (flashcard.lesson_type == 'user_gps') {
         console.log("flashcard.lesson_type == 'user_gps'");
         console.log("flashcard value ===> ", flashcard);
@@ -901,7 +976,7 @@ function init() {
           ${className} +'"><div class="title_input">
           <div alt="title_input" style="height:500px"><h1>GPS Note:</h1>
           <p> ${flashcard.question}</p>
-          <div><label>Lattitude: </label>
+          <div><label>Latitude: </label>
           <input id="lat_${i}" value="0" disabled></div>
           <div style="margin-top:16px;"><label>Longitude: </label>
           <input id="long_${i}" value="0" disabled></div>
@@ -1076,6 +1151,7 @@ function init() {
         .fail((err) => console.log('Invitation err', err));
     }
     if (total_slides && flashcards[0].lesson_type == 'user_gps') {
+
       handle_gps_click();
       document.addEventListener('gpsPosition', d => {
         console.log('pos', CURRENT_POSITION, CURRENT_POSITION_LOW)

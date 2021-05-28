@@ -34,7 +34,6 @@
             padding: 25px;
         }
     </style>
-
 </head>
 
 <body>
@@ -47,13 +46,17 @@
                 <select class="form-control" id="select_lesson" onchange="selectLesson()">
 
                 </select>
-                <div class="row">
+                <div class="row view_lesson_response">
                     <a id="lesson_slide" class="col-lg-6">View Lesson</a>
                     <a id="lesson_responses" class="col-lg-6">View Responses</a>
-                    <div id="is_public_contanier">
-                        <input type="checkbox" id="lesson_is_public" class="col-lg-1">Make Public</input>
-                    </div>
                 </div>
+
+                <div id="is_public_contanier">
+                    <input type="checkbox" id="lesson_is_public" class="">
+                      Make Public
+                    </input>
+                </div>
+
                 <br>
             </div>
             <div class="col-xs-6 col-sm-6" style="margin-top: 20px;margin-bottom: 10px;">
@@ -75,6 +78,7 @@
                     <option value="user_video_upload">User Video Upload</option>
                     <option value="user_image_upload">User Image Upload</option>
                     <option value="user_gps">User Gps</option>
+                    <option value="user_tour">User Tour</option>
                     <option value="jitsi_meet">Jitsi Meet</option>
                     <option value="record_webcam">Record WebCam</option>
                     <option value="chiro_front">Chiroposture Front</option>
@@ -371,6 +375,42 @@
                                 <!-- <input type="button" class="image_upload_button btn btn-info" onclick="handleImageUpload('imageFile')" value="Upload Image"/> -->
                                 <input type="button" class="image_upload_button btn btn-info" value="Upload Image" />
                                 <input type="text" class="form-control" id="image-file" placeholder="Image Link" />
+                            </div>
+                            <!-- <div id="output-image-file"></div> -->
+                            <div class="output-image-file"></div>
+                        </div>
+                    </div>
+
+                    <div class="speed_read" id="user_tour" style="display: none; padding-top: 15px">
+                        <div data-type="user_tour"
+                            style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div class="row">
+                                <h4 class="col-xs-10 col-lg-10">User Tour</h4>
+                                <a class="remove_flashcard col-xs-2 col-lg-2"
+                                    style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                    x </a>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Place Title">
+                            </div>
+
+                            <div class="form-group">
+                                <textarea class="form-control" alt="speed_read_textarea" rows="7"
+                                    placeholder="Place Description"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="latitude" placeholder="Latitude">
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="longitude" placeholder="Longitude">
+                            </div>
+
+                            <div class="form-group">
+                                <!-- <input type="button" class="image_upload_button btn btn-info" onclick="handleImageUpload('imageFile')" value="Upload Image"/> -->
+                                <input type="button" class="image_upload_button btn btn-info" value="Upload Image" />
+                                <input type="text" class="form-control" id="tour-image-file" placeholder="Image Link" />
                             </div>
                             <!-- <div id="output-image-file"></div> -->
                             <div class="output-image-file"></div>

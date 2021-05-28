@@ -19,7 +19,7 @@ function getParam(sParam) {
         }
     }
 }
-
+  
 $(document).ready(function() {
 
     let MODE = "WELCOME_PAGE";
