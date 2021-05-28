@@ -343,9 +343,11 @@ function viewMapLocations(latitude,longitude){
     for (i = 0; i < locations.length; i++) {  
       marker = new google.maps.Marker({
         position: new google.maps.LatLng(locations[i][3], locations[i][4]),
+        draggable: true,
+        animation: google.maps.Animation.DROP,
         map: map
       });
-    
+
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
         return function() {
           // Create content  
