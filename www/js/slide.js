@@ -50,6 +50,7 @@ function signLesson(event, imgId, signInput) {
 }
 
 function sendResponse(flashcard_id, answer) {
+  console.log("response....", flashcard_id, answer);
   var current_flashcard = loaded_flashcards[current_slide - 1];
   console.log("current_flashcard.lesson_type => ", current_flashcard.lesson_type);
   var sessionId = localStorage.getItem('session_id');
@@ -90,7 +91,7 @@ function sendResponse(flashcard_id, answer) {
     }
   }
 
-  console.log("data passed to API => ",data_);
+  console.log("data passed to API => ", data_);
 
   $.ajax({
     url: SERVER + 'courses_api/flashcard/response',
@@ -197,9 +198,9 @@ function nextSlide() {
     } else if (type == 'user_video_upload') {
       answer = $('#user-video-tag').find('source').attr('src');
       sendResponse(flashcard_id, answer);
-    }else if (type == 'user_image_upload') {
-        answer = $(`#user-image-display_${flashcard_id}`).attr('src');
-        sendResponse(flashcard_id, answer);
+    } else if (type == 'user_image_upload') {
+      answer = $(`#user-image-display_${flashcard_id}`).attr('src');
+      sendResponse(flashcard_id, answer);
     } else if (type == 'user_gps') {
       answer = JSON.stringify({ lat: $('#lat_' + (current_slide - 1)).val(), lng: $('#long_' + (current_slide - 1)).val() });
       sendResponse(flashcard_id, answer);
@@ -222,27 +223,27 @@ function nextSlide() {
       answer = $('#note').val();
       sendResponse(flashcard_id, answer);
     }
-    if(current_slide != total_slides && loaded_flashcards[current_slide].lesson_type == 'jitsi_meet'){
-      var domain = "vstream.lifeforceenergy.us";
-        var options = {
-          roomName: `${loaded_flashcards[current_slide].question}`,
-          // width: 700,
-          configOverwrite: {
-            startWithAudioMuted: true, prejoinPageEnabled: false,
-            startWithVideoMuted: false
-          },
-          height: 570,
-          parentNode: document.querySelector(`#flashcard_${loaded_flashcards[current_slide].id}`),
-          configOverwrite: {},
-          interfaceConfigOverwrite: {}
-        }
-        window.api = new JitsiMeetExternalAPI(domain, options);
-        console.log(api)
-    }
-    else if(type == 'jitsi_meet'){
-      window.api.executeCommand('hangup');
-      api.dispose();
-    }
+    // if (current_slide != total_slides && loaded_flashcards[current_slide].lesson_type == 'jitsi_meet') {
+    //   var domain = "vstream.lifeforceenergy.us";
+    //   var options = {
+    //     roomName: `${loaded_flashcards[current_slide].question}`,
+    //     // width: 700,
+    //     configOverwrite: {
+    //       startWithAudioMuted: true, prejoinPageEnabled: false,
+    //       startWithVideoMuted: false
+    //     },
+    //     height: 570,
+    //     parentNode: document.querySelector(`#flashcard_${loaded_flashcards[current_slide].id}`),
+    //     configOverwrite: {},
+    //     interfaceConfigOverwrite: {}
+    //   }
+    //   window.api = new JitsiMeetExternalAPI(domain, options);
+    //   console.log(api)
+    // }
+    // else if (type == 'jitsi_meet') {
+    //   window.api.executeCommand('hangup');
+    //   api.dispose();
+    // }
 
     $('#myCarousel').carousel('next');
   }
@@ -374,59 +375,59 @@ function verifyPhone(event) {
   });
 }
 
-function chiroFront(event){
+function chiroFront(event) {
   event.preventDefault();
 
   var formData = new FormData($("#chirofront_form")[0]);
-  var body_height =[...formData][1][1];
+  var body_height = [...formData][1][1];
   var fileData = [...formData][0][1];
-  formData.append("label",0);
-  formData.append("image_type",0);
-  var chiroFrontReq ={
-    url :"https://admin.chiropractortech.com/api/single/execution/",
+  formData.append("label", 0);
+  formData.append("image_type", 0);
+  var chiroFrontReq = {
+    url: "https://admin.chiropractortech.com/api/single/execution/",
     method: "post",
-    data :formData,
+    data: formData,
     processData: false,
     contentType: false
   }
 
   $.ajax(chiroFrontReq).done(response => {
     var img = $('<img/>')
-    img.attr("src",response.processed_file)
-    img.attr("height","300px");
+    img.attr("src", response.processed_file)
+    img.attr("height", "300px");
     img.appendTo($("#chirofront_processed"));
-    response.details.forEach((detail) => {      
-      $("<p>"+detail.text+"</p>").appendTo($("#chirofront_details"))
+    response.details.forEach((detail) => {
+      $("<p>" + detail.text + "</p>").appendTo($("#chirofront_details"))
     })
   })
-  
+
 }
 
 
-function chiroSide(event){
+function chiroSide(event) {
   event.preventDefault();
   var formData = new FormData($("#chiroside_form")[0]);
-  formData.append("label",1);
-  formData.append("image_type",0);
-  
-  var chiroSideReq ={
-    url :"https://admin.chiropractortech.com/api/single/execution/",
+  formData.append("label", 1);
+  formData.append("image_type", 0);
+
+  var chiroSideReq = {
+    url: "https://admin.chiropractortech.com/api/single/execution/",
     method: "post",
-    data :formData,
+    data: formData,
     processData: false,
     contentType: false
   }
 
   $.ajax(chiroSideReq).done(response => {
     var img = $('<img/>')
-    img.attr("src",response.processed_file)
-    img.attr("height","300px");
+    img.attr("src", response.processed_file)
+    img.attr("height", "300px");
     img.appendTo($("#chiroside_processed"));
-    response.details.forEach((detail) => {      
-      $("<p>"+detail.text+"</p>").appendTo($("#chiroside_details"))
+    response.details.forEach((detail) => {
+      $("<p>" + detail.text + "</p>").appendTo($("#chiroside_details"))
     })
   })
-  
+
 }
 
 
@@ -467,7 +468,7 @@ function init() {
     get_session();
     // phone_verification_check();
     // console.log('>>>>>>>>>>>>>> slide', response);
-    document.getElementById('lesson_title').innerHTML =  response.lesson_name ? response.lesson_name : "Lesson - " + lesson_id ;
+    document.getElementById('lesson_title').innerHTML = response.lesson_name ? response.lesson_name : "Lesson - " + lesson_id;
     total_slides = response.flashcards.length;
     // $('head').append(`<title>${response.lesson_name ? response.lesson_name : "Lesson - " + lesson_id}</title>`)
     // Updating Meta Attribute states
@@ -582,9 +583,127 @@ function init() {
         //     </body>
         // </html> </div>
         //         `);
-        $('#theSlide').append(`<div class="${className} ${i == 0 ? 'active' : ''}" id="flashcard_${flashcard.id}" id="verify_email">
+        $('#theSlide').append(`<div class="${className} ${i == 0 ? 'active' : ''}" id="flashcard_${flashcard.id}">
         
         </div>`);
+        var domain = "vstream.lifeforceenergy.us";
+        var options = {
+          roomName: flashcard.question,
+          // width: 700,
+          configOverwrite: {
+            startWithAudioMuted: true, prejoinPageEnabled: false,
+            startWithVideoMuted: false
+          },
+          height: 570,
+          parentNode: document.querySelector(`#flashcard_${flashcard.id}`),
+          configOverwrite: {},
+          interfaceConfigOverwrite: {}
+        }
+        var api = new JitsiMeetExternalAPI(domain, options);
+      }
+      if (flashcard.lesson_type == 'record_webcam') {
+        $('#theSlide').append(`<div class="${className} ${i == 0 ? 'active' : ''}" id="flashcard_${flashcard.id}">
+        <p><button id="start_recording">Start Recording</button><br/>
+        <button id="stop_recording">Stop Recording</button></p>
+        <video controls autoplay id="record_webcam">
+
+        </video>
+        
+        </div>`);
+        var video = document.querySelector("#record_webcam");
+
+        if (navigator.mediaDevices.getUserMedia) {
+          navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function (stream) {
+              video.srcObject = stream;
+              let start = document.getElementById("start_recording");
+              let stop = document.getElementById("stop_recording");
+              let options = { mimeType: "video/webm;codecs=vp9" };
+              let mediaRecorder = new MediaRecorder(stream, options);
+              let chunks = [];
+
+              start.addEventListener('click', (ev) => {
+                mediaRecorder.start();
+                console.log("start recording video", mediaRecorder.state);
+              })
+              stop.addEventListener('click', (ev) => {
+                mediaRecorder.stop();
+                console.log("stop recording video", mediaRecorder.state);
+              })
+              mediaRecorder.ondataavailable = function (ev) {
+                chunks.push(ev.data);
+              }
+              mediaRecorder.onstop = (ev) => {
+                let blob = new Blob(chunks);
+                chunks = []
+                // let videoUrl = window.URL.createObjectURL(blob);
+                // console.log("video url..", videoUrl);
+                // video_recorded.src = videoUrl;
+                // stop.href = video_recorded.src;
+                // stop.download = `${flashcard.id}.webm`;
+                // flashcard id, video url from s3
+                var file = new File([blob], `${flashcard.id}.mp4`, {type: 'video', lastModified: Date.now()});
+                // let videoUrl = window.URL.createObjectURL(file);
+                // video_recorded.src = videoUrl;
+                // console.log("video url..", videoUrl);
+                var form = new FormData();
+                form.append('file', file);
+
+                var settings = {
+                  async: true,
+                  crossDomain: true,
+                  url: SERVER + 's3_uploader/upload',
+                  method: 'POST',
+                  type: 'POST',
+                  processData: false,
+                  contentType: false,
+                  mimeType: 'multipart/form-data',
+                  data: form,
+                  headers: {
+                    Authorization: localStorage.getItem('token'),
+                  },
+                };
+                $.ajax(settings).done(function (response) {
+                  console.log("🚀 ~ file: index.html ~ line 57 ~ response", response)
+                  let resp = JSON.parse(response);
+                  if (resp.message == "No file provided!") {
+                    swal({
+                      title: 'File Not Select',
+                      text: resp.message,
+                      icon: "warning",
+                      timer: 1000,
+                    });
+                  } else {
+                    console.log("this is else part")
+                    sendResponse(flashcard.id, resp.file_url);
+                    swal({
+                      title: 'Good job!',
+                      text: 'Video uploaded successfully!',
+                      icon: 'success',
+                      timer: 1000,
+                    });
+                    // const file_url = response.file_url;
+                    
+                                    
+                  }
+                }).fail(function (error) {
+                  console.log("🚀 ~ file: index.html ~ line 56 ~ error", error)
+                  swal({
+                    title: 'Error!',
+                    text: 'Video upload failed!',
+                    icon: 'warning',
+                    timer: 1000,
+                  });
+
+                });
+                
+
+              }
+            })
+            .catch(function (err0r) {
+              console.log("Something went wrong!");
+            });
+        }
       }
 
       if (flashcard.lesson_type == 'verify_email') {
@@ -809,9 +928,9 @@ function init() {
           className +
           '"><div alt="title_text" style="height:500px"><h1>Video File</h1><h1> ' +
           flashcard.question +
-          '</h1>'+(flashcard.image?'<video style="height:500px;width:1000px"; controls preload="metadata"> <source src= "' +
-          flashcard.image + '#t=0.5' +
-          '"></video>':'<h5>No file uploaded.</h5>')+'</div></div>'
+          '</h1>' + (flashcard.image ? '<video style="height:500px;width:1000px"; controls preload="metadata"> <source src= "' +
+            flashcard.image + '#t=0.5' +
+            '"></video>' : '<h5>No file uploaded.</h5>') + '</div></div>'
         );
       }
 
@@ -977,24 +1096,24 @@ function init() {
                 $('textarea[name=textarea_' + i).val(rf.answer);
               }
               if (f.lesson_type == 'user_video_upload') {
-                if (rf.answer){
-                  $("#user-video-tag").attr("src",rf.answer);
+                if (rf.answer) {
+                  $("#user-video-tag").attr("src", rf.answer);
                   $("#user-video-tag")[0].load()
                 }
               }
               if (f.lesson_type == 'user_image_upload') {
-                if (rf.answer){
-                  $(`#user-image-display_${f.id}`).attr("src",rf.answer);
-                  $(`#user-image-display_${f.id}`).css("display",'block');
+                if (rf.answer) {
+                  $(`#user-image-display_${f.id}`).attr("src", rf.answer);
+                  $(`#user-image-display_${f.id}`).css("display", 'block');
                 }
               }
               if (f.lesson_type == 'title_input') {
                 $('input[name=title_input_' + i).val(rf.answer);
               }
               if (f.lesson_type == 'question_choices') {
-                  // $('#'+ rf.answer +'[name=choices_' + i + ']').attr('checked', 'checked');
-                  $('input[name=choices_' + i + '][value=' + rf.answer ? rf.answer : '' + ']').attr('checked', true);
-                }
+                // $('#'+ rf.answer +'[name=choices_' + i + ']').attr('checked', 'checked');
+                $('input[name=choices_' + i + '][value=' + rf.answer ? rf.answer : '' + ']').attr('checked', true);
+              }
 
               if (f.lesson_type == 'question_checkboxes') {
                 rf.answer.split(',').forEach((v) => {
@@ -1090,7 +1209,7 @@ function handleVideoUpload(key) {
         if (file_url) {
           if (key == 'user_video_upload') {
             var strTYPE = "video/mp4";
-            $('#user-video-tag').css("display","block");
+            $('#user-video-tag').css("display", "block");
             $("#user-video-tag").append('<source src="' + file_url + '#t=0.5" type="' + strTYPE + '"></source>');
             $("#user-video-tag")[0].load();
           }
@@ -1165,8 +1284,8 @@ function handleImageUpload(key, id) {
       function displayImage(file_url) {
         if (file_url) {
           if (key == 'user_image_upload') {
-            $(`#user-image-display_${id}`).css("display","block");
-            $(`#user-image-display_${id}`).attr("src",file_url);
+            $(`#user-image-display_${id}`).css("display", "block");
+            $(`#user-image-display_${id}`).attr("src", file_url);
           }
         }
       }

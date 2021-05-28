@@ -42,7 +42,7 @@
             $("#submit-code").show()
             $("#send-sms").hide()
             $("#phone_number").attr("disabled","true");
-        }   
+        }
 
         $(window).ready(function() {
             $("#code_block").hide()
@@ -51,15 +51,14 @@
                 phone_number = $("#phone_number").val();
                 if (phone_number == '') {
                     return alert("Please provide your number first");
-                }else{
-                    
+                } else {
                     var data_ ={
                         "phone_number":phone_number,
                         "session_id":localStorage.session_id
                     }
 
                     $.ajax({
-                        "url": SERVER +"/courses_api/confirm/phone",
+                        "url": SERVER + "courses_api/confirm/phone",
                         'data': JSON.stringify(data_),
                         'type': 'POST',
                         'contentType': 'application/json',
@@ -69,7 +68,7 @@
                         'error': function(res){
 
                         }
-                    })   
+                    })
                 }
                 verification_process()
             });
@@ -82,21 +81,22 @@
                 console.log(phone_number)
                 if (phone_number == '') {
                     return alert("Please provide your number first");
-                }else{
-                    
+                } else {
                     var data_ ={
                         "phone_number":phone_number,
                         "code_2fa":code
                     }
 
                     $.ajax({
-                        "url": SERVER +"/courses_api/verify/phone",
+                        "url": SERVER + "courses_api/verify/phone",
                         'data': JSON.stringify(data_),
                         'type': 'POST',
                         'contentType': 'application/json',
                         'success': function (data){
                             alert("Code Verified")
-                            const evt = new Event("phoneVerified", {"bubbles":true, "cancelable":false});
+                            const evt = new Event(
+                              "phoneVerified",
+                              {"bubbles":true, "cancelable":false});
                             document.dispatchEvent(evt);
 
                         },
