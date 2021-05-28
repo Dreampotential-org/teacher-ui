@@ -34,7 +34,6 @@
             padding: 25px;
         }
     </style>
-
 </head>
 
 <body>
@@ -47,13 +46,17 @@
                 <select class="form-control" id="select_lesson" onchange="selectLesson()">
 
                 </select>
-                <div class="row">
+                <div class="row view_lesson_response">
                     <a id="lesson_slide" class="col-lg-6">View Lesson</a>
                     <a id="lesson_responses" class="col-lg-6">View Responses</a>
-                    <div id="is_public_contanier">
-                        <input type="checkbox" id="lesson_is_public" class="col-lg-1">Make Public</input>
-                    </div>
                 </div>
+
+                <div id="is_public_contanier">
+                    <input type="checkbox" id="lesson_is_public" class="">
+                      Make Public
+                    </input>
+                </div>
+
                 <br>
             </div>
             <div class="col-xs-6 col-sm-6" style="margin-top: 20px;margin-bottom: 10px;">
@@ -388,12 +391,12 @@
                                     x </a>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Title">
+                                <input type="text" class="form-control" placeholder="Place Title">
                             </div>
 
                             <div class="form-group">
                                 <textarea class="form-control" alt="speed_read_textarea" rows="7"
-                                    placeholder="Description"></textarea>
+                                    placeholder="Place Description"></textarea>
                             </div>
 
                             <div class="form-group">

@@ -349,8 +349,11 @@ function viewMapLocations(latitude,longitude){
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
         return function() {
           // Create content  
-          var contentString = locations[i][0] + "<br /><br />" + locations[i][1]+ `<br /><br />
-          <a href=${locations[i][2]} target="black_">${locations[i][2]}</a>`;
+          var contentString = `<div style="font-weight:600;font-size: 16px;">${locations[i][0]}</div>`
+          + "<br />" + locations[i][1]+ `<br /><br />
+          <img width="auto" height="auto" 
+          src=${locations[i][2]}
+          <="" div="">`;
           infowindow.setContent(contentString);
           infowindow.open(map, marker);
         }
@@ -838,8 +841,9 @@ function init() {
             <div id='journal-body-tour'></div>
             </div></div>`
           );
-
         }
+
+        viewMapLocations(flashcard.latitude,flashcard.longitude);
       }
 
       if (flashcard.lesson_type == 'user_gps') {
@@ -1026,6 +1030,7 @@ function init() {
         .fail((err) => console.log('Invitation err', err));
     }
     if (total_slides && flashcards[0].lesson_type == 'user_gps') {
+
       handle_gps_click();
       document.addEventListener('gpsPosition', d => {
         console.log('pos', CURRENT_POSITION, CURRENT_POSITION_LOW)

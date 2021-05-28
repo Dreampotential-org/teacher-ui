@@ -453,8 +453,6 @@ function uploadFile(fileType) {
             else{
               $('#image-file').attr('value', file_url);
             }
-
-
           }
 
         } else if (fileType == 'video') {
@@ -781,6 +779,7 @@ function addUserTour(isNew, id, question,text,latitude,longitude, image, posU) {
   console.log("addUserTour ==> ");
   console.log("isNew, id, question, image, posU ");
   console.log(isNew,' , ' ,id, ' , ' ,question, ' , ' ,image, ' , ' ,posU);
+
   if (!isNew) {
     $('#user_tour').find('input').first().attr('value', question);
     $('#user_tour').find('input').last().attr('value', image);
@@ -802,6 +801,12 @@ function addUserTour(isNew, id, question,text,latitude,longitude, image, posU) {
   } else {
     $('#user_tour').find('input').first().attr('value', '');
     $('#user_tour').find('input').last().attr('value', '');
+
+    $('#user_tour').find('#latitude').attr('value', '');
+    $('#user_tour').find('#longitude').attr('value', '');
+
+    $('#user_tour').find('textarea').html('');
+
     // $('#image_file').find('#output-image-file').find('img').attr('src','');
     $('#user_tour').find('.output-image-file').find('img').attr('src','');
     image_type = "imageFile";

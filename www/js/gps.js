@@ -26,7 +26,7 @@ function setup_gps_events() {
     var panorama = new google.maps.Map(document.getElementById("gps-view"), {
       center: { lat: spot.lat, lng: spot.lng },
       zoom: 18,
-    });
+    });  
     geocoder.geocode({ location: latlng }, function (results, status) {
       if (status === "OK") {
         if (results[0]) {
