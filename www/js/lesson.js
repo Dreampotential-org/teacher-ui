@@ -985,7 +985,6 @@ function sendUpdates() {
             }
           }
         }
-        
       });
     } else {
       real_flashcard_elements = [];
