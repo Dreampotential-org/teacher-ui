@@ -970,7 +970,7 @@ function sendUpdates() {
     position_me += 1;
     //current_flashcard_elements has all the fields of current selected flashcard
 
-    if (current_flashcard_elements.length < 6) {
+    if (current_flashcard_elements.length < 4) {
       current_flashcard_elements.forEach((current_flashcard) => {
         this_element = current_flashcard.firstElementChild;
         if(this_element){
@@ -996,6 +996,7 @@ function sendUpdates() {
       });
       
       attr_array[0] = real_flashcard_elements[0].firstElementChild.value;
+  
       //working on choices
       real_flashcard_elements[1].childNodes.forEach((choice) => {
         choice.childNodes.forEach((choice_unit) => {
