@@ -924,6 +924,7 @@ function sendUpdates() {
     lesson_is_public: lesson_visiblity,
   };
   var flashcards = [];
+  var choices_array=[];
   var position_me = 0;
   // Saving Quick Reads
   flashcards_div = [];
@@ -969,7 +970,7 @@ function sendUpdates() {
     position_me += 1;
     //current_flashcard_elements has all the fields of current selected flashcard
 
-    if (current_flashcard_elements.length <= 6) {
+    if (current_flashcard_elements.length < 6) {
       current_flashcard_elements.forEach((current_flashcard) => {
         this_element = current_flashcard.firstElementChild;
         if(this_element){
@@ -993,8 +994,8 @@ function sendUpdates() {
           real_flashcard_elements.push(current_flashcard_element);
         }
       });
+      
       attr_array[0] = real_flashcard_elements[0].firstElementChild.value;
-      choices_array = [];
       //working on choices
       real_flashcard_elements[1].childNodes.forEach((choice) => {
         choice.childNodes.forEach((choice_unit) => {
