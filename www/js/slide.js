@@ -202,7 +202,7 @@ function nextSlide() {
       answer = $(`#user-image-display_${flashcard_id}`).attr('src');
       sendResponse(flashcard_id, answer);
     } else if (type == 'user_gps') {
-      answer = JSON.stringify({ lat: $('#lat_' + (current_slide - 1)).val(), lng: $('#long_' + (current_slide - 1)).val() });
+      answer = $('#note_'+ (current_slide-1)).val();
       sendResponse(flashcard_id, answer);
       // console.log('flashcard_id',flashcard_id)
       document.removeEventListener('gpsPosition', () => { });
@@ -220,7 +220,7 @@ function nextSlide() {
     }
     else if (type == "user_gps") {
       console.log("User-GPS slide page");
-      answer = $('#note').val();
+      answer = $('#note_'+ (current_slide-1)).val();
       sendResponse(flashcard_id, answer);
     }
     // if (current_slide != total_slides && loaded_flashcards[current_slide].lesson_type == 'jitsi_meet') {
@@ -457,7 +457,7 @@ function radioOnClick(valu) {
 }
 
 function init() {
-  // $('#sign-modal').load('signature/index.html');
+  $('#sign-modal').load('signature/index.html');
   $('#verify-phone-modal').load('phone/index.html');
   $("#video-modal").load('video/index.html');
   $("#gps-modal").load('gps/index.html');
@@ -981,7 +981,7 @@ function init() {
           <div style="margin-top:16px;"><label>Longitude: </label>
           <input id="long_${i}" value="0" disabled></div>
           <div class="form-group">
-           <textarea class="form-control" rows="10" name="note" placeholder="note" id="note"></textarea>
+           <textarea class="form-control" rows="10" name="note" placeholder="note" id="note_${i}"></textarea>
            </div>
            <div class="form-group">
            <button class='btn btn-info gps-entry'>View Map</button>
@@ -1113,7 +1113,7 @@ function init() {
               }
               if (f.lesson_type == 'question_choices') {
                 // $('#'+ rf.answer +'[name=choices_' + i + ']').attr('checked', 'checked');
-                $('input[name=choices_' + i + '][value=' + rf.answer ? rf.answer : '' + ']').attr('checked', true);
+                $('input[name=choices_' + i + '][value=' + rf.answer + ']').attr('checked', 'checked');
               }
 
               if (f.lesson_type == 'question_checkboxes') {
@@ -1138,8 +1138,9 @@ function init() {
                 } catch (e) {
                   // return false;
                 }
-                $('#lat_' + i).val(ans.lat);
-                $('#long_' + i).val(ans.lng);
+                $('#note_'+i).val(rf.answer);
+                $('#lat_' + i).val(rf.latitude);
+                $('#long_' + i).val(rf.longitude);
                 console.log('set previos gps value');
               }
             }

@@ -648,9 +648,9 @@ function addSignaturePad(isNew, id, sign_data, posU) {
 }
 function addUserVideoUpload(isNew, id, question, choices, image, posU){
   if (!isNew) {
-    /*$('#user_video_upload').find('txt-user-video').html(image);
-    $('#user_video_upload').find('txt-user-video').attr('data-id', id);*/
     video_type = "user_video_upload";
+    $('#user_video_upload').find('input').first().attr('value', question);
+    $('#user_video_upload').find('input').first().attr('data-id', id);
     // Display Video
     displayVideo(image,"");
   } else {

@@ -34,9 +34,9 @@ $(document).ready(function () {
                         <source src="${data}" type="video/mp4"></video>
                         <button class="btn btn-primary" data-row='${rowdata}' onclick="viewResponseCard(event)" style="float:right"><i class="fa fa-eye" aria-hidden="true"></i></button>`
                     case 'user_gps':
-                        return `<div style="float:left">lat: ${row.latitude} <br>
+                        return `<div style="float:left;">lat: ${row.latitude} <br>
                                 lng: ${row.longitude} <br>
-                                (${data})</div>
+                                (${data.length>15?data.slice(0,14)+'...':data})</div>
                                 <button class="btn btn-primary" data-row='${rowdata}' onclick="viewResponseCard(event)" style="float:right"><i class="fa fa-eye" aria-hidden="true"></i></button>`
                     case 'question_choices':
                         return `<div style="float:left">${data}</div>
@@ -44,6 +44,9 @@ $(document).ready(function () {
                     case 'question_checkboxes':
                         return `<div style="float:left">${data}</div>
                                 <button class="btn btn-primary" data-row='${rowdata}' onclick="viewResponseCard(event)" style="float:right"><i class="fa fa-eye" aria-hidden="true"></i></button>`
+                    case 'signature':
+                        return `<img style="max-height:41px;max-width:120px" src="${data}" />
+                        <button class="btn btn-primary" data-row='${rowdata}' onclick="viewResponseCard(event)" style="float:right"><i class="fa fa-eye" aria-hidden="true"></i></button>`
                     default:
                         return data;
                 }
@@ -114,6 +117,9 @@ function viewResponseCard(e){
             setupMapView(row);
             break;
         case 'question_checkboxes':
+            $('#response_body_ques').append(`<span style="display: inline-block;margin-right: 18px;"><strong>Question Image</strong></span>
+            <img style="border-radius: 3px;box-shadow: 5px 9px 12px, 0 0 10px inset;margin: auto;padding-top: 0px;max-width: 370px;
+            max-height: 200px;" src="${row.flashcard[0].image}">`);
             responseBody =  '<ul style="list-style:none">'
             let selected_options = row.answer.split(',')
             row.flashcard[0].options.forEach(op=>{
@@ -122,7 +128,13 @@ function viewResponseCard(e){
             })
             responseBody += '</ul>'
             break;
+        case 'signature':
+            responseBody+=`<div><img style="max-width:500px; max-height:350px; display:block; margin:auto" src="${row.answer}"></div>`
+            break;
         case 'question_choices':
+            $('#response_body_ques').append(`<span style="display: inline-block;margin-right: 18px;"><strong>Question Image</strong></span>
+            <img style="border-radius: 3px;box-shadow: 5px 9px 12px, 0 0 10px inset;margin: auto;padding-top: 0px;max-width: 370px;
+            max-height: 200px;" src="${row.flashcard[0].image}">`);
             responseBody =  '<ul style="list-style:none">'
             row.flashcard[0].options.forEach(op=>{
                 console.log(op==row.answer)
