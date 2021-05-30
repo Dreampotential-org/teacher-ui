@@ -963,13 +963,15 @@ function sendUpdates() {
         current_flashcard_elements.push(flashcard_element);
       }
     });
+    console.log(current_flashcard_elements)
 
     current_flashcard_elements.shift(); // remove the header
     flashcard_type = flashcard.getAttribute('data-type');
     position_me += 1;
     //current_flashcard_elements has all the fields of current selected flashcard
-
-    if (current_flashcard_elements.length <= 6) {
+    let choices_array = [];
+    console.log(current_flashcard_elements)
+    if (current_flashcard_elements.length <= 3) {
       current_flashcard_elements.forEach((current_flashcard) => {
         this_element = current_flashcard.firstElementChild;
         if(this_element){
@@ -996,6 +998,7 @@ function sendUpdates() {
       attr_array[0] = real_flashcard_elements[0].firstElementChild.value;
       choices_array = [];
       //working on choices
+      console.log(real_flashcard_elements)
       real_flashcard_elements[1].childNodes.forEach((choice) => {
         choice.childNodes.forEach((choice_unit) => {
           if (choice_unit.type == 'text') {

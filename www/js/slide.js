@@ -942,7 +942,7 @@ function init() {
           flashcard.question +
           '</h1><img src= "' +
           flashcard.image +
-          '" width=400px></div></div>'
+          '" style="max-height:418px;margin:auto;display:block"></div></div>'
         );
       }
 
@@ -1002,12 +1002,11 @@ function init() {
         $('#theSlide').append(
           `<div class="${className}">
             <h1>User Video Upload</h1>
-            <h1>${flashcard.question}</h1>
             <div alt="title_text" style="height:500px">
             <p> ${flashcard.question}</p>
             <input type="file" class="form-control" value="Choose File" id="myFile" onchange="handleVideoUpload('user_video_upload')"/> 
 
-            <video style="height:500px;width:1000px;display:none"; controls preload="metadata" id="user-video-tag">
+            <video style="max-height:450px;max-width:1000px;display:none; margin:auto"; controls preload="metadata" id="user-video-tag">
             </video>
 
             </div>
@@ -1096,8 +1095,10 @@ function init() {
                 $('textarea[name=textarea_' + i).val(rf.answer);
               }
               if (f.lesson_type == 'user_video_upload') {
+                console.log('user_video_upload-response', rf.answer)
                 if (rf.answer) {
-                  $("#user-video-tag").attr("src", rf.answer);
+                  $('#user-video-tag').css("display", "block");
+                  $("#user-video-tag").append('<source src="' + rf.answer + '" type="video/mp4" #t=0.5></source>');
                   $("#user-video-tag")[0].load()
                 }
               }
