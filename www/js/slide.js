@@ -398,10 +398,8 @@ function chiroFront(event){
     response.details.forEach((detail) => {      
       $("<p>"+detail.text+"</p>").appendTo($("#chirofront_details"))
     })
-  })
-  
+  })  
 }
-
 
 function chiroSide(event){
   event.preventDefault();
@@ -829,9 +827,8 @@ function init() {
 
       if (flashcard.lesson_type == 'user_tour') {
 
-        user_tour_array.push(flashcard);
+        user_tour_array.push(JSON.parse(flashcard.options));
 
-        if (user_tour_array.length <= 1) {
           $('#theSlide').append(
             '<div class="' +
             className +
@@ -843,7 +840,6 @@ function init() {
             <div id='journal-body-tour'></div>
             </div></div>`
           );
-        }
 
         viewMapLocations(flashcard.latitude,flashcard.longitude);
       }

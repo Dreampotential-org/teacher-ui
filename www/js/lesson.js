@@ -1,6 +1,7 @@
 var quick_read_count = 0;
 var title_text_count = 0;
 var question_choices_count = 0;
+var user_tour_count = 0;
 var video_file_count = 0;
 var image_file_count = 0;
 var iframe_link_count = 0;
@@ -26,6 +27,7 @@ var image_type ="";
 var video_type ="";
 var data_id_value="";
 var video_data_id_value="";
+var flashcard_response=[];
 
 window.addEventListener('DOMContentLoaded', init, false);
 var lesson_id = getParam('lesson_id');
@@ -780,6 +782,22 @@ function addUserTour(isNew, id, question,text,latitude,longitude, image, posU) {
   console.log("isNew, id, question, image, posU ");
   console.log(isNew,' , ' ,id, ' , ' ,question, ' , ' ,image, ' , ' ,posU);
 
+if (user_tour_count == 0) {
+  $('#user_tour')
+    .find('#tourinfo')
+    .attr('id', 'tourinfo_' + user_tour_count);
+} else {
+  $('#user_tour')
+    .find('#tourinfo_' + (user_tour_count - 1))
+    .attr('id', 'tourinfo_' + user_tour_count);
+}
+
+$('#user_tour')
+  .find('button')
+  .last()
+  .attr('onclick', 'addTour(' + user_tour_count + ')');
+  let tempTour = $('#user_tour').html();
+
   if (!isNew) {
     $('#user_tour').find('input').first().attr('value', question);
     $('#user_tour').find('input').last().attr('value', image);
@@ -840,6 +858,42 @@ function addUserTour(isNew, id, question,text,latitude,longitude, image, posU) {
   $('#sortable').append($('#user_tour').html());
   image_file_count++;
   sortablePositionFunction(isNew, posU);
+}
+
+function addTour(id, value) {
+  if (!value) {
+    value = '';
+  }
+
+  $('#tourinfo_' + id).append(
+    `<br/><div> 
+          <div class="form-group">
+              <input type="text" class="form-control" placeholder="Place Title">
+          </div>
+
+          <div class="form-group">
+              <textarea class="form-control" alt="speed_read_textarea" rows="7"
+                  placeholder="Place Description"></textarea>
+          </div>
+
+          <div class="form-group">
+              <input type="text" class="form-control" id="latitude" placeholder="Latitude">
+          </div>
+
+          <div class="form-group">
+              <input type="text" class="form-control" id="longitude" placeholder="Longitude">
+          </div>
+
+          <div class="form-group">
+              <input type="button" class="image_upload_button btn btn-info" value="Upload Image" />
+              <input type="text" class="form-control" id="tour-image-file" placeholder="Image Link" />
+          </div>
+          <div class="output-image-file"></div>	
+          
+          <button onclick="$(this).parent().remove()" class="btn btn-danger">Remove
+              Tour</button>
+    </div>`
+  );
 }
 
 function addVerifyPhone(isNew, id, question, image, posU) {
@@ -925,6 +979,7 @@ function sendUpdates() {
   };
   var flashcards = [];
   var choices_array=[];
+  var tour_array=[];
   var position_me = 0;
   // Saving Quick Reads
   flashcards_div = [];
@@ -932,6 +987,11 @@ function sendUpdates() {
   current_flashcard_elements = [];
   var attr_array = [];
   position_me = 0;
+
+  tour_array.push({lat: 'yyy', lng: 'xxx', title: 'here is title1', description: 'here is description',
+  image: 'url1'});
+  tour_array.push( {'lat': 'yy21', 'lng': 'xzz', 'title': 'here is title3', 
+  'description': 'here is description', 'image': 'url1'});
 
   if (document.querySelector('#name:checked')) {
     meta_attributes.push('name');
@@ -970,7 +1030,9 @@ function sendUpdates() {
     position_me += 1;
     //current_flashcard_elements has all the fields of current selected flashcard
 
-    if (current_flashcard_elements.length < 4) {
+    debugger
+
+    if (current_flashcard_elements.length < 4 && flashcard_response.lesson_type!="user_tour") {
       current_flashcard_elements.forEach((current_flashcard) => {
         this_element = current_flashcard.firstElementChild;
         if(this_element){
@@ -986,7 +1048,10 @@ function sendUpdates() {
           }
         }
       });
-    } else {
+    }else if(flashcard_response.lesson_type=="user_tour"){
+       
+    }else {
+      debugger
       real_flashcard_elements = [];
       current_flashcard_elements.forEach((current_flashcard_element) => {
         if (current_flashcard_element.attributes) {
@@ -1129,12 +1194,10 @@ function sendUpdates() {
         case 'user_tour':
           temp = {
             lesson_type: 'user_tour',
-            question: attr_array[0],
-            answer: attr_array[1],
-            latitude: attr_array[2],
-            longitude:attr_array[3],
-            image: attr_array[4],
+            options: tour_array,
             position: position_me,
+            latitude: 0,
+            longitude:0
           };
           flashcards.push(temp);
           break;
@@ -1335,6 +1398,7 @@ $(document).ready(function () {
         $('#lesson_is_public').prop('checked', response.lesson_is_public);
         $('title').text(response.lesson_name + ' - edit..');
 
+        flashcard_response=response.flashcards;
         var flashcards = response.flashcards;
         //Updating meta
         var recieved_meta = response.meta_attributes;
