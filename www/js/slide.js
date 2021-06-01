@@ -14,10 +14,6 @@ var imported = document.createElement('script');
 imported.src = 'js/gps.js';
 document.head.appendChild(imported);
 
-var imported = document.createElement('script');
-imported.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCEYIL86ek3icvHx6F-55qSFCfhe2fynfg';
-document.head.appendChild(imported);
-
 function updateProgressBar() {
   pct = (current_slide / total_slides) * 100;
   $('.progress-bar').css('width', pct + '%');
@@ -318,24 +314,6 @@ function viewMapLocations(place){
     );
 
     console.log("user_tour_array=>",user_tour_array);
-
-    /*
-    let lat=0,long=0;
-    //question, answer , lat , long
-    let locations=[];
-     for(var i=0;i<user_tour_array.length;i++) {
-        let dt = [user_tour_array[i]['question'],
-                  user_tour_array[i]['answer'],
-                  user_tour_array[i]['image'],
-        user_tour_array[i]['latitude'],user_tour_array[i]['longitude']];
-        locations.push(dt);
-
-        lat=locations[i][3];
-        long=locations[i][4];
-     }
-
-    */
-
     var map = new google.maps.Map(document.getElementById('gps-view-tour'), {
       zoom: 17,
       center: new google.maps.LatLng(place.lat, place.lng),
