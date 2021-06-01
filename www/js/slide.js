@@ -434,6 +434,7 @@ function radioOnClick(valu) {
 }
 
 function init() {
+    console.log("INIT dom")
   $('#sign-modal').load('signature/index.html');
   $('#verify-phone-modal').load('phone/index.html');
   $("#video-modal").load('video/index.html');
