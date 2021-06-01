@@ -781,18 +781,21 @@ function addUserTour(isNew, id, question,text,latitude,longitude, image, posU) {
   console.log(isNew,' , ' ,id, ' , ' ,question, ' , ' ,image, ' , ' ,posU);
 
   if (!isNew) {
-    $('#user_tour').find('input').first().attr('value', question);
-    $('#user_tour').find('input').last().attr('value', image);
+    $('#user_tour').find('input').first().attr(
+        'value', JSON.parse(question).title);
+    $('#user_tour').find('input').last().attr(
+        'value', JSON.parse(question).image);
 
     $('#user_tour').find('input').first().attr('data-id', id);
     $('#user_tour').find('input').last().attr('data-id', id);
 
-    $('#user_tour').find('#latitude').attr('value', latitude);
-    $('#user_tour').find('#longitude').attr('value', longitude);
-    
+    $('#user_tour').find('#latitude').attr('value',
+                                           JSON.parse(question).lat);
+    $('#user_tour').find('#longitude').attr('value',
+                                            JSON.parse(question).lng);
     $('#user_tour').find('output-image-file').attr('data-id', id);
 
-    $('#user_tour').find('textarea').html(text);
+    $('#user_tour').find('textarea').html(JSON.parse(question).description);
     $('#user_tour').find('textarea').attr('data-id', id);
 
     image_type = "imageFile";
@@ -986,7 +989,6 @@ function sendUpdates() {
             }
           }
         }
-        
       });
     } else {
       real_flashcard_elements = [];
@@ -1014,7 +1016,7 @@ function sendUpdates() {
       });
     }
 
-    console.log("attr_array=>",attr_array)
+    console.log("attr_array=>", attr_array)
 
     switch (flashcard_type) {
       case 'jitsi_meet':
@@ -1058,7 +1060,6 @@ function sendUpdates() {
       };
       flashcards.push(temp);
       break;
-      
       case 'speed_read':
         temp = {
           lesson_type: 'quick_read',
@@ -1131,13 +1132,20 @@ function sendUpdates() {
         case 'user_tour':
           temp = {
             lesson_type: 'user_tour',
-            question: attr_array[0],
+            question: JSON.stringify({
+                'title': $(flashcard).eq(0).find(".title").eq(0).val(),
+                'description': $(flashcard).eq(0).find(".description").eq(0).val(),
+                'lat': $(flashcard).eq(0).find(".lat").eq(0).val(),
+                'lng': $(flashcard).eq(0).find(".lng").eq(0).val(),
+                'image': $(flashcard).eq(0).find("#tour-image-file").eq(0).val(),
+            }),
             answer: attr_array[1],
             latitude: attr_array[2],
             longitude:attr_array[3],
             image: attr_array[4],
             position: position_me,
           };
+          console.log(temp)
           flashcards.push(temp);
           break;
 

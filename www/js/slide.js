@@ -311,7 +311,7 @@ function get_session() {
   });
 }
 
-function viewMapLocations(latitude,longitude){
+function viewMapLocations(place){
 
     $("#journal-body-tour").html(
       "<div id='gps-view-tour' style='width:100%;height:450px;'></div>"
@@ -319,11 +319,14 @@ function viewMapLocations(latitude,longitude){
 
     console.log("user_tour_array=>",user_tour_array);
 
+    /*
     let lat=0,long=0;
     //question, answer , lat , long
     let locations=[];
-     for(var i=0;i<user_tour_array.length;i++){
-        let dt = [user_tour_array[i]['question'],user_tour_array[i]['answer'],user_tour_array[i]['image'],
+     for(var i=0;i<user_tour_array.length;i++) {
+        let dt = [user_tour_array[i]['question'],
+                  user_tour_array[i]['answer'],
+                  user_tour_array[i]['image'],
         user_tour_array[i]['latitude'],user_tour_array[i]['longitude']];
         locations.push(dt);
 
@@ -331,37 +334,33 @@ function viewMapLocations(latitude,longitude){
         long=locations[i][4];
      }
 
+    */
+
     var map = new google.maps.Map(document.getElementById('gps-view-tour'), {
-      zoom: 10,
-      center: new google.maps.LatLng(lat,long),
+      zoom: 17,
+      center: new google.maps.LatLng(place.lat, place.lng),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
-    
     var infowindow = new google.maps.InfoWindow();
-    
-    var marker, i;
-    
-    for (i = 0; i < locations.length; i++) {  
-      marker = new google.maps.Marker({
-        position: new google.maps.LatLng(locations[i][3], locations[i][4]),
-        draggable: true,
-        animation: google.maps.Animation.DROP,
-        map: map
-      });
+  var marker, i;
+  marker = new google.maps.Marker({
+    position: new google.maps.LatLng(place.lat, place.lng),
+    draggable: true,
+    animation: google.maps.Animation.DROP,
+    map: map
+  });
 
-      google.maps.event.addListener(marker, 'click', (function(marker, i) {
-        return function() {
-          // Create content  
-          var contentString = `<div style="font-weight:600;font-size: 16px;">${locations[i][0]}</div>`
-          + "<br />" + locations[i][1]+ `<br /><br />
-          <img width="auto" height="auto" 
-          src=${locations[i][2]}
-          <="" div="">`;
-          infowindow.setContent(contentString);
-          infowindow.open(map, marker);
-        }
-      })(marker, i));
+  google.maps.event.addListener(marker, 'click', (function(marker, i) {
+    return function() {
+      // Create content  
+      var contentString = `
+        <div style="font-weight:600;font-size: 16px;">${place.title}</div>
+        <br/>${place.description}<br/><br/><img width="auto"
+        height="auto" src="${place.image}"/>`;
+      infowindow.setContent(contentString);
+      infowindow.open(map, marker);
     }
+  })(marker, i));
 }
 
 function verifyPhone(event) {
@@ -949,22 +948,18 @@ function init() {
       if (flashcard.lesson_type == 'user_tour') {
 
         user_tour_array.push(flashcard);
-
         if (user_tour_array.length <= 1) {
           $('#theSlide').append(
             '<div class="' +
             className +
-            '"><div alt="title_text" style="height:100%"><h1>User Tour</h1><h1> ' +
+            '"><div alt="title_text" style="height:100%"><h1> ' +
             `<div style="margin-top:16px;"class="form-group">
-            <button class='btn btn-info gps-entry' 
-            onclick="viewMapLocations('${flashcard.latitude}','${flashcard.longitude}')">View Map</button>
             </div><div id="journalModalTour">
             <div id='journal-body-tour'></div>
             </div></div>`
           );
         }
-
-        viewMapLocations(flashcard.latitude,flashcard.longitude);
+        viewMapLocations(JSON.parse(flashcard.question));
       }
 
       if (flashcard.lesson_type == 'user_gps') {
