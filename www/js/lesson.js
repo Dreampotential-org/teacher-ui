@@ -1024,8 +1024,6 @@ function sendUpdates() {
           lesson_type: 'jitsi_meet',
           question: attr_array[0],
           position: position_me,
-          latitude: 0,
-          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1034,8 +1032,6 @@ function sendUpdates() {
           lesson_type: 'record_webcam',
           question: attr_array[0],
           position: position_me,
-          latitude: 0,
-          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1044,8 +1040,6 @@ function sendUpdates() {
             lesson_type: 'chiro_front',
             question: attr_array[0],
             position: position_me,
-            latitude: 0,
-            longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1055,8 +1049,6 @@ function sendUpdates() {
           lesson_type: 'chiro_side',
           question: attr_array[0],
           position: position_me,
-          latitude: 0,
-          longitude:0
       };
       flashcards.push(temp);
       break;
@@ -1065,8 +1057,6 @@ function sendUpdates() {
           lesson_type: 'quick_read',
           question: attr_array[0],
           position: position_me,
-          latitude: 0,
-          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1077,8 +1067,6 @@ function sendUpdates() {
           question: attr_array[0],
           answer: attr_array[1],
           position: position_me,
-          latitude: 0,
-          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1088,8 +1076,6 @@ function sendUpdates() {
           lesson_type: 'title_input',
           question: attr_array[0],
           position: position_me,
-          latitude: 0,
-          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1100,8 +1086,6 @@ function sendUpdates() {
           question: attr_array[0],
           image: attr_array[1],
           position: position_me,
-          latitude: 0,
-          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1111,8 +1095,6 @@ function sendUpdates() {
           lesson_type: 'title_textarea',
           question: attr_array[0],
           position: position_me,
-          latitude: 0,
-          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1123,8 +1105,6 @@ function sendUpdates() {
           question: attr_array[0],
           image: attr_array[1],
           position: position_me,
-          latitude: 0,
-          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1140,8 +1120,6 @@ function sendUpdates() {
                 'image': $(flashcard).eq(0).find("#tour-image-file").eq(0).val(),
             }),
             answer: attr_array[1],
-            latitude: attr_array[2],
-            longitude:attr_array[3],
             image: attr_array[4],
             position: position_me,
           };
@@ -1155,8 +1133,6 @@ function sendUpdates() {
           question: attr_array[0],
           image: attr_array[1],
           position: position_me,
-          latitude: 0,
-          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1168,8 +1144,6 @@ function sendUpdates() {
           options: choices_array,
           image: attr_array[1],
           position: position_me,
-          latitude: 0,
-          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1181,8 +1155,6 @@ function sendUpdates() {
           options: choices_array,
           image: attr_array[1],
           position: position_me,
-          latitude: 0,
-          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1190,8 +1162,6 @@ function sendUpdates() {
         temp = {
           lesson_type: 'signature',
           position: position_me,
-          latitude: 0,
-          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1200,8 +1170,6 @@ function sendUpdates() {
           lesson_type: 'name_type',
           question: attr_array[0],
           position: position_me,
-          latitude: 0,
-          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1210,8 +1178,6 @@ function sendUpdates() {
         temp = {
           lesson_type: 'verify_phone',
           position: position_me,
-          latitude: 0,
-          longitude:0
         };
         flashcards.push(temp);
         break;
@@ -1223,8 +1189,6 @@ function sendUpdates() {
           // image: attr_array[0],
           image:  '',
           position: position_me,
-          latitude: 0,
-          longitude:0
           };
           flashcards.push(temp);
           break;
@@ -1235,8 +1199,6 @@ function sendUpdates() {
           question: attr_array[0],
           image:  '',
           position: position_me,
-          latitude: 0,
-          longitude:0
           };
           flashcards.push(temp);
           break;
@@ -1249,8 +1211,6 @@ function sendUpdates() {
           // latitude:CURRENT_POSITION.coords.latitude,
           // longitude:CURRENT_POSITION.coords.longitude,
           position: position_me,
-               latitude: 0,
-          longitude:0
         };
         flashcards.push(temp);
         break; 
