@@ -320,14 +320,10 @@ function viewMapLocations(latitude,longitude){
 
     let lat=0,long=0;
     //question, answer , lat , long
-    let locations=[];
-     for(var i=0;i<user_tour_array.length;i++){
-        let dt = [user_tour_array[i]['question'],user_tour_array[i]['answer'],user_tour_array[i]['image'],
-        user_tour_array[i]['latitude'],user_tour_array[i]['longitude']];
-        locations.push(dt);
 
-        lat=locations[i][3];
-        long=locations[i][4];
+     for(var i=0;i<user_tour_array.length;i++){
+        lat=user_tour_array[i]['latitude'];
+        long=user_tour_array[i]['longitude'];
      }
 
     var map = new google.maps.Map(document.getElementById('gps-view-tour'), {
@@ -340,9 +336,9 @@ function viewMapLocations(latitude,longitude){
     
     var marker, i;
     
-    for (i = 0; i < locations.length; i++) {  
+    for (i = 0; i < user_tour_array.length; i++) {  
       marker = new google.maps.Marker({
-        position: new google.maps.LatLng(locations[i][3], locations[i][4]),
+        position: new google.maps.LatLng(user_tour_array[i]['latitude'], user_tour_array[i]['longitude']),
         draggable: true,
         animation: google.maps.Animation.DROP,
         map: map
@@ -351,10 +347,10 @@ function viewMapLocations(latitude,longitude){
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
         return function() {
           // Create content  
-          var contentString = `<div style="font-weight:600;font-size: 16px;">${locations[i][0]}</div>`
-          + "<br />" + locations[i][1]+ `<br /><br />
+          var contentString = `<div style="font-weight:600;font-size: 16px;">${user_tour_array[i]['title']}</div>`
+          + "<br />" + user_tour_array[i]['description']+ `<br /><br />
           <img width="auto" height="auto" 
-          src=${locations[i][2]}
+          src=${user_tour_array[i]['image']}
           <="" div="">`;
           infowindow.setContent(contentString);
           infowindow.open(map, marker);
@@ -826,8 +822,13 @@ function init() {
       }
 
       if (flashcard.lesson_type == 'user_tour') {
-
-        user_tour_array.push(JSON.parse(flashcard.options));
+    
+        flashcard.options.forEach(function(res){
+          // user_tour_array.push(JSON.parse(res.replace(/'/g, '"')));
+          user_tour_array.push(res);
+        })
+        
+        console.log("response user_tour_array=>",user_tour_array);
 
           $('#theSlide').append(
             '<div class="' +

@@ -27,7 +27,6 @@ var image_type ="";
 var video_type ="";
 var data_id_value="";
 var video_data_id_value="";
-var flashcard_response=[];
 
 window.addEventListener('DOMContentLoaded', init, false);
 var lesson_id = getParam('lesson_id');
@@ -337,6 +336,7 @@ function handleImageUpload(key) {
 
 //handleImageSelect(this.value)
 function handleImageSelect(e) {
+  console.log("image upload2--------");
   var file = e.files[0];
   if (file) {
     GLOBAL_FILE = file;
@@ -526,10 +526,11 @@ function displayVideo(file_url,video_data_id) {
   }
 }
 
-function displayImage(file_url,data_id) {
+function displayImage(file_url,data_id,image_id) {
   // Clear existing image
   // $('#output').html('');
  //
+debugger
  if(file_url!=""){
   if(image_type=="questionChoices"){
     $('#output-question-choices').html('');
@@ -545,7 +546,17 @@ function displayImage(file_url,data_id) {
     img.appendTo('#output-question-checkboxes');
     $('#upload-img-btn-question-checkboxes').attr('value', 'Upload new Image');
   }
-  else if(image_type=="imageFile"){
+  else if(image_type=="tour-image-file"){
+    var img = $('<img style="width:400px">');
+    img.attr('src', file_url);  
+    img.attr('data-id',data_id);
+    img.attr('id', data_id);
+    console.log("'.output-image-tour-'+image_id=>",'.output-image-tour-'+image_id)
+ 
+      img.appendTo('.output-image-tour-'+image_id);
+      // img.appendTo('.output-image-tour');
+
+  }else if(image_type=="imageFile"){
     // $('#output-image-file').html('');
     var img = $('<img style="width:400px">');
     img.attr('src', file_url);  
@@ -777,7 +788,7 @@ function addImageFile(isNew, id, question, image, posU) {
   sortablePositionFunction(isNew, posU);
 }
 
-function addUserTour(isNew, id, question,text,latitude,longitude, image, posU) {
+function addUserTour(isNew, id, options,question,text,latitude,longitude, image, posU) {
   console.log("addUserTour ==> ");
   console.log("isNew, id, question, image, posU ");
   console.log(isNew,' , ' ,id, ' , ' ,question, ' , ' ,image, ' , ' ,posU);
@@ -794,7 +805,7 @@ if (user_tour_count == 0) {
 
 $('#user_tour')
   .find('button')
-  .last()
+  .first()
   .attr('onclick', 'addTour(' + user_tour_count + ')');
   let tempTour = $('#user_tour').html();
 
@@ -813,9 +824,14 @@ $('#user_tour')
     $('#user_tour').find('textarea').html(text);
     $('#user_tour').find('textarea').attr('data-id', id);
 
-    image_type = "imageFile";
+    options.map((option) => {
+      // image_type = "imageFile";
+      addTour(user_tour_count, option);
+    });
+
+    // image_type = "imageFile";
     // displayImage(image,$('#image_file').find('output-image-file').attr('data-id'));
-    displayImage(image,id);
+    // displayImage(image,id);
   } else {
     $('#user_tour').find('input').first().attr('value', '');
     $('#user_tour').find('input').last().attr('value', '');
@@ -826,9 +842,9 @@ $('#user_tour')
     $('#user_tour').find('textarea').html('');
 
     // $('#image_file').find('#output-image-file').find('img').attr('src','');
-    $('#user_tour').find('.output-image-file').find('img').attr('src','');
-    image_type = "imageFile";
-    displayImage("","");
+    // $('#user_tour').find('.output-image-file').find('img').attr('src','');
+    // image_type = "imageFile";
+    // displayImage("","");
   }
 
   $('#user_tour')
@@ -856,44 +872,55 @@ $('#user_tour')
     .attr('data-id',$('#image_file').find('input').first().attr('data-id')+"_"+ image_file_count);
 
   $('#sortable').append($('#user_tour').html());
-  image_file_count++;
   sortablePositionFunction(isNew, posU);
+  user_tour_count++;
+  $('#user_tour').html(tempTour);
+
 }
 
 function addTour(id, value) {
+  
   if (!value) {
     value = '';
   }
 
+  var title = value.title!=undefined ? value.title :''; 
+  var description = value.description!=undefined ? value.description :'';
+  var latitude = value.latitude!=undefined ? value.latitude :'';
+  var longitude = value.longitude!=undefined ? value.longitude :'';
+
+  var image_id=Math.random();
+
   $('#tourinfo_' + id).append(
-    `<br/><div> 
-          <div class="form-group">
-              <input type="text" class="form-control" placeholder="Place Title">
-          </div>
-
-          <div class="form-group">
-              <textarea class="form-control" alt="speed_read_textarea" rows="7"
-                  placeholder="Place Description"></textarea>
-          </div>
-
-          <div class="form-group">
-              <input type="text" class="form-control" id="latitude" placeholder="Latitude">
-          </div>
-
-          <div class="form-group">
-              <input type="text" class="form-control" id="longitude" placeholder="Longitude">
-          </div>
-
-          <div class="form-group">
-              <input type="button" class="image_upload_button btn btn-info" value="Upload Image" />
-              <input type="text" class="form-control" id="tour-image-file" placeholder="Image Link" />
-          </div>
-          <div class="output-image-file"></div>	
-          
-          <button onclick="$(this).parent().remove()" class="btn btn-danger">Remove
-              Tour</button>
-    </div>`
+        '<div>  <div class="form-group">'+
+            '<input type="text" class="form-control" placeholder="Place Title" data-id="' +
+            Math.random() + '"value="'+ title+'"></div>'+
+        '<div class="form-group"><textarea class="form-control" alt="speed_read_textarea" data-id="' +
+        Math.random() + '"rows="7"'+
+                'placeholder="Place Description">'+description+'</textarea></div>'+
+        '<div class="form-group"> <input type="text" class="form-control" data-id="' +
+        Math.random()+ 
+        'placeholder="Latitude" value="'+latitude+'"> </div>'+
+        '<div class="form-group"> <input type="text" class="form-control" data-id="' +
+        Math.random() +
+         'placeholder="Longitude" value="'+longitude+'"> </div>'+
+        '<div class="form-group"> <input type="button" class="image_upload_button btn btn-info"'+ 
+        'value="Upload Image" /> <input type="text" class="form-control" data-id="image-file-'+image_id+
+        '"placeholder="Image Link" /> </div> <div class="output-image-tour-'+image_id+'"></div>'+
+        // '"placeholder="Image Link" /> </div> <div class="output-image-tour"></div>'+
+         '<button onclick="$(this).parent().remove()" class="btn btn-danger">Remove Tour</button>'+
+         '</div> <br/><br/>'
   );
+
+  // setTimeout(() => {
+     debugger
+    image_type="tour-image-file";
+
+    $("input[data-id='"+"image-file-"+image_id+"']").attr('value', value.image);
+    
+    displayImage(value.image,"image-file-"+image_id,image_id);
+  // }, 5000);
+
 }
 
 function addVerifyPhone(isNew, id, question, image, posU) {
@@ -970,6 +997,7 @@ function addBrainTree(isNew, id, merchant_ID, braintree_public_key, braintree_pr
 }
 
 function sendUpdates() {
+  console.log("send updates---");
   var lesson_name = $('#lesson_name').val();
   var lesson_visiblity = $('#lesson_is_public').prop('checked');
   var meta_attributes = [];
@@ -988,10 +1016,10 @@ function sendUpdates() {
   var attr_array = [];
   position_me = 0;
 
-  tour_array.push({lat: 'yyy', lng: 'xxx', title: 'here is title1', description: 'here is description',
-  image: 'url1'});
-  tour_array.push( {'lat': 'yy21', 'lng': 'xzz', 'title': 'here is title3', 
-  'description': 'here is description', 'image': 'url1'});
+  // tour_array.push({title: 'here is title1', description: 'here is description', image: 'url1',
+  // latitude: '18.94722755', longitude: '72.8207752'});
+  // tour_array.push({title: 'here is title3', description: 'here is description', image: 'url1',
+  // latitude: '18.922064', longitude: '72.834641'});
 
   if (document.querySelector('#name:checked')) {
     meta_attributes.push('name');
@@ -1030,9 +1058,7 @@ function sendUpdates() {
     position_me += 1;
     //current_flashcard_elements has all the fields of current selected flashcard
 
-    debugger
-
-    if (current_flashcard_elements.length < 4 && flashcard_response.lesson_type!="user_tour") {
+    if (current_flashcard_elements.length < 4 && flashcard_type!="user_tour") {
       current_flashcard_elements.forEach((current_flashcard) => {
         this_element = current_flashcard.firstElementChild;
         if(this_element){
@@ -1048,10 +1074,60 @@ function sendUpdates() {
           }
         }
       });
-    }else if(flashcard_response.lesson_type=="user_tour"){
-       
+    }else if(flashcard_type=="user_tour"){
+
+        real_flashcard_elements = [];
+      current_flashcard_elements.forEach((current_flashcard_element) => {
+        if (current_flashcard_element.attributes) {
+          real_flashcard_elements.push(current_flashcard_element);
+        }
+      });
+      
+      //working on tours
+      real_flashcard_elements[0].childNodes.forEach((choice_tour)=>{
+        var singleTour = {};
+        var i = 1;
+        choice_tour.childNodes.forEach((choice) => { 
+          choice.childNodes.forEach((choice_unit) => {
+            if (choice_unit.type == 'text' || choice_unit.type=='textarea') {
+             
+              switch(i) {
+                case 1:
+                  singleTour.title = choice_unit.value;
+                  break;
+                case 2:
+                  singleTour.description = choice_unit.value;
+                  break;
+                case 3:
+                  singleTour.latitude = choice_unit.value;
+                  break;
+                case 4:
+                  singleTour.longitude = choice_unit.value;
+                  break;
+                case 5:  
+                  // Selecting the value of image
+                  real_flashcard_elements[current_flashcard_elements.length - 1].childNodes.forEach((image_upload_element) => {
+                    if (image_upload_element.type == 'text') {
+                      attr_array[1] = image_upload_element.value;
+                    }
+                  });
+
+                  singleTour.image = choice_unit.value;
+
+                  break;
+                default:
+                  
+              }
+              i++;
+            }
+          });
+        });
+
+        if(singleTour.title != undefined)
+        tour_array.push(singleTour);
+  
+      });
     }else {
-      debugger
       real_flashcard_elements = [];
       current_flashcard_elements.forEach((current_flashcard_element) => {
         if (current_flashcard_element.attributes) {
@@ -1060,7 +1136,7 @@ function sendUpdates() {
       });
       
       attr_array[0] = real_flashcard_elements[0].firstElementChild.value;
-  
+
       //working on choices
       real_flashcard_elements[1].childNodes.forEach((choice) => {
         choice.childNodes.forEach((choice_unit) => {
@@ -1398,7 +1474,6 @@ $(document).ready(function () {
         $('#lesson_is_public').prop('checked', response.lesson_is_public);
         $('title').text(response.lesson_name + ' - edit..');
 
-        flashcard_response=response.flashcards;
         var flashcards = response.flashcards;
         //Updating meta
         var recieved_meta = response.meta_attributes;
@@ -1487,7 +1562,7 @@ $(document).ready(function () {
           }
 
           if (flashcard.lesson_type == 'user_tour') {
-            addUserTour(false, flashcard.id, flashcard.question,flashcard.answer,flashcard.latitude,
+            addUserTour(false, flashcard.id, flashcard.options,flashcard.question,flashcard.answer,flashcard.latitude,
               flashcard.longitude,flashcard.image, flashcard.position);
           }
 
@@ -1722,6 +1797,7 @@ $(document).on('click', '#settingshtml', function (e) {
 });
 
 $(document).on('click', '.image_upload_button', function (e) {
+  console.log("image upload--------");
   $('#imageUpload').click();
   data_id_value = $(this).siblings("input[type=text]").attr("data-id");
   image_type = "imageFile";
