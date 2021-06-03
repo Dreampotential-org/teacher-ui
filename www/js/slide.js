@@ -564,7 +564,7 @@ function init() {
         $('#theSlide').append(`<div class="${className} ${i == 0 ? 'active' : ''}" id="flashcard_${flashcard.id}">
         
         </div>`);
-        var domain = "vstream.lifeforceenergy.us";
+        var domain = "meet.lifeforceenergy.us";
         var options = {
           roomName: flashcard.question,
           // width: 700,
