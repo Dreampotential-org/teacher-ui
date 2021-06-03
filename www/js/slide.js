@@ -126,6 +126,7 @@ function updateMeta(type, answer) {
 }
 
 function nextSlide() {
+ debugger
   var lesson_id = getParam('lesson_id');
   console.log(current_slide);
   if (current_slide < total_slides) {
@@ -310,10 +311,11 @@ function get_session() {
   });
 }
 
-function viewMapLocations(latitude,longitude){
-
+function viewMapLocations(map_id){
+  debugger
+ 
     $("#journal-body-tour").html(
-      "<div id='gps-view-tour' style='width:100%;height:450px;'></div>"
+      `<div id='gps-view-tour' style='width:100%;height:450px;'></div>`
     );
 
     console.log("user_tour_array=>",user_tour_array);
@@ -822,12 +824,17 @@ function init() {
       }
 
       if (flashcard.lesson_type == 'user_tour') {
-    
+        $('#prevButton').attr('data-type', 'user_tour');
+        $('#nextButton').attr('data-type', 'user_tour');
+        debugger
+        user_tour_array=[];
+
         flashcard.options.forEach(function(res){
           // user_tour_array.push(JSON.parse(res.replace(/'/g, '"')));
           user_tour_array.push(res);
         })
         
+        var map_id=Math.random();
         console.log("response user_tour_array=>",user_tour_array);
 
           $('#theSlide').append(
@@ -836,13 +843,13 @@ function init() {
             '"><div alt="title_text" style="height:100%"><h1>User Tour</h1><h1> ' +
             `<div style="margin-top:16px;"class="form-group">
             <button class='btn btn-info gps-entry' 
-            onclick="viewMapLocations('${flashcard.latitude}','${flashcard.longitude}')">View Map</button>
+            onclick="viewMapLocations('${map_id}')">View Map</button>
             </div><div id="journalModalTour">
             <div id='journal-body-tour'></div>
             </div></div>`
           );
 
-        viewMapLocations(flashcard.latitude,flashcard.longitude);
+        viewMapLocations(map_id);
       }
 
       if (flashcard.lesson_type == 'user_gps') {

@@ -530,7 +530,7 @@ function displayImage(file_url,data_id,image_id) {
   // Clear existing image
   // $('#output').html('');
  //
-debugger
+
  if(file_url!=""){
   if(image_type=="questionChoices"){
     $('#output-question-choices').html('');
@@ -553,8 +553,8 @@ debugger
     img.attr('id', data_id);
     console.log("'.output-image-tour-'+image_id=>",'.output-image-tour-'+image_id)
  
-      img.appendTo('.output-image-tour-'+image_id);
-      // img.appendTo('.output-image-tour');
+      // img.appendTo('.output-image-tour-'+image_id);
+      img.appendTo('.output-image-tour');
 
   }else if(image_type=="imageFile"){
     // $('#output-image-file').html('');
@@ -906,21 +906,20 @@ function addTour(id, value) {
          'placeholder="Longitude" value="'+longitude+'"> </div>'+
         '<div class="form-group"> <input type="button" class="image_upload_button btn btn-info"'+ 
         'value="Upload Image" /> <input type="text" class="form-control" data-id="image-file-'+image_id+
-        '"placeholder="Image Link" /> </div> <div class="output-image-tour-'+image_id+'"></div>'+
-        // '"placeholder="Image Link" /> </div> <div class="output-image-tour"></div>'+
+        // '"placeholder="Image Link" /> </div> <div class="output-image-tour-'+image_id+'"></div>'+
+        '"placeholder="Image Link" /> </div> <div class="output-image-tour"></div>'+
          '<button onclick="$(this).parent().remove()" class="btn btn-danger">Remove Tour</button>'+
          '</div> <br/><br/>'
   );
 
   // setTimeout(() => {
-     debugger
+    
     image_type="tour-image-file";
 
     $("input[data-id='"+"image-file-"+image_id+"']").attr('value', value.image);
     
     displayImage(value.image,"image-file-"+image_id,image_id);
   // }, 5000);
-
 }
 
 function addVerifyPhone(isNew, id, question, image, posU) {
@@ -1006,8 +1005,6 @@ function sendUpdates() {
     lesson_is_public: lesson_visiblity,
   };
   var flashcards = [];
-  var choices_array=[];
-  var tour_array=[];
   var position_me = 0;
   // Saving Quick Reads
   flashcards_div = [];
@@ -1057,6 +1054,8 @@ function sendUpdates() {
     flashcard_type = flashcard.getAttribute('data-type');
     position_me += 1;
     //current_flashcard_elements has all the fields of current selected flashcard
+    let choices_array=[];
+    let tour_array=[];
 
     if (current_flashcard_elements.length < 4 && flashcard_type!="user_tour") {
       current_flashcard_elements.forEach((current_flashcard) => {
