@@ -446,6 +446,7 @@ function init() {
     get_session();
     // phone_verification_check();
     // console.log('>>>>>>>>>>>>>> slide', response);
+    console.log(response)
     document.getElementById('lesson_title').innerHTML = response.lesson_name ? response.lesson_name : "Lesson - " + lesson_id;
     total_slides = response.flashcards.length;
     // $('head').append(`<title>${response.lesson_name ? response.lesson_name : "Lesson - " + lesson_id}</title>`)
