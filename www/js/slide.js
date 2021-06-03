@@ -977,8 +977,8 @@ function init() {
         $('#theSlide').append(
           `<div class="${className}">
             <div alt="title_text" style="height:500px">
-            <p> ${flashcard.question}</p>
-            <input type="file" class="form-control" value="Choose File" id="myFile" onchange="handleVideoUpload('user_video_upload')"/> 
+            <h2> ${flashcard.question}</h2>
+            <input type="file" class="form-control" value="Choose File" id="myFile" onchange="handleVideoUpload('user_video_upload')"/>
 
             <video style="max-height:450px;max-width:1000px;display:none; margin:auto"; controls preload="metadata" id="user-video-tag">
             </video>
