@@ -976,7 +976,6 @@ function init() {
         console.log("user_video_upload flashcard.lesson_type ===> ", flashcard.lesson_type);
         $('#theSlide').append(
           `<div class="${className}">
-            <h1>User Video Upload</h1>
             <div alt="title_text" style="height:500px">
             <p> ${flashcard.question}</p>
             <input type="file" class="form-control" value="Choose File" id="myFile" onchange="handleVideoUpload('user_video_upload')"/> 
