@@ -140,12 +140,12 @@
                                                        <th>Action</th>
                                                        <th>Name</th>
                                                        <th>Phone</th>
-                                                       <th>Last call</th>
-                                                       <th>Recording</th>
                                                        <th>State</th>
                                                        <th>Status</th>
                                                        <th>Ask</th>
                                                        <th>Notes</th>
+                                                       <th>Last call</th>
+                                                       <th>Recording</th>
                                                        <th>Call Member</th>
                                                   </tr>
                                              </thead>
@@ -458,12 +458,12 @@
                                    <td onclick=check_box(${item.pk})></td>
                                    <td id="editLead" onClick=editLead(${index})>${item.fields.name}</td>
                                    <td>${item.fields.phone}</td>
-                                   <td>${item.fields.last_call}</td>
-                                   <td>${item.fields.recording_url}</td>
                                    <td>${item.fields.state}</td>
                                    <td>${item.fields.status}</td>
                                    <td>${item.fields.ask}</td>
                                    <td>${item.fields.notes}</td>
+                                   <td>${item.fields.last_call}</td>
+                                   <td><audio src="${item.fields.recording_url ? item.fields.recording_url:""}" controls> </audio></td>
                                    <td><button onclick="selectNum('${index}')" class="btn btn-primary btn-edit" type="button"><i class="fa fa-phone-square"></i></button></td>
                                    </tr>`);
                          })
@@ -495,6 +495,7 @@
                          });
                          var select = table.column(0).checkboxes;
                     }).fail((err) => {
+                         console.log("🚀 ~ file: leads.html ~ line 522 ~ err", err)
                          console.log("errorss...",err)
                     })
                });
@@ -517,16 +518,16 @@
                          "contentType": false,
                          "mimeType": "multipart/form-data",
                          "data": form,
-                         "headers": {
-                              "Authorization": localStorage.getItem("token")
-                         }
+                         "headers": {	
+                              "Authorization": `${localStorage.getItem('user-token')}`	
+                         },
                     };
                     $.ajax(settings).done(function (response) {
                          swal({
                               title: "Good job!",
                               icon: "success",
-                              button: "Aww yiss!",
-                              text: response,
+                              button: "Aww yess!",
+                              text: JSON.parse(response).message,
                               timer: 3000,
                          });
                          setTimeout(function(){location.reload()}, 3000);  
@@ -554,6 +555,7 @@
                     $('#edit_ask').val(user_leads[index].fields.ask)
                     $('#edit_notes').val(user_leads[index].fields.notes)
                     $('#edit_url').val(user_leads[index].fields.url)
+                    $('#edit_status').val(user_leads[index].fields.status)
                }
 
                // go back from editPage 

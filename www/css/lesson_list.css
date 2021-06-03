@@ -67,3 +67,15 @@ button {
 .upload_image_button{
     margin-bottom:5px;
 }
+
+.view_lesson_response{
+    margin-top: 20px;
+}
+
+#is_public_contanier{
+    margin-top: 10px;
+}
+
+#tour-image-file{
+    margin-top: 10px;
+}

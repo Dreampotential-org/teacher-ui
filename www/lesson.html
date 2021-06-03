@@ -34,7 +34,6 @@
             padding: 25px;
         }
     </style>
-
 </head>
 
 <body>
@@ -47,13 +46,17 @@
                 <select class="form-control" id="select_lesson" onchange="selectLesson()">
 
                 </select>
-                <div class="row">
+                <div class="row view_lesson_response">
                     <a id="lesson_slide" class="col-lg-6">View Lesson</a>
                     <a id="lesson_responses" class="col-lg-6">View Responses</a>
-                    <div id="is_public_contanier">
-                        <input type="checkbox" id="lesson_is_public" class="col-lg-1">Make Public</input>
-                    </div>
                 </div>
+
+                <div id="is_public_contanier">
+                    <input type="checkbox" id="lesson_is_public" class="">
+                      Make Public
+                    </input>
+                </div>
+
                 <br>
             </div>
             <div class="col-xs-6 col-sm-6" style="margin-top: 20px;margin-bottom: 10px;">
@@ -73,8 +76,13 @@
                     <option value="sign_b64">Signature Image</option>
                     <option value="brain_tree">BrainTree</option>
                     <option value="user_video_upload">User Video Upload</option>
+                    <option value="user_image_upload">User Image Upload</option>
                     <option value="user_gps">User Gps</option>
+                    <option value="user_tour">User Tour</option>
                     <option value="jitsi_meet">Jitsi Meet</option>
+                    <option value="record_webcam">Record WebCam</option>
+                    <option value="chiro_front">Chiroposture Front</option>
+                    <option value="chiro_side">Chiroposture Side</option>
                 </select>
                 <button class="btn form-control btn-success" style="margin-top: 20px;margin-bottom: 10px;"
                     id="add">Add</button>
@@ -99,16 +107,24 @@
                             <div class="form-group">
                                 <input type="text" class="form-control" id="room_name" placeholder="Room Name">
                             </div>
-                            <!-- <div class="form-group">
-                                <textarea class="form-control" rows="7" placeholder=""></textarea>
-                            </div> -->
+                        </div>
+                    </div>
+                    <div class="speed_read" id="record_webcam" style="display: none; padding-top: 15px">
+                        <div data-type="record_webcam"
+                            style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div class="row">
+                                <h4 class="col-xs-10 col-lg-10">Record Webcam</h4>
+                                <a class="remove_flashcard col-xs-2 col-lg-2"
+                                    style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                    x </a>
+                            </div>
                         </div>
                     </div>
                     <div class="speed_read" id="speed_read" style="display: none; padding-top: 15px">
                         <div data-type="speed_read"
                             style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
                             <div class="row">
-                                <h4 class="col-xs-10 col-lg-10">Speed Read</h4>
+                                <h4 class="col-xs-10 col-lg-10s">Speed Read</h4>
                                 <a class="remove_flashcard col-xs-2 col-lg-2"
                                     style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
                                     x </a>
@@ -192,8 +208,34 @@
                                 <a class="remove_flashcard col-xs-2 col-lg-2"
                                     style="color:rgb(46, 46, 46);font-size:16px;text-align:right;"> X </a>
                             </div>
+                            <div id="user-video-output">
+                                <input type="text" id="txt-user-video" class="form-control" placeholder="Title" />
+                            </div>
                             <!-- <div class="form-group">
                                     <button onclick="handleVideoUpload('user_video_upload')" class="btn btn-info">Upload video</button>
+                                </div>
+                                <div id="user-video-output">
+                                    <input type="text" id="txt-user-video" class="form-control" placeholder="Video Link" />
+                                    <video id="userVideoplayer" controls height="360" style="width: 100%;" preload="metadata"
+                                    >
+                                    </video>
+                                </div> -->
+                        </div>
+                    </div>
+
+                    <div class="speed_read" id="user_image_upload" style="display: none; padding-top: 15px">
+                        <div data-type="user_image_upload"
+                            style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div class="row">
+                                <h4 class="col-xs-10 col-lg-10">User Image Upload</h4>
+                                <a class="remove_flashcard col-xs-2 col-lg-2"
+                                    style="color:rgb(46, 46, 46);font-size:16px;text-align:right;"> X </a>
+                            </div>
+                            <div id="user-image-output">
+                                <input type="text" id="user-image-question" class="form-control" placeholder="Title" />
+                            </div>
+                            <!-- <div class="form-group">
+                                    <button onclick="handleVideoUpload('user_image_upload')" class="btn btn-info">Upload video</button>
                                 </div>
                                 <div id="user-video-output">
                                     <input type="text" id="txt-user-video" class="form-control" placeholder="Video Link" />
@@ -339,6 +381,42 @@
                         </div>
                     </div>
 
+                    <div class="speed_read" id="user_tour" style="display: none; padding-top: 15px">
+                        <div data-type="user_tour"
+                            style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div class="row">
+                                <h4 class="col-xs-10 col-lg-10">User Tour</h4>
+                                <a class="remove_flashcard col-xs-2 col-lg-2"
+                                    style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                    x </a>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control title" placeholder="Place Title">
+                            </div>
+
+                            <div class="form-group">
+                                <textarea class="form-control description" alt="speed_read_textarea" rows="7"
+                                    placeholder="Place Description"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" class="form-control lat" id="latitude" placeholder="Latitude">
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" class="form-control lng" id="longitude" placeholder="Longitude">
+                            </div>
+
+                            <div class="form-group">
+                                <!-- <input type="button" class="image_upload_button btn btn-info" onclick="handleImageUpload('imageFile')" value="Upload Image"/> -->
+                                <input type="button" class="image_upload_button btn btn-info" value="Upload Image" />
+                                <input type="text" class="form-control" id="tour-image-file" placeholder="Image Link" />
+                            </div>
+                            <!-- <div id="output-image-file"></div> -->
+                            <div class="output-image-file"></div>
+                        </div>
+                    </div>
+
                     <div class="speed_read" id="iframe_link" style="display: none; padding-top: 15px">
                         <div data-type="iframe_link"
                             style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
@@ -391,6 +469,31 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="speed_read" id="chiro_front" style="display: none; padding-top: 15px">
+                        <div data-type="chiro_front"
+                            style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div class="row">
+                                <h4 class="col-xs-10 col-lg-10">Chiroposture front</h4>
+                                <a class="remove_flashcard col-xs-2 col-lg-2"
+                                    style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                    x </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="speed_read" id="chiro_side" style="display: none; padding-top: 15px">
+                        <div data-type="chiro_side"
+                            style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div class="row">
+                                <h4 class="col-xs-10 col-lg-10">Chiroposture Side</h4>
+                                <a class="remove_flashcard col-xs-2 col-lg-2"
+                                    style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                    x </a>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="speed_read" id="brain_tree" style="display: none; padding-top: 15px">
                         <div
                             style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
