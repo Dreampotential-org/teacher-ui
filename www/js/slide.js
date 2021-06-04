@@ -8,7 +8,7 @@ var completed = false;
 var signature = [];
 var phone_verification_status = false;
 var session_id = null;
-var user_tour_array=[];
+var user_tour_array = [];
 
 var imported = document.createElement('script');
 imported.src = 'js/gps.js';
@@ -198,7 +198,7 @@ function nextSlide() {
       answer = $(`#user-image-display_${flashcard_id}`).attr('src');
       sendResponse(flashcard_id, answer);
     } else if (type == 'user_gps') {
-      answer = $('#note_'+ (current_slide-1)).val();
+      answer = $('#note_' + (current_slide - 1)).val();
       sendResponse(flashcard_id, answer);
       // console.log('flashcard_id',flashcard_id)
       document.removeEventListener('gpsPosition', () => { });
@@ -216,7 +216,7 @@ function nextSlide() {
     }
     else if (type == "user_gps") {
       console.log("User-GPS slide page");
-      answer = $('#note_'+ (current_slide-1)).val();
+      answer = $('#note_' + (current_slide - 1)).val();
       sendResponse(flashcard_id, answer);
     }
     // if (current_slide != total_slides && loaded_flashcards[current_slide].lesson_type == 'jitsi_meet') {
@@ -307,19 +307,19 @@ function get_session() {
   });
 }
 
-function viewMapLocations(place){
+function viewMapLocations(place) {
 
-    $("#journal-body-tour").html(
-      "<div id='gps-view-tour' style='width:100%;height:450px;'></div>"
-    );
+  $("#journal-body-tour").html(
+    "<div id='gps-view-tour' style='width:100%;height:450px;'></div>"
+  );
 
-    console.log("user_tour_array=>",user_tour_array);
-    var map = new google.maps.Map(document.getElementById('gps-view-tour'), {
-      zoom: 17,
-      center: new google.maps.LatLng(place.lat, place.lng),
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    });
-    var infowindow = new google.maps.InfoWindow();
+  console.log("user_tour_array=>", user_tour_array);
+  var map = new google.maps.Map(document.getElementById('gps-view-tour'), {
+    zoom: 17,
+    center: new google.maps.LatLng(place.lat, place.lng),
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  });
+  var infowindow = new google.maps.InfoWindow();
   var marker, i;
   marker = new google.maps.Marker({
     position: new google.maps.LatLng(place.lat, place.lng),
@@ -328,8 +328,8 @@ function viewMapLocations(place){
     map: map
   });
 
-  google.maps.event.addListener(marker, 'click', (function(marker, i) {
-    return function() {
+  google.maps.event.addListener(marker, 'click', (function (marker, i) {
+    return function () {
       // Create content  
       var contentString = `
         <div style="font-weight:600;font-size: 16px;">${place.title}</div>
@@ -434,7 +434,7 @@ function radioOnClick(valu) {
 }
 
 function init() {
-    console.log("INIT dom")
+  console.log("INIT dom")
   $('#sign-modal').load('signature/index.html');
   $('#verify-phone-modal').load('phone/index.html');
   $("#video-modal").load('video/index.html');
@@ -471,7 +471,7 @@ function init() {
     // XXX refactor code below into smaller processing chunk
 
     flashcards.forEach((flashcard, index) => {
-      console.log("flashcard=>",flashcard);
+      console.log("flashcard=>", flashcard);
       if (i == 0) {
         className = 'item active';
       } else {
@@ -615,16 +615,8 @@ function init() {
               mediaRecorder.onstop = (ev) => {
                 let blob = new Blob(chunks);
                 chunks = []
-                // let videoUrl = window.URL.createObjectURL(blob);
-                // console.log("video url..", videoUrl);
-                // video_recorded.src = videoUrl;
-                // stop.href = video_recorded.src;
-                // stop.download = `${flashcard.id}.webm`;
                 // flashcard id, video url from s3
-                var file = new File([blob], `${flashcard.id}.mp4`, {type: 'video', lastModified: Date.now()});
-                // let videoUrl = window.URL.createObjectURL(file);
-                // video_recorded.src = videoUrl;
-                // console.log("video url..", videoUrl);
+                var file = new File([blob], `${flashcard.id}.mp4`, { type: 'video', lastModified: Date.now() });
                 var form = new FormData();
                 form.append('file', file);
 
@@ -662,8 +654,8 @@ function init() {
                       timer: 1000,
                     });
                     // const file_url = response.file_url;
-                    
-                                    
+
+
                   }
                 }).fail(function (error) {
                   console.log("🚀 ~ file: index.html ~ line 56 ~ error", error)
@@ -675,7 +667,7 @@ function init() {
                   });
 
                 });
-                
+
 
               }
             })
@@ -683,6 +675,201 @@ function init() {
               console.log("Something went wrong!");
             });
         }
+      }
+
+      if (flashcard.lesson_type == 'record_screen') {
+        $('#theSlide').append(`<div class="${className} ${i == 0 ? 'active' : ''}" id="flashcard_${flashcard.id}">
+        <p><button id="start_recording_screen">Start Recording</button><br/>
+        <button id="stop_recording_screen" disabled>Stop Recording</button></p>
+        <video controls autoplay id="record_screen" height=500px>
+
+        </video>
+        
+        </div>`);
+        var video = document.querySelector("#record_screen");
+        let start_screen = document.getElementById("start_recording_screen");
+        let stop_screen = document.getElementById("stop_recording_screen");
+        let recorder, stream;
+        async function startRecording() {
+          stream = await navigator.mediaDevices.getDisplayMedia({
+            video: { mediaSource: "screen" }
+          });
+          recorder = new MediaRecorder(stream);
+
+          const chunks = [];
+          recorder.ondataavailable = e => chunks.push(e.data);
+          recorder.onstop = e => {
+            const completeBlob = new Blob(chunks);
+            video.src = URL.createObjectURL(completeBlob);
+            var file = new File([completeBlob], `${flashcard.id}.mp4`, { type: 'video', lastModified: Date.now() });
+            var form = new FormData();
+            form.append('file', file);
+
+            var settings = {
+              async: true,
+              crossDomain: true,
+              url: SERVER + 's3_uploader/upload',
+              method: 'POST',
+              type: 'POST',
+              processData: false,
+              contentType: false,
+              mimeType: 'multipart/form-data',
+              data: form,
+              headers: {
+                Authorization: localStorage.getItem('token'),
+              },
+            };
+            $.ajax(settings).done(function (response) {
+              console.log("🚀 ~ file: index.html ~ line 57 ~ response", response)
+              let resp = JSON.parse(response);
+              if (resp.message == "No file provided!") {
+                swal({
+                  title: 'File Not Select',
+                  text: resp.message,
+                  icon: "warning",
+                  timer: 1000,
+                });
+              } else {
+                console.log("this is else part")
+                sendResponse(flashcard.id, resp.file_url);
+                swal({
+                  title: 'Good job!',
+                  text: 'Video uploaded successfully!',
+                  icon: 'success',
+                  timer: 1000,
+                });
+                // const file_url = response.file_url;
+
+
+              }
+            }).fail(function (error) {
+              console.log("🚀 ~ file: index.html ~ line 56 ~ error", error)
+              swal({
+                title: 'Error!',
+                text: 'Video upload failed!',
+                icon: 'warning',
+                timer: 1000,
+              });
+
+            });
+          };
+
+          recorder.start();
+        }
+        start_screen.addEventListener("click", () => {
+          start_screen.setAttribute("disabled", true);
+          stop_screen.removeAttribute("disabled");
+
+          startRecording();
+        });
+
+        stop_screen.addEventListener("click", () => {
+          stop_screen.setAttribute("disabled", true);
+          start_screen.removeAttribute("disabled");
+
+          recorder.stop();
+          stream.getVideoTracks()[0].stop();
+        });
+        // const stream = await navigator.mediaDevices.getDisplayMedia({
+        //   video: { mediaSource: "screen" }
+        // });
+        // start.addEventListener('click', (ev) => {
+        //   mediaRecorder.start();
+        //   video.srcObject = stream;
+        //   console.log("start recording video", mediaRecorder.state);
+        // });
+        // if (navigator.mediaDevices.getUserMedia) {
+        //   navigator.mediaDevices.getDisplayMedia({ video: { mediaSource: "screen" } })
+        //     .then(function (stream) {
+        //       video.srcObject = stream;
+        //       let start = document.getElementById("start_recording_screen");
+        //       let stop = document.getElementById("stop_recording_screen");
+        //       let options = { mimeType: "video/webm;codecs=vp9" };
+        //       let mediaRecorder = new MediaRecorder(stream, options);
+        //       let chunks = [];
+
+        //       start.addEventListener('click', (ev) => {
+        //         mediaRecorder.start();
+        //         console.log("start recording video", mediaRecorder.state);
+        //       })
+        //       stop.addEventListener('click', (ev) => {
+        //         mediaRecorder.stop();
+        //         console.log("stop recording video", mediaRecorder.state);
+        //       })
+        //       mediaRecorder.ondataavailable = function (ev) {
+        //         chunks.push(ev.data);
+        //       }
+        //       mediaRecorder.onstop = (ev) => {
+        //         let blob = new Blob(chunks);
+        //         chunks = []
+        //         // let videoUrl = window.URL.createObjectURL(blob);
+        //         // console.log("video url..", videoUrl);
+        //         // video_recorded.src = videoUrl;
+        //         // stop.href = video_recorded.src;
+        //         // stop.download = `${flashcard.id}.webm`;
+        //         // flashcard id, video url from s3
+        //         var file = new File([blob], `${flashcard.id}.mp4`, { type: 'video', lastModified: Date.now() });
+        //         // let videoUrl = window.URL.createObjectURL(file);
+        //         // video_recorded.src = videoUrl;
+        //         // console.log("video url..", videoUrl);
+        //         var form = new FormData();
+        //         form.append('file', file);
+
+        //         var settings = {
+        //           async: true,
+        //           crossDomain: true,
+        //           url: SERVER + 's3_uploader/upload',
+        //           method: 'POST',
+        //           type: 'POST',
+        //           processData: false,
+        //           contentType: false,
+        //           mimeType: 'multipart/form-data',
+        //           data: form,
+        //           headers: {
+        //             Authorization: localStorage.getItem('token'),
+        //           },
+        //         };
+        //         $.ajax(settings).done(function (response) {
+        //           console.log("🚀 ~ file: index.html ~ line 57 ~ response", response)
+        //           let resp = JSON.parse(response);
+        //           if (resp.message == "No file provided!") {
+        //             swal({
+        //               title: 'File Not Select',
+        //               text: resp.message,
+        //               icon: "warning",
+        //               timer: 1000,
+        //             });
+        //           } else {
+        //             console.log("this is else part")
+        //             sendResponse(flashcard.id, resp.file_url);
+        //             swal({
+        //               title: 'Good job!',
+        //               text: 'Video uploaded successfully!',
+        //               icon: 'success',
+        //               timer: 1000,
+        //             });
+        //             // const file_url = response.file_url;
+
+
+        //           }
+        //         }).fail(function (error) {
+        //           console.log("🚀 ~ file: index.html ~ line 56 ~ error", error)
+        //           swal({
+        //             title: 'Error!',
+        //             text: 'Video upload failed!',
+        //             icon: 'warning',
+        //             timer: 1000,
+        //           });
+
+        //         });
+
+
+        //       }
+        //     })
+        //     .catch(function (err0r) {
+        //       console.log("Something went wrong!");
+        //     });
+        // }
       }
 
       if (flashcard.lesson_type == 'verify_email') {
@@ -1112,7 +1299,7 @@ function init() {
                 } catch (e) {
                   // return false;
                 }
-                $('#note_'+i).val(rf.answer);
+                $('#note_' + i).val(rf.answer);
                 $('#lat_' + i).val(rf.latitude);
                 $('#long_' + i).val(rf.longitude);
                 console.log('set previos gps value');
