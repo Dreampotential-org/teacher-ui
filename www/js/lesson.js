@@ -447,8 +447,11 @@ function uploadFile(fileType) {
           }
           else if(image_type=="questionCheckboxes"){
            $('#image-question-checkboxes').attr('value', file_url);
-          }
-          else if(image_type=="imageFile"){
+          }else if(image_type=="imageFileTour"){
+            $("input[data-id='"+data_id_value+"']").attr('value', file_url);
+            
+          }else if(image_type=="imageFile"){
+        
             if(data_id_value!=undefined){
               $("input[data-id='"+data_id_value+"']").attr('value', file_url);
             }
@@ -888,6 +891,7 @@ function addTour(id, value) {
   var description = value.description!=undefined ? value.description :'';
   var latitude = value.latitude!=undefined ? value.latitude :'';
   var longitude = value.longitude!=undefined ? value.longitude :'';
+  var image_url = value.image!=undefined ? value.image :'';
 
   var image_id=Math.random();
 
@@ -904,10 +908,12 @@ function addTour(id, value) {
         '<div class="form-group"> <input type="text" class="form-control" data-id="' +
         Math.random() +
          'placeholder="Longitude" value="'+longitude+'"> </div>'+
-        '<div class="form-group"> <input type="button" class="image_upload_button btn btn-info"'+ 
+        '<div class="form-group"> <input type="button" class="image_upload_tour_button btn btn-info"'+ 
         'value="Upload Image" /> <input type="text" class="form-control" data-id="image-file-'+image_id+
         // '"placeholder="Image Link" /> </div> <div class="output-image-tour-'+image_id+'"></div>'+
-        '"placeholder="Image Link" /> </div> <div class="output-image-tour"></div>'+
+        '"placeholder="Image Link" /> </div> <div class="output-image-tour">'+
+        '<img src="'+image_url+'" style="width:400px"/>'+
+        '</div>'+
          '<button onclick="$(this).parent().remove()" class="btn btn-danger">Remove Tour</button>'+
          '</div> <br/><br/>'
   );
@@ -918,9 +924,10 @@ function addTour(id, value) {
 
     $("input[data-id='"+"image-file-"+image_id+"']").attr('value', value.image);
     
-    displayImage(value.image,"image-file-"+image_id,image_id);
+    // displayImage(value.image,"image-file-"+image_id,image_id);
   // }, 5000);
 }
+
 
 function addVerifyPhone(isNew, id, question, image, posU) {
   if (!isNew) {
@@ -1790,9 +1797,17 @@ $(document).ready(function () {
     }
   });
 });
+
 $(document).on('click', '#settingshtml', function (e) {
-  
   $('#settingshtml').attr('href', '/settings.html?lesson_id=' + lesson_id);
+});
+
+$(document).on('click', '.image_upload_tour_button', function (e) {
+  debugger
+  console.log("image upload--------");
+  $('#imageUpload').click();
+  data_id_value = $(this).siblings("input[type=text]").attr("data-id");
+  image_type = "imageFileTour";
 });
 
 $(document).on('click', '.image_upload_button', function (e) {

@@ -126,7 +126,6 @@ function updateMeta(type, answer) {
 }
 
 function nextSlide() {
- debugger
   var lesson_id = getParam('lesson_id');
   console.log(current_slide);
   if (current_slide < total_slides) {
@@ -311,9 +310,7 @@ function get_session() {
   });
 }
 
-function viewMapLocations(map_id){
-  debugger
- 
+function viewMapLocations(map_id){ 
     $("#journal-body-tour").html(
       `<div id='gps-view-tour' style='width:100%;height:450px;'></div>`
     );
@@ -826,7 +823,7 @@ function init() {
       if (flashcard.lesson_type == 'user_tour') {
         $('#prevButton').attr('data-type', 'user_tour');
         $('#nextButton').attr('data-type', 'user_tour');
-        debugger
+
         user_tour_array=[];
 
         flashcard.options.forEach(function(res){
