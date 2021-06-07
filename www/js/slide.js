@@ -9,7 +9,7 @@ var signature = [];
 var phone_verification_status = false;
 var session_id = null;
 var user_tour_array=[];
-
+var tempMap=0;
 var imported = document.createElement('script');
 imported.src = 'js/gps.js';
 document.head.appendChild(imported);
@@ -310,9 +310,12 @@ function get_session() {
   });
 }
 
-function viewMapLocations(map_id){ 
-    $("#journal-body-tour").html(
-      `<div id='gps-view-tour' style='width:100%;height:450px;'></div>`
+function viewMapLocations(tempMap,user_tour_array){ 
+  console.log("mapppp==>","#journal-body-tour-"+tempMap);
+
+    $("#journal-body-tour-"+tempMap).html(
+      `<div id='gps-view-tour-${tempMap}' style='width:100%;height:450px;'></div>
+      `
     );
 
     console.log("user_tour_array=>",user_tour_array);
@@ -324,13 +327,13 @@ function viewMapLocations(map_id){
         lat=user_tour_array[i]['latitude'];
         long=user_tour_array[i]['longitude'];
      }
+   
+      var map = new google.maps.Map(document.getElementById('gps-view-tour-'+tempMap), {
+        zoom: 10,
+        center: new google.maps.LatLng(lat,long),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
 
-    var map = new google.maps.Map(document.getElementById('gps-view-tour'), {
-      zoom: 10,
-      center: new google.maps.LatLng(lat,long),
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    });
-    
     var infowindow = new google.maps.InfoWindow();
     
     var marker, i;
@@ -715,6 +718,7 @@ function init() {
         if (typeof flashcard.options == 'string') {
           flashcard.options = flashcard.options.split(',');
         }
+
         flashcard.options.forEach(function (valu) {
           $('#theSlide')
             .find('ul')
@@ -785,6 +789,8 @@ function init() {
         });
       }
 
+     
+
       if (flashcard.lesson_type == 'iframe_link') {
         $('#theSlide').append(
           '<div class="' +
@@ -831,22 +837,23 @@ function init() {
           user_tour_array.push(res);
         })
         
-        var map_id=Math.random();
+        tempMap++;
         console.log("response user_tour_array=>",user_tour_array);
 
-          $('#theSlide').append(
-            '<div class="' +
-            className +
-            '"><div alt="title_text" style="height:100%"><h1>User Tour</h1><h1> ' +
-            `<div style="margin-top:16px;"class="form-group">
-            <button class='btn btn-info gps-entry' 
-            onclick="viewMapLocations('${map_id}')">View Map</button>
-            </div><div id="journalModalTour">
-            <div id='journal-body-tour'></div>
-            </div></div>`
-          );
+            $('#theSlide').append(
+              '<div class="' +
+              className +
+              '"><div alt="title_text" style="height:100%"><h1>User Tour</h1><h1> ' +
+              `<div style="margin-top:16px;"class="form-group">
+              <button class='btn btn-info gps-entry' 
+              onclick="viewMapLocations('${tempMap},${user_tour_array})">View Map</button>
+              </div>
+              <div class="journalModalTour">
+              <div id='journal-body-tour-${tempMap}'></div>
+              </div></div>`
+            );
 
-        viewMapLocations(map_id);
+        viewMapLocations(tempMap,user_tour_array);
       }
 
       if (flashcard.lesson_type == 'user_gps') {

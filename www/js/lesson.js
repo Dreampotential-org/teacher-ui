@@ -27,6 +27,8 @@ var image_type ="";
 var video_type ="";
 var data_id_value="";
 var video_data_id_value="";
+var img_tour=0;
+var img_tour_value="";
 
 window.addEventListener('DOMContentLoaded', init, false);
 var lesson_id = getParam('lesson_id');
@@ -449,9 +451,8 @@ function uploadFile(fileType) {
            $('#image-question-checkboxes').attr('value', file_url);
           }else if(image_type=="imageFileTour"){
             $("input[data-id='"+data_id_value+"']").attr('value', file_url);
-            
+            $("img[data-id='"+img_tour_value+"']").attr('src', file_url);
           }else if(image_type=="imageFile"){
-        
             if(data_id_value!=undefined){
               $("input[data-id='"+data_id_value+"']").attr('value', file_url);
             }
@@ -878,7 +879,6 @@ $('#user_tour')
   sortablePositionFunction(isNew, posU);
   user_tour_count++;
   $('#user_tour').html(tempTour);
-
 }
 
 function addTour(id, value) {
@@ -894,6 +894,7 @@ function addTour(id, value) {
   var image_url = value.image!=undefined ? value.image :'';
 
   var image_id=Math.random();
+  img_tour++;
 
   $('#tourinfo_' + id).append(
         '<div>  <div class="form-group">'+
@@ -910,9 +911,8 @@ function addTour(id, value) {
          'placeholder="Longitude" value="'+longitude+'"> </div>'+
         '<div class="form-group"> <input type="button" class="image_upload_tour_button btn btn-info"'+ 
         'value="Upload Image" /> <input type="text" class="form-control" data-id="image-file-'+image_id+
-        // '"placeholder="Image Link" /> </div> <div class="output-image-tour-'+image_id+'"></div>'+
-        '"placeholder="Image Link" /> </div> <div class="output-image-tour">'+
-        '<img src="'+image_url+'" style="width:400px"/>'+
+        '"placeholder="Image Link" />'+
+        '<img data-id="image-tour-'+image_id+'" src="'+image_url+'" style="width:400px"/>'+
         '</div>'+
          '<button onclick="$(this).parent().remove()" class="btn btn-danger">Remove Tour</button>'+
          '</div> <br/><br/>'
@@ -921,13 +921,11 @@ function addTour(id, value) {
   // setTimeout(() => {
     
     image_type="tour-image-file";
-
     $("input[data-id='"+"image-file-"+image_id+"']").attr('value', value.image);
     
     // displayImage(value.image,"image-file-"+image_id,image_id);
   // }, 5000);
 }
-
 
 function addVerifyPhone(isNew, id, question, image, posU) {
   if (!isNew) {
@@ -1803,10 +1801,10 @@ $(document).on('click', '#settingshtml', function (e) {
 });
 
 $(document).on('click', '.image_upload_tour_button', function (e) {
-  debugger
   console.log("image upload--------");
   $('#imageUpload').click();
   data_id_value = $(this).siblings("input[type=text]").attr("data-id");
+  img_tour_value = $(this).siblings("img").attr("data-id");
   image_type = "imageFileTour";
 });
 
