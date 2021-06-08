@@ -29,9 +29,17 @@ var data_id_value="";
 var video_data_id_value="";
 var img_tour=0;
 var img_tour_value="";
+var map_latitude=0;
+var map_longitude=0;
+var lat_dataid="";
+var lng_dataid="";
 
 window.addEventListener('DOMContentLoaded', init, false);
 var lesson_id = getParam('lesson_id');
+
+var imported = document.createElement('script');
+imported.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCEYIL86ek3icvHx6F-55qSFCfhe2fynfg&libraries=places';
+document.head.appendChild(imported);
 
 function getTotalFlashcardsNumber(){
     return $("#sortable").children().length
@@ -903,28 +911,97 @@ function addTour(id, value) {
         '<div class="form-group"><textarea class="form-control" alt="speed_read_textarea" data-id="' +
         Math.random() + '"rows="7"'+
                 'placeholder="Place Description">'+description+'</textarea></div>'+
-        '<div class="form-group"> <input type="text" class="form-control" data-id="' +
-        Math.random()+ 
-        'placeholder="Latitude" value="'+latitude+'"> </div>'+
-        '<div class="form-group"> <input type="text" class="form-control" data-id="' +
-        Math.random() +
-         'placeholder="Longitude" value="'+longitude+'"> </div>'+
+        '<div class="form-group">'+
+        '<button type="button" class="btn btn-info map-place-cls" id="btn-map-place-'+img_tour+'" data-toggle="modal"'+ 
+        'data-target="#exampleModalCenter">'+
+        'Map Location</button>'+
+        '<input type="text" class="form-control input-cls" id="latitude-'+image_id+'"'+
+        ' placeholder="Latitude" value="'+latitude+'">'+
+        '<input type="text" class="form-control input-cls" id="longitude-'+image_id+'"'+
+         ' placeholder="Longitude" value="'+longitude+'"> </div>'+
         '<div class="form-group"> <input type="button" class="image_upload_tour_button btn btn-info"'+ 
         'value="Upload Image" /> <input type="text" class="form-control" data-id="image-file-'+image_id+
         '"placeholder="Image Link" />'+
         '<img data-id="image-tour-'+image_id+'" src="'+image_url+'" style="width:400px"/>'+
         '</div>'+
          '<button onclick="$(this).parent().remove()" class="btn btn-danger">Remove Tour</button>'+
-         '</div> <br/><br/>'
+         '</div> <br/><br/>'+
+         `<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+             <div class="modal-dialog modal-dialog-centered" role="document">
+             <div class="modal-content">
+                 <div class="modal-header">
+                 <h5 class="modal-title" id="exampleModalLongTitle">Select Place</h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                 </button>
+                 </div>
+                 <div class="modal-body">
+             
+                 <div id="map"></div>
+                 </div>
+                 <div class="modal-footer">
+                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                 <button type="button" class="btn btn-primary btn-save-place" data-dismiss="modal"
+                 onclick="setLatLng()">Save changes</button>
+                 </div>
+             </div>
+             </div>
+         </div>`
   );
 
-  // setTimeout(() => {
-    
     image_type="tour-image-file";
     $("input[data-id='"+"image-file-"+image_id+"']").attr('value', value.image);
     
-    // displayImage(value.image,"image-file-"+image_id,image_id);
-  // }, 5000);
+}
+
+function setLatLng(){
+  // debugger
+  $("input[id='"+lat_dataid).attr('value', map_latitude);
+  $("input[id='"+lng_dataid).attr('value', map_longitude);
+}
+
+$(document).on('click', '.map-place-cls', function (e) {
+  console.log("places map--------");
+  lat_dataid=$(this).siblings("input[type=text]").first().attr('id');
+  lng_dataid=$(this).siblings("input[type=text]").last().attr('id');
+  
+  initMap();
+});
+
+function initMap(image_id) {
+      $("#map").html(
+        `<div id='gps-view-tour' style='width:100%;height:450px;'></div>
+        `
+      );
+  
+        const myLatlng = { lat: -25.363, lng: 131.044 };
+        const map = new google.maps.Map(document.getElementById("gps-view-tour"), {
+          zoom: 4,
+          center: myLatlng,
+        });
+        // Create the initial InfoWindow.
+        let infoWindow = new google.maps.InfoWindow({
+          content: "Click the map to get Lat/Lng!",
+          position: myLatlng,
+        });
+        infoWindow.open(map);
+        // Configure the click listener.
+        map.addListener("click", (mapsMouseEvent) => {
+          // Close the current InfoWindow.
+          infoWindow.close();
+          // Create a new InfoWindow.
+          infoWindow = new google.maps.InfoWindow({
+            position: mapsMouseEvent.latLng,
+          });
+          infoWindow.setContent(
+            `${JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)}`
+          );
+
+          map_latitude=mapsMouseEvent.latLng.toJSON().lat;
+          map_longitude=mapsMouseEvent.latLng.toJSON().lng;
+
+          infoWindow.open(map);
+        });
 }
 
 function addVerifyPhone(isNew, id, question, image, posU) {

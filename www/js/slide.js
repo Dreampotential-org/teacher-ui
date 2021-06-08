@@ -966,7 +966,6 @@ function init() {
                 </div>
                 </div>`);
       }
-
       i++;
     });
 
