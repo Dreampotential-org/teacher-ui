@@ -8,8 +8,8 @@ var completed = false;
 var signature = [];
 var phone_verification_status = false;
 var session_id = null;
-var user_tour_array = [];
-
+var user_tour_array=[];
+var tempMap=0;
 var imported = document.createElement('script');
 imported.src = 'js/gps.js';
 document.head.appendChild(imported);
@@ -307,38 +307,55 @@ function get_session() {
   });
 }
 
-function viewMapLocations(place) {
+function viewMapLocations(tempMap,user_tour_array){ 
+  console.log("mapppp==>","#journal-body-tour-"+tempMap);
 
-  $("#journal-body-tour").html(
-    "<div id='gps-view-tour' style='width:100%;height:450px;'></div>"
-  );
+    $("#journal-body-tour-"+tempMap).html(
+      `<div id='gps-view-tour-${tempMap}' style='width:100%;height:450px;'></div>
+      `
+    );
 
-  console.log("user_tour_array=>", user_tour_array);
-  var map = new google.maps.Map(document.getElementById('gps-view-tour'), {
-    zoom: 17,
-    center: new google.maps.LatLng(place.lat, place.lng),
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  });
-  var infowindow = new google.maps.InfoWindow();
-  var marker, i;
-  marker = new google.maps.Marker({
-    position: new google.maps.LatLng(place.lat, place.lng),
-    draggable: true,
-    animation: google.maps.Animation.DROP,
-    map: map
-  });
+    console.log("user_tour_array=>",user_tour_array);
 
-  google.maps.event.addListener(marker, 'click', (function (marker, i) {
-    return function () {
-      // Create content  
-      var contentString = `
-        <div style="font-weight:600;font-size: 16px;">${place.title}</div>
-        <br/>${place.description}<br/><br/><img width="auto"
-        height="auto" src="${place.image}"/>`;
-      infowindow.setContent(contentString);
-      infowindow.open(map, marker);
+    let lat=0,long=0;
+    //question, answer , lat , long
+
+     for(var i=0;i<user_tour_array.length;i++){
+        lat=user_tour_array[i]['latitude'];
+        long=user_tour_array[i]['longitude'];
+     }
+   
+      var map = new google.maps.Map(document.getElementById('gps-view-tour-'+tempMap), {
+        zoom: 10,
+        center: new google.maps.LatLng(lat,long),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+
+    var infowindow = new google.maps.InfoWindow();
+    
+    var marker, i;
+    
+    for (i = 0; i < user_tour_array.length; i++) {  
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(user_tour_array[i]['latitude'], user_tour_array[i]['longitude']),
+        draggable: true,
+        animation: google.maps.Animation.DROP,
+        map: map
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          // Create content  
+          var contentString = `<div style="font-weight:600;font-size: 16px;">${user_tour_array[i]['title']}</div>`
+          + "<br />" + user_tour_array[i]['description']+ `<br /><br />
+          <img width="auto" height="auto" 
+          src=${user_tour_array[i]['image']}
+          <="" div="">`;
+          infowindow.setContent(contentString);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
     }
-  })(marker, i));
 }
 
 function verifyPhone(event) {
@@ -376,12 +393,10 @@ function chiroFront(event) {
     response.details.forEach((detail) => {
       $("<p>" + detail.text + "</p>").appendTo($("#chirofront_details"))
     })
-  })
-
+  })  
 }
 
-
-function chiroSide(event) {
+function chiroSide(event){
   event.preventDefault();
   var formData = new FormData($("#chiroside_form")[0]);
   formData.append("label", 1);
@@ -511,10 +526,9 @@ function init() {
                           </div>
                         </div>
                     </div>
-                `);
+          `);
         i++;
       }
-
 
       if (flashcard.lesson_type == 'chiro_side') {
         $('#theSlide').append(`
@@ -1007,6 +1021,7 @@ function init() {
         if (typeof flashcard.options == 'string') {
           flashcard.options = flashcard.options.split(',');
         }
+
         flashcard.options.forEach(function (valu) {
           $('#theSlide')
             .find('ul')
@@ -1077,6 +1092,8 @@ function init() {
         });
       }
 
+     
+
       if (flashcard.lesson_type == 'iframe_link') {
         $('#theSlide').append(
           '<div class="' +
@@ -1113,20 +1130,33 @@ function init() {
       }
 
       if (flashcard.lesson_type == 'user_tour') {
+        $('#prevButton').attr('data-type', 'user_tour');
+        $('#nextButton').attr('data-type', 'user_tour');
 
-        user_tour_array.push(flashcard);
-        if (user_tour_array.length <= 1) {
-          $('#theSlide').append(
-            '<div class="' +
-            className +
-            '"><div alt="title_text" style="height:100%"><h1> ' +
-            `<div style="margin-top:16px;"class="form-group">
-            </div><div id="journalModalTour">
-            <div id='journal-body-tour'></div>
-            </div></div>`
-          );
-        }
-        viewMapLocations(JSON.parse(flashcard.question));
+        user_tour_array=[];
+
+        flashcard.options.forEach(function(res){
+          // user_tour_array.push(JSON.parse(res.replace(/'/g, '"')));
+          user_tour_array.push(res);
+        })
+        
+        tempMap++;
+        console.log("response user_tour_array=>",user_tour_array);
+
+            $('#theSlide').append(
+              '<div class="' +
+              className +
+              '"><div alt="title_text" style="height:100%"><h1>User Tour</h1><h1> ' +
+              `<div style="margin-top:16px;"class="form-group">
+              <button class='btn btn-info gps-entry' 
+              onclick="viewMapLocations('${tempMap},${user_tour_array})">View Map</button>
+              </div>
+              <div class="journalModalTour">
+              <div id='journal-body-tour-${tempMap}'></div>
+              </div></div>`
+            );
+
+        viewMapLocations(tempMap,user_tour_array);
       }
 
       if (flashcard.lesson_type == 'user_gps') {
@@ -1237,7 +1267,6 @@ function init() {
                 </div>
                 </div>`);
       }
-
       i++;
     });
 
