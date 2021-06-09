@@ -122,3 +122,11 @@ label.datetimeLabel {
 .bg-lesson {
   background-color: #ed858f !important;
 }
+
+.modal-header .close {
+  margin-top: -20px;
+}
+
+.input-cls {
+  margin-bottom: 10px;
+}
