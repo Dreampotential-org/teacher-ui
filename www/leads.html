@@ -140,12 +140,12 @@
                                                        <th>Action</th>
                                                        <th>Name</th>
                                                        <th>Phone</th>
-                                                       <th>Last call</th>
-                                                       <th>Recording</th>
                                                        <th>State</th>
                                                        <th>Status</th>
                                                        <th>Ask</th>
                                                        <th>Notes</th>
+                                                       <th>Last call</th>
+                                                       <th>Recording</th>
                                                        <th>Call Member</th>
                                                   </tr>
                                              </thead>
@@ -458,12 +458,12 @@
                                    <td onclick=check_box(${item.pk})></td>
                                    <td id="editLead" onClick=editLead(${index})>${item.fields.name}</td>
                                    <td>${item.fields.phone}</td>
-                                   <td>${item.fields.last_call}</td>
-                                   <td>${item.fields.recording_url}</td>
                                    <td>${item.fields.state}</td>
                                    <td>${item.fields.status}</td>
                                    <td>${item.fields.ask}</td>
                                    <td>${item.fields.notes}</td>
+                                   <td>${item.fields.last_call}</td>
+                                   <td><audio src="${item.fields.recording_url ? item.fields.recording_url:""}" controls> </audio></td>
                                    <td><button onclick="selectNum('${index}')" class="btn btn-primary btn-edit" type="button"><i class="fa fa-phone-square"></i></button></td>
                                    </tr>`);
                          })
