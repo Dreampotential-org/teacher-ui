@@ -419,10 +419,7 @@ function chiroSide(event){
       $("<p>" + detail.text + "</p>").appendTo($("#chiroside_details"))
     })
   })
-
 }
-
-
 
 function radioOnClick(valu) {
   if (userToken) {

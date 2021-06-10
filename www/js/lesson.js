@@ -356,10 +356,24 @@ function handleImageUpload(key) {
 function handleImageSelect(e) {
   console.log("image upload2--------");
   var file = e.files[0];
+
+  var imgPath = file.name;
+  var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+
+  console.log(file);
+
   if (file) {
-    GLOBAL_FILE = file;
-    //        $("#imageUploadForm").submit();
-    uploadFile('image');
+    if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+      GLOBAL_FILE = file;
+      uploadFile('image');
+    }else{
+      swal({
+        title: 'Error!',
+        text: 'Please Select Image to Upload !!!',
+        icon: 'warning'
+      });
+    }
+   
   }
 }
 
@@ -932,7 +946,7 @@ function addTour(id, value) {
 
   $('#tourinfo_' + id).append(
         '<div>  <div class="form-group">'+
-            '<input type="text" class="form-control" placeholder="Place Title" data-id="' +
+            '<input type="text" class="form-control" placeholder="Place Title" name="place-title-'+img_tour+'" data-id="' +
             Math.random() + '"value="'+ title+'"></div>'+
         '<div class="form-group"><textarea class="form-control" alt="speed_read_textarea" data-id="' +
         Math.random() + '"rows="7"'+
@@ -977,11 +991,9 @@ function addTour(id, value) {
 
     image_type="tour-image-file";
     $("input[data-id='"+"image-file-"+image_id+"']").attr('value', value.image);
-    
 }
 
 function setLatLng(){
-  // debugger
   $("input[id='"+lat_dataid).attr('value', map_latitude);
   $("input[id='"+lng_dataid).attr('value', map_longitude);
 }
@@ -1466,6 +1478,40 @@ function sendUpdates() {
     attr_array = [];
   });
   data_.flashcards = flashcards;
+
+  for(let i=0;i<flashcards.length;i++){
+    let arr=data_.flashcards[i].options;
+    for(let j=0;j<arr.length;j++){
+
+       if(arr[j]['title']=="" || arr[j]['description']=="" || arr[j]['latitude']=="" || arr[j]['longitude']=="" || 
+       arr[j]['image']==""){
+        swal({
+          title: 'Error Creating Lesson',
+          text: "Please fill all fields to save/update lesson",
+          icon: 'error',
+        });
+        return;
+       }
+
+       var latlngVal = /^-?((1?[0-7]?|[0-9]?)[0-9]|180)\.[0-9]{1,6}$/;
+       var latitude = arr[j]['latitude'];
+       var longitude = arr[j]['longitude'];
+       var invalid_latlng = 'Latitude and Longitude are not correctly typed';
+       
+       // Validate Latitude and Longitude
+       if(!latlngVal.test(latitude) && !latlngVal.test(longitude)) {
+        swal({
+          title: 'Error Creating Lesson',
+          text: invalid_latlng,
+          icon: 'error',
+        });
+        return;
+       }  
+
+    }
+    console.log("arr==>",arr);
+  }
+
   data_.meta_attributes = meta_attributes.join(',');
 
   if (MODE == 'CREATE') {
@@ -1696,6 +1742,7 @@ $(document).ready(function () {
   $('#lesson_form').submit((e) => {
     e.preventDefault();
     sendUpdates();
+
     var lesson_name = $('#lesson_name').val();
     var lesson_type = $('#selectsegment').val();
     const param = new URL(window.location.href);
