@@ -583,6 +583,12 @@ function init() {
                 $('#theSlide').append(`<div class="${className} ${i == 0 ? 'active' : ''}" id="flashcard_${flashcard.id}">
         <p><button id="start_recording">Start Recording</button><br/>
         <button id="stop_recording">Stop Recording</button></p>
+        <li class="list-group-item"> <span>Recording</span>
+          <label class="switch" >
+          <input type="checkbox">
+          <span class="slider round"></span>
+          </label>
+        </li>
         <video controls autoplay id="record_webcam">
 
         </video>
@@ -593,7 +599,7 @@ function init() {
                 if (navigator.mediaDevices.getUserMedia) {
                     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
                         .then(function(stream) {
-                            video.srcObject = stream;
+                            // video.srcObject = stream;
                             let start = document.getElementById("start_recording");
                             let stop = document.getElementById("stop_recording");
                             let options = { mimeType: "video/webm;codecs=vp9" };
@@ -653,6 +659,7 @@ function init() {
                                             timer: 1000,
                                         });
                                         // const file_url = response.file_url;
+                                        video.src = response.file_url;
 
 
                                     }
@@ -681,10 +688,11 @@ function init() {
         <p><button id="start_recording_screen">Start Recording</button><br/>
         <button id="stop_recording_screen" disabled>Stop Recording</button></p>
         <li class="list-group-item"> <span>Recording</span>
-                <label class="switch" >
-          <input type="checkbox"  onclick="calc();">
+          <label class="switch" >
+          <input type="checkbox">
           <span class="slider round"></span>
-        </label></li>
+          </label>
+        </li>
 
         <video controls autoplay id="record_screen" height=500px>
 
