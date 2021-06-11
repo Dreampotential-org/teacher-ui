@@ -924,7 +924,7 @@ $('#user_tour')
     .attr('data-id',$('#image_file').find('input').first().attr('data-id')+"_"+ image_file_count);
 
   $('#sortable').append($('#user_tour').html());
-  sortablePositionFunction(isNew, posU);
+  // sortablePositionFunction(isNew, posU);
   user_tour_count++;
   $('#user_tour').html(tempTour);
 }
@@ -965,28 +965,7 @@ function addTour(id, value) {
         '<img data-id="image-tour-'+image_id+'" src="'+image_url+'" style="width:400px"/>'+
         '</div>'+
          '<button onclick="$(this).parent().remove()" class="btn btn-danger">Remove Tour</button>'+
-         '</div> <br/><br/>'+
-         `<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-             <div class="modal-dialog modal-dialog-centered" role="document">
-             <div class="modal-content">
-                 <div class="modal-header">
-                 <h5 class="modal-title" id="exampleModalLongTitle">Select Place</h5>
-                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                     <span aria-hidden="true">&times;</span>
-                 </button>
-                 </div>
-                 <div class="modal-body">
-             
-                 <div id="map"></div>
-                 </div>
-                 <div class="modal-footer">
-                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                 <button type="button" class="btn btn-primary btn-save-place" data-dismiss="modal"
-                 onclick="setLatLng()">Save changes</button>
-                 </div>
-             </div>
-             </div>
-         </div>`
+         '</div> <br/><br/>'
   );
 
     image_type="tour-image-file";
