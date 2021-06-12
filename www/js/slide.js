@@ -581,19 +581,19 @@ function init() {
             }
             if (flashcard.lesson_type == 'record_webcam') {
                 $('#theSlide').append(`<div class="${className} ${i == 0 ? 'active' : ''}" id="flashcard_${flashcard.id}">
-        <p><button id="start_recording">Start Recording</button><br/>
-        <button id="stop_recording">Stop Recording</button></p>
-        <li class="list-group-item"> <span>Recording</span>
-          <label class="switch" >
-          <input type="checkbox">
-          <span class="slider round"></span>
-          </label>
-        </li>
+        
+        <h4>Recording</h4>
+        <div class="btn-group btn-toggle" id="recording"> 
+            <button class="btn btn-default" id="start_recording">ON</button>
+            <button class="btn btn-primary active" id="stop_recording">OFF</button>
+        </div>
+        <hr>
         <video controls autoplay id="record_webcam">
 
         </video>
         
         </div>`);
+                // let recording = document.getElementById("start_recording");
                 var video = document.querySelector("#record_webcam");
 
                 if (navigator.mediaDevices.getUserMedia) {
@@ -608,10 +608,23 @@ function init() {
 
                             start.addEventListener('click', (ev) => {
                                 mediaRecorder.start();
+                                start.classList.remove("btn-default")
+                                start.classList.add("btn-primary");
+                                start.classList.add("active");
+                                stop.classList.remove("active");
+                                stop.classList.remove("btn-primary");
+                                stop.classList.add("btn-default");
+                                // stop.classList.add("btn-default");
                                 console.log("start recording video", mediaRecorder.state);
                             })
                             stop.addEventListener('click', (ev) => {
                                 mediaRecorder.stop();
+                                stop.classList.remove("btn-default")
+                                stop.classList.add("btn-primary");
+                                stop.classList.add("active");
+                                start.classList.remove("active");
+                                start.classList.remove("btn-primary");
+                                start.classList.add("btn-default");
                                 console.log("stop recording video", mediaRecorder.state);
                             })
                             mediaRecorder.ondataavailable = function(ev) {
@@ -685,14 +698,12 @@ function init() {
 
             if (flashcard.lesson_type == 'record_screen') {
                 $('#theSlide').append(`<div class="${className} ${i == 0 ? 'active' : ''}" id="flashcard_${flashcard.id}">
-        <p><button id="start_recording_screen">Start Recording</button><br/>
-        <button id="stop_recording_screen" disabled>Stop Recording</button></p>
-        <li class="list-group-item"> <span>Recording</span>
-          <label class="switch" >
-          <input type="checkbox">
-          <span class="slider round"></span>
-          </label>
-        </li>
+        <h4>Recording</h4>
+        <div class="btn-group btn-toggle"> 
+            <button class="btn btn-default" id="start_recording_screen">ON</button>
+            <button class="btn btn-primary active" id="stop_recording_screen">OFF</button>
+        </div>
+        <hr>
 
         <video controls autoplay id="record_screen" height=500px>
 
@@ -709,8 +720,12 @@ function init() {
                 }
                 async function startRecording() {
                     stream = await navigator.mediaDevices.getDisplayMedia({
-                        video: { mediaSource: "screen" },
-                        audio: true
+                        video: { cursor: "always" },
+                        audio: {
+                            echoCancellation: true,
+                            noiseSuppression: true,
+                            sampleRate: 44100
+                        }
                     });
                     recorder = new MediaRecorder(stream);
 
@@ -777,19 +792,30 @@ function init() {
 
 
                 start_screen.addEventListener("click", () => {
-
-                    start_screen.setAttribute("disabled", true);
-                    stop_screen.removeAttribute("disabled");
+                    start_screen.classList.remove("btn-default")
+                    start_screen.classList.add("btn-primary");
+                    start_screen.classList.add("active");
+                    stop_screen.classList.remove("active");
+                    stop_screen.classList.remove("btn-primary");
+                    stop_screen.classList.add("btn-default");
 
                     startRecording();
                 });
 
                 stop_screen.addEventListener("click", () => {
-                    stop_screen.setAttribute("disabled", true);
-                    start_screen.removeAttribute("disabled");
+                    stop_screen.classList.remove("btn-default")
+                    stop_screen.classList.add("btn-primary");
+                    stop_screen.classList.add("active");
+                    start_screen.classList.remove("active");
+                    start_screen.classList.remove("btn-primary");
+                    start_screen.classList.add("btn-default");
 
-                    recorder.stop();
-                    stream.getVideoTracks()[0].stop();
+                    // stream.getVideoTracks()[0].stop();
+                    let tracks = stream.getTracks();
+                    console.log(tracks);
+                    console.log(stream.getAudioTracks())
+                    tracks.forEach(track => track.stop());
+
                 });
             }
 
