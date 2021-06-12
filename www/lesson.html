@@ -58,6 +58,7 @@
                 </div>
                 <br>
             </div>
+            
             <div class="col-xs-6 col-sm-6" style="margin-top: 20px;margin-bottom: 10px;">
                 <select class="form-control " id="selectsegment">
                     <option selected value="select_type">Select Segment Type</option>
@@ -401,12 +402,34 @@
                                     style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
                                     x </a>
                             </div>
-                            <div class="form-group info-cls" id="tourinfo">
+                            <div class="form-group info-cls" id="tourinfo" name="tour-name">
                                     
                               </div>
                               <button class="btn btn-success">Add Tour</button>
+
+                              <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Select Place</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                
+                                    <div id="map"></div>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary btn-save-place" data-dismiss="modal"
+                                    onclick="setLatLng()">Save changes</button>
+                                    </div>
+                                </div>
+                                </div>
                             </div>
-            
+                            
+                            </div>
                         </div>
                     </div>
 
@@ -554,9 +577,9 @@
     </script>
     <script>
         $(document).ready(function () {
-            $("#sortable").sortable({
-                stop: sortEventHandler
-            });
+            // $("#sortable").sortable({
+            //     stop: sortEventHandler
+            // });
 
             function sortEventHandler() {
                 var i = 0;
