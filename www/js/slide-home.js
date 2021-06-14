@@ -449,6 +449,17 @@ function init() {
             '"></video></div></div>'
         );
       }
+      if (flashcard.lesson_type == 'audio_file') {
+        $('#theSlide').append(
+          '<div class="' +
+            className +
+            '"><div alt="title_text"><h1> ' +
+            flashcard.question +
+            '</h1><audio style="height:500px;width:1000px"; controls preload="metadata"> <source src= "' +
+            flashcard.image + '#t=0.5' +
+            '"></audio></div></div>'
+        );
+      }
 
       if (flashcard.lesson_type == 'image_file') {
         $('#theSlide').append(
@@ -482,6 +493,16 @@ function init() {
             '"><h1>User Video</h1><div alt="title_text"><video style="height:500px;width:1000px"; controls preload="metadata"> <source src= "' +
             flashcard.image + '#t=0.5' +
             '"></video></div></div>'
+        );
+      }
+      if(flashcard.lesson_type == 'user_audio_upload'){
+        console.log("user_audio_upload flashcard.lesson_type ===> ", flashcard.lesson_type);
+        $('#theSlide').append(
+          '<div class="' +
+            className +
+            '"><h1>User audio</h1><div alt="title_text"><audio style="height:500px;width:1000px"; controls preload="metadata"> <source src= "' +
+            flashcard.image + '#t=0.5' +
+            '"></audio></div></div>'
         );
       }
 
@@ -556,6 +577,15 @@ function init() {
                   $('#myCarousel #video').val(rf.answer);
                   $("#video_url").html(" ")
                   $("#theSlide #flashcard_"+ current_slide +"").append('<div id="video_url"><p> Video URL : '+ rf.answer +'</p><video id="videoplayer" style="height:500px;width:100%"; controls preload="metadata"> <source src="' + rf.answer + '#t=0.5' + '" type="' + strTYPE + '"></source></video><div>')
+                }
+                if (rf.answer == ""){
+                  $('input[name=choices_' + i + '][value=' + rf.answer ? rf.answer : '' + ']').attr('checked', true);
+                }
+                else{
+                  var strTYPE = "audio/mp4";
+                  $('#myCarousel #audio').val(rf.answer);
+                  $("#audio_url").html(" ")
+                  $("#theSlide #flashcard_"+ current_slide +"").append('<div id="audio_url"><p> Video URL : '+ rf.answer +'</p><audio id="audioplayer" style="height:500px;width:100%"; controls preload="metadata"> <source src="' + rf.answer + '#t=0.5' + '" type="' + strTYPE + '"></source></audio><div>')
                 }
               }
 
@@ -649,4 +679,70 @@ function handleVideoUpload() {
 
 }
 
+
+function handleAudioUpload() {
+  var file = $('#myFile').prop('files');
+  console.log("🚀 ~ file: index.html ~ line 33 ~ handleAudioUpload ~ file", file[0])
+  GLOBAL_FILE = file[0];
+  var form = new FormData();
+  form.append('file', GLOBAL_FILE);
+
+  var settings = {
+    async: true,
+               "crossDomain": true,
+    url: SERVER + '/s3_uploader/upload',
+    method: 'POST',
+    type: 'POST',
+    processData: false,
+    contentType: false,
+    enctype: 'multipart/form-data',
+    data: form,
+    headers: {
+      Authorization: localStorage.getItem('token'),
+    },
+  }
+
+  console.log(settings);
+  $.ajax(settings).done(function (response) {
+    console.log("🚀 ~ file: index.html ~ line 57 ~ response", response)
+    if (response.message == "No file provided!") {
+      swal({
+        title: 'File Not Select',
+        text: response.message,
+        icon: "warning",
+        timer: 1000,
+      });
+    } else {
+        console.log("this is else part")
+      swal({
+        title: 'Good job!',
+        text: 'Audio uploaded successfully!',
+        icon: 'success',
+        timer: 1000,
+      });
+      const file_url = response.file_url;
+      displayVideo(file_url);
+      function displayVideo(file_url) {
+        if (file_url) {
+              var strTYPE = "video/mp4";
+              $('#myCarousel #vaudio').val(file_url);
+              $("#theSlide #flashcard_"+ current_slide +"").append('<div id="audio_url"><p> Audio URL : '+ file_url +'</p><audio id="audioplayer" style="height:500px;width:100%"; controls preload="metadata"> <source src="' + file_url + '#t=0.5' +'" type="' + strTYPE + '"></source></audio></div>')
+          }
+        $("#audioplayer")[0].load();
+      }
+  //   $("#video-modal").hide();
+  //   setTimeout(() => { location.reload() }, 5000);
+    }
+  }).fail(function (error) {
+    console.log("🚀 ~ file: index.html ~ line 56 ~ error", error)
+    swal({
+      title: 'Error!',
+      text: 'Audio upload failed!',
+      icon: 'warning',
+      timer: 1000,
+    });
+
+  });
+
+}
 window.addEventListener('DOMContentLoaded', init, false);
