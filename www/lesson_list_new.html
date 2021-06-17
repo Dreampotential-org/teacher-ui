@@ -68,174 +68,125 @@
                 <div class="col p-0 content-div">
                     <div id="page-header"></div>
                     <div class="container my-2">
-                        <section id="tabs" class="administration-tab">
+                        <section id="tabs">
                             <div class="container">
                                 <div id="tabDiv" class="row">
                                     <div class="col-md-12">
-                                        <p class="list-of-students">List of Lessons</p>
-
-                                        <div class="tab-content" id="nav-tabContent">
-                                            <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
-                                                 aria-labelledby="nav-home-tab">
-                                                <div class="table-div">
-                                                    <table class="table table-striped table-bordered" cellspacing="0">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Course Id</th>
-                                                                <th>Course Name</th>
-                                                                <th>Edit</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="users-data"></tbody>
-                                                    </table>
-                                                    <div id="lessonLoader" class="d-flex justify-content-center">
-                                                        <svg style="height: auto; width: 120px;" version="1.1"
-                                                             xmlns="http://www.w3.org/2000/svg"
-                                                             xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                             viewBox="25 25 50 50">
-                                                        <circle cx="50" cy="50" r="20" fill="none" stroke-width="5"
-                                                                stroke="#132644" stroke-linecap="round"
-                                                                stroke-dashoffset="0" stroke-dasharray="100, 200">
-                                                        <animateTransform attributeName="transform"
-                                                                          attributeType="XML" type="rotate" from="0 50 50"
-                                                                          to="360 50 50" dur="2.5s" repeatCount="indefinite" />
-                                                        <animate attributeName="stroke-dashoffset"
-                                                                 values="0;-30;-124" dur="1.25s"
-                                                                 repeatCount="indefinite" />
-                                                        <animate attributeName="stroke-dasharray"
-                                                                 values="0,200;110,200;110,200" dur="1.25s"
-                                                                 repeatCount="indefinite" />
-                                                        </circle>
-                                                        </svg>
-                                                    </div>
-
-                                                </div>
-
-
-
-                                                <!-- overlay invite -->
-
-                                                <div id="overlay">
-                                                    <div id="overlay_1">
-                                                        <div class="row">
-
-                                                            <h2 style="margin-left: 40%;">Enroll Lesson</h2>
-
-                                                            <button style="margin-left: 24%;" type="button" value="close"
-                                                                    class="btn btn-" onclick="off()">
-                                                                <span aria-hidden="true">×</span>
-                                                            </button>
-
-                                                        </div>
-                                                        <form class="px-2" id="sendMailText">
-                                                            <div class="form-group">
-                                                                <label for="list">Select Type</label>
-                                                                <select class="form-control" id="list">
-                                                                    <option selected>Select</option>
-                                                                    <option>Class</option>
-                                                                    <option>Student</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="from-group" id="classList" style="display: none;">
-                                                                <label for="classOption">Select Class:</label>
-                                                                <select class="form-control" id="classOption">
-                                                                    <option selected>Select</option>
-                                                                </select>
-                                                            </div>
-
-                                                            <div class="from-group" id="studentList" style="display: none;">
-                                                                <label for="studentOption">Select Student:</label>
-                                                                <select class="form-control" id="studentOption">
-                                                                    <option selected>Select</option>
-                                                                </select>
-                                                            </div>
-
-                                                            <div class="from-group" id="contactList" style="display: none;">
-                                                                <label for="contactOption">Send Email/Text</label>
-                                                                <select class="form-control" id="contactOption">
-                                                                    <option selected>Select</option>
-                                                                    <option>Email</option>
-                                                                    <option>Text</option>
-                                                                </select>
-                                                            </div>
-                                                            <input type="hidden" id="course">
-                                                            <br>
-                                                            <button class="btn btn-primary" type="submit"
-                                                                    id="send">Invite</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-
-                                                <!-- overlay over -->
-
-
-
-
-
-
-
-                                                <div class="text-right mt-2">
-                                                    <button type="button" onclick="addLesson()"
-                                                            class="btn btn-primary">
-                                                        <i class="fa fa-plus"></i> Add
-                                                    </button>
-                                                </div>
+                                        <p class="list-of-students">Lesson Pannel</p>
+                                        <div class="col-sm-12">
+                                            <a href="#" data-toggle="modal" data-target="#userModal" class="text-2xl font-extrabold text-cblue-500 cursor-pointer mb-4"><i class="fa fa-plus-circle mr-2"></i>
+                                                Lessons</a>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="lesson_box">
+                                            <p>Lesson 1</p>
+                                            <div class="lesson_name">Lesson Name</div>
+                                            <div class="read_status"> <i class="fa fa-check"></i> Mark as Completed</div>
+                                            <hr>
+                                            <div class="action_icons" align="right">
+                                                <a href="#"><i class="fa fa-eye"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-pencil"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-times"></i></a>
                                             </div>
-                                            <div class="tab-pane fade" id="nav-profile" role="tabpanel"
-                                                 aria-labelledby="nav-profile-tab">
-                                                <div class="table-div">
-                                                    <table class="table table-striped table-bordered" cellspacing="0">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Phone Number</th>
-                                                                <!-- <th>Employer</th>
-                                                                <th>Time</th> -->
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>+18434259777</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>+14255785798</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>+15102885469</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <div class="text-right mt-2">
-                                                    <button type="button" data-toggle="modal" data-target="#phoneModal"
-                                                            class="btn btn-primary">
-                                                        <i class="fa fa-plus"></i> Add
-                                                    </button>
-                                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="lesson_box">
+                                            <p>Lesson 1</p>
+                                            <div class="lesson_name">Lesson Name</div>
+                                            <div class="read_status"> <i class="fa fa-check"></i> Mark as Completed</div>
+                                            <hr>
+                                            <div class="action_icons" align="right">
+                                                <a href="#"><i class="fa fa-eye"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-pencil"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-times"></i></a>
                                             </div>
-                                            <div class="tab-pane fade" id="nav-groups" role="tabpanel"
-                                                 aria-labelledby="nav-groups-tab">
-                                                <div class="table-div">
-                                                    <table class="table table-striped table-bordered" cellspacing="0">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Created At</th>
-                                                                <th>Group Name</th>
-                                                                <th>Edit</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="group-data"></tbody>
-                                                    </table>
-                                                </div>
-                                                <div class="text-right mt-2">
-                                                    <button type="button" onclick="openModal(-1)" class="btn btn-primary">
-                                                        <i class="fa fa-plus"></i> Add
-                                                    </button>
-                                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="lesson_box">
+                                            <p>Lesson 1</p>
+                                            <div class="lesson_name">Lesson Name</div>
+                                            <div class="read_status"> <i class="fa fa-check"></i> Mark as Completed</div>
+                                            <hr>
+                                            <div class="action_icons" align="right">
+                                                <a href="#"><i class="fa fa-eye"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-pencil"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-times"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="lesson_box">
+                                            <p>Lesson 1</p>
+                                            <div class="lesson_name">Lesson Name</div>
+                                            <div class="read_status"> <i class="fa fa-check"></i> Mark as Completed</div>
+                                            <hr>
+                                            <div class="action_icons" align="right">
+                                                <a href="#"><i class="fa fa-eye"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-pencil"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-times"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="lesson_box">
+                                            <p>Lesson 1</p>
+                                            <div class="lesson_name">Lesson Name</div>
+                                            <div class="read_status"> <i class="fa fa-check"></i> Mark as Completed</div>
+                                            <hr>
+                                            <div class="action_icons" align="right">
+                                                <a href="#"><i class="fa fa-eye"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-pencil"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-times"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="lesson_box">
+                                            <p>Lesson 1</p>
+                                            <div class="lesson_name">Lesson Name</div>
+                                            <div class="read_status"> <i class="fa fa-check"></i> Mark as Completed</div>
+                                            <hr>
+                                            <div class="action_icons" align="right">
+                                                <a href="#"><i class="fa fa-eye"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-pencil"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-times"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="lesson_box">
+                                            <p>Lesson 1</p>
+                                            <div class="lesson_name">Lesson Name</div>
+                                            <div class="read_status"> <i class="fa fa-check"></i> Mark as Completed</div>
+                                            <hr>
+                                            <div class="action_icons" align="right">
+                                                <a href="#"><i class="fa fa-eye"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-pencil"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-times"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="lesson_box">
+                                            <p>Lesson 1</p>
+                                            <div class="lesson_name">Lesson Name</div>
+                                            <div class="read_status"> <i class="fa fa-check"></i> Mark as Completed</div>
+                                            <hr>
+                                            <div class="action_icons" align="right">
+                                                <a href="#"><i class="fa fa-eye"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-pencil"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-times"></i></a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="row">
+                                    <div class="col-sm-12 page_style">
+                                        <nav aria-label="...">
+                                            <ul class="pagination">
+                                                <li class="page-item disabled">
+                                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                                </li>
+                                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+                                                </li>
+                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="#">Next</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
                                 <div id="systemUserDetail" style='display:none'>
                                     <div>
                                         <button onclick="goBack()" class="btn">
@@ -295,34 +246,11 @@
                                 </div>
                                 <div class="modal-body">
                                     <form class="px-2">
-                                        <!-- <div class="form-group">
-                            <label for="courseid">Course Id</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="courseid"
-                              placeholder="Course Id"
-                              value="CRS6"
-                              disabled
-                            />
-                          </div> -->
-
                                         <div class="form-group">
                                             <label for="coursename">Course Name</label>
                                             <input type="text" class="form-control" id="coursename"
                                                    placeholder="Course Name" />
                                         </div>
-
-                                        <!-- <div class="form-group">
-                            <label for="phone">Phone</label>
-                            <input
-                              type="phone"
-                              class="form-control"
-                              id="phone"
-                              placeholder="Phone"
-                            />
-                          </div> -->
-
                                         <button type="button" onclick="addUser()" class="btn btn-primary float-right">
                                             Submit
                                         </button>
