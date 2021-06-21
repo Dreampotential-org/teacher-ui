@@ -634,30 +634,61 @@ function init() {
           $("#theSlide").append(`<div class="${className} ${
             i == 0 ? "active" : ""
           }" id="flashcard_${flashcard.id}">
+          <h4>Join Conference</h4>
+        <div class="btn-group btn-toggle" id="join_conference"> 
+            <button class="btn btn-default" id="join">ON</button>
+            <button class="btn btn-primary active" id="disconnect">OFF</button>
+        </div>
         
         </div>`);
-          var domain = "meet.lifeforceenergy.us";
-          var options = {
-            roomName: flashcard.question,
-            // width: 700,
-            configOverwrite: {
-              startWithAudioMuted: true,
-              prejoinPageEnabled: false,
-              startWithVideoMuted: false,
-            },
-            height: 570,
-            parentNode: document.querySelector(`#flashcard_${flashcard.id}`),
-            configOverwrite: {},
-            interfaceConfigOverwrite: {},
-          };
-          var api = new JitsiMeetExternalAPI(domain, options);
+          let start = document.getElementById("join");
+          let stop = document.getElementById("disconnect");
+          let api;
+          start.addEventListener("click", (ev) => {
+            startJitsiMeet();
+
+            start.classList.remove("btn-default");
+            start.classList.add("btn-primary");
+            start.classList.add("active");
+            stop.classList.remove("active");
+            stop.classList.remove("btn-primary");
+            stop.classList.add("btn-default");
+            // stop.classList.add("btn-default");
+          });
+          stop.addEventListener("click", (ev) => {
+            stop.classList.remove("btn-default");
+            stop.classList.add("btn-primary");
+            stop.classList.add("active");
+            start.classList.remove("active");
+            start.classList.remove("btn-primary");
+            start.classList.add("btn-default");
+            api.dispose();
+          });
+          async function startJitsiMeet() {
+            var domain = "meet.lifeforceenergy.us";
+            var options = {
+              roomName: flashcard.question,
+              // width: 700,
+              configOverwrite: {
+                startWithAudioMuted: true,
+                prejoinPageEnabled: false,
+                startWithVideoMuted: false,
+              },
+              height: 570,
+              parentNode: document.querySelector(`#flashcard_${flashcard.id}`),
+              configOverwrite: {},
+              interfaceConfigOverwrite: {},
+            };
+            api = new JitsiMeetExternalAPI(domain, options);
+          }
+          
         }
         if (flashcard.lesson_type == "record_webcam") {
           $("#theSlide").append(`<div class="${className} ${
             i == 0 ? "active" : ""
           }" id="flashcard_${flashcard.id}">
         
-        <h4>Recording</h4>
+        <h4>Recording Webcam</h4>
         <div class="btn-group btn-toggle" id="recording"> 
             <button class="btn btn-default" id="start_recording">ON</button>
             <button class="btn btn-primary active" id="stop_recording">OFF</button>
@@ -887,14 +918,14 @@ function init() {
           $("#theSlide").append(`<div class="${className} ${
             i == 0 ? "active" : ""
           }" id="flashcard_${flashcard.id}">
-        <h4>Recording</h4>
+        <h4>Recording Screen</h4>
         <div class="btn-group btn-toggle"> 
             <button class="btn btn-default" id="start_recording_screen">ON</button>
             <button class="btn btn-primary active" id="stop_recording_screen">OFF</button>
         </div>
         <hr>
 
-        <video controls autoplay id="record_screen" height=500px>
+        <video controls autoplay id="record_screen">
 
         </video>
         
