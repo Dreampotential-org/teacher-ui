@@ -454,7 +454,7 @@
             <td>${item.username}</td>
             <td><button class="btn btn-primary btn-edit" onclick="number_list('${item.id}')"><i class="fa fa-list"></i></button></td>
             <td><div class="custom-control custom-checkbox mb-3">
-              <input type="checkbox" class="custom-control-input" onchange="changeTeacherStatus(event, ${item.id})" id="customControlValidation${item.id}">
+              <input type="checkbox" ${item.accountActive?'checked':''} class="custom-control-input" onchange="changeTeacherStatus(event, ${item.id})" id="customControlValidation${item.id}">
               <label class="custom-control-label" for="customControlValidation${item.id}"> Teacher</label>
             </div></td>
             </tr>`);
