@@ -33,6 +33,10 @@ $(document).ready(function () {
                         return `<video style="max-height:41px;max-width:120px" controls>
                         <source src="${data}" type="video/mp4"></video>
                         <button class="btn btn-primary" data-row='${rowdata}' onclick="viewResponseCard(event)" style="float:right"><i class="fa fa-eye" aria-hidden="true"></i></button>`
+                    case 'user_audio_upload':
+                            return `<audio style="max-height:41px;max-width:120px" controls>
+                            <source src="${data}" type="audio/mp4"></audio>
+                            <button class="btn btn-primary" data-row='${rowdata}' onclick="viewResponseCard(event)" style="float:right"><i class="fa fa-eye" aria-hidden="true"></i></button>`
                     case 'user_gps':
                         return `<div style="float:left;">lat: ${row.latitude} <br>
                                 lng: ${row.longitude} <br>
@@ -109,6 +113,11 @@ function viewResponseCard(e){
         case 'user_video_upload':
             responseBody+=`<div><video style="max-width:500px; max-height:350; display:block; margin:auto" controls>
             <source src="${row.answer}" type="video/mp4"></video>
+            </div>`
+            break;
+        case 'user_audio_upload':
+            responseBody+=`<div><audio style="max-width:500px; max-height:350; display:block; margin:auto" controls>
+            <source src="${row.answer}" type="audio/mp4"></audio>
             </div>`
             break;
         case 'user_gps':
