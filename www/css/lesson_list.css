@@ -79,3 +79,29 @@ button {
 #tour-image-file{
     margin-top: 10px;
 }
+.lesson_box {
+    border: 1px solid #132644;
+    border-radius: 5px;
+    padding: 10px 15px;
+    background: #d3d3d340;
+    margin-bottom: 10px;
+}
+.read_status {
+    padding-top: 100px;
+    color: #908b8b;
+}
+.lesson_name {
+    font-weight: bold;
+    font-size: 18px;
+    padding-top: 15px;
+}
+.lesson_box:hover {
+    background: #132644;
+    color: white;
+}
+.read_status:hover {
+    color: white;
+}
+.page_style {
+    padding-top: 15px;
+}

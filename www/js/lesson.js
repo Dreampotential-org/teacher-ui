@@ -1630,7 +1630,7 @@ function sendUpdates() {
 
     attr_array = [];
   });
-  debugger
+  
   data_.flashcards = flashcards;
   for(let i=0;i<flashcards.length;i++){
     if(flashcards[i].lesson_type== 'user_tour'){

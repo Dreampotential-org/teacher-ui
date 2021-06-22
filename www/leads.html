@@ -30,7 +30,6 @@
           <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
           <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWJ2UbLhFeu3jVgd4ZwWMMNyGl4Kqx7V4"></script>
           <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
-
           <!-- user.html JS, CSS end -->
 
           <link rel="stylesheet" href="css/dashboard.css" />
@@ -48,6 +47,8 @@
           <!-- Country flags and code -->
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
           <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
+        
 
           <style>
                .p-0 .container-fluid {
@@ -92,6 +93,10 @@
                }
                .iti, iti--allow-dropdown{
                     width: 100%!important;
+               }
+               .csv-format{
+                    text-align: right;
+                    text-decoration: underline;
                }
 
           </style>
@@ -287,6 +292,10 @@
                                              </div>
                                              <div class="modal-body">
                                                   <div class="form-group" style="margin-top: 10px;">
+                                                        
+                                                       <div class="csv-format">
+                                                            <a href="sample.csv" download="sample.csv">Download csv format</a>
+                                                       </div>
                                                        <div class="form-group">
                                                             <label for="csvFile">choose csv file</label>
                                                             <input type="file" name="csvFile" class="form-control" id="csvFile" required />
@@ -462,7 +471,7 @@
                                    <td>${item.fields.status}</td>
                                    <td>${item.fields.ask}</td>
                                    <td>${item.fields.notes}</td>
-                                   <td>${item.fields.last_call}</td>
+                                   <td>${item.fields.last_call || "-"}</td>
                                    <td><audio src="${item.fields.recording_url ? item.fields.recording_url:""}" controls> </audio></td>
                                    <td><button onclick="selectNum('${index}')" class="btn btn-primary btn-edit" type="button"><i class="fa fa-phone-square"></i></button></td>
                                    </tr>`);
@@ -871,6 +880,7 @@
                               icon: "success",
                               timer: 2000
                          })
+                         location.reload()
                     }).fail( (err) => {
                          console.log(err)
                     })
