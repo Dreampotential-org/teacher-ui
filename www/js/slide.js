@@ -195,7 +195,11 @@ function nextSlide() {
         } else if (type == 'user_image_upload') {
             answer = $(`#user-image-display_${flashcard_id}`).attr('src');
             sendResponse(flashcard_id, answer);
-        } else if (type == 'user_gps') {
+        } else if (type == 'user_audio_upload') {
+            answer = $('#user-audio-tag').find('source').attr('src');
+            sendResponse(flashcard_id, answer);
+        }
+        else if (type == 'user_gps') {
             answer = $('#note_' + (current_slide - 1)).val();
             sendResponse(flashcard_id, answer);
             // console.log('flashcard_id',flashcard_id)
@@ -595,19 +599,19 @@ function init() {
             }
             if (flashcard.lesson_type == 'record_webcam') {
                 $('#theSlide').append(`<div class="${className} ${i == 0 ? 'active' : ''}" id="flashcard_${flashcard.id}">
-        <p><button id="start_recording">Start Recording</button><br/>
-        <button id="stop_recording">Stop Recording</button></p>
-        <li class="list-group-item"> <span>Recording</span>
-          <label class="switch" >
-          <input type="checkbox">
-          <span class="slider round"></span>
-          </label>
-        </li>
+        
+        <h4>Recording</h4>
+        <div class="btn-group btn-toggle" id="recording"> 
+            <button class="btn btn-default" id="start_recording">ON</button>
+            <button class="btn btn-primary active" id="stop_recording">OFF</button>
+        </div>
+        <hr>
         <video controls autoplay id="record_webcam">
 
         </video>
         
         </div>`);
+                // let recording = document.getElementById("start_recording");
                 var video = document.querySelector("#record_webcam");
 
                 if (navigator.mediaDevices.getUserMedia) {
@@ -622,10 +626,23 @@ function init() {
 
                             start.addEventListener('click', (ev) => {
                                 mediaRecorder.start();
+                                start.classList.remove("btn-default")
+                                start.classList.add("btn-primary");
+                                start.classList.add("active");
+                                stop.classList.remove("active");
+                                stop.classList.remove("btn-primary");
+                                stop.classList.add("btn-default");
+                                // stop.classList.add("btn-default");
                                 console.log("start recording video", mediaRecorder.state);
                             })
                             stop.addEventListener('click', (ev) => {
                                 mediaRecorder.stop();
+                                stop.classList.remove("btn-default")
+                                stop.classList.add("btn-primary");
+                                stop.classList.add("active");
+                                start.classList.remove("active");
+                                start.classList.remove("btn-primary");
+                                start.classList.add("btn-default");
                                 console.log("stop recording video", mediaRecorder.state);
                             })
                             mediaRecorder.ondataavailable = function(ev) {
@@ -699,14 +716,12 @@ function init() {
 
             if (flashcard.lesson_type == 'record_screen') {
                 $('#theSlide').append(`<div class="${className} ${i == 0 ? 'active' : ''}" id="flashcard_${flashcard.id}">
-        <p><button id="start_recording_screen">Start Recording</button><br/>
-        <button id="stop_recording_screen" disabled>Stop Recording</button></p>
-        <li class="list-group-item"> <span>Recording</span>
-          <label class="switch" >
-          <input type="checkbox">
-          <span class="slider round"></span>
-          </label>
-        </li>
+        <h4>Recording</h4>
+        <div class="btn-group btn-toggle"> 
+            <button class="btn btn-default" id="start_recording_screen">ON</button>
+            <button class="btn btn-primary active" id="stop_recording_screen">OFF</button>
+        </div>
+        <hr>
 
         <video controls autoplay id="record_screen" height=500px>
 
@@ -723,8 +738,12 @@ function init() {
                 }
                 async function startRecording() {
                     stream = await navigator.mediaDevices.getDisplayMedia({
-                        video: { mediaSource: "screen" },
-                        audio: true
+                        video: { cursor: "always" },
+                        audio: {
+                            echoCancellation: true,
+                            noiseSuppression: true,
+                            sampleRate: 44100
+                        }
                     });
                     recorder = new MediaRecorder(stream);
 
@@ -791,19 +810,30 @@ function init() {
 
 
                 start_screen.addEventListener("click", () => {
-
-                    start_screen.setAttribute("disabled", true);
-                    stop_screen.removeAttribute("disabled");
+                    start_screen.classList.remove("btn-default")
+                    start_screen.classList.add("btn-primary");
+                    start_screen.classList.add("active");
+                    stop_screen.classList.remove("active");
+                    stop_screen.classList.remove("btn-primary");
+                    stop_screen.classList.add("btn-default");
 
                     startRecording();
                 });
 
                 stop_screen.addEventListener("click", () => {
-                    stop_screen.setAttribute("disabled", true);
-                    start_screen.removeAttribute("disabled");
+                    stop_screen.classList.remove("btn-default")
+                    stop_screen.classList.add("btn-primary");
+                    stop_screen.classList.add("active");
+                    start_screen.classList.remove("active");
+                    start_screen.classList.remove("btn-primary");
+                    start_screen.classList.add("btn-default");
 
-                    recorder.stop();
-                    stream.getVideoTracks()[0].stop();
+                    // stream.getVideoTracks()[0].stop();
+                    let tracks = stream.getTracks();
+                    console.log(tracks);
+                    console.log(stream.getAudioTracks())
+                    tracks.forEach(track => track.stop());
+
                 });
             }
 
@@ -1032,6 +1062,17 @@ function init() {
                         '"></video>' : '<h5>No file uploaded.</h5>') + '</div></div>'
                 );
             }
+            if (flashcard.lesson_type == 'audio_file') {
+                $('#theSlide').append(
+                    '<div class="' +
+                    className +
+                    '"><div alt="title_text" style="height:500px"><h1>Audio File</h1><h1> ' +
+                    flashcard.question +
+                    '</h1>' + (flashcard.image ? '<video style="height:100px;width:500px"; controls preload="metadata"> <source src= "' +
+                        flashcard.image + '#t=0.5' +
+                        '"></video>' : '<h5>No file uploaded.</h5>') + '</div></div>'
+                );
+            }
 
             if (flashcard.lesson_type == 'image_file') {
                 $('#theSlide').append(
@@ -1123,6 +1164,24 @@ function init() {
                 );
             }
 
+            if (flashcard.lesson_type == 'user_audio_upload') {
+                console.log("user_audio_upload flashcard.lesson_type ===> ", flashcard.lesson_type);
+                $('#theSlide').append(
+                    `<div class="${className}">
+            <div alt="title_text" style="height:500px">
+            <h2> ${flashcard.question}</h2>
+            <input type="file" class="form-control" value="Choose File" id="myFile" onchange="handleAudioUpload('user_audio_upload')"/>
+
+            <audio style="max-height:450px;max-width:1000px;display:none; margin:auto"; controls preload="metadata" id="user-audio-tag">
+            </audio>
+
+            </div>
+          </div>
+          `
+                );
+            }
+
+
             if (flashcard.lesson_type == 'user_image_upload') {
                 console.log("user_image_upload flashcard.lesson_type ===> ", flashcard.lesson_type);
                 $('#theSlide').append(
@@ -1208,6 +1267,14 @@ function init() {
                                         $('#user-video-tag').css("display", "block");
                                         $("#user-video-tag").append('<source src="' + rf.answer + '" type="video/mp4" #t=0.5></source>');
                                         $("#user-video-tag")[0].load()
+                                    }
+                                }
+                                if (f.lesson_type == 'user_audio_upload') {
+                                    console.log('user_audio_upload-response', rf.answer)
+                                    if (rf.answer) {
+                                        $('#user-audio-tag').css("display", "block");
+                                        $("#user-audio-tag").append('<source src="' + rf.answer + '" type="audio/mp4" #t=0.5></source>');
+                                        $("#user-audio-tag")[0].load()
                                     }
                                 }
                                 if (f.lesson_type == 'user_image_upload') {
@@ -1406,6 +1473,81 @@ function handleImageUpload(key, id) {
         swal({
             title: 'Error!',
             text: 'Video upload failed!',
+            icon: 'warning',
+            timer: 1000,
+        });
+
+    });
+
+}
+
+function handleAudioUpload(key) {
+    var file = $('#myFile').prop('files');
+    console.log("🚀 ~ file: index.html ~ line 33 ~ handleAudioUpload ~ file", file[0])
+    GLOBAL_FILE = file[0];
+    var form = new FormData();
+    form.append('file', GLOBAL_FILE);
+
+    var settings = {
+        async: true,
+        "crossDomain": true,
+        url: SERVER + 's3_uploader/upload',
+        method: 'POST',
+        type: 'POST',
+        processData: false,
+        contentType: false,
+        enctype: 'multipart/form-data',
+        data: form,
+        headers: {
+            Authorization: localStorage.getItem('token'),
+        },
+    }
+
+    console.log(settings);
+    $.ajax(settings).done(function(response) {
+        console.log("🚀 ~ file: index.html ~ line 57 ~ response", response)
+        if (response.message == "No file provided!") {
+            swal({
+                title: 'File Not Select',
+                text: response.message,
+                icon: "warning",
+                timer: 1000,
+            });
+        } else {
+            console.log("this is else part")
+            swal({
+                title: 'Good job!',
+                text: 'Audio uploaded successfully!',
+                icon: 'success',
+                timer: 1000,
+            });
+            const file_url = response.file_url;
+            displayAudio(file_url);
+
+            function displayAudio(file_url) {
+                if (file_url) {
+                    if (key == 'user_audio_upload') {
+                        var strTYPE = "video/mp4";
+                        $('#user-audio-tag').css("display", "block");
+                        $("#user-audio-tag").append('<source src="' + file_url + '#t=0.5" type="' + strTYPE + '"></source>');
+                        $("#user-audio-tag")[0].load();
+                    } else {
+                        var strTYPE = "audio/mp4";
+                        $('#myCarousel #audio').val(file_url);
+                        $("#theSlide #flashcard_" + current_slide + "").append('<div id="audio_url"><p> Audio URL : ' + file_url + '</p><audio id="audioplayer" style="height:500px;width:100%"; controls preload="metadata"> <source src="' + file_url + '#t=0.5' + '" type="' + strTYPE + '"></source></audio></div>')
+
+                        $("#audioplayer")[0].load();
+                    }
+                }
+            }
+            //   $("#video-modal").hide();
+            //   setTimeout(() => { location.reload() }, 5000);
+        }
+    }).fail(function(error) {
+        console.log("🚀 ~ file: index.html ~ line 56 ~ error", error)
+        swal({
+            title: 'Error!',
+            text: 'Audio upload failed!',
             icon: 'warning',
             timer: 1000,
         });

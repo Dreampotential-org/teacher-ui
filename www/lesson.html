@@ -58,6 +58,7 @@
                 </div>
                 <br>
             </div>
+            
             <div class="col-xs-6 col-sm-6" style="margin-top: 20px;margin-bottom: 10px;">
                 <select class="form-control " id="selectsegment">
                     <option selected value="select_type">Select Segment Type</option>
@@ -70,12 +71,14 @@
                     <option value="iframe_link">Iframe Link</option>
                     <option value="video_file">Video File</option>
                     <option value="image_file">Image File</option>
+                    <option value="audio_file">Audio File</option>
                     <option value="title_textarea">Title Textarea</option>
                     <option value="verify_phone">Verify Phone</option>
                     <option value="sign_b64">Signature Image</option>
                     <option value="brain_tree">BrainTree</option>
                     <option value="user_video_upload">User Video Upload</option>
                     <option value="user_image_upload">User Image Upload</option>
+                    <option value="user_audio_upload">User Audio Upload</option>
                     <option value="user_gps">User Gps</option>
                     <option value="user_tour">User Tour</option>
                     <option value="jitsi_meet">Jitsi Meet</option>
@@ -256,6 +259,28 @@
                                 </div> -->
                         </div>
                     </div>
+                    <div class="speed_read" id="user_audio_upload" style="display: none; padding-top: 15px">
+                        <div data-type="user_audio_upload"
+                            style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div class="row">
+                                <h4 class="col-xs-10 col-lg-10">User Audio Upload</h4>
+                                <a class="remove_flashcard col-xs-2 col-lg-2"
+                                    style="color:rgb(46, 46, 46);font-size:16px;text-align:right;"> X </a>
+                            </div>
+                            <div id="user-audio-output">
+                                <input type="text" id="txt-user-audio" class="form-control" placeholder="Title" />
+                            </div>
+                            <!-- <div class="form-group">
+                                    <button onclick="handleVideoUpload('user_audio_upload')" class="btn btn-info">Upload video</button>
+                                </div>
+                                <div id="user-video-output">
+                                    <input type="text" id="txt-user-video" class="form-control" placeholder="Video Link" />
+                                    <video id="userVideoplayer" controls height="360" style="width: 100%;" preload="metadata"
+                                    >
+                                    </video>
+                                </div> -->
+                        </div>
+                    </div>
 
                     <div class="speed_read" id="user_gps" style="display: none; padding-top: 15px">
                         <div data-type="user_gps"
@@ -392,6 +417,37 @@
                         </div>
                     </div>
 
+
+                    <div class="speed_read" id="audio_file" style="display: none; padding-top: 15px">
+                        <div data-type="audio_file"
+                            style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div class="row">
+                                <h4 class="col-xs-10 col-lg-10">Audio File</h4>
+                                <a class="remove_flashcard col-xs-2 col-lg-2"
+                                    style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                    x </a>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Title">
+                            </div>
+
+                            <div class="form-group">
+                                <!-- <input type="button" id="upload-vid-btn" onclick="handleVideoUpload('video_file')" value="Upload Video"/> -->
+                                <input type="button" class="audio_upload_button btn btn-info" value="Upload Audio" />
+                                <input type="text" id="audio" class="form-control" placeholder="Audio Link" />
+                            </div>
+                            <!-- <div id="video-output"> -->
+                            <div class="audio-output">
+                                <!-- <video class="videoplayer" controls height="360" style="width: 100%;"
+                                    preload="metadata">
+                                </video> -->
+                                <video class="audioplayer" controls height="360" style="width: 100%;display:none"
+                                preload="metadata">
+                            </video>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="speed_read" id="user_tour" style="display: none; padding-top: 15px">
                         <div data-type="user_tour"
                             style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
@@ -405,6 +461,29 @@
                                     
                               </div>
                               <button class="btn btn-success">Add Tour</button>
+
+                              <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Select Place</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                
+                                    <div id="map"></div>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary btn-save-place" data-dismiss="modal"
+                                    onclick="setLatLng()">Save changes</button>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            
                             </div>
                         </div>
                     </div>
@@ -535,6 +614,10 @@
             required />
     </form>
 
+    <form id="audioUploadForm" enctype="multipart/form-data" name="audioUploadForm">
+        <input type="file" name="audioUpload" id="audioUpload" style='display:none;' onchange="handleAudioSelect(this)"
+            required />
+    </form>
     <div id="sign-modal"></div>
 
     <script>
@@ -553,9 +636,9 @@
     </script>
     <script>
         $(document).ready(function () {
-            $("#sortable").sortable({
-                stop: sortEventHandler
-            });
+            // $("#sortable").sortable({
+            //     stop: sortEventHandler
+            // });
 
             function sortEventHandler() {
                 var i = 0;

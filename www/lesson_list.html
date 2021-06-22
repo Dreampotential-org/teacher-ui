@@ -400,6 +400,11 @@
                         onchange="handleVideoSelect(this)" required />
                 </form>
 
+                <form id="audioUploadForm" enctype="multipart/form-data" name="audioUploadForm">
+                    <input type="file" name="audioUpload" id="audioUpload" style="display: none"
+                        onchange="handleAudioSelect(this)" required />
+                </form>
+
                 <div id="sign-modal"></div>
             </div>
         </div>
@@ -410,6 +415,7 @@
         $("#sign-modal").load("signature/index.html");
 
         function signLesson(event, imgId, signInput) {
+            debugger
             if ($("#signature")) {
                 $("#signature").modal("show");
             }

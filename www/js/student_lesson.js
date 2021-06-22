@@ -2,6 +2,7 @@ var quick_read_count = 0;
 var title_text_count = 0;
 var question_choices_count = 0;
 var video_file_count = 0;
+var audio_file_count = 0;
 var iframe_link_count = 0;
 var question_text_count = 0;
 var sign_count = 0;
@@ -190,6 +191,22 @@ function handleVideoSelect(e) {
   }
 }
 
+function handleAudioUpload() {
+  // prompt for video upload
+  $("#audioUpload").click();
+}
+
+//handleVideoSelect(this.value)
+function handleAudioSelect(e) {
+  console.log("Selecting file", e, e.files[0]);
+  var file = e.files[0];
+  if (file) {
+    GLOBAL_FILE = file;
+    console.log("Submitting form", file.name);
+    //        $("#imageUploadForm").submit();
+    uploadFile("audio");
+  }
+}
 function uploadFile(fileType) {
   console.log("Submitted");
 
@@ -340,6 +357,34 @@ function addVideoFile(isNew, id, question, choices, image, posU) {
     .attr("name", "video_" + video_file_count);
   $("#sortable").append($("#video_file").html());
   video_file_count++;
+  sortablePositionFunction(isNew, posU);
+}
+
+function addAudioFile(isNew, id, question, choices, image, posU) {
+  if (!isNew) {
+    $("#audio_file").find("input").first().attr("value", question);
+    $("#audio_file").find("input").last().attr("value", image);
+
+    $("#audio_file").find("input").first().attr("data-id", id);
+    $("#audio_file").find("input").last().attr("data-id", id);
+
+    // Display Video
+    displayVideo(image);
+  } else {
+    $("#audio_file").find("input").first().attr("value", "");
+    $("#audio_file").find("input").last().attr("value", "");
+  }
+
+  $("#audio_file")
+    .find("input")
+    .first()
+    .attr("name", "question_" + audio_file_count);
+  $("#audio_file")
+    .find("input")
+    .last()
+    .attr("name", "audio_" + audio_file_count);
+  $("#sortable").append($("#audio_file").html());
+ audio_file_count++;
   sortablePositionFunction(isNew, posU);
 }
 
@@ -501,6 +546,23 @@ function sendUpdates() {
     };
     flashcards.push(temp);
   }
+  for (var i = 0; i < audio_file_count; i++) {
+    var question = $('input[name="question_' + i + '"]').val();
+    var audio = $('input[name="audio_' + i + '"]').val();
+    position_me = $('input[name="question_' + i + '"]')
+      .parent()
+      .parent()
+      .data("position");
+
+    temp = {
+      lesson_type: "audio_file",
+      question: question,
+      image: audio,
+      options: choices,
+      position: position_me,
+    };
+    flashcards.push(temp);
+  }
 
   for (var i = 0; i < iframe_link_count; i++) {
     var question = $('input[name="question_' + i + '"]').val();
@@ -645,6 +707,16 @@ $(document).ready(function () {
               flashcard.position
             );
           }
+          if (flashcard.lesson_type == "audio_file") {
+            addAudioFile(
+              false,
+              flashcard.id,
+              flashcard.question,
+              flashcard.options,
+              flashcard.image,
+              flashcard.position
+            );
+          }
 
           if (flashcard.lesson_type == "iframe_link") {
             addIframeLink(
@@ -704,7 +776,10 @@ $(document).ready(function () {
         iframe_link_count--;
       } else if (lesson_element_type.startsWith("video")) {
         video_file_count--;
-      } else if (lesson_element_type.startsWith("question_text")) {
+      } 
+      else if (lesson_element_type.startsWith("audio")) {
+        audio_file_count--;
+      }else if (lesson_element_type.startsWith("question_text")) {
         question_text_count--;
       } else if (lesson_element_type.startsWith("sign_b64")) {
         sign_count--;
@@ -727,6 +802,9 @@ $(document).ready(function () {
     }
     if ($("#selectsegment").val() == "video_file") {
       addVideoFile(true);
+    }
+    if ($("#selectsegment").val() == "audio_file") {
+      addAudioFile(true);
     }
     if ($("#selectsegment").val() == "iframe_link") {
       addIframeLink(true);

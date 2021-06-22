@@ -96,6 +96,7 @@
                           <option value="question_choices">Question Choices</option>
                           <option value="iframe_link">Iframe Link</option>
                           <option value="video_file">Video File</option>
+                          <option value="audio_file">Audio File</option>
                           <option value="question_text">Question Text</option>
                           <option value="sign_b64">Signature Image</option>
                       </select>
@@ -192,6 +193,26 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="speed_read" id="audio_file" style="display: none; padding-top: 15px">
+                                                <div style="margin-top:50px">
+                                                    <div class="row">
+                                                        <h4 class="col-xs-10 col-lg-10">Audio File</h4>
+                                                        <a class="remove_flashcard col-xs-2 col-lg-2" style="color:red;font-weight:bold;font-size:23px;text-align:right;"> X </a>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" id="audio_title" placeholder="Title">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <input type="button" id="audio_upload_button" onclick="handleAudioUpload()" value="Upload Audio" />
+                                                        <input type="text" class="form-control" id="audio" placeholder="Audio Link" />
+                                                    </div>
+                                                    <div id="audio-output" style="display: none">
+                                                        <audio id="audioplayer" controls preload="none" height="360" style="width: 100%;">
+                                                        </audio>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div class="speed_read" id="iframe_link" style="display: none; ping-top: 15px">
@@ -239,6 +260,10 @@
 
                     <form id="videoUploadForm" enctype="multipart/form-data" name="videoUploadForm">
                         <input type="file" name="videoUpload" id="videoUpload" style='display:none;' onchange="handleVideoSelect(this)" required/>
+                    </form>
+
+                    <form id="audioUploadForm" enctype="multipart/form-data" name="audioUploadForm">
+                        <input type="file" name="audioUpload" id="audioUpload" style='display:none;' onchange="handleAudioSelect(this)" required/>
                     </form>
 
                     <div id="sign-modal"></div>
