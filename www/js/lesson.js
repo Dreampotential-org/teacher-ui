@@ -1478,38 +1478,41 @@ function sendUpdates() {
     attr_array = [];
   });
   data_.flashcards = flashcards;
-
+ 
   for(let i=0;i<flashcards.length;i++){
-    let arr=data_.flashcards[i].options;
-    for(let j=0;j<arr.length;j++){
+    if(flashcards[i].lesson_type== 'user_tour'){
+        let arr=data_.flashcards[i].options;
+        for(let j=0;j<arr.length;j++){
 
-       if(arr[j]['title']=="" || arr[j]['description']=="" || arr[j]['latitude']=="" || arr[j]['longitude']=="" || 
-       arr[j]['image']==""){
-        swal({
-          title: 'Error Creating Lesson',
-          text: "Please fill all fields to save/update lesson",
-          icon: 'error',
-        });
-        return;
-       }
+          if(arr[j]['title']=="" || arr[j]['description']=="" || arr[j]['latitude']=="" || arr[j]['longitude']=="" || 
+          arr[j]['image']==""){
+            swal({
+              title: 'Error Creating Lesson',
+              text: "Please fill all fields to save/update lesson",
+              icon: 'error',
+            });
+            return;
+          }
 
-       var latlngVal = /^-?((1?[0-7]?|[0-9]?)[0-9]|180)\.[0-9]{1,6}$/;
-       var latitude = arr[j]['latitude'];
-       var longitude = arr[j]['longitude'];
-       var invalid_latlng = 'Latitude and Longitude are not correctly typed';
-       
-       // Validate Latitude and Longitude
-       if(!latlngVal.test(latitude) && !latlngVal.test(longitude)) {
-        swal({
-          title: 'Error Creating Lesson',
-          text: invalid_latlng,
-          icon: 'error',
-        });
-        return;
-       }  
+          var latlngVal = /^-?((1?[0-7]?|[0-9]?)[0-9]|180)\.[0-9]{1,6}$/;
+          var latitude = arr[j]['latitude'];
+          var longitude = arr[j]['longitude'];
+          var invalid_latlng = 'Latitude and Longitude are not correctly typed';
+          
+          // Validate Latitude and Longitude
+          if(!latlngVal.test(latitude) && !latlngVal.test(longitude)) {
+            swal({
+              title: 'Error Creating Lesson',
+              text: invalid_latlng,
+              icon: 'error',
+            });
+            return;
+          }  
 
-    }
-    console.log("arr==>",arr);
+        }
+        console.log("arr==>",arr);
+      } 
+    
   }
 
   data_.meta_attributes = meta_attributes.join(',');
