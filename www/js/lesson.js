@@ -1478,7 +1478,6 @@ function sendUpdates() {
     attr_array = [];
   });
   data_.flashcards = flashcards;
- 
   for(let i=0;i<flashcards.length;i++){
     if(flashcards[i].lesson_type== 'user_tour'){
         let arr=data_.flashcards[i].options;
