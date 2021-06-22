@@ -3,6 +3,7 @@ var title_text_count = 0;
 var question_choices_count = 0;
 var user_tour_count = 0;
 var video_file_count = 0;
+var audio_file_count = 0;
 var image_file_count = 0;
 var iframe_link_count = 0;
 var verify_phone_count = 0;
@@ -14,6 +15,7 @@ var question_text_count = 0;
 var name_type_count = 0;
 var user_video_upload_count = 0;
 var user_image_upload_count = 0;
+var user_audio_upload_count = 0;
 var user_gps_count = 0;
 var sign_count = 0;
 var sortArray = [];
@@ -393,6 +395,22 @@ function handleVideoSelect(e) {
   }
 }
 
+function handleAudioUpload(key) {
+  audio_type = key; //user_video_upload
+  // prompt for video upload
+  $('#audioUpload').click();
+}
+
+//handleVideoSelect(this.value)
+function handleAudioSelect(e) {
+  var file = e.files[0];
+  if (file) {
+    GLOBAL_FILE = file;
+    //        $("#imageUploadForm").submit();
+    uploadFile('audio');
+  }
+}
+
 function uploadFile(fileType) {
   swal({
     title: '0%',
@@ -507,6 +525,22 @@ function uploadFile(fileType) {
             }
           }
         }
+        else if (fileType == 'audio') {
+
+          displayVideo(file_url, audio_data_id_value);
+
+          if (audio_type == "user_audio_upload") {
+            // $('#txt-user-video').attr('value', file_url);
+          }
+          else {
+            if (audio_data_id_value != undefined) {
+              $("input[data-id='" + audio_data_id_value + "']").attr('value', file_url);
+            }
+            else {
+              $('#audio').attr('value', file_url);
+            }
+          }
+        }
       })
       .fail(function (response) {
         swal({
@@ -559,6 +593,51 @@ function displayVideo(file_url, video_data_id) {
     //
   }
 }
+
+
+function displayAudio(file_url, audio_data_id) {
+  var strTYPE = 'audio/mp4';
+  if (audio_type == "user_audio_upload") {
+    /* $('#userVideoplayer').html('<source src="' + file_url + '#t=0.1' + '" type="' + strTYPE + '"></source>');
+     $('#user-video-output').css('display', 'block');
+     $('#userVideoplayer')[0].load();
+     
+     $('#user_video_upload').find('#txt-user-video').first().attr('value',file_url);*/
+    // Change button text
+    // $('#upload-vid-btn').attr('value', 'Upload new Video');
+  }
+  else {
+    /* $('#videoplayer').html('<source src="' + file_url + '#t=0.5'+ '" type="' + strTYPE + '"></source>');
+     $('#video-output').css('display', 'block');
+     $('#videoplayer')[0].load();
+     $('#upload-vid-btn').attr('value', 'Upload new Video');*/
+    //
+    if (!file_url) {
+
+    }
+    else {
+
+      // $("input[data-id='"+video_data_id+"']").parent().siblings('.video-output').html('')
+      // var parent = $("input[data-id='"+video_data_id+"']").parent().siblings('.video-output');
+      if (!audio_data_id) {
+        $('.audioplayer').css("display", "block");
+        $('.audioplayer').html('<source src="' + file_url + '#t=0.1' + '" type="' + strTYPE + '"></source>');
+        $('.audio-output').css('display', 'block');
+        $('.audioplayer')[0].load();
+        $('.audio_upload_button').attr('value', 'Upload new Audio');
+      }
+      else {
+        $("input[data-id='" + audio_data_id + "']").parent().siblings('.audio-output').html(' <audio class="audioplayer" controls height="360" style="width: 100%;" preload="metadata"><source src="' + file_url + '#t=0.1' + '" type="' + strTYPE + '" id="' + audio_data_id + '"></source></audio>');
+        $('.audio-output').css('display', 'block');
+        $('.audioplayer')[0].load();
+        $('.audio_upload_button').attr('value', 'Upload new Audio');
+      }
+    }
+    //
+  }
+}
+
+
 
 function displayImage(file_url,data_id,image_id) {
   // Clear existing image
@@ -730,6 +809,25 @@ function addUserVideoUpload(isNew, id, question, choices, image, posU) {
   user_video_upload_count++;
 }
 
+function addUserAudioUpload(isNew, id, question, choices, image, posU) {
+  if (!isNew) {
+    video_type = "user_audio_upload";
+    $('#user_audio_upload').find('input').first().attr('value', question);
+    $('#user_audio_upload').find('input').first().attr('data-id', id);
+    // Display Video
+    displayAudio(image, "");
+  } else {
+    $('#user_audio_upload').find('txt-user-audio').html('');
+  }
+  $('#user_audio_upload')
+    .find('myFile')
+    .attr('name', 'user_audio_upload_myFile_' + title_input_count);
+
+  $('#sortable').append($('#user_audio_upload').html());
+  sortablePositionFunction(isNew, posU);
+  user_audio_upload_count++;
+}
+
 function addUserImageUpload(isNew, id, question, choices, image, posU) {
   if (!isNew) {
     image_type = "user_image_upload";
@@ -840,6 +938,61 @@ function addImageFile(isNew, id, question, image, posU) {
   sortablePositionFunction(isNew, posU);
 }
 
+function addAudioFile(isNew, id, question, choices, image, posU) {
+  console.log("addAudioFile ==> ");
+  console.log("isNew, id, question, image, posU ");
+  console.log(isNew, ' , ', id, ' , ', question, ' , ', image, ' , ', posU);
+  audio_type = "";
+  if (!isNew) {
+    $('#audio_file').find('input').first().attr('value', question);
+    $('#audio_file').find('input').last().attr('value', image);
+
+    $('#audio_file').find('input').first().attr('data-id', id);
+    $('#audio_file').find('input').last().attr('data-id', id);
+
+    $('#audio_file').find('.audio-output').attr('data-id', id);
+    // Display Video
+    // displayVideo(image);
+    displayAudio(image, id);
+  } else {
+    $('#audio_file').find('input').first().attr('value', '');
+    $('#audio_file').find('input').last().attr('value', '');
+    //
+    // $('.video-output').children('video').children('source').attr('src','');
+    displayAudio("", "");
+    //
+  }
+
+  $('#audio_file')
+    .find('input')
+    .first()
+    .attr('name', 'audio_question' + audio_file_count);
+  $('#audio_file')
+    .find('input')
+    .last()
+    .attr('name', 'audio_' + audio_file_count)
+    .attr('data-id', $('#audio_file').find('input').first().attr('data-id') + "_" + audio_file_count);
+
+  /*if(video_file_count > 0)
+  {
+    $('#sortable').append($('#video_file').html()).find('video').last().remove();
+  }
+  else{
+    $('#sortable').append($('#video_file').html());
+  }*/
+
+  if (posU == undefined) {
+    $('#sortable').append($('#audio_file').html()).find('audio').last().remove();
+  } else {
+    $('#sortable').append($('#audio_file').html());
+  }
+
+  // $('#sortable').append($('#video_file').html());
+  audio_file_count++;
+  sortablePositionFunction(isNew, posU);
+}
+
+
 function addUserTour(isNew, id, options,question,text,latitude,longitude, image, posU) {
   console.log("addUserTour ==> ");
   console.log("isNew, id, question, image, posU ");
@@ -924,7 +1077,7 @@ $('#user_tour')
     .attr('data-id',$('#image_file').find('input').first().attr('data-id')+"_"+ image_file_count);
 
   $('#sortable').append($('#user_tour').html());
-  // sortablePositionFunction(isNew, posU);
+  sortablePositionFunction(isNew, posU);
   user_tour_count++;
   $('#user_tour').html(tempTour);
 }
@@ -1103,7 +1256,7 @@ function sendUpdates() {
     lesson_name: lesson_name,
     lesson_is_public: lesson_visiblity,
   };
-  var flashcards = [];
+  var flashcards = [];  
   var position_me = 0;
   // Saving Quick Reads
   flashcards_div = [];
@@ -1174,7 +1327,7 @@ function sendUpdates() {
         }
       });
     }else if(flashcard_type=="user_tour"){
-
+    
         real_flashcard_elements = [];
       current_flashcard_elements.forEach((current_flashcard_element) => {
         if (current_flashcard_element.attributes) {
@@ -1375,6 +1528,16 @@ function sendUpdates() {
         flashcards.push(temp);
         break;
 
+      case 'audio_file':
+        temp = {
+          lesson_type: 'audio_file',
+          question: attr_array[0],
+          image: attr_array[1],
+          position: position_me,
+        };
+        flashcards.push(temp);
+        break;
+  
       case 'question_choices':
         temp = {
           lesson_type: 'question_choices',
@@ -1431,6 +1594,17 @@ function sendUpdates() {
         flashcards.push(temp);
         break;
 
+      case 'user_audio_upload':
+        temp = {
+          lesson_type: 'user_audio_upload',
+          question: attr_array[0],
+          // image: attr_array[0],
+          image: '',
+          position: position_me,
+        };
+        flashcards.push(temp);
+          break;
+  
       case 'user_image_upload':
         temp = {
           lesson_type: 'user_image_upload',
@@ -1456,41 +1630,42 @@ function sendUpdates() {
 
     attr_array = [];
   });
+  
   data_.flashcards = flashcards;
-
   for(let i=0;i<flashcards.length;i++){
-    let arr=data_.flashcards[i].options;
-    if(arr){
-      for(let j=0;j<arr.length;j++){
-  
-         if(arr[j]['title']=="" || arr[j]['description']=="" || arr[j]['latitude']=="" || arr[j]['longitude']=="" || 
-         arr[j]['image']==""){
-          swal({
-            title: 'Error Creating Lesson',
-            text: "Please fill all fields to save/update lesson",
-            icon: 'error',
-          });
-          return;
-         }
-  
-         var latlngVal = /^-?((1?[0-7]?|[0-9]?)[0-9]|180)\.[0-9]{1,6}$/;
-         var latitude = arr[j]['latitude'];
-         var longitude = arr[j]['longitude'];
-         var invalid_latlng = 'Latitude and Longitude are not correctly typed';
-         
-         // Validate Latitude and Longitude
-         if(!latlngVal.test(latitude) && !latlngVal.test(longitude)) {
-          swal({
-            title: 'Error Creating Lesson',
-            text: invalid_latlng,
-            icon: 'error',
-          });
-          return;
-         }  
-  
-      }
-      console.log("arr==>",arr);
-    }
+    if(flashcards[i].lesson_type== 'user_tour'){
+        let arr=data_.flashcards[i].options;
+        for(let j=0;j<arr.length;j++){
+
+          if(arr[j]['title']=="" || arr[j]['description']=="" || arr[j]['latitude']=="" || arr[j]['longitude']=="" || 
+          arr[j]['image']==""){
+            swal({
+              title: 'Error Creating Lesson',
+              text: "Please fill all fields to save/update lesson",
+              icon: 'error',
+            });
+            return;
+          }
+
+          var latlngVal = /^-?((1?[0-7]?|[0-9]?)[0-9]|180)\.[0-9]{1,6}$/;
+          var latitude = arr[j]['latitude'];
+          var longitude = arr[j]['longitude'];
+          var invalid_latlng = 'Latitude and Longitude are not correctly typed';
+          
+          // Validate Latitude and Longitude
+          if(!latlngVal.test(latitude) && !latlngVal.test(longitude)) {
+            swal({
+              title: 'Error Creating Lesson',
+              text: invalid_latlng,
+              icon: 'error',
+            });
+            return;
+          }  
+
+        }
+        console.log("arr==>",arr);
+      } 
+    
   }
 
   data_.meta_attributes = meta_attributes.join(',');
@@ -1669,6 +1844,10 @@ $(document).ready(function () {
             addImageFile(false, flashcard.id, flashcard.question, flashcard.image, flashcard.position);
           }
 
+          if (flashcard.lesson_type == 'audio_file') {
+            addAudioFile(false, flashcard.id, flashcard.question, flashcard.options, flashcard.image, flashcard.position);
+          }
+
           if (flashcard.lesson_type == 'user_tour') {
             addUserTour(false, flashcard.id, flashcard.options,flashcard.question,flashcard.answer,flashcard.latitude,
               flashcard.longitude,flashcard.image, flashcard.position);
@@ -1694,6 +1873,9 @@ $(document).ready(function () {
           }
           if (flashcard.lesson_type == 'user_image_upload') {
             addUserImageUpload(false, flashcard.id, flashcard.question, flashcard.options, flashcard.image, flashcard.position);
+          }
+          if (flashcard.lesson_type == 'user_audio_upload') {
+            addUserAudioUpload(false, flashcard.id, flashcard.question, flashcard.options, flashcard.image, flashcard.position);
           }
           if (flashcard.lesson_type == 'user_gps') {
             addUserGps(false, flashcard.id, flashcard.question, flashcard.options, flashcard.position);
@@ -1853,10 +2035,15 @@ $(document).ready(function () {
       addVideoFile(true);
     }
 
+  
+
     if ($('#selectsegment').val() == 'image_file') {
       addImageFile(true);
     }
 
+    if ($('#selectsegment').val() == 'audio_file') {
+      addAudioFile(true);
+    }
     if ($('#selectsegment').val() == 'user_tour') {
       addUserTour(true);
     }
@@ -1881,6 +2068,9 @@ $(document).ready(function () {
     }
     if ($('#selectsegment').val() == 'user_image_upload') {
       addUserImageUpload(true);
+    }
+    if ($('#selectsegment').val() == 'user_audio_upload') {
+      addUserAudioUpload(true);
     }
     if ($('#selectsegment').val() == 'user_gps') {
       addUserGps(true);
@@ -1927,4 +2117,11 @@ $(document).on('click', '.upload_vid_btn', function (e) {
   $('#videoUpload').click();
   video_data_id_value = $(this).siblings("input[type=text]").attr("data-id");
   video_type = "video_file";
+});
+
+$(document).on('click', '.audio_upload_button', function (e) {
+  console.log("image upload--------");
+  $('#audioUpload').click();
+  audio_data_id_value = $(this).siblings("input[type=text]").attr("data-id");
+  audio_type = "audio_file";
 });
