@@ -82,14 +82,15 @@ function sendResponse(flashcard_id, answer) {
         longitude:
           CURRENT_POSITION != null ? CURRENT_POSITION.coords.longitude : "",
       };
-    } else if(current_flashcard.lesson_type == "user_qrcode"){
-        console.log("🚀 ~ file: slide.js ~ line 86 ~ sendResponse ~ current_flashcard.lesson_type", current_flashcard.lesson_type)
-        var data_ = {
-            flashcard: flashcard_id,
-            session_id: localStorage.getItem("session_id"),
-            answer: "",
-        };
-    }
+    } 
+    // else if(current_flashcard.lesson_type == "user_qrcode"){
+    //     console.log("🚀 ~ file: slide.js ~ line 86 ~ sendResponse ~ current_flashcard.lesson_type", current_flashcard.lesson_type)
+    //     var data_ = {
+    //         flashcard: flashcard_id,
+    //         session_id: localStorage.getItem("session_id"),
+    //         answer: "",
+    //     };
+    // }
     else {
         var data_ = {
             flashcard: flashcard_id,
@@ -231,10 +232,11 @@ function nextSlide() {
       sendResponse(flashcard_id, answer);
       // console.log('flashcard_id',flashcard_id)
       document.removeEventListener("gpsPosition", () => {});
-    }else if (type == "user_qrcode") {
-        console.log("User-qrcode slide page");
-        sendResponse(flashcard_id, answer);
-      }
+    }
+    // else if (type == "user_qrcode") {
+    //     console.log("User-qrcode slide page");
+    //     sendResponse(flashcard_id, answer);
+    //   }
 
     if (
       current_slide != total_slides &&
@@ -256,10 +258,11 @@ function nextSlide() {
       console.log("User-GPS slide page");
       answer = $("#note_" + (current_slide - 1)).val();
       sendResponse(flashcard_id, answer);
-    } else if (type == "user_qrcode") {
-        console.log("User-GPS slide page");
-        sendResponse(flashcard_id, answer);
-      } 
+    } 
+    // else if (type == "user_qrcode") {
+    //     console.log("User-GPS slide page");
+    //     sendResponse(flashcard_id, answer);
+    //   } 
     // if (current_slide != total_slides && loaded_flashcards[current_slide].lesson_type == 'jitsi_meet') {
     //   var domain = "vstream.lifeforceenergy.us";
     //   var options = {
@@ -621,19 +624,19 @@ function init() {
           i++;
         }
 
-        if (flashcard.lesson_type == "user_qrcode") {
-            console.log("🚀 ~ file: slide.js ~ line 630 ~ flashcards.forEach ~ lesson_id", lesson_id)
+        // if (flashcard.lesson_type == "user_qrcode") {
+        //     console.log("🚀 ~ file: slide.js ~ line 630 ~ flashcards.forEach ~ lesson_id", lesson_id)
 
             
-            $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
-                <h1>QR Code</h1>
-                <button class="btn btn-primary active"  onclick="qrcodeResponse(${lesson_id})" >Show QR</button>
-                <div id="main" ></div>
-                <p id="quesrq">${flashcard.question}</p>
-                </div>
-            `);
-            i++;
-        }
+        //     $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+        //         <h1>QR Code</h1>
+        //         <button class="btn btn-primary active"  onclick="qrcodeResponse(${lesson_id})" >Show QR</button>
+        //         <div id="main" ></div>
+        //         <p id="quesrq">${flashcard.question}</p>
+        //         </div>
+        //     `);
+        //     i++;
+        // }
 
         if (flashcard.lesson_type == "jitsi_meet") {
           //         <meta charset="utf-8">
@@ -1558,14 +1561,14 @@ function init() {
                     $("#long_" + i).val(rf.longitude);
                     console.log("set previos gps value");
                   }
-                  if (f.lesson_type == "user_qrcode") {
-                    let ans = {};
-                    try {
-                      ans = rf.answer;
-                    } catch (e) {
-                    }
-                    console.log("set previos user_qrcode value");
-                  }
+                //   if (f.lesson_type == "user_qrcode") {
+                //     let ans = {};
+                //     try {
+                //       ans = rf.answer;
+                //     } catch (e) {
+                //     }
+                //     console.log("set previos user_qrcode value");
+                //   }
                 }
               });
             });
@@ -1755,37 +1758,37 @@ function handleImageUpload(key, id) {
     });
 }
 
-function qrcodeResponse(qrcode){
-    $.ajax({
-        async: true,
-        url: SERVER + "courses_api/qrcode/" + qrcode ,
-        type: "GET",
-        crossDomain: true,
-        crossOrigin: true,
-        processData: false,
-        contentType: "application/json",
-        success: function (resqr) {
-            console.log("🚀 ~ file: slide.js ~ line 1735 ~ data", typeof(resqr));
-            var base64img = getBase64Img(resqr);
-            Base64ToImage(base64img, function(img) {
-                document.getElementById('main').appendChild(img);   
-            });
-        },
-        error: function (res) {
-        console.log("🚀 ~ file: slide.js ~ line 663 ~ flashcards.forEach ~ res", res)
+// function qrcodeResponse(qrcode){
+//     $.ajax({
+//         async: true,
+//         url: SERVER + "courses_api/qrcode/" + qrcode ,
+//         type: "GET",
+//         crossDomain: true,
+//         crossOrigin: true,
+//         processData: false,
+//         contentType: "application/json",
+//         success: function (resqr) {
+//             console.log("🚀 ~ file: slide.js ~ line 1735 ~ data", typeof(resqr));
+//             var base64img = getBase64Img(resqr);
+//             Base64ToImage(base64img, function(img) {
+//                 document.getElementById('main').appendChild(img);   
+//             });
+//         },
+//         error: function (res) {
+//         console.log("🚀 ~ file: slide.js ~ line 663 ~ flashcards.forEach ~ res", res)
     
-        },
-    });
-    function Base64ToImage(base64img, callback) {
-        var img = new Image();
-        img.onload = function() {
-            callback(img);
-        };
-        img.src = base64img;
-    }
+//         },
+//     });
+//     function Base64ToImage(base64img, callback) {
+//         var img = new Image();
+//         img.onload = function() {
+//             callback(img);
+//         };
+//         img.src = base64img;
+//     }
 
-    function getBase64Img(datats) {
-        return "data:image/png;base64," + datats
-    }
-}
+//     function getBase64Img(datats) {
+//         return "data:image/png;base64," + datats
+//     }
+// }
 window.addEventListener("DOMContentLoaded", init, false);
