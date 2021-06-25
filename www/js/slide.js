@@ -82,12 +82,20 @@ function sendResponse(flashcard_id, answer) {
         longitude:
           CURRENT_POSITION != null ? CURRENT_POSITION.coords.longitude : "",
       };
-    } else {
-      var data_ = {
-        flashcard: flashcard_id,
-        session_id: localStorage.getItem("session_id"),
-        answer: answer ? answer : "",
-      };
+    } else if(current_flashcard.lesson_type == "user_qrcode"){
+        console.log("🚀 ~ file: slide.js ~ line 86 ~ sendResponse ~ current_flashcard.lesson_type", current_flashcard.lesson_type)
+        var data_ = {
+            flashcard: flashcard_id,
+            session_id: localStorage.getItem("session_id"),
+            answer: "",
+        };
+    }
+    else {
+        var data_ = {
+            flashcard: flashcard_id,
+            session_id: localStorage.getItem("session_id"),
+            answer: answer ? answer : "",
+        };
     }
   }
 
@@ -223,7 +231,10 @@ function nextSlide() {
       sendResponse(flashcard_id, answer);
       // console.log('flashcard_id',flashcard_id)
       document.removeEventListener("gpsPosition", () => {});
-    }
+    }else if (type == "user_qrcode") {
+        console.log("User-qrcode slide page");
+        sendResponse(flashcard_id, answer);
+      }
 
     if (
       current_slide != total_slides &&
@@ -245,7 +256,10 @@ function nextSlide() {
       console.log("User-GPS slide page");
       answer = $("#note_" + (current_slide - 1)).val();
       sendResponse(flashcard_id, answer);
-    }
+    } else if (type == "user_qrcode") {
+        console.log("User-GPS slide page");
+        sendResponse(flashcard_id, answer);
+      } 
     // if (current_slide != total_slides && loaded_flashcards[current_slide].lesson_type == 'jitsi_meet') {
     //   var domain = "vstream.lifeforceenergy.us";
     //   var options = {
@@ -607,10 +621,21 @@ function init() {
           i++;
         }
 
+        if (flashcard.lesson_type == "user_qrcode") {
+            console.log("🚀 ~ file: slide.js ~ line 630 ~ flashcards.forEach ~ lesson_id", lesson_id)
+
+            
+            $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+                <h1>QR Code</h1>
+                <button class="btn btn-primary active"  onclick="qrcodeResponse(${lesson_id})" >Show QR</button>
+                <div id="main" ></div>
+                <p id="quesrq">${flashcard.question}</p>
+                </div>
+            `);
+            i++;
+        }
+
         if (flashcard.lesson_type == "jitsi_meet") {
-          //         $('#theSlide').append(`<div class="${className} ${i == 0 ? 'active' : ''}" id="flashcard_${i}" id="verify_email">
-          //         <html itemscope itemtype="http://schema.org/Product" prefix="og: http://ogp.me/ns#" xmlns="http://www.w3.org/1999/html">
-          //     <head>
           //         <meta charset="utf-8">
           //         <meta http-equiv="content-type" content="text/html;charset=utf-8">
           //     </head>
@@ -1466,11 +1491,11 @@ function init() {
             "/" +
             localStorage.getItem("session_id"),
           function (response) {
-            // console.log(response);
+            console.log("🚀 ~ file: slide.js ~ line 1510 ~ init ~ response", response)
             response.forEach(function (rf) {
-              // console.log("🚀 ~ file: slide.js ~ line 777 ~ rf", rf)
-              // console.log(rf);
+              console.log("🚀 ~ file: slide.js ~ line 777 ~ rf", rf)
               loaded_flashcards.forEach(function (f, i) {
+                console.log("🚀 ~ file: slide.js ~ line 1538 ~ f", f)
                 if (rf.flashcard[0].id == f.id) {
                   if (f.lesson_type == "title_textarea") {
                     $("textarea[name=textarea_" + i).val(rf.answer);
@@ -1533,15 +1558,23 @@ function init() {
                     $("#long_" + i).val(rf.longitude);
                     console.log("set previos gps value");
                   }
+                  if (f.lesson_type == "user_qrcode") {
+                    let ans = {};
+                    try {
+                      ans = rf.answer;
+                    } catch (e) {
+                    }
+                    console.log("set previos user_qrcode value");
+                  }
                 }
               });
             });
           }
         )
-          .done((res) =>
+        .done((res) =>
             console.log("🚀 ~ file: slide.js ~ line 727 ~ res", res)
-          )
-          .fail((err) => console.log("Invitation err", err));
+        )
+        .fail((err) => console.log("Invitation err", err));
       }
       if (total_slides && flashcards[0].lesson_type == "user_gps") {
         handle_gps_click();
@@ -1722,4 +1755,37 @@ function handleImageUpload(key, id) {
     });
 }
 
+function qrcodeResponse(qrcode){
+    $.ajax({
+        async: true,
+        url: SERVER + "courses_api/qrcode/" + qrcode ,
+        type: "GET",
+        crossDomain: true,
+        crossOrigin: true,
+        processData: false,
+        contentType: "application/json",
+        success: function (resqr) {
+            console.log("🚀 ~ file: slide.js ~ line 1735 ~ data", typeof(resqr));
+            var base64img = getBase64Img(resqr);
+            Base64ToImage(base64img, function(img) {
+                document.getElementById('main').appendChild(img);   
+            });
+        },
+        error: function (res) {
+        console.log("🚀 ~ file: slide.js ~ line 663 ~ flashcards.forEach ~ res", res)
+    
+        },
+    });
+    function Base64ToImage(base64img, callback) {
+        var img = new Image();
+        img.onload = function() {
+            callback(img);
+        };
+        img.src = base64img;
+    }
+
+    function getBase64Img(datats) {
+        return "data:image/png;base64," + datats
+    }
+}
 window.addEventListener("DOMContentLoaded", init, false);
