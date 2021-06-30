@@ -127,7 +127,7 @@
                           <div class="form-group">
                             <textarea class="form-control" id="message_body" rows="4" placeholder="Message" required></textarea>
                           </div>
-                          <button type="submit" class="btn btn-primary float-right">
+                          <button type="submit"  class="btn btn-primary float-right">
                             Send
                           </button>
                         </form>
@@ -219,11 +219,16 @@
         })
       })
       
-      $('#send_sms').submit(() => {
+      const destNumSmsInputField = document.querySelector("#dest_num_sms");
+      const destNumSmsInput = window.intlTelInput(destNumSmsInputField, {
+        utilsScript:
+        "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+      });
+      $('#send_sms').submit((e) => {
+        e.preventDefault()
         source_num_sms = $('#sourceMsgNumber').val()
-        des_num_sms = $('#dest_num_sms').val()
+        des_num_sms = destNumSmsInput.getNumber()
         body_msg = $("#message_body").val()
-
         $.ajax({
           url: SERVER + "voip/api_voip/send_sms_",
           async: true,
@@ -243,6 +248,7 @@
                 icon: "success",
                 timer: 2000
                 })
+                $('#send_sms').trigger("reset");              
         }).fail( (err) => {
             swal({	
                 title: "not sending msg",	
@@ -250,8 +256,10 @@
                 icon: "error",	
                 timer: 2000
                 });	
+             $('#send_sms').trigger("reset");
             console.log(err)
         })
+         $('#send_sms').reset();
       })
       
       function SidebarCollapse() {
