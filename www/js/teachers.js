@@ -54,6 +54,7 @@ function SidebarCollapse() {
 var system_users;
 var teacher_students;
 var all_students;
+var table;
 $(document).ready(function() {
 
     $("#tabDiv").show();
@@ -69,13 +70,34 @@ $(document).ready(function() {
         mimeType: "multipart/form-data"
     }).done((response) => {
         $('#teachersloader').remove();
+        console.log("testing")
         system_users = JSON.parse(response)
+        console.log("useres",system_users)
         system_users.forEach((item, i) => {
-            $("#teachers-data").append(`<tr>
+            $("#teachers-data-pg").append(`<tr>
             <td>${item.username}</td>
             <td><button onclick="editSystemStudent('${item.id}','${i}')" class="btn btn-primary btn-edit"><i class="fa fa-list"></i></button></td>
             </tr>`);
         })
+        table = $("#teachers-data-pg").DataTable( {
+            dom: 'lr<"table-filter-container">tip',
+                 initComplete: function(settings){
+                      var api = new $.fn.dataTable.Api( settings );
+                      $('.table-filter-container', api.table().container()).append(
+                           $('#table_filter').detach().show()
+                      );
+                      $('#table_filter select').on('change', function(){
+                           table.search(this.value).draw();   
+                      });
+                 }, 
+            
+            select: {
+                 'style': 'multi',
+                 'selector': 'td:first-child'
+                 },
+            order: [[1, 'asc']]
+       });
+       var select = table.column(0).checkboxes;
         $.ajax({
             async: true,
             crossDomain: true,
