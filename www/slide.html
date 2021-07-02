@@ -1,49 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <style>
+            #main img{
+                width: 400px !important;
+                margin: 0 auto !important;
+                display: inherit !important;
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script src="js/main.js"></script>
-<script src="js/slide.js"></script>
-<script src="css/slide.css"></script>
-<!-- firebase -->
-<script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEYIL86ek3icvHx6F-55qSFCfhe2fynfg"></script>
-</head>
+            }
+            #quesrq{
+                text-align: center !important;
+            }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="js/main.js"></script>
+        <script src="js/slide.js"></script>
+        <script src="css/slide.css"></script>
+        <!-- firebase -->
+        <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEYIL86ek3icvHx6F-55qSFCfhe2fynfg"></script>
+    </head>
 
-<body>
-    <div class="container">
-        <br>
-        <div id="myCarousel" class="carousel" data-ride="carousel" data-interval="false" data-wrap="false">
-            <!-- Wrapper for slides -->
-            <div class="carousel-inner" id="theSlide" style="height:600px;border:2px;border-style:solid;padding:10px;min-height:500px" role="listbox">
-            </div>
-            <div class="col-lg-6" style="margin-top:10px">
-                <button id="nextButton" onclick="nextSlide()">Next</button>
-                <button id="prevButton" onclick="prevSlide()">Previous</button>
-            </div>
-            <div class="col-lg-6" style="margin-top:10px;" id="progress-section">
-                <p style="color: #777777;">Progress: <span id="progress"> </span> answered</p>
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    <body>
+        <div class="container">
+            <br>
+            <div id="myCarousel" class="carousel" data-ride="carousel" data-interval="false" data-wrap="false">
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner" id="theSlide" style="height:600px;border:2px;border-style:solid;padding:10px;min-height:500px" role="listbox"></div>
+                <div class="col-lg-6" style="margin-top:10px">
+                    <button id="nextButton" onclick="nextSlide()">Next</button>
+                    <button id="prevButton" onclick="prevSlide()">Previous</button>
+                </div>
+                <div class="col-lg-6" style="margin-top:10px;" id="progress-section">
+                    <p style="color: #777777;">Progress: <span id="progress"> </span> answered</p>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    <div id="sign-modal"></div>
-    <div id="verify-phone-modal"></div>
-    <div id="video-modal"></div>
-    <div id="gps-modal"></div>
-    <script src="https://vstream.lifeforceenergy.us/external_api.js"></script>
-    <!-- <script>
-    </script> -->
+        <div id="sign-modal"></div>
+        <div id="verify-phone-modal"></div>
+        <div id="video-modal"></div>
+        <div id="gps-modal"></div>
+        <script src="https://vstream.lifeforceenergy.us/external_api.js"></script>
+        <!-- <script>
+        </script> -->
 
-</body>
+    </body>
 
 </html>
