@@ -607,6 +607,17 @@ function init() {
           i++;
         }
 
+        if (flashcard.lesson_type == "user_qrcode") {
+            $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+                <h1>QR Code</h1>
+                <button class="btn btn-primary active"  onclick="qrcodeResponse(${lesson_id})" >Show QR</button>
+                <div id="main" ></div>
+                <p id="quesrq">${flashcard.question}</p>
+                </div>
+            `);
+            i++;
+        }
+
         if (flashcard.lesson_type == "jitsi_meet") {
           //         $('#theSlide').append(`<div class="${className} ${i == 0 ? 'active' : ''}" id="flashcard_${i}" id="verify_email">
           //         <html itemscope itemtype="http://schema.org/Product" prefix="og: http://ogp.me/ns#" xmlns="http://www.w3.org/1999/html">
@@ -1722,4 +1733,32 @@ function handleImageUpload(key, id) {
     });
 }
 
+function qrcodeResponse(lesson_id){
+  $("#main").html("")
+  $.ajax({
+    async: true,
+    url: SERVER + "courses_api/qrcode/" + lesson_id ,
+    type: "GET",
+    crossDomain: true,
+    crossOrigin: true,
+    processData: false,
+    contentType: "application/json",
+    success: function (responseqrcode) {
+      var base64img = "data:image/png;base64," + responseqrcode;
+      Base64ToImage(base64img, function(img) {
+        document.getElementById('main').appendChild(img);   
+      });
+    },
+    error: function (res) {
+      console.log("🚀 ~ file: slide.js ~ line 663 ~ flashcards.forEach ~ res", res)
+    },
+  });
+  function Base64ToImage(base64img, callback) {
+    var img = new Image();
+    img.onload = function() {
+      callback(img);
+    };
+    img.src = base64img;
+  }
+}
 window.addEventListener("DOMContentLoaded", init, false);

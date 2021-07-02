@@ -1203,6 +1203,12 @@ function addUserGps(isNew, id, question, image, posU) {
   // handle_gps_click();
 }
 
+function addUserQRCode(isNew, id, question, image, posU) {
+
+  $('#sortable').append($('#user_qrcode').html());
+  sortablePositionFunction(isNew, posU);
+}
+
 function addBrainTree(isNew, id, merchant_ID, braintree_public_key, braintree_private_key, braintree_item_name, braintree_item_price, posU) {
   if (!isNew) {
     console.log(id, merchant_ID, braintree_public_key, braintree_private_key, braintree_item_name, braintree_item_price, posU);
@@ -1626,6 +1632,15 @@ function sendUpdates() {
         };
         flashcards.push(temp);
         break;
+
+      case 'user_qrcode':
+        temp = {
+          lesson_type: 'user_qrcode',
+          question: 'User QR Code',
+          position: position_me,
+        };
+        flashcards.push(temp);
+        break;
     }
 
     attr_array = [];
@@ -1886,6 +1901,9 @@ $(document).ready(function () {
           if (flashcard.lesson_type == 'chiro_side') {
             addChiroSide(false, flashcard.id, flashcard.question, flashcard.options, flashcard.position);
           }
+          if (flashcard.lesson_type == 'user_qrcode') {
+            addUserQRCode(false, flashcard.id, flashcard.question, flashcard.options, flashcard.position);
+          }
         });
 
         getAllLessons();
@@ -2090,6 +2108,9 @@ $(document).ready(function () {
         icon: 'error',
         timer: 2000,
       });
+    }
+    if ($('#selectsegment').val() == 'user_qrcode') {
+      addUserQRCode(true);
     }
   });
 });
