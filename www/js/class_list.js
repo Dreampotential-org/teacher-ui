@@ -100,7 +100,8 @@ function SidebarCollapse() {
     var system_users;
     var system_students;
     var all_students;
-    
+    var table;
+
     $(document).ready(function() {
         $("#tabDiv").show();
         $("#systemUserDetail").hide();
@@ -130,6 +131,25 @@ function SidebarCollapse() {
                 </td>
                 </tr>`);
             })
+            table = $("#classes-details-table").DataTable( {
+                dom: 'lr<"table-filter-container">tip',
+                    initComplete: function(settings){
+                        var api = new $.fn.dataTable.Api( settings );
+                        $('.table-filter-container', api.table().container()).append(
+                            $('#table_filter').detach().show()
+                        );
+                        $('#table_filter select').on('change', function(){
+                            table.search(this.value).draw();   
+                        });
+                    }, 
+                
+                select: {
+                    'style': 'multi',
+                    'selector': 'td:first-child'
+                    },
+                order: [[1, 'asc']]
+            });
+            var select = table.column(0).checkboxes;
             $.ajax({
                 async: true,
                 crossDomain: true,

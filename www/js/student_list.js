@@ -63,6 +63,7 @@ var group_data = [
 ];
 
 var system_users;
+var table;
 $(document).ready(function() {
 
     $("#tabDiv").show();
@@ -90,6 +91,25 @@ $(document).ready(function() {
             <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
             </tr>`);
         })
+        table = $("#student-details-table").DataTable( {
+            dom: 'lr<"table-filter-container">tip',
+                 initComplete: function(settings){
+                      var api = new $.fn.dataTable.Api( settings );
+                      $('.table-filter-container', api.table().container()).append(
+                           $('#table_filter').detach().show()
+                      );
+                      $('#table_filter select').on('change', function(){
+                           table.search(this.value).draw();   
+                      });
+                 }, 
+            
+            select: {
+                 'style': 'multi',
+                 'selector': 'td:first-child'
+                 },
+            order: [[1, 'asc']]
+       });
+       var select = table.column(0).checkboxes;
     }).fail(function(err) {
         $('#studentloader').remove();
         alert("ERROR")
