@@ -998,59 +998,59 @@ function addUserTour(isNew, id, options,question,text,latitude,longitude, image,
   console.log("isNew, id, question, image, posU ");
   console.log(isNew,' , ' ,id, ' , ' ,question, ' , ' ,image, ' , ' ,posU);
 
-if (user_tour_count == 0) {
-  $('#user_tour')
-    .find('#tourinfo')
-    .attr('id', 'tourinfo_' + user_tour_count);
-} else {
-  $('#user_tour')
-    .find('#tourinfo_' + (user_tour_count - 1))
-    .attr('id', 'tourinfo_' + user_tour_count);
-}
-
-$('#user_tour')
-  .find('button')
-  .first()
-  .attr('onclick', 'addTour(' + user_tour_count + ')');
-  let tempTour = $('#user_tour').html();
-
-  if (!isNew) {
-    $('#user_tour').find('input').first().attr('value', question);
-    $('#user_tour').find('input').last().attr('value', image);
-
-    $('#user_tour').find('input').first().attr('data-id', id);
-    $('#user_tour').find('input').last().attr('data-id', id);
-
-    $('#user_tour').find('#latitude').attr('value', latitude);
-    $('#user_tour').find('#longitude').attr('value', longitude);
-    
-    $('#user_tour').find('output-image-file').attr('data-id', id);
-
-    $('#user_tour').find('textarea').html(text);
-    $('#user_tour').find('textarea').attr('data-id', id);
-
-    options.map((option) => {
-      // image_type = "imageFile";
-      addTour(user_tour_count, option);
-    });
-
-    // image_type = "imageFile";
-    // displayImage(image,$('#image_file').find('output-image-file').attr('data-id'));
-    // displayImage(image,id);
+  if (user_tour_count == 0) {
+    $('#user_tour')
+      .find('#tourinfo')
+      .attr('id', 'tourinfo_' + user_tour_count);
   } else {
-    $('#user_tour').find('input').first().attr('value', '');
-    $('#user_tour').find('input').last().attr('value', '');
-
-    $('#user_tour').find('#latitude').attr('value', '');
-    $('#user_tour').find('#longitude').attr('value', '');
-
-    $('#user_tour').find('textarea').html('');
-
-    // $('#image_file').find('#output-image-file').find('img').attr('src','');
-    // $('#user_tour').find('.output-image-file').find('img').attr('src','');
-    // image_type = "imageFile";
-    // displayImage("","");
+    $('#user_tour')
+      .find('#tourinfo_' + (user_tour_count - 1))
+      .attr('id', 'tourinfo_' + user_tour_count);
   }
+
+  $('#user_tour') 
+    .find('button')
+    .first()
+    .attr('onclick', 'addTour(' + user_tour_count + ')');
+    let tempTour = $('#user_tour').html();
+
+    if (!isNew) {
+      $('#user_tour').find('input').first().attr('value', question);
+      $('#user_tour').find('input').last().attr('value', image);
+
+      $('#user_tour').find('input').first().attr('data-id', id);
+      $('#user_tour').find('input').last().attr('data-id', id);
+
+      $('#user_tour').find('#latitude').attr('value', latitude);
+      $('#user_tour').find('#longitude').attr('value', longitude);
+      
+      $('#user_tour').find('output-image-file').attr('data-id', id);
+
+      $('#user_tour').find('textarea').html(text);
+      $('#user_tour').find('textarea').attr('data-id', id);
+
+      options.map((option) => {
+        // image_type = "imageFile";
+        addTour(user_tour_count, option);
+      });
+
+      // image_type = "imageFile";
+      // displayImage(image,$('#image_file').find('output-image-file').attr('data-id'));
+      // displayImage(image,id);
+    } else {
+      $('#user_tour').find('input').first().attr('value', '');
+      $('#user_tour').find('input').last().attr('value', '');
+
+      $('#user_tour').find('#latitude').attr('value', '');
+      $('#user_tour').find('#longitude').attr('value', '');
+
+      $('#user_tour').find('textarea').html('');
+
+      // $('#image_file').find('#output-image-file').find('img').attr('src','');
+      // $('#user_tour').find('.output-image-file').find('img').attr('src','');
+      // image_type = "imageFile";
+      // displayImage("","");
+    }
 
   $('#user_tour')
     .find('input')
@@ -1206,6 +1206,12 @@ function addUserGps(isNew, id, question, image, posU) {
 function addUserQRCode(isNew, id, question, image, posU) {
 
   $('#sortable').append($('#user_qrcode').html());
+  sortablePositionFunction(isNew, posU);
+}
+
+function addGpsSession(isNew, id, question, image, posU) {
+
+  $('#sortable').append($('#gps_session').html());
   sortablePositionFunction(isNew, posU);
 }
 
@@ -1641,6 +1647,16 @@ function sendUpdates() {
         };
         flashcards.push(temp);
         break;
+
+      case 'gps_session':
+        temp = {
+          lesson_type: 'gps_session',
+          question: 'GPS Session',
+          answer: attr_array[1],
+          position: position_me,
+        };
+        flashcards.push(temp);
+        break;
     }
 
     attr_array = [];
@@ -1904,6 +1920,9 @@ $(document).ready(function () {
           if (flashcard.lesson_type == 'user_qrcode') {
             addUserQRCode(false, flashcard.id, flashcard.question, flashcard.options, flashcard.position);
           }
+          if (flashcard.lesson_type == 'gps_session') {
+            addGpsSession(false, flashcard.id, flashcard.question, flashcard.options, flashcard.position);
+          }
         });
 
         getAllLessons();
@@ -2053,8 +2072,6 @@ $(document).ready(function () {
       addVideoFile(true);
     }
 
-  
-
     if ($('#selectsegment').val() == 'image_file') {
       addImageFile(true);
     }
@@ -2069,38 +2086,49 @@ $(document).ready(function () {
     if ($('#selectsegment').val() == 'iframe_link') {
       addIframeLink(true);
     }
+
     if ($('#selectsegment').val() == 'title_textarea') {
       addTitleTextarea(true);
     }
+
     if ($('#selectsegment').val() == 'sign_b64') {
       addSignaturePad(true);
     }
+
     if ($('#selectsegment').val() == 'brain_tree') {
       addBrainTree(true);
     }
+
     if ($('#selectsegment').val() == 'verify_phone') {
       addVerifyPhone(true);
     }
+
     if ($('#selectsegment').val() == 'user_video_upload') {
       addUserVideoUpload(true);
     }
+
     if ($('#selectsegment').val() == 'user_image_upload') {
       addUserImageUpload(true);
     }
+
     if ($('#selectsegment').val() == 'user_audio_upload') {
       addUserAudioUpload(true);
     }
+
     if ($('#selectsegment').val() == 'user_gps') {
       addUserGps(true);
     }
+
     if ($('#selectsegment').val() == 'chiro_front') {
       console.log("Chiro Front Added")
       addChiroFront(true);
     }
+
     if ($('#selectsegment').val() == 'chiro_side') {
       console.log("Chiro Side Added")
       addChiroSide(true);
     }
+
     if ($('#selectsegment').val() == 'select_type') {
       swal({
         title: 'Please select a type',
@@ -2109,8 +2137,13 @@ $(document).ready(function () {
         timer: 2000,
       });
     }
+
     if ($('#selectsegment').val() == 'user_qrcode') {
       addUserQRCode(true);
+    }
+
+    if ($('#selectsegment').val() == 'gps_session') {
+      addGpsSession(true);
     }
   });
 });
