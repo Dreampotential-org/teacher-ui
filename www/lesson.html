@@ -86,7 +86,8 @@
                     <option value="record_screen">Record Screen</option>
                     <option value="chiro_front">Chiroposture Front</option>
                     <option value="chiro_side">Chiroposture Side</option>
-                    <!-- <option value="user_qrcode">QR Code</option> -->
+                    <option value="user_qrcode">QR Code</option>
+                    <option value="gps_session">Gps Session</option>
                 </select>
                 <button class="btn form-control btn-success" style="margin-top: 20px;margin-bottom: 10px;"
                     id="add">Add</button>
@@ -99,16 +100,26 @@
             </div>
             <div class="col-xs-12">
                 <form id="lesson_form">
-                    <!-- <div class="speed_read" id="user_qrcode" style="display: none; padding-top: 15px">
+                    <div class="speed_read" id="user_qrcode" style="display: none; padding-top: 15px">
                         <div data-type="user_qrcode"
                             style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
                             <div class="row">
                                 <h4 class="col-xs-10 col-lg-10">QR Code</h4>
                                 <a class="remove_flashcard col-xs-2 col-lg-2"
-                                    style="color:rgb(46, 46, 46);font-size:16px;text-align:right;"> X </a>
+                                    style="color:rgb(46, 46, 46);font-size:16px;text-align:right;"> x </a>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
+                    <div class="speed_read" id="gps_session" style="display: none; padding-top: 15px">
+                        <div data-type="gps_session"
+                            style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div class="row">
+                                <h4 class="col-xs-10 col-lg-10">Gps Session</h4>
+                                <a class="remove_flashcard col-xs-2 col-lg-2"
+                                    style="color:rgb(46, 46, 46);font-size:16px;text-align:right;"> x </a>
+                            </div>
+                        </div>
+                    </div>
                     <div class="speed_read" id="jitsi_meet" style="display: none; padding-top: 15px">
                         <div data-type="jitsi_meet"
                             style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">

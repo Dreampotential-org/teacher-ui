@@ -10,6 +10,7 @@ var phone_verification_status = false;
 var session_id = null;
 var user_tour_array = [];
 var tempMap = 0;
+var gps_response;
 var imported = document.createElement("script");
 imported.src = "js/gps.js";
 document.head.appendChild(imported);
@@ -233,10 +234,10 @@ function nextSlide() {
       // console.log('flashcard_id',flashcard_id)
       document.removeEventListener("gpsPosition", () => {});
     }
-    // else if (type == "user_qrcode") {
-    //     console.log("User-qrcode slide page");
-    //     sendResponse(flashcard_id, answer);
-    //   }
+    else if (type == "gps_session") {
+      answer = gps_response;
+      sendResponse(flashcard_id, answer);
+    }
 
     if (
       current_slide != total_slides &&
@@ -603,7 +604,7 @@ function init() {
 
         if (flashcard.lesson_type == "chiro_side") {
           $("#theSlide").append(`
-                    <duv class="${className} ${
+                    <div class="${className} ${
             i == 0 ? "active" : ""
           }" id="flahscard_${i}" id="chiro_side">
                         <div alt="chiro_side">
@@ -624,19 +625,29 @@ function init() {
           i++;
         }
 
-        // if (flashcard.lesson_type == "user_qrcode") {
-        //     console.log("🚀 ~ file: slide.js ~ line 630 ~ flashcards.forEach ~ lesson_id", lesson_id)
+        if (flashcard.lesson_type == "user_qrcode") {
+            $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+                <h1>QR Code</h1>
+                <button class="btn btn-primary active"  onclick="qrcodeResponse(${lesson_id})" >Show QR</button>
+                <div id="main" ></div>
+                <p id="quesrq">${flashcard.question}</p>
+                </div>
+            `);
+            i++;
+        }
 
-            
-        //     $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
-        //         <h1>QR Code</h1>
-        //         <button class="btn btn-primary active"  onclick="qrcodeResponse(${lesson_id})" >Show QR</button>
-        //         <div id="main" ></div>
-        //         <p id="quesrq">${flashcard.question}</p>
-        //         </div>
-        //     `);
-        //     i++;
-        // }
+        if (flashcard.lesson_type == "gps_session") {
+          $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+              <h1>GPS Session</h1>
+              <div id="livedata" style="overflow:auto"></div>
+              <button class="btn btn-default" id='start_session'>Start Session</button>
+              <button class="btn btn-primary active" id='stop_session' style='display:none;'>Stop Session</button> 
+              <div id='distance' ></div>
+              </div>
+          `);
+
+          i++;
+        }
 
         if (flashcard.lesson_type == "jitsi_meet") {
           //         <meta charset="utf-8">
@@ -1456,14 +1467,15 @@ function init() {
                     $("#long_" + i).val(rf.longitude);
                     console.log("set previos gps value");
                   }
-                //   if (f.lesson_type == "user_qrcode") {
-                //     let ans = {};
-                //     try {
-                //       ans = rf.answer;
-                //     } catch (e) {
-                //     }
-                //     console.log("set previos user_qrcode value");
-                //   }
+                  if (f.lesson_type == "gps_session") {
+                    let ans = {};
+                    try {
+                      ans = JSON.parse(rf.answer);
+                    } catch (e) {
+                    }
+                    $("#gps_sess" + i).val(rf.answer);
+                    console.log("set previos gps value");
+                  }
                 }
               });
             });
@@ -1653,37 +1665,223 @@ function handleImageUpload(key, id) {
     });
 }
 
-// function qrcodeResponse(qrcode){
-//     $.ajax({
-//         async: true,
-//         url: SERVER + "courses_api/qrcode/" + qrcode ,
-//         type: "GET",
-//         crossDomain: true,
-//         crossOrigin: true,
-//         processData: false,
-//         contentType: "application/json",
-//         success: function (resqr) {
-//             console.log("🚀 ~ file: slide.js ~ line 1735 ~ data", typeof(resqr));
-//             var base64img = getBase64Img(resqr);
-//             Base64ToImage(base64img, function(img) {
-//                 document.getElementById('main').appendChild(img);   
-//             });
-//         },
-//         error: function (res) {
-//         console.log("🚀 ~ file: slide.js ~ line 663 ~ flashcards.forEach ~ res", res)
-    
-//         },
-//     });
-//     function Base64ToImage(base64img, callback) {
-//         var img = new Image();
-//         img.onload = function() {
-//             callback(img);
-//         };
-//         img.src = base64img;
-//     }
+function qrcodeResponse(lesson_id){
+  $("#main").html("")
+  $.ajax({
+    async: true,
+    url: SERVER + "courses_api/qrcode/" + lesson_id ,
+    type: "GET",
+    crossDomain: true,
+    crossOrigin: true,
+    processData: false,
+    contentType: "application/json",
+    success: function (responseqrcode) {
+      var base64img = "data:image/png;base64," + responseqrcode;
+      Base64ToImage(base64img, function(img) {
+        document.getElementById('main').appendChild(img);   
+      });
+    },
+    error: function (res) {
+      console.log("🚀 ~ file: slide.js ~ line 1766 ~ flashcards.forEach ~ res", res)
+    },
+  });
+  function Base64ToImage(base64img, callback) {
+    var img = new Image();
+    img.onload = function() {
+      callback(img);
+    };
+    img.src = base64img;
+  }
+}
 
-//     function getBase64Img(datats) {
-//         return "data:image/png;base64," + datats
-//     }
-// }
+var data = {};
+var dist_array = [];
+var interval;
+var CURRENT_POSITION = null;
+
+function start() {
+  $(document).delegate("#start_session", "click", function(e) {
+    $("#start_session").hide();
+    $("#stop_session").show();
+    $('#distance').html('');
+    $('#livedata').html('');
+
+    var start_session_time = new Date();
+    const out = document.getElementById("livedata");
+
+    interval = setInterval(function() {
+      var interval_time = new Date();
+      
+      var diffInMilliSeconds = Math.round(Math.abs(interval_time - start_session_time) / 1000);
+      const diff = timeConvCalc(diffInMilliSeconds);
+      a = diff.split(": ");
+      const total_time = ((parseInt(a[0]))*60*60) + ((parseInt(a[1]))*60) + parseInt(a[2]);
+
+      dist_array.push(data['latitude']);
+      dist_array.push(data['longitude']);
+      var lat1 = dist_array[0];
+      var lon1 = dist_array[1];
+      var lat2 = data['latitude'];
+      var lon2 = data['longitude'];
+      const dista = getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2);
+      
+      avg_speed = (dista *1000) / total_time;
+
+      const isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
+      const newElement = document.createElement("div");
+      newElement.textContent = format("Total Distance : ", dista, 'Speed :', avg_speed, "Total Time :", diff);
+      out.appendChild(newElement)
+      if (isScrolledToBottom) {
+        out.scrollTop = out.scrollHeight - out.clientHeight;
+      }
+
+      function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+        var R = 6371;
+        var dLat = deg2rad(lat2-lat1);
+        var dLon = deg2rad(lon2-lon1); 
+        var a = 
+          Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+          Math.sin(dLon/2) * Math.sin(dLon/2)
+          ;
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        var d = R * c;
+        return d;
+      }
+
+      function deg2rad(deg) {
+        return deg * (Math.PI/180)
+      }
+    }, 1000);
+    
+    function format () {
+      return Array.prototype.slice.call(arguments).join(' ');
+    }
+
+    $(document).ready(function () {
+      $.ajax({
+        url: SERVER + "sfapp2/api/member_session_start",
+        async: true,
+        crossDomain: true,
+        type: "POST",
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        processData: false,
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+        success: function (response) {
+          console.log("🚀 ~ file: gps_session.html ~ line 1856 ~ response", response.status);
+        },
+        error: function (err) {
+          console.log("🚀 ~ file: gps_session.html ~ line 1859 ~ err", err);
+        },
+      });
+    });
+  });
+
+  $(document).delegate("#stop_session", "click", function(e) {
+    $("#start_session").show();
+    $("#stop_session").hide();
+    clearInterval(interval);
+    
+    $(document).ready(function () {
+      $.ajax({
+        url: SERVER + "sfapp2/api/member_session_stop",
+        async: true,
+        crossDomain: true,
+        type: "POST",
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        processData: false,
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+        success: function (response) {
+          console.log("🚀 ~ file: gps_session.html ~ line 1884 ~ response", response);
+          gps_response = response;
+          $('#distance').append("<h2>Total Distance : "+ response.distance +" km</h2><h2>Averege Speed : "+ 
+                                  response.avg_speed + " m/s</h2><h2>Total Time : "+ timeConvCalc(response.total_time) +"</h2>");
+        },
+        error: function (err) {
+          console.log("🚀 ~ file: gps_session.html ~ line 1889 ~ err", err);
+        },
+      });
+    });
+  });
+}
+
+function timeConvCalc(diffInMilliSeconds) {
+  const days = Math.floor(diffInMilliSeconds / 86400);
+  diffInMilliSeconds -= days * 86400;
+  const hours = Math.floor(diffInMilliSeconds / 3600) % 24;
+  diffInMilliSeconds -= hours * 3600;
+  const minutes = Math.floor(diffInMilliSeconds / 60) % 60;
+  diffInMilliSeconds -= minutes * 60;
+  let difference = '';
+  if (days > 0) {
+    difference += (days === 1) ? `${days}: ` : `${days}: `;
+  }
+  difference += (hours === 0 || hours === 1) ? `${hours}: ` : `${hours}: `;
+  difference += (minutes === 0 || hours === 1) ? `${minutes}: ` : `${minutes}: `;
+  difference += (diffInMilliSeconds === 0 || minutes === 1 || hours === 1 ) ? `${diffInMilliSeconds}` : `${diffInMilliSeconds}`;
+
+  return difference;
+}
+
+var geo_options = {
+  enableHighAccuracy: true,
+  maximumAge: 30000,
+  timeout: 2700,
+};
+
+navigator.geolocation.watchPosition(geo_success, geo_error, geo_options);
+
+function geo_error(err) {
+  if (
+    err.code == 1 ||
+    err.code == err.PERMISSION_DENIED ||
+    err.code == err.UNKNOWN_ERROR
+  ) {
+    alert("GPS error");
+  }
+  console.log("errror no gps");
+  console.warn("ERROR(" + err.code + "): " + err.message);
+}
+
+function geo_success(position) {
+  CURRENT_POSITION = position;
+  console.log(position.coords.latitude + " " + position.coords.longitude);
+  data['latitude'] = position.coords.latitude;
+  data['longitude'] = position.coords.longitude;
+}
+
+let accelerometer = null;
+try {
+  accelerometer = new Accelerometer({ frequency: 60 });
+  accelerometer.onerror = (event) => {
+    if (event.error.name === 'NotAllowedError') {
+      console.log('Permission to access sensor was denied.');
+    } else if (event.error.name === 'NotReadableError') {
+      console.log('Cannot connect to the sensor.');
+    }
+  };
+  accelerometer.addEventListener('reading', () => {
+    console.log("Acceleration along the X-axis " + acl.x);
+    console.log("Acceleration along the Y-axis " + acl.y);
+    console.log("Acceleration along the Z-axis " + acl.z);
+  });
+  accelerometer.start();
+} catch (error) {
+  if (error.name === 'SecurityError') {
+    console.log('Sensor construction was blocked by the Permissions Policy.');
+  } else if (error.name === 'ReferenceError') {
+    console.log('Sensor is not supported by the User Agent.');
+  } else {
+    throw error;
+  }
+}
+window.addEventListener("DOMContentLoaded", start, false);
 window.addEventListener("DOMContentLoaded", init, false);
