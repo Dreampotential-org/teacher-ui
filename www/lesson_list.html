@@ -48,6 +48,9 @@
                 padding-left: 0px !important;
                 padding-right: 0px !important;
             }
+            .list-of-students{
+            padding:10px 0px!important;
+        }
         </style>
 
         <script>
@@ -74,7 +77,16 @@
                             <div class="container">
                                 <div id="tabDiv" class="row">
                                     <div class="col-md-12">
-                                        <p class="list-of-students">List of Lessons</p>
+                                    <div class="d-flex">
+                                        <div class="col-md-6 p-0"><p class="list-of-students">List of Lessons</p></div>
+                                        <div class="col-md-6 p-0 text-right mt-2">
+                                            <button type="button" onclick="addLesson()"
+                                                            class="btn btn-primary">
+                                                        <i class="fa fa-plus"></i> Add
+                                                    </button>
+                                        </div>
+                                    </div>
+                                        
 
                                         <div class="tab-content" id="nav-tabContent">
                                             <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
@@ -170,18 +182,6 @@
 
                                                 <!-- overlay over -->
 
-
-
-
-
-
-
-                                                <div class="text-right mt-2">
-                                                    <button type="button" onclick="addLesson()"
-                                                            class="btn btn-primary">
-                                                        <i class="fa fa-plus"></i> Add
-                                                    </button>
-                                                </div>
                                             </div>
                                             <div class="tab-pane fade" id="nav-profile" role="tabpanel"
                                                  aria-labelledby="nav-profile-tab">
