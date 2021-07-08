@@ -1326,7 +1326,7 @@ function init() {
           $("#theSlide").append(
             '<div class="' +
               className +
-              '"><div alt="title_text" style="height:500px"><h1>Image File</h1><h1> ' +
+              '"><div alt="title_text" style="height:500px"><h1> ' +
               flashcard.question +
               '</h1><img src= "' +
               flashcard.image +
