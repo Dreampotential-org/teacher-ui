@@ -650,26 +650,6 @@ function init() {
         }
 
         if (flashcard.lesson_type == "jitsi_meet") {
-          //         <meta charset="utf-8">
-          //         <meta http-equiv="content-type" content="text/html;charset=utf-8">
-          //     </head>
-          //     <body>
-          //         <script src="https://meet.jit.si/external_api.js"></script>
-          //         <script>
-          //             var domain = "meet.jit.si";
-          //             var options = {
-          //                 roomName: "JitsiMeetAPIExample",
-          //                 width: 700,
-          //                 height: 180,
-          //                 parentNode: undefined,
-          //                 configOverwrite: {},
-          //                 interfaceConfigOverwrite: {}
-          //             }
-          //             var  api  =  new  JitsiMeetExternalAPI ( domain ,  options ) ;
-          //         </script>
-          //     </body>
-          // </html> </div>
-          //         `);
           $("#theSlide").append(`<div class="${className} ${
             i == 0 ? "active" : ""
           }" id="flashcard_${flashcard.id}">
