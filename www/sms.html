@@ -59,6 +59,13 @@
                 padding-left: 0px !important;
                 padding-right: 0px !important;
             }
+            .contacts-box {
+                height:800px;
+            }
+            .message-datatable .row{
+                margin-right:0px!important;
+                margin-left:0px!important;
+            }
         </style>
 
         <script>
@@ -110,6 +117,17 @@
                                         <!--<img src="img/john.jpg" class="user-img" alt=""/>
                                                                   <p>John Doe</p>-->
                                     </div>
+                        <div class="message-datatable">            
+                        <table id="inboundCall" class="table table-striped table-bordered" style="width: 100%">
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Phone</th>
+                              </tr>
+                          </thead>
+                          <tbody id="inbound-data"></tbody>
+                        </table>
+                        </div>
                                     <div
                                         class="col-lg-12 col-sm-12 col-md-12 col-12 user-chats"
                                         >
@@ -313,7 +331,7 @@
 
             // Collapse/Expand icon
             //$('#collapse-icon').addClass('fa-angle-double-left');
-
+  
             // Collapse click
             function left_sidebar() {
                 SidebarCollapse();
@@ -338,26 +356,29 @@
                 // Collapse/Expand icon
                 //$('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
             }
-            $(document).ready(function () {
-                get_user_list(function (users) {
-                    $('#chat_user_loader').remove();
-                    var html = "";
-                    for (var user of users) {
-                        /// XXX @santosh add to users list section
-                        console.log(user);
-                        html += `<div class="single-contact row" id="${user.id}" onclick="open_chat(this, '${user.phone}', '${user.name}')">
-                                        <div class="col-md-12 col-12 contact-message-box">
-                                            <p class="contact-name">${user.name}</p>
-                                            <p class="contact-last-message">${user.phone}</p>
-                                        </div>
-                                    </div>`;
-                    }
 
-                    $(".user-chats").append(html);
-                });
+            $(document).ready(function () {
+            get_user_list(function (response) {
+                $('#chat_user_loader').remove();
+                for (var user of response){
+                    
+                $("#inbound-data").append(`<tr>
+                                        
+                                            <td class="single-contact row" id="${user.id}" onclick="open_chat(this, '${user.phone}', '${user.name}')">${user.name}</td>
+                                            <td>${user.phone}</td>
+                                        
+                                    </tr>`);
+                
+                }
+
+                $("#inboundCall").DataTable({"order": [[ 1, "desc" ]]});
+               
+            } 
+            
+        });
             });
 
-            /*IF NOT SCROLLED SHOW SCROLL BUTTON*/
+            /*IF NOT SCROLLED SHOW SCROLL BUTTON*/ 
             var objDiv = document.getElementById("message-box");
             var scrollBtn = document.getElementById("scroll-btn");
             var maxScrollValue = 0;
@@ -420,7 +441,7 @@
                     elements[i].classList.remove("active");
                 }
 
-                var chatBox = document.getElementById("chat-box");
+                var chatBox = document.getElementById("chat-box"); 
                 var contactsBox = document.getElementById("contacts-box");
                 contactsBox.classList.remove("d-none");
                 chatBox.style.display = "none";
