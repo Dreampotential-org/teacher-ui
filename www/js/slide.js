@@ -1330,7 +1330,7 @@ function init() {
               flashcard.question +
               '</h1><img src= "' +
               flashcard.image +
-              '" style="max-height:418px;margin:auto;display:block"></div></div>'
+              '" style="max-height:100%;margin:auto;display:block"></div></div>'
           );
         }
 
