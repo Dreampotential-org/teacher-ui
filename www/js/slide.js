@@ -179,13 +179,13 @@ function nextSlide() {
       timer: 2000,
     });
   }
-
+  console.log(loaded_flashcards)
   var current_flashcard = loaded_flashcards[current_slide - 1];
   current_flashcard = current_flashcard.id
     ? current_flashcard
     : loaded_flashcards[current_slide - 2];
   var flashcard_id = current_flashcard.id;
-
+  console.log(current_flashcard.lesson_type);
   updateProgressBar();
 
   if (!completed) {
@@ -561,7 +561,7 @@ function init() {
 
         if (flashcard.lesson_type == "verify_phone") {
           $("#theSlide").append(`
-                    <duv class="${className} ${
+                    <div class="${className} ${
             i == 0 ? "active" : ""
           }" id="flahscard_${i}" id="verify_phone">
                         <div alt="verify_phone">
@@ -580,7 +580,7 @@ function init() {
 
         if (flashcard.lesson_type == "chiro_front") {
           $("#theSlide").append(`
-                    <duv class="${className} ${
+                    <div class="${className} ${
             i == 0 ? "active" : ""
           }" id="flahscard_${i}" id="chiro_front">
                         <div alt="chiro_front">
@@ -1211,7 +1211,7 @@ function init() {
           $("#theSlide").append(
             '<div class="' +
               className +
-              '"><div alt="title_text" style="height:500px"><h1>Image File</h1><h1> ' +
+              '"><div alt="title_text" style="height:500px"><h1> ' +
               flashcard.question +
               '</h1><img src= "' +
               flashcard.image +
