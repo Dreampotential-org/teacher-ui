@@ -74,6 +74,10 @@ function sendResponse(flashcard_id, answer) {
     };
   } else {
     if (current_flashcard.lesson_type == "user_gps") {
+        // only prompt location if there is user_gps slide
+        navigator.geolocation.watchPosition(geo_success, geo_error,
+                                            geo_options);
+
       var data_ = {
         flashcard: flashcard_id,
         session_id: localStorage.getItem("session_id"),
@@ -1932,7 +1936,6 @@ var geo_options = {
   timeout: 2700,
 };
 
-navigator.geolocation.watchPosition(geo_success, geo_error, geo_options);
 
 function geo_error(err) {
   if (
