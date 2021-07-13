@@ -124,6 +124,8 @@ function sortablePositionFunction(isNew, posU) {
     $('#sortable').children().last().attr('data-position', pos);
     pos++;
   }
+  $( "#sortable" ).sortable();
+
 }
 
 function addSpeedRead(isNew, id, value, posU) {
