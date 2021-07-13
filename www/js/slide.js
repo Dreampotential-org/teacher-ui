@@ -11,9 +11,6 @@ var session_id = null;
 var user_tour_array = [];
 var tempMap = 0;
 var gps_response;
-var imported = document.createElement("script");
-imported.src = "js/gps.js";
-document.head.appendChild(imported);
 
 function updateProgressBar() {
   pct = (current_slide / total_slides) * 100;
@@ -497,6 +494,7 @@ function radioOnClick(valu) {
 }
 
 function init() {
+  $("body").css("display", "none")
   console.log("INIT dom");
   $("#sign-modal").load("signature/index.html");
   $("#verify-phone-modal").load("phone/index.html");
@@ -1537,7 +1535,9 @@ function init() {
                   }
 
                   if (f.lesson_type == "question_checkboxes") {
+                      console.log(rf.answer)
                     rf.answer.split(",").forEach((v) => {
+                      if (!(v))  { v = false; }
                       $(
                         "input[name=checkboxes_" + i + "][value=" + v + "]"
                       ).attr("checked", true);
@@ -1601,6 +1601,10 @@ function init() {
       }
     }
   );
+  // make load cleanly
+  setTimeout(function() {
+    $("body").css('display', 'block')
+  }, 1000);
 }
 
 function handleVideoUpload(key) {
