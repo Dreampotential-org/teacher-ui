@@ -74,6 +74,7 @@
                         icon: "success",
                     });
                     $('.swal-button--confirm').on('click', function(e){
+                        $("#clear-sign").click()
                         $('#signature').modal('hide');
                         if(window.location.pathname.endsWith('/signature/')){
                             if($('#signature-preview-body')){
