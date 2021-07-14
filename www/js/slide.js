@@ -710,13 +710,11 @@ function init() {
             };
             api = new JitsiMeetExternalAPI(domain, options);
           }
-          
         }
         if (flashcard.lesson_type == "record_webcam") {
           $("#theSlide").append(`<div class="${className} ${
             i == 0 ? "active" : ""
           }" id="flashcard_${flashcard.id}">
-        
         <h4>Recording Webcam</h4>
         <div class="btn-group btn-toggle" id="recording"> 
             <button class="btn btn-default" id="start_recording">ON</button>
@@ -726,7 +724,6 @@ function init() {
         <video controls autoplay id="record_webcam">
 
         </video>
-        
         </div>`);
           // let recording = document.getElementById("start_recording");
           var video = document.querySelector("#record_webcam");
@@ -1183,7 +1180,7 @@ function init() {
           $("#theSlide").append(
             '<div class="' +
               className +
-              '"><div alt="title_text" style="height:500px"><h1> ' +
+              '"><div alt="title_text" style=""><h1> ' +
               flashcard.question +
               "</h1><h3>" +
               flashcard.answer +
@@ -1309,7 +1306,7 @@ function init() {
           $("#theSlide").append(
             '<div class="' +
               className +
-              '"><div alt="title_text" style="height:500px"><h1>Video File</h1><h1> ' +
+              '"><div alt="title_text" style=""><h1>Video File</h1><h1> ' +
               flashcard.question +
               "</h1>" +
               (flashcard.image
@@ -1326,7 +1323,7 @@ function init() {
           $("#theSlide").append(
             '<div class="' +
               className +
-              '"><div alt="title_text" style="height:500px"><h1> ' +
+              '"><div alt="title_text" style=""><h1> ' +
               flashcard.question +
               '</h1><img src= "' +
               flashcard.image +
@@ -1371,7 +1368,7 @@ function init() {
           $("#theSlide").append(
             `<div class="' +
           ${className} +'"><div class="title_input">
-          <div alt="title_input" style="height:500px"><h1>GPS Note:</h1>
+          <div alt="title_input" style=""><h1>GPS Note:</h1>
           <p> ${flashcard.question}</p>
           <div><label>Latitude: </label>
           <input id="lat_${i}" value="0" disabled></div>
@@ -1401,7 +1398,7 @@ function init() {
           );
           $("#theSlide").append(
             `<div class="${className}">
-            <div alt="title_text" style="height:500px">
+            <div alt="title_text" style="">
             <h2> ${flashcard.question}</h2>
             <input type="file" class="form-control" value="Choose File" id="myFile" onchange="handleVideoUpload('user_video_upload')"/>
 
@@ -1422,11 +1419,11 @@ function init() {
           $("#theSlide").append(
             `<div class="${className}">
             <h1>User Image Upload</h1>
-            <div alt="title_text" style="height:500px">
+            <div alt="title_text" style="">
             <p> ${flashcard.question}</p>
             <input type="file" class="form-control" value="Choose File" id="image_upload_${flashcard.id}" onchange="handleImageUpload('user_image_upload',${flashcard.id})"/> 
 
-            <img style="height:500px; width:auto; margin:auto; display:none;" id="user-image-display_${flashcard.id}">
+            <img style="width:auto; margin:auto; display:none;" id="user-image-display_${flashcard.id}">
 
             </div>
           </div>
@@ -1438,7 +1435,7 @@ function init() {
           $("#theSlide").append(
             '<div class="' +
               className +
-              '"><div class="title_textarea"><div alt="title_text" style="height:500px"><h1> ' +
+              '"><div class="title_textarea"><div alt="title_text" style=""><h1> ' +
               flashcard.question +
               '</h1><textarea name ="textarea_' +
               i +
@@ -1449,9 +1446,9 @@ function init() {
           $("#theSlide").append(
             '<div class="' +
               className +
-              '"><div class="title_input"><div alt="title_input" style="height:500px"><h1> ' +
+              '"><div class="title_input"><div alt="title_input" style=""><h1> ' +
               flashcard.question +
-              '</h1><textarea name ="title_input_' +
+              '</h1><textarea style="height:100px" name ="title_input_' +
               i +
               '" class="form-control" placeholder="Enter you answer here"></textarea></div></div></div>'
           );
@@ -1461,7 +1458,7 @@ function init() {
           $("#theSlide").append(
             '<div class="' +
               className +
-              '"><div class="name_type"><div alt="name_type" style="height:500px"><h1> Enter your name: </h1><input name ="name_type_' +
+              '"><div class="name_type"><div alt="name_type" style=""><h1> Enter your name: </h1><input name ="name_type_' +
               i +
               '" class="form-control" placeholder="Enter you name here"></div></div></div>'
           );
@@ -1485,7 +1482,7 @@ function init() {
       });
 
       $("#theSlide").append(
-        '<div class="item"><div alt="quick_read" style="height:500px"><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1></div></div>'
+        '<div class="item"><div alt="quick_read" style=""><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1></div></div>'
       );
       if (session_id) {
         $.get(
@@ -1671,7 +1668,7 @@ function handleVideoUpload(key) {
               $("#theSlide #flashcard_" + current_slide + "").append(
                 '<div id="video_url"><p> Video URL : ' +
                   file_url +
-                  '</p><video id="videoplayer" style="height:500px;width:100%"; controls preload="metadata"> <source src="' +
+                  '</p><video id="videoplayer" style="width:100%"; controls preload="metadata"> <source src="' +
                   file_url +
                   "#t=0.5" +
                   '" type="' +
