@@ -322,11 +322,13 @@ function phone_verification_check() {
 }
 
 function get_session() {
-  session_id = localStorage.getItem("session_id");
-  if (session_id) {
-    console.log("Already have session_id " + session_id);
-    return session_id;
-  }
+  // updating behavor to create new session everytime
+
+  // session_id = localStorage.getItem("session_id");
+  // if (session_id) {
+  //  console.log("Already have session_id " + session_id);
+  //  return session_id;
+  // }
   $.ajax({
     url: SERVER + "courses_api/session/get",
     type: "GET",
@@ -503,10 +505,10 @@ function init() {
   $("#progress-section").hide();
   var lesson_id = getParam("lesson_id");
 
+  get_session();
   $.get(
     SERVER + "courses_api/slide/read/" + lesson_id,
     function (response, status, xhr) {
-      get_session();
       // phone_verification_check();
       console.log('>>>>>>>>>>>>>> slide', response);
       console.log(response);
