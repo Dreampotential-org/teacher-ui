@@ -220,7 +220,6 @@ function nextSlide() {
       answer = $(
         "input[name= input_signature_" + (current_slide - 1) + "]"
       ).val();
-        alert(answer)
       sendResponse(flashcard_id, answer);
     } else if (type == "name_type") {
       answer = $("input[name= name_type_" + (current_slide - 1) + "]").val();
