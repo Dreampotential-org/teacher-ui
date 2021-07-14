@@ -203,7 +203,7 @@ function nextSlide() {
       answer = $("textarea[name= textarea_" + (current_slide - 1) + "]").val();
       sendResponse(flashcard_id, answer);
     } else if (type == "title_input") {
-      answer = $("input[name= title_input_" + (current_slide - 1) + "]").val();
+      answer = $("textarea[name= title_input_" + (current_slide - 1) + "]").val();
       console.log("title inpt");
       sendResponse(flashcard_id, answer);
     } else if (type == "signature") {
@@ -508,14 +508,12 @@ function init() {
     function (response, status, xhr) {
       get_session();
       // phone_verification_check();
-      // console.log('>>>>>>>>>>>>>> slide', response);
+      console.log('>>>>>>>>>>>>>> slide', response);
       console.log(response);
-      document.getElementById("lesson_title").innerHTML = response.lesson_name
+      document.title = response.lesson_name
         ? response.lesson_name
         : "Lesson - " + lesson_id;
       total_slides = response.flashcards.length;
-      // $('head').append(`<title>${response.lesson_name ? response.lesson_name : "Lesson - " + lesson_id}</title>`)
-      // Updating Meta Attribute states
       $("#progress-section").show();
 
       $("#progress").html(current_slide + " out of " + total_slides);
@@ -1453,9 +1451,9 @@ function init() {
               className +
               '"><div class="title_input"><div alt="title_input" style="height:500px"><h1> ' +
               flashcard.question +
-              '</h1><input name ="title_input_' +
+              '</h1><textarea name ="title_input_' +
               i +
-              '" class="form-control" placeholder="Enter you answer here"></div></div></div>'
+              '" class="form-control" placeholder="Enter you answer here"></textarea></div></div></div>'
           );
         }
 
