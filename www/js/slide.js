@@ -20,17 +20,16 @@ function updateProgressBar() {
 }
 
 function updateSign(data_, event, imgId, signInput) {
-  console.log("yo");
-  $("#" + signInput).val(data_);
-  console.log("updating sign :" + imgId);
-  console.log("with: " + data_);
-  $("#" + imgId).attr("src", data_);
-  console.log("yo" + data_ + $("#" + imgId).attr("src"));
-  $("#" + imgId).removeAttr("hidden");
-
-  if (event) {
-    event.target.innerHTML = "Redraw Signature";
+  console.log("yo",event, event.target.parentNode);
+  if(event && data_){
+    console.log($('#flashcard_'+current_slide).find('#'+imgId)[0])
+    $('#flashcard_'+current_slide).find('#'+imgId).attr('src',data_);
+    $('#flashcard_'+current_slide).find('#'+imgId).removeAttr('hidden');
+    $('#flashcard_'+current_slide).find('#'+signInput).val(data_);
+    $('#flashcard_'+current_slide).find('button.btn').text('Redraw Signature');
   }
+  document.removeEventListener("signatureSubmitted",(e)=>{});
+  window.currentSignature = undefined;
 }
 
 function signLesson(event, imgId, signInput) {
@@ -39,7 +38,8 @@ function signLesson(event, imgId, signInput) {
   }
 
   document.addEventListener("signatureSubmitted", function (e) {
-    updateSign(window.currentSignature.data, event, imgId, signInput);
+    if(window.currentSignature)
+      updateSign(JSON.parse(JSON.stringify(window.currentSignature)).data, event, imgId, signInput);
   });
 }
 
