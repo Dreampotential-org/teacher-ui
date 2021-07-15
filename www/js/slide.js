@@ -636,16 +636,24 @@ function init() {
           i++;
         }
 
-        if (flashcard.lesson_type == "user_qrcode") {
+        if (flashcard.lesson_type == "user_qr_data") {
             $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
                 <h1>QR Code</h1>
-                <button class="btn btn-primary active"  onclick="qrcodeResponse(${lesson_id})" >Show QR</button>
                 <div id="main" ></div>
-                <p id="quesrq">${flashcard.question}</p>
                 </div>
             `);
+            qrcodeResponse(lesson_id);
             i++;
         }
+
+        if (flashcard.lesson_type == "user_qr_url") {
+          $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+              <h1>QR URL</h1>
+              <a href="${flashcard.question}" target="_blank">${flashcard.question}</a>
+              </div>
+          `);
+          i++;
+      }
 
         if (flashcard.lesson_type == "gps_session") {
           $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
@@ -1617,16 +1625,18 @@ function handleImageUpload(key, id) {
     });
 }
 
-function qrcodeResponse(lesson_id){
+function qrcodeResponse(data){
   $("#main").html("")
   $.ajax({
     async: true,
-    url: SERVER + "courses_api/qrcode/" + lesson_id ,
-    type: "GET",
+    url: SERVER + "courses_api/qrcode",
+    type: "POST",
     crossDomain: true,
     crossOrigin: true,
+    data: JSON.stringify(data),
+    dataType: "json",
+    contentType: "application/json; charset=utf-8",
     processData: false,
-    contentType: "application/json",
     success: function (responseqrcode) {
       var base64img = "data:image/png;base64," + responseqrcode;
       Base64ToImage(base64img, function(img) {
@@ -1637,13 +1647,13 @@ function qrcodeResponse(lesson_id){
       console.log("🚀 ~ file: slide.js ~ line 1766 ~ flashcards.forEach ~ res", res)
     },
   });
-  function Base64ToImage(base64img, callback) {
-    var img = new Image();
-    img.onload = function() {
-      callback(img);
-    };
-    img.src = base64img;
-  }
+}
+function Base64ToImage(base64img, callback) {
+  var img = new Image();
+  img.onload = function() {
+    callback(img);
+  };
+  img.src = base64img;
 }
 
 var data = {};
