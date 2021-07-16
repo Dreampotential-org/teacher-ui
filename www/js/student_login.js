@@ -94,7 +94,10 @@ $(document).ready(function() {
 
                 // displayPage("dashboard");
                 window.curr_user = response.user;
-                window.location.replace("student_dashboard.html");
+                if(response.is_teacher)
+                    window.location.replace("student_dashboard.html"); //replace with teacher dashboard when designed
+                else
+                    window.location.replace("student_class_dashboard.html"); 
             },
             error: function(e) {
                 swal({

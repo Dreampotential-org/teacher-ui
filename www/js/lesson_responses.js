@@ -10,12 +10,12 @@ $(document).ready(function () {
         type: "GET",
         url: SERVER+'courses_api/lesson/response/get/'+lesson_id+'/',
         dataType: 'json',
-        async: true,	
-        crossDomain: true,	
+        async: true,
+        crossDomain: true,
         crossOrigin: true,
-        headers: {	
+        headers: {
             "Authorization": `${localStorage.getItem('user-token')}`	
-        },	
+        },
         success: function (obj, textstatus) {
         console.log("🚀 ~ file: lesson_responses.js ~ line 83 ~ obj", obj)
         var columnsObj = [
@@ -66,7 +66,6 @@ $(document).ready(function () {
                         }
                     }
                 }
-                
             }},
         ];
         // console.log("🚀 ~ file: lesson_responses.js ~ line 100 ~ obj", obj)

@@ -11,9 +11,7 @@ var session_id = null;
 var user_tour_array = [];
 var tempMap = 0;
 var gps_response;
-var imported = document.createElement("script");
-imported.src = "js/gps.js";
-document.head.appendChild(imported);
+let api;
 
 function updateProgressBar() {
   pct = (current_slide / total_slides) * 100;
@@ -23,17 +21,16 @@ function updateProgressBar() {
 }
 
 function updateSign(data_, event, imgId, signInput) {
-  console.log("yo");
-  $("#" + signInput).val(data_);
-  console.log("updating sign :" + imgId);
-  console.log("with: " + data_);
-  $("#" + imgId).attr("src", data_);
-  console.log("yo" + data_ + $("#" + imgId).attr("src"));
-  $("#" + imgId).removeAttr("hidden");
-
-  if (event) {
-    event.target.innerHTML = "Redraw Signature";
+  console.log("yo",event, event.target.parentNode);
+  if(event && data_){
+    console.log($('#flashcard_'+current_slide).find('#'+imgId)[0])
+    $('#flashcard_'+current_slide).find('#'+imgId).attr('src',data_);
+    $('#flashcard_'+current_slide).find('#'+imgId).removeAttr('hidden');
+    $('#flashcard_'+current_slide).find('#'+signInput).val(data_);
+    $('#flashcard_'+current_slide).find('button.btn').text('Redraw Signature');
   }
+  document.removeEventListener("signatureSubmitted",(e)=>{});
+  window.currentSignature = undefined;
 }
 
 function signLesson(event, imgId, signInput) {
@@ -42,7 +39,8 @@ function signLesson(event, imgId, signInput) {
   }
 
   document.addEventListener("signatureSubmitted", function (e) {
-    updateSign(window.currentSignature.data, event, imgId, signInput);
+    if(window.currentSignature)
+      updateSign(JSON.parse(JSON.stringify(window.currentSignature)).data, event, imgId, signInput);
   });
 }
 
@@ -74,6 +72,10 @@ function sendResponse(flashcard_id, answer) {
     };
   } else {
     if (current_flashcard.lesson_type == "user_gps") {
+        // only prompt location if there is user_gps slide
+        navigator.geolocation.watchPosition(geo_success, geo_error,
+                                            geo_options);
+
       var data_ = {
         flashcard: flashcard_id,
         session_id: localStorage.getItem("session_id"),
@@ -83,12 +85,21 @@ function sendResponse(flashcard_id, answer) {
         longitude:
           CURRENT_POSITION != null ? CURRENT_POSITION.coords.longitude : "",
       };
-    } else {
-      var data_ = {
-        flashcard: flashcard_id,
-        session_id: localStorage.getItem("session_id"),
-        answer: answer ? answer : "",
-      };
+    } 
+    // else if(current_flashcard.lesson_type == "user_qrcode"){
+    //     console.log("🚀 ~ file: slide.js ~ line 86 ~ sendResponse ~ current_flashcard.lesson_type", current_flashcard.lesson_type)
+    //     var data_ = {
+    //         flashcard: flashcard_id,
+    //         session_id: localStorage.getItem("session_id"),
+    //         answer: "",
+    //     };
+    // }
+    else {
+        var data_ = {
+            flashcard: flashcard_id,
+            session_id: localStorage.getItem("session_id"),
+            answer: answer ? answer : "",
+        };
     }
   }
 
@@ -170,13 +181,13 @@ function nextSlide() {
       timer: 2000,
     });
   }
-
+  console.log(loaded_flashcards)
   var current_flashcard = loaded_flashcards[current_slide - 1];
   current_flashcard = current_flashcard.id
     ? current_flashcard
     : loaded_flashcards[current_slide - 2];
   var flashcard_id = current_flashcard.id;
-
+  console.log(current_flashcard.lesson_type);
   updateProgressBar();
 
   if (!completed) {
@@ -202,7 +213,7 @@ function nextSlide() {
       answer = $("textarea[name= textarea_" + (current_slide - 1) + "]").val();
       sendResponse(flashcard_id, answer);
     } else if (type == "title_input") {
-      answer = $("input[name= title_input_" + (current_slide - 1) + "]").val();
+      answer = $("textarea[name= title_input_" + (current_slide - 1) + "]").val();
       console.log("title inpt");
       sendResponse(flashcard_id, answer);
     } else if (type == "signature") {
@@ -229,6 +240,9 @@ function nextSlide() {
       answer = gps_response;
       sendResponse(flashcard_id, answer);
     }
+    else if (type == "jitsi_meet"){
+      api.dispose();
+    }
 
     if (
       current_slide != total_slides &&
@@ -251,28 +265,9 @@ function nextSlide() {
       answer = $("#note_" + (current_slide - 1)).val();
       sendResponse(flashcard_id, answer);
     }
-    // if (current_slide != total_slides && loaded_flashcards[current_slide].lesson_type == 'jitsi_meet') {
-    //   var domain = "vstream.lifeforceenergy.us";
-    //   var options = {
-    //     roomName: `${loaded_flashcards[current_slide].question}`,
-    //     // width: 700,
-    //     configOverwrite: {
-    //       startWithAudioMuted: true, prejoinPageEnabled: false,
-    //       startWithVideoMuted: false
-    //     },
-    //     height: 570,
-    //     parentNode: document.querySelector(`#flashcard_${loaded_flashcards[current_slide].id}`),
-    //     configOverwrite: {},
-    //     interfaceConfigOverwrite: {}
-    //   }
-    //   window.api = new JitsiMeetExternalAPI(domain, options);
-    //   console.log(api)
-    // }
-    // else if (type == 'jitsi_meet') {
-    //   window.api.executeCommand('hangup');
-    //   api.dispose();
-    // }
-
+    if (current_slide != total_slides && loaded_flashcards[current_slide].lesson_type == "jitsi_meet"){
+      startJitsiMeet(loaded_flashcards[current_slide]);
+    }
     $("#myCarousel").carousel("next");
   }
 }
@@ -282,6 +277,17 @@ function prevSlide() {
     current_slide--;
     $("#nextButton").html("Next");
   }
+  var current_flashcard = loaded_flashcards[current_slide+1];
+  console.log(current_flashcard)
+  if (current_flashcard) {
+    if (current_flashcard.lesson_type == "jitsi_meet"){
+      api.dispose();
+    }
+  }
+  if (loaded_flashcards[current_slide].lesson_type == "jitsi_meet"){
+    startJitsiMeet(loaded_flashcards[current_slide]);
+  }
+  
   updateProgressBar();
   console.log(current_slide);
   $("#myCarousel").carousel("prev");
@@ -321,11 +327,13 @@ function phone_verification_check() {
 }
 
 function get_session() {
-  session_id = localStorage.getItem("session_id");
-  if (session_id) {
-    console.log("Already have session_id " + session_id);
-    return session_id;
-  }
+  // updating behavor to create new session everytime
+
+  // session_id = localStorage.getItem("session_id");
+  // if (session_id) {
+  //  console.log("Already have session_id " + session_id);
+  //  return session_id;
+  // }
   $.ajax({
     url: SERVER + "courses_api/session/get",
     type: "GET",
@@ -415,6 +423,23 @@ function verifyPhone(event) {
     phone_verification_status = true;
   });
 }
+async function startJitsiMeet(flashcard) {
+  var domain = "meet.lifeforceenergy.us";
+  var options = {
+    roomName: flashcard.question,
+    // width: 700,
+    configOverwrite: {
+      startWithAudioMuted: true,
+      prejoinPageEnabled: false,
+      startWithVideoMuted: false,
+    },
+    height: 570,
+    parentNode: document.querySelector(`#flashcard_${flashcard.id}`),
+    configOverwrite: {},
+    interfaceConfigOverwrite: {},
+  };
+  api = new JitsiMeetExternalAPI(domain, options);
+}
 
 function chiroFront(event) {
   event.preventDefault();
@@ -493,6 +518,7 @@ function radioOnClick(valu) {
 }
 
 function init() {
+  $("body").css("display", "none")
   console.log("INIT dom");
   $("#sign-modal").load("signature/index.html");
   $("#verify-phone-modal").load("phone/index.html");
@@ -501,19 +527,17 @@ function init() {
   $("#progress-section").hide();
   var lesson_id = getParam("lesson_id");
 
+  get_session();
   $.get(
     SERVER + "courses_api/slide/read/" + lesson_id,
     function (response, status, xhr) {
-      get_session();
       // phone_verification_check();
-      // console.log('>>>>>>>>>>>>>> slide', response);
+      console.log('>>>>>>>>>>>>>> slide', response);
       console.log(response);
-      document.getElementById("lesson_title").innerHTML = response.lesson_name
+      document.title = response.lesson_name
         ? response.lesson_name
         : "Lesson - " + lesson_id;
       total_slides = response.flashcards.length;
-      // $('head').append(`<title>${response.lesson_name ? response.lesson_name : "Lesson - " + lesson_id}</title>`)
-      // Updating Meta Attribute states
       $("#progress-section").show();
 
       $("#progress").html(current_slide + " out of " + total_slides);
@@ -612,16 +636,24 @@ function init() {
           i++;
         }
 
-        if (flashcard.lesson_type == "user_qrcode") {
+        if (flashcard.lesson_type == "user_qr_data") {
             $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
                 <h1>QR Code</h1>
-                <button class="btn btn-primary active"  onclick="qrcodeResponse(${lesson_id})" >Show QR</button>
                 <div id="main" ></div>
-                <p id="quesrq">${flashcard.question}</p>
                 </div>
             `);
+            qrcodeResponse(lesson_id);
             i++;
         }
+
+        if (flashcard.lesson_type == "user_qr_url") {
+          $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+              <h1>QR URL</h1>
+              <a href="${flashcard.question}" target="_blank">${flashcard.question}</a>
+              </div>
+          `);
+          i++;
+      }
 
         if (flashcard.lesson_type == "gps_session") {
           $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
@@ -637,86 +669,19 @@ function init() {
         }
 
         if (flashcard.lesson_type == "jitsi_meet") {
-          //         $('#theSlide').append(`<div class="${className} ${i == 0 ? 'active' : ''}" id="flashcard_${i}" id="verify_email">
-          //         <html itemscope itemtype="http://schema.org/Product" prefix="og: http://ogp.me/ns#" xmlns="http://www.w3.org/1999/html">
-          //     <head>
-          //         <meta charset="utf-8">
-          //         <meta http-equiv="content-type" content="text/html;charset=utf-8">
-          //     </head>
-          //     <body>
-          //         <script src="https://meet.jit.si/external_api.js"></script>
-          //         <script>
-          //             var domain = "meet.jit.si";
-          //             var options = {
-          //                 roomName: "JitsiMeetAPIExample",
-          //                 width: 700,
-          //                 height: 180,
-          //                 parentNode: undefined,
-          //                 configOverwrite: {},
-          //                 interfaceConfigOverwrite: {}
-          //             }
-          //             var  api  =  new  JitsiMeetExternalAPI ( domain ,  options ) ;
-          //         </script>
-          //     </body>
-          // </html> </div>
-          //         `);
           $("#theSlide").append(`<div class="${className} ${
             i == 0 ? "active" : ""
           }" id="flashcard_${flashcard.id}">
           <h4>Join Conference</h4>
-        <div class="btn-group btn-toggle" id="join_conference"> 
-            <button class="btn btn-default" id="join">ON</button>
-            <button class="btn btn-primary active" id="disconnect">OFF</button>
+        <div class="btn-group btn-toggle" id="join_conference">
         </div>
         
         </div>`);
-          let start = document.getElementById("join");
-          let stop = document.getElementById("disconnect");
-          let api;
-          start.addEventListener("click", (ev) => {
-            startJitsiMeet();
-
-            start.classList.remove("btn-default");
-            start.classList.add("btn-primary");
-            start.classList.add("active");
-            stop.classList.remove("active");
-            stop.classList.remove("btn-primary");
-            stop.classList.add("btn-default");
-            // stop.classList.add("btn-default");
-          });
-          stop.addEventListener("click", (ev) => {
-            stop.classList.remove("btn-default");
-            stop.classList.add("btn-primary");
-            stop.classList.add("active");
-            start.classList.remove("active");
-            start.classList.remove("btn-primary");
-            start.classList.add("btn-default");
-            api.dispose();
-          });
-          async function startJitsiMeet() {
-            var domain = "meet.lifeforceenergy.us";
-            var options = {
-              roomName: flashcard.question,
-              // width: 700,
-              configOverwrite: {
-                startWithAudioMuted: true,
-                prejoinPageEnabled: false,
-                startWithVideoMuted: false,
-              },
-              height: 570,
-              parentNode: document.querySelector(`#flashcard_${flashcard.id}`),
-              configOverwrite: {},
-              interfaceConfigOverwrite: {},
-            };
-            api = new JitsiMeetExternalAPI(domain, options);
-          }
-          
         }
         if (flashcard.lesson_type == "record_webcam") {
           $("#theSlide").append(`<div class="${className} ${
             i == 0 ? "active" : ""
           }" id="flashcard_${flashcard.id}">
-        
         <h4>Recording Webcam</h4>
         <div class="btn-group btn-toggle" id="recording"> 
             <button class="btn btn-default" id="start_recording">ON</button>
@@ -726,7 +691,6 @@ function init() {
         <video controls autoplay id="record_webcam">
 
         </video>
-        
         </div>`);
           // let recording = document.getElementById("start_recording");
           var video = document.querySelector("#record_webcam");
@@ -809,111 +773,6 @@ function init() {
                   });
                 });
             };
-            // if (navigator.mediaDevices.getUserMedia) {
-            //     navigator.mediaDevices
-            //       .getUserMedia({ video: true, audio: true })
-            //       .then(function (stream) {
-            //         // video.srcObject = stream;
-            //         // let start = document.getElementById("start_recording");
-            //         // let stop = document.getElementById("stop_recording");
-            //         // let options = { mimeType: "video/webm;codecs=vp9" };
-            //         let mediaRecorder = new MediaRecorder(stream, options);
-            //         let chunks = [];
-
-            //         // start.addEventListener("click", (ev) => {
-            //         //   mediaRecorder.start();
-            //         //   start.classList.remove("btn-default");
-            //         //   start.classList.add("btn-primary");
-            //         //   start.classList.add("active");
-            //         //   stop.classList.remove("active");
-            //         //   stop.classList.remove("btn-primary");
-            //         //   stop.classList.add("btn-default");
-            //         //   // stop.classList.add("btn-default");
-            //         //   console.log("start recording video", mediaRecorder.state);
-            //         // });
-            //         // stop.addEventListener("click", (ev) => {
-            //         //   mediaRecorder.stop();
-            //         //   stop.classList.remove("btn-default");
-            //         //   stop.classList.add("btn-primary");
-            //         //   stop.classList.add("active");
-            //         //   start.classList.remove("active");
-            //         //   start.classList.remove("btn-primary");
-            //         //   start.classList.add("btn-default");
-            //         //   console.log("stop recording video", mediaRecorder.state);
-            //         // });
-            //         mediaRecorder.ondataavailable = function (ev) {
-            //           chunks.push(ev.data);
-            //         };
-            //         mediaRecorder.onstop = (ev) => {
-            //           let blob = new Blob(chunks);
-            //           chunks = [];
-            //           // flashcard id, video url from s3
-            //           var file = new File([blob], `${flashcard.id}.mp4`, {
-            //             type: "video",
-            //             lastModified: Date.now(),
-            //           });
-            //           var form = new FormData();
-            //           form.append("file", file);
-
-            //           var settings = {
-            //             async: true,
-            //             crossDomain: true,
-            //             url: SERVER + "s3_uploader/upload",
-            //             method: "POST",
-            //             type: "POST",
-            //             processData: false,
-            //             contentType: false,
-            //             mimeType: "multipart/form-data",
-            //             data: form,
-            //             headers: {
-            //               Authorization: localStorage.getItem("token"),
-            //             },
-            //           };
-            //           $.ajax(settings)
-            //             .done(function (response) {
-            //               console.log(
-            //                 "🚀 ~ file: index.html ~ line 57 ~ response",
-            //                 response
-            //               );
-            //               let resp = JSON.parse(response);
-            //               if (resp.message == "No file provided!") {
-            //                 swal({
-            //                   title: "File Not Select",
-            //                   text: resp.message,
-            //                   icon: "warning",
-            //                   timer: 1000,
-            //                 });
-            //               } else {
-            //                 console.log("this is else part");
-            //                 sendResponse(flashcard.id, resp.file_url);
-            //                 swal({
-            //                   title: "Good job!",
-            //                   text: "Video uploaded successfully!",
-            //                   icon: "success",
-            //                   timer: 1000,
-            //                 });
-            //                 // const file_url = response.file_url;
-            //                 video.src = response.file_url;
-            //               }
-            //             })
-            //             .fail(function (error) {
-            //               console.log(
-            //                 "🚀 ~ file: index.html ~ line 56 ~ error",
-            //                 error
-            //               );
-            //               swal({
-            //                 title: "Error!",
-            //                 text: "Video upload failed!",
-            //                 icon: "warning",
-            //                 timer: 1000,
-            //               });
-            //             });
-            //         };
-            //       })
-            //       .catch(function (err0r) {
-            //         console.log("Something went wrong!");
-            //       });
-            //   }
           }
 
           start.addEventListener("click", (ev) => {
@@ -1183,7 +1042,7 @@ function init() {
           $("#theSlide").append(
             '<div class="' +
               className +
-              '"><div alt="title_text" style="height:500px"><h1> ' +
+              '"><div alt="title_text" style=""><h1> ' +
               flashcard.question +
               "</h1><h3>" +
               flashcard.answer +
@@ -1309,7 +1168,7 @@ function init() {
           $("#theSlide").append(
             '<div class="' +
               className +
-              '"><div alt="title_text" style="height:500px"><h1>Video File</h1><h1> ' +
+              '"><div alt="title_text" style=""><h1>Video File</h1><h1> ' +
               flashcard.question +
               "</h1>" +
               (flashcard.image
@@ -1326,7 +1185,7 @@ function init() {
           $("#theSlide").append(
             '<div class="' +
               className +
-              '"><div alt="title_text" style="height:500px"><h1> ' +
+              '"><div alt="title_text" style=""><h1> ' +
               flashcard.question +
               '</h1><img src= "' +
               flashcard.image +
@@ -1371,7 +1230,7 @@ function init() {
           $("#theSlide").append(
             `<div class="' +
           ${className} +'"><div class="title_input">
-          <div alt="title_input" style="height:500px"><h1>GPS Note:</h1>
+          <div alt="title_input" style=""><h1>GPS Note:</h1>
           <p> ${flashcard.question}</p>
           <div><label>Latitude: </label>
           <input id="lat_${i}" value="0" disabled></div>
@@ -1401,7 +1260,7 @@ function init() {
           );
           $("#theSlide").append(
             `<div class="${className}">
-            <div alt="title_text" style="height:500px">
+            <div alt="title_text" style="">
             <h2> ${flashcard.question}</h2>
             <input type="file" class="form-control" value="Choose File" id="myFile" onchange="handleVideoUpload('user_video_upload')"/>
 
@@ -1422,11 +1281,11 @@ function init() {
           $("#theSlide").append(
             `<div class="${className}">
             <h1>User Image Upload</h1>
-            <div alt="title_text" style="height:500px">
+            <div alt="title_text" style="">
             <p> ${flashcard.question}</p>
             <input type="file" class="form-control" value="Choose File" id="image_upload_${flashcard.id}" onchange="handleImageUpload('user_image_upload',${flashcard.id})"/> 
 
-            <img style="height:500px; width:auto; margin:auto; display:none;" id="user-image-display_${flashcard.id}">
+            <img style="width:auto; margin:auto; display:none;" id="user-image-display_${flashcard.id}">
 
             </div>
           </div>
@@ -1438,7 +1297,7 @@ function init() {
           $("#theSlide").append(
             '<div class="' +
               className +
-              '"><div class="title_textarea"><div alt="title_text" style="height:500px"><h1> ' +
+              '"><div class="title_textarea"><div alt="title_text" style=""><h1> ' +
               flashcard.question +
               '</h1><textarea name ="textarea_' +
               i +
@@ -1449,11 +1308,11 @@ function init() {
           $("#theSlide").append(
             '<div class="' +
               className +
-              '"><div class="title_input"><div alt="title_input" style="height:500px"><h1> ' +
+              '"><div class="title_input"><div alt="title_input" style=""><h1> ' +
               flashcard.question +
-              '</h1><input name ="title_input_' +
+              '</h1><textarea style="height:100px" name ="title_input_' +
               i +
-              '" class="form-control" placeholder="Enter you answer here"></div></div></div>'
+              '" class="form-control" placeholder="Enter you answer here"></textarea></div></div></div>'
           );
         }
 
@@ -1461,7 +1320,7 @@ function init() {
           $("#theSlide").append(
             '<div class="' +
               className +
-              '"><div class="name_type"><div alt="name_type" style="height:500px"><h1> Enter your name: </h1><input name ="name_type_' +
+              '"><div class="name_type"><div alt="name_type" style=""><h1> Enter your name: </h1><input name ="name_type_' +
               i +
               '" class="form-control" placeholder="Enter you name here"></div></div></div>'
           );
@@ -1485,7 +1344,7 @@ function init() {
       });
 
       $("#theSlide").append(
-        '<div class="item"><div alt="quick_read" style="height:500px"><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1></div></div>'
+        '<div class="item"><div alt="quick_read" style=""><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1></div></div>'
       );
       if (session_id) {
         $.get(
@@ -1495,11 +1354,11 @@ function init() {
             "/" +
             localStorage.getItem("session_id"),
           function (response) {
-            // console.log(response);
+            console.log("🚀 ~ file: slide.js ~ line 1510 ~ init ~ response", response)
             response.forEach(function (rf) {
-              // console.log("🚀 ~ file: slide.js ~ line 777 ~ rf", rf)
-              // console.log(rf);
+              console.log("🚀 ~ file: slide.js ~ line 777 ~ rf", rf)
               loaded_flashcards.forEach(function (f, i) {
+                console.log("🚀 ~ file: slide.js ~ line 1538 ~ f", f)
                 if (rf.flashcard[0].id == f.id) {
                   if (f.lesson_type == "title_textarea") {
                     $("textarea[name=textarea_" + i).val(rf.answer);
@@ -1533,7 +1392,9 @@ function init() {
                   }
 
                   if (f.lesson_type == "question_checkboxes") {
+                      console.log(rf.answer)
                     rf.answer.split(",").forEach((v) => {
+                      if (!(v))  { v = false; }
                       $(
                         "input[name=checkboxes_" + i + "][value=" + v + "]"
                       ).attr("checked", true);
@@ -1576,10 +1437,10 @@ function init() {
             });
           }
         )
-          .done((res) =>
+        .done((res) =>
             console.log("🚀 ~ file: slide.js ~ line 727 ~ res", res)
-          )
-          .fail((err) => console.log("Invitation err", err));
+        )
+        .fail((err) => console.log("Invitation err", err));
       }
       if (total_slides && flashcards[0].lesson_type == "user_gps") {
         handle_gps_click();
@@ -1597,6 +1458,10 @@ function init() {
       }
     }
   );
+  // make load cleanly
+  setTimeout(function() {
+    $("body").css('display', 'block')
+  }, 1000);
 }
 
 function handleVideoUpload(key) {
@@ -1665,7 +1530,7 @@ function handleVideoUpload(key) {
               $("#theSlide #flashcard_" + current_slide + "").append(
                 '<div id="video_url"><p> Video URL : ' +
                   file_url +
-                  '</p><video id="videoplayer" style="height:500px;width:100%"; controls preload="metadata"> <source src="' +
+                  '</p><video id="videoplayer" style="width:100%"; controls preload="metadata"> <source src="' +
                   file_url +
                   "#t=0.5" +
                   '" type="' +
@@ -1760,16 +1625,18 @@ function handleImageUpload(key, id) {
     });
 }
 
-function qrcodeResponse(lesson_id){
+function qrcodeResponse(data){
   $("#main").html("")
   $.ajax({
     async: true,
-    url: SERVER + "courses_api/qrcode/" + lesson_id ,
-    type: "GET",
+    url: SERVER + "courses_api/qrcode",
+    type: "POST",
     crossDomain: true,
     crossOrigin: true,
+    data: JSON.stringify(data),
+    dataType: "json",
+    contentType: "application/json; charset=utf-8",
     processData: false,
-    contentType: "application/json",
     success: function (responseqrcode) {
       var base64img = "data:image/png;base64," + responseqrcode;
       Base64ToImage(base64img, function(img) {
@@ -1777,16 +1644,16 @@ function qrcodeResponse(lesson_id){
       });
     },
     error: function (res) {
-      console.log("🚀 ~ file: slide.js ~ line 1779 ~ flashcards.forEach ~ res", res)
+      console.log("🚀 ~ file: slide.js ~ line 1766 ~ flashcards.forEach ~ res", res)
     },
   });
-  function Base64ToImage(base64img, callback) {
-    var img = new Image();
-    img.onload = function() {
-      callback(img);
-    };
-    img.src = base64img;
-  }
+}
+function Base64ToImage(base64img, callback) {
+  var img = new Image();
+  img.onload = function() {
+    callback(img);
+  };
+  img.src = base64img;
 }
 
 var data = {};
@@ -1824,7 +1691,7 @@ function start() {
 
       const isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
       const newElement = document.createElement("div");
-      newElement.textContent = format("Total Distance : ", dista.toFixed(4), 'Speed :', avg_speed.toFixed(4), "Total Time :", diff);
+      newElement.textContent = format("Total Distance : ", dista, 'Speed :', avg_speed, "Total Time :", diff);
       out.appendChild(newElement)
       if (isScrolledToBottom) {
         out.scrollTop = out.scrollHeight - out.clientHeight;
@@ -1855,7 +1722,7 @@ function start() {
 
     $(document).ready(function () {
       $.ajax({
-        url: SERVER + "courses_api/member_session_start",
+        url: SERVER + "sfapp2/api/member_session_start",
         async: true,
         crossDomain: true,
         type: "POST",
@@ -1864,13 +1731,13 @@ function start() {
         contentType: "application/json; charset=utf-8",
         processData: false,
         headers: {
-          Authorization: localStorage.getItem('user-token'),
+          Authorization: localStorage.getItem('token'),
         },
         success: function (response) {
-          console.log("🚀 ~ file: gps_session.html ~ line 1869 ~ response", response.status);
+          console.log("🚀 ~ file: gps_session.html ~ line 1856 ~ response", response.status);
         },
         error: function (err) {
-          console.log("🚀 ~ file: gps_session.html ~ line 1872 ~ err", err);
+          console.log("🚀 ~ file: gps_session.html ~ line 1859 ~ err", err);
         },
       });
     });
@@ -1880,10 +1747,10 @@ function start() {
     $("#start_session").show();
     $("#stop_session").hide();
     clearInterval(interval);
-
+    
     $(document).ready(function () {
       $.ajax({
-        url: SERVER + "courses_api/member_session_stop",
+        url: SERVER + "sfapp2/api/member_session_stop",
         async: true,
         crossDomain: true,
         type: "POST",
@@ -1892,16 +1759,16 @@ function start() {
         contentType: "application/json; charset=utf-8",
         processData: false,
         headers: {
-          Authorization: localStorage.getItem('user-token'),
+          Authorization: localStorage.getItem('token'),
         },
         success: function (response) {
-          console.log("🚀 ~ file: gps_session.html ~ line 1897 ~ response", response);
+          console.log("🚀 ~ file: gps_session.html ~ line 1884 ~ response", response);
           gps_response = response;
           $('#distance').append("<h2>Total Distance : "+ response.distance +" km</h2><h2>Averege Speed : "+ 
                                   response.avg_speed + " m/s</h2><h2>Total Time : "+ timeConvCalc(response.total_time) +"</h2>");
         },
         error: function (err) {
-          console.log("🚀 ~ file: gps_session.html ~ line 1903 ~ err", err);
+          console.log("🚀 ~ file: gps_session.html ~ line 1889 ~ err", err);
         },
       });
     });
@@ -1932,7 +1799,6 @@ var geo_options = {
   timeout: 2700,
 };
 
-navigator.geolocation.watchPosition(geo_success, geo_error, geo_options);
 
 function geo_error(err) {
   if (

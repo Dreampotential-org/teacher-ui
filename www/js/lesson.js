@@ -17,6 +17,7 @@ var user_video_upload_count = 0;
 var user_image_upload_count = 0;
 var user_audio_upload_count = 0;
 var user_gps_count = 0;
+// var user_qrcode_count = 0;
 var sign_count = 0;
 var sortArray = [];
 var MODE;
@@ -35,6 +36,8 @@ var map_latitude=0;
 var map_longitude=0;
 var lat_dataid="";
 var lng_dataid="";
+var qr_url_count=0;
+var qr_data_count=0;
 
 window.addEventListener('DOMContentLoaded', init, false);
 var lesson_id = getParam('lesson_id');
@@ -124,6 +127,8 @@ function sortablePositionFunction(isNew, posU) {
     $('#sortable').children().last().attr('data-position', pos);
     pos++;
   }
+  $( "#sortable" ).sortable();
+
 }
 
 function addSpeedRead(isNew, id, value, posU) {
@@ -1203,10 +1208,35 @@ function addUserGps(isNew, id, question, image, posU) {
   // handle_gps_click();
 }
 
-function addUserQRCode(isNew, id, question, image, posU) {
-
-  $('#sortable').append($('#user_qrcode').html());
+function addUserQRUrl(isNew, id, question, posU) {
+  if (!isNew) {
+    $('#user_qr_url').find('input[type=url_text]').attr('value', question);
+    $('#user_qr_url').find('input').attr('data-id', id);
+  } else {
+    $('#user_qr_url').find('input[type=url_text]').attr('value', '');
+  }
+  $('#user_qr_url')
+    .find('input[type=url_text]')
+    .attr('name', 'url_title_' + qr_url_count);
+  $('#sortable').append($('#user_qr_url').html());
   sortablePositionFunction(isNew, posU);
+  qr_url_count++;
+}
+
+function addUserQRData(isNew, id, question, image, posU) {
+  if (!isNew) {
+    $('#user_qr_data').find('textarea').html(question);
+    $('#user_qr_data').find('teaxtarea').attr('data-id', id);
+  } else {
+    $('#user_qr_data').find('textarea').html('');
+  }
+  $('#user_qr_data')
+    .find('textarea')
+    .attr('name', 'data_textarea_' + qr_data_count);
+
+  $('#sortable').append($('#user_qr_data').html());
+  sortablePositionFunction(isNew, posU);
+  qr_data_count++;
 }
 
 function addGpsSession(isNew, id, question, image, posU) {
@@ -1391,7 +1421,10 @@ function sendUpdates() {
         tour_array.push(singleTour);
   
       });
-    }else {
+  //   }else if(flashcard_type=="user_qrcode"){
+  //   console.log("🚀 ~ file: lesson.js ~ line 1397 ~ flashcards_div.forEach ~ flashcard_type", flashcard_type)
+  }
+  else {
       real_flashcard_elements = [];
       current_flashcard_elements.forEach((current_flashcard_element) => {
         if (current_flashcard_element.attributes) {
@@ -1639,10 +1672,19 @@ function sendUpdates() {
         flashcards.push(temp);
         break;
 
-      case 'user_qrcode':
+      case 'user_qr_url':
         temp = {
-          lesson_type: 'user_qrcode',
-          question: 'User QR Code',
+          lesson_type: 'user_qr_url',
+          question: SERVER + "courses_api/QRcodeData=" + lesson_id,
+          position: position_me,
+        };
+        flashcards.push(temp);
+        break;
+
+      case 'user_qr_data':
+        temp = {
+          lesson_type: 'user_qr_data',
+          question: attr_array[0],
           position: position_me,
         };
         flashcards.push(temp);
@@ -1742,9 +1784,10 @@ function sendUpdates() {
         });
       },
       error: function (err) {
+      console.log("🚀 ~ file: lesson.js ~ line 1739 ~ sendUpdates ~ err", err)
         swal({
           title: 'Error Creating Lesson',
-          text: err.responseJSON.msg,
+          text: err.responseJSON,
           icon: 'error',
         });
       },
@@ -1917,8 +1960,11 @@ $(document).ready(function () {
           if (flashcard.lesson_type == 'chiro_side') {
             addChiroSide(false, flashcard.id, flashcard.question, flashcard.options, flashcard.position);
           }
-          if (flashcard.lesson_type == 'user_qrcode') {
-            addUserQRCode(false, flashcard.id, flashcard.question, flashcard.options, flashcard.position);
+          if (flashcard.lesson_type == 'user_qr_url') {
+            addUserQRUrl(false, flashcard.id, flashcard.question, flashcard.position);
+          }
+          if (flashcard.lesson_type == 'user_qr_data') {
+            addUserQRData(false, flashcard.id, flashcard.question, flashcard.options, flashcard.position);
           }
           if (flashcard.lesson_type == 'gps_session') {
             addGpsSession(false, flashcard.id, flashcard.question, flashcard.options, flashcard.position);
@@ -2086,38 +2132,49 @@ $(document).ready(function () {
     if ($('#selectsegment').val() == 'iframe_link') {
       addIframeLink(true);
     }
+
     if ($('#selectsegment').val() == 'title_textarea') {
       addTitleTextarea(true);
     }
+
     if ($('#selectsegment').val() == 'sign_b64') {
       addSignaturePad(true);
     }
+
     if ($('#selectsegment').val() == 'brain_tree') {
       addBrainTree(true);
     }
+
     if ($('#selectsegment').val() == 'verify_phone') {
       addVerifyPhone(true);
     }
+
     if ($('#selectsegment').val() == 'user_video_upload') {
       addUserVideoUpload(true);
     }
+
     if ($('#selectsegment').val() == 'user_image_upload') {
       addUserImageUpload(true);
     }
+
     if ($('#selectsegment').val() == 'user_audio_upload') {
       addUserAudioUpload(true);
     }
+
     if ($('#selectsegment').val() == 'user_gps') {
       addUserGps(true);
     }
+
     if ($('#selectsegment').val() == 'chiro_front') {
       console.log("Chiro Front Added")
       addChiroFront(true);
     }
+
     if ($('#selectsegment').val() == 'chiro_side') {
       console.log("Chiro Side Added")
       addChiroSide(true);
     }
+
     if ($('#selectsegment').val() == 'select_type') {
       swal({
         title: 'Please select a type',
@@ -2126,8 +2183,11 @@ $(document).ready(function () {
         timer: 2000,
       });
     }
-    if ($('#selectsegment').val() == 'user_qrcode') {
-      addUserQRCode(true);
+    if ($('#selectsegment').val() == 'user_qr_url') {
+      addUserQRUrl(true);
+    }
+    if ($('#selectsegment').val() == 'user_qr_data') {
+      addUserQRData(true);
     }
 
     if ($('#selectsegment').val() == 'gps_session') {
