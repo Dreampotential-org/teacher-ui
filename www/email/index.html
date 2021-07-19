@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head></head>
+
+    <body id="email-verification-body">
+        <div class="modal" id="email_verify" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle2">Email Verification</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="one">
+                            <div class="verify_email_illustration" style="display:flex;">
+                                <img src="../img/Confirm.svg" style="height:250px;margin:0 auto;"/>
+                            </div>
+                            <div id="email_block">
+                                <label>Email Address:</label>
+                                <input class="form-control" type="text" id="email_address" placeholder="Enter your email address">
+                            </div>
+                        </div>
+                        <div id="two">
+                            <div class="verify_email_illustration" style="display:flex;">
+                                <img src="../img/Confirm.svg" style="height:250px;margin:0 auto;"/>
+                            </div>
+                            <div id="code_block" >
+                                <p>OTP has been sent to email address <span id="email_address_info"></span></p>
+                                <p style="text-decoration:underline;cursor: pointer;" id="change-email">Change Email Address</p>
+                                <label >Code:</label>
+                                <input class="form-control" type="text" id="code_text" placeholder="Enter your code">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="send-email" class="btn btn-primary">Next</button>
+                        <button type="button" id="submit" class="btn btn-primary">Submit Code</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script> 
+            var email_address = '';
+            var code;
+
+            function stepOne(){
+                $("#one").show()
+                $("#two").hide()
+                $("#send-email").show()
+                $("#submit").hide()
+            }
+
+            function stepTwo(){
+                $("#one").hide()
+                $("#two").show()
+                $("#send-email").hide()
+                $("#submit").show()
+            }
+
+            $(document).ready(function() {
+                stepOne()
+            
+                $(document).delegate("#send-email", "click", function(e) {
+                    stepTwo()
+                    email_address = $("#email_address").val();
+
+                    if (email_address == '') {
+                        return alert("Please provide your email first");
+                    } else {
+                        $("#email_address_info").html('<b>'+email_address+'</b>');
+
+                        var data_ ={
+                            "email_address": email_address,
+                            "session_id": localStorage.session_id
+                        }
+
+                        $.ajax({
+                            url: SERVER + "courses_api/confirm/email",
+                            data: JSON.stringify(data_),
+                            type: 'POST',
+                            contentType: 'application/json',
+                            success: function (data){
+                                alert("Email Sent")
+                            },
+                            error: function(res){
+                                console.log("🚀 ~ file: index.html ~ line 107 ~ res", res)
+                            }
+                        })
+                    }
+                });
+
+
+                $(document).delegate("#submit", "click", function(e) {
+                    email_address = $("#email_address").val();
+                    code = $("#code_text").val();
+
+                    if (email_address == '') {
+                        return alert("Please provide your email first");
+                    } else {
+                        var data_ ={
+                            "session_id": localStorage.session_id,
+                            "code_2fa": code
+                        }
+
+                        $.ajax({
+                            url: SERVER + "courses_api/verify/email",
+                            data: JSON.stringify(data_),
+                            type: 'POST',
+                            contentType: 'application/json',
+                            success: function (data){
+                                alert("Code Verified")
+                                const evt = new Event("emailVerified", {"bubbles":true, "cancelable":false});
+                                document.dispatchEvent(evt);
+                            },
+                            error: function(res){
+                                alert("Code didn't match");
+                            }
+                        })   
+                    }
+                });
+
+
+                $("#change-email").on('click', function() {
+                    stepOne()
+                })
+            });
+        </script>
+    </body>
+</html>

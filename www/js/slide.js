@@ -423,6 +423,17 @@ function verifyPhone(event) {
     phone_verification_status = true;
   });
 }
+
+function verifyEmail(event) {
+  if ($("#email_verify")) {
+    $("#email_verify").modal("show");
+  }
+
+  document.addEventListener("emailVerified", function (e) {
+    $("#email_verify").modal("hide");
+  });
+}
+
 async function startJitsiMeet(flashcard) {
   var domain = "meet.lifeforceenergy.us";
   var options = {
@@ -522,6 +533,7 @@ function init() {
   console.log("INIT dom");
   $("#sign-modal").load("signature/index.html");
   $("#verify-phone-modal").load("phone/index.html");
+  $("#verify-email-modal").load("email/index.html");
   $("#video-modal").load("video/index.html");
   $("#gps-modal").load("gps/index.html");
   $("#progress-section").hide();
@@ -653,7 +665,7 @@ function init() {
               </div>
           `);
           i++;
-      }
+        }
 
         if (flashcard.lesson_type == "gps_session") {
           $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
@@ -665,6 +677,17 @@ function init() {
               </div>
           `);
 
+          i++;
+        }
+
+        if (flashcard.lesson_type == "email_verify") {
+          $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flahscard_${i}" id="email_verify">
+              <div alt="email_verify">
+                <input type="text" hidden name="email_verify_${i}" id="verifyEmail">
+                <button class="btn btn-primary" type="button" onclick="verifyEmail(event)"> Click To Verify Email Address </button>
+              </div>
+            </div>
+          `);
           i++;
         }
 
