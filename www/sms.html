@@ -473,10 +473,7 @@
                 $("#user-name").empty();
                 $("#user-name").text(user_name);
                 $('#message-box').append(loader);
-                
                 user_phone = phonenum;
-                send_number_in_view(phonenum)
-
                 //removing any active class in chats
                 var elements = document.querySelectorAll(".single-contact");
                 for (var i = 0; i < elements.length; i++) {
@@ -500,7 +497,7 @@
 
                 var html = "";
                 get_sms_to_number(phonenum, function (res) {
-                    console.log("res",res);
+                    console.log(res);
                     var filtered_data = res.filter(
                             (item) =>
                         (item.to == "+1" + phonenum && item.from == "+15102885469") ||
@@ -535,29 +532,7 @@
                     $("#message-box").append(html);
                     scroll_to_bottom();
                 });
-                console.log("phonene",phonenum);
-                //send to the phone number
-               function send_number_in_view(phonenum){
-                   console.log("fs",phonenum)
-                    $.ajax({
-                        
-                        url : SERVER + "voip/api_voip/list_sms",
-                        async : true,
-                        crossDomain : true,
-                        crossOrigin : true,
-                        type : "POST",
-                        data : {
-                            "to_number" : phonenum,
-                            
-                        },
-                        headers: { "Authorization": `${localStorage.getItem('user-token')}` }
-                    }).done( () => {
-                            console.log("success")
-                            
-                    }).fail( (err) => {
-                            console.log(err)
-                    })
-               }    
+               
             }
         </script>
     </body>
