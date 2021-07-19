@@ -17,7 +17,6 @@ var user_video_upload_count = 0;
 var user_image_upload_count = 0;
 var user_audio_upload_count = 0;
 var user_gps_count = 0;
-// var user_qrcode_count = 0;
 var sign_count = 0;
 var sortArray = [];
 var MODE;
@@ -38,6 +37,7 @@ var lat_dataid="";
 var lng_dataid="";
 var qr_url_count=0;
 var qr_data_count=0;
+var email_verify_count=0;
 
 window.addEventListener('DOMContentLoaded', init, false);
 var lesson_id = getParam('lesson_id');
@@ -1239,6 +1239,16 @@ function addUserQRData(isNew, id, question, image, posU) {
   qr_data_count++;
 }
 
+function addVerifyEmail(isNew, id, question, image, posU) {
+  if (!isNew) {
+  } else {
+  }
+  
+  $('#sortable').append($('#email_verify').html());
+  sortablePositionFunction(isNew, posU);
+  email_verify_count++;
+}
+
 function addGpsSession(isNew, id, question, image, posU) {
 
   $('#sortable').append($('#gps_session').html());
@@ -1689,6 +1699,15 @@ function sendUpdates() {
         };
         flashcards.push(temp);
         break;
+      
+      case 'email_verify':
+        temp = {
+          lesson_type: 'email_verify',
+          question: $("#input[type=email_text]").val(),
+          position: position_me,
+        };
+        flashcards.push(temp);
+        break;
 
       case 'gps_session':
         temp = {
@@ -1969,6 +1988,9 @@ $(document).ready(function () {
           if (flashcard.lesson_type == 'gps_session') {
             addGpsSession(false, flashcard.id, flashcard.question, flashcard.options, flashcard.position);
           }
+          if (flashcard.lesson_type == 'email_verify') {
+            addVerifyEmail(false, flashcard.id, null, flashcard.position + 1);
+          }
         });
 
         getAllLessons();
@@ -2186,12 +2208,17 @@ $(document).ready(function () {
     if ($('#selectsegment').val() == 'user_qr_url') {
       addUserQRUrl(true);
     }
+
     if ($('#selectsegment').val() == 'user_qr_data') {
       addUserQRData(true);
     }
 
     if ($('#selectsegment').val() == 'gps_session') {
       addGpsSession(true);
+    }
+
+    if ($('#selectsegment').val() == 'email_verify') {
+      addVerifyEmail(true);
     }
   });
 });
