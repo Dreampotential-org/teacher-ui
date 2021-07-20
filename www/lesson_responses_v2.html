@@ -25,16 +25,41 @@
         <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
         <script src="js/lesson_results.js"></script>
         <script src="js/main.js"></script>
+        <script type="text/javascript" src="js/downloadcsv.js"></script>
     </head>
 
     <style>
-
+      .download-btn{
+        text-align: end;
+        margin: 20px;
+      }
+      .download-btn button{
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #5cb85c;
+        border: none;
+        color: white;
+        transition: 0.5s all ease;
+      }
+      .download-btn button:hover{
+        color: #fff;
+        background-color: #449d44;
+      }
+      .download-btn button:focus{
+        outline: none;
+      }
     </style>
 
 
     <body>
-      <table border=1>
+      <div class="download-btn">
+        <button onclick="exportData()" id="export"><span class="glyphicon glyphicon-download"></span>Download CSV</button>
+      </div>
+      <div class="table-content">
+        <table id="tblStocks" border=1>
 
-      </table>
+        </table>
+      </div>
     </body>
 </html>

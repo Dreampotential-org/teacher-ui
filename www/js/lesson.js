@@ -1703,7 +1703,7 @@ function sendUpdates() {
       case 'email_verify':
         temp = {
           lesson_type: 'email_verify',
-          question: $("#input[type=email_text]").val(),
+          question: "Verified Email",
           position: position_me,
         };
         flashcards.push(temp);
