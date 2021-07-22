@@ -239,6 +239,9 @@ function nextSlide() {
     else if (type == "gps_session") {
       answer = gps_response;
       sendResponse(flashcard_id, answer);
+    }else if (type == "email_verify") {
+      answer = $("input[id= email_address]").val();
+      sendResponse(flashcard_id, answer);
     }
     else if (type == "jitsi_meet"){
       api.dispose();
@@ -683,8 +686,8 @@ function init() {
         if (flashcard.lesson_type == "email_verify") {
           $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flahscard_${i}" id="email_verify">
               <div alt="email_verify">
-                <input type="text" hidden name="email_verify_${i}" id="verifyEmail">
                 <button class="btn btn-primary" type="button" onclick="verifyEmail(event)"> Click To Verify Email Address </button>
+                <p>Verified Email <span id="email_address_info"></span></p>
               </div>
             </div>
           `);
@@ -1454,6 +1457,9 @@ function init() {
                     }
                     $("#gps_sess" + i).val(rf.answer);
                     console.log("set previos gps value");
+                  }
+                  if (f.lesson_type == "email_verify") {
+                    $("input[name=email_verify_" + i).val(rf.answer);
                   }
                 }
               });
