@@ -60,6 +60,9 @@
         padding-left: 0px !important;
         padding-right: 0px !important;
       }
+      .d-dflex .iti {
+        display:flex!important;
+      }
     </style>
 
     <script>
@@ -95,22 +98,22 @@
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
                       <div class="tab-pane fade show active" id="nav-call" role="tabpanel" aria-labelledby="nav-call-tab">
-                        <form>
+                        <form id="submitCallForm">
                           <div class="form-group">
                             <select class="form-control" id="sourceCallNumber">
                               <option value="" selected>Select Source Number</option>
                               <option value="(425) 578-5798">(425) 578-5798</option>
                             </select>
                           </div>
-                          <div class="form-group">
+                          <div class="form-group d-dflex">
                             <input type="tel" class="form-control" id="dest_num_call" placeholder="Dest Number"  required/>
                           </div>
                           
-                          <div class="form-group">
-                              <input type="tel" class="form-control" id="call" placeholder="Your Number"  required/>
+                          <div class="form-group d-dflex">
+                              <input type="tel" class="form-control" id="getYourNum" placeholder="Your Number"  required/>
                           </div>
                         
-                          <button class="btn btn-primary float-right" id="make_call" type="button"><i class="fa fa-phone-square"></i> Call</button>
+                          <button class="btn btn-primary float-right" id="make_call" type="submit"><i class="fa fa-phone-square"></i> Call</button>
                         </form>
                       </div>
                       <div class="tab-pane fade" id="nav-sms" role="tabpanel" aria-labelledby="nav-sms-tab">
@@ -121,7 +124,7 @@
                               <option value="(425) 578-5798">(425) 578-5798</option>
                             </select>
                           </div>
-                          <div class="form-group">
+                          <div class="form-group d-dflex">
                             <input type="tel" class="form-control" id="dest_num_sms" placeholder="Dest Number"  required/>
                           </div>
                           <div class="form-group">
@@ -176,47 +179,81 @@
       function left_sidebar() {
         SidebarCollapse();
       }
-      const yourNumberInputField = document.querySelector("#call");
+      const destNumCallInputField = document.querySelector("#dest_num_call");
+      const destNumCallInput = window.intlTelInput(destNumCallInputField, {
+        utilsScript:
+        "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+      });
+      const yourNumberInputField = document.querySelector("#getYourNum");
       const yourNumberInput = window.intlTelInput(yourNumberInputField, {
         utilsScript:
         "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
       });
-      $("#make_call").click (() => {
+      $("#make_call").click ((e) => {
+        e.preventDefault()
         source_num_call = $('#sourceCallNumber').val();
         console.log("🚀 ~ file: call_menu.html ~ line 186 ~ $ ~ source_num_call", source_num_call)
-        dest_num_call = $("#dest_num_call").val()
+        dest_num_call = destNumCallInput.getNumber()  //$("#dest_num_call").val() 
         console.log("🚀 ~ file: call_menu.html ~ line 188 ~ $ ~ dest_num_call", dest_num_call)
         your_num = yourNumberInput.getNumber()
         console.log("🚀 ~ file: call_menu.html ~ line 190 ~ $ ~ your_num", your_num)
         console.log("🚀 ~ file: call_menu.html ~ line 219 ~ $ ~ SERVER", SERVER)
-        $.ajax({
-          url: SERVER + "voip/api_voip/join_conference",
-          async: true,
-          crossDomain: true,
-          crossOrigin: true,
-          type: "POST",
-          data : {
-            "source_number" : source_num_call,
-            "dest_number" : dest_num_call,
-            "your_number" : your_num,
-          },
-          headers: { "Authorization": `${localStorage.getItem('user-token')}` }
-        }).done( () => {
-            swal({	
-                title: "Calling",
-                text: "You have successfully make_call", 
-                icon: "success",
+        
+        if (source_num_call === ''){
+          swal({	
+                title: "Select source number",
+                text: "You have to select source number", 
+                icon: "warning",
                 timer: 3000
-                })
-        }).fail( (err) => {
-            swal({	
-                title: "not calling",	
-                text: "somthing went wrong.",	
-                icon: "error", 
+              })
+        }
+        else if (dest_num_call === ''){
+          swal({	
+                title: "Enter designation number",
+                text: "You have to enter  number", 
+                icon: "warning",
                 timer: 3000
-                });	
-            console.log(err)
-        })
+              })
+        }
+        else if (your_num === ''){
+          swal({	
+                title: "Enter your number",
+                text: "You have to enter  number", 
+                icon: "warning",
+                timer: 3000
+              })
+        }
+        else {
+          $.ajax({
+            url: SERVER + "voip/api_voip/join_conference",
+            async: true,
+            crossDomain: true,
+            crossOrigin: true,
+            type: "POST",
+            data : {
+              "source_number" : source_num_call,
+              "dest_number" : dest_num_call,
+              "your_number" : your_num,
+            },
+            headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+          }).done( () => {
+              swal({	
+                  title: "Calling",
+                  text: "You have successfully make_call", 
+                  icon: "success",
+                  timer: 3000
+                  })
+                  $('#submitCallForm').trigger("reset");
+          }).fail( (err) => {
+              swal({	
+                  title: "not calling",	
+                  text: "somthing went wrong.",	
+                  icon: "error", 
+                  timer: 3000
+                  });	
+              console.log(err)
+          })
+        }  
       })
       
       const destNumSmsInputField = document.querySelector("#dest_num_sms");
