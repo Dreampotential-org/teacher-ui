@@ -379,6 +379,7 @@ function SidebarCollapse() {
                     "student": student,
                     "class": class_,
                 },
+                headers: { "Authorization": `Token ${localStorage.getItem('user-token')}` },
                 success: () => {
                     location.reload()
                 }
