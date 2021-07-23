@@ -205,27 +205,30 @@
 
     $(document).ready(function () {
       list_inbound_calls(function (response) {
-        var users = JSON.parse(response)
         $('#inboundCallsLoader').remove();
-        users.forEach((item) => {
-          $("#inbound-data").append(`<tr>
-                        <td>${item.fields.date}</td>
-                        <td>${item.fields.from_number}</td>
-                        <td>${item.fields.to_number}</td>
-                        <td><audio controls >
-                        <source src="${item.fields.recording_url}" type="audio/mpeg">
-                        </audio></td>
-                        </tr>`);
-          $('#outboundCallsLoader').remove();
-          $("#outbound-data").append(`<tr>
-                        <td>${item.fields.date}</td>
-                        <td>${item.fields.from_number}</td>
-                        <td>${item.fields.to_number}</td>
-                        <td><audio controls >
-                        <source src="${item.fields.recording_url}" type="audio/mpeg">
-                        </audio></td>
-                        </tr>`);
-        });
+        for (var item of response) {
+          if (item.direction == 'inbound'){
+            $("#inbound-data").append(`<tr>
+                          <td>${item.date_created}</td>
+                          <td>${item.from}</td>
+                          <td>${item.to}</td>
+                          <td><audio controls >
+                          <source src="${item.recording}" type="audio/mpeg">
+                          </audio></td>
+                          </tr>`);
+          } 
+          else if(item.direction == 'outbound-api' ){ 
+            $('#outboundCallsLoader').remove();
+            $("#outbound-data").append(`<tr>
+                          <td>${item.date_created}</td>
+                          <td>${item.from}</td>
+                          <td>${item.to}</td>
+                          <td><audio controls >
+                          <source src="${item.recording}" type="audio/mpeg">
+                          </audio></td>
+                          </tr>`);
+          }                
+        };
 
         $("#inboundCall").DataTable();
         $("#outboundCall").DataTable();
