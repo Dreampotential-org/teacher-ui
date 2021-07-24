@@ -2,7 +2,7 @@ var answer = "";
 var signature = "";
 var current_slide = 0;
 var total_slides = 0;
-var loaded_flashcards = null;
+var loaded_flashcards = "";
 var pct = 0;
 var completed = false;
 var signature = [];
@@ -13,14 +13,14 @@ var tempMap = 0;
 var gps_response;
 let api;
 
-function updateProgressBar() {
-  pct = (current_slide / total_slides) * 100;
-  $(".progress-bar").css("width", pct + "%");
-  $(".progress-bar").attr("aria-valuenow", pct);
-  $("#progress").html(current_slide + " out of " + total_slides);
-}
+// function updateProgressBar() {
+//   pct = (current_slide / total_slides) * 100;
+//   $(".progress-bar").css("width", pct + "%");
+//   $(".progress-bar").attr("aria-valuenow", pct);
+//   $("#progress").html(current_slide + " out of " + total_slides);
+// }
 
-function updateSign(data_, event, imgId, signInput) {
+function updateSign(data_, event, imgId, signInput, data) {
   console.log("yo",event, event.target.parentNode);
   if(event && data_){
     console.log($('#flashcard_'+current_slide).find('#'+imgId)[0])
@@ -31,26 +31,28 @@ function updateSign(data_, event, imgId, signInput) {
   }
   document.removeEventListener("signatureSubmitted",(e)=>{});
   window.currentSignature = undefined;
-}
+  nextSlide(data)
+} 
 
-function signLesson(event, imgId, signInput) {
+function signLesson(event, imgId, signInput, data) {
+  console.log("🚀 ~ file: slide.js ~ line 38 ~ signLesson ~ data", data)
   if ($("#signature")) {
     $("#signature").modal("show");
   }
 
   document.addEventListener("signatureSubmitted", function (e) {
     if(window.currentSignature)
-      updateSign(JSON.parse(JSON.stringify(window.currentSignature)).data, event, imgId, signInput);
+      updateSign(JSON.parse(JSON.stringify(window.currentSignature)).data, event, imgId, signInput, data);
   });
 }
 
-function sendResponse(flashcard_id, answer) {
+function sendResponse(flashcard_id, answer, current_flashcard) {
   console.log("response....", flashcard_id, answer);
-  var current_flashcard = loaded_flashcards[current_slide - 1];
-  console.log(
-    "current_flashcard.lesson_type => ",
-    current_flashcard.lesson_type
-  );
+  // var current_flashcard = loaded_flashcards[current_slide];
+  // console.log(
+  //   "current_flashcard.lesson_type => ",
+  //   current_flashcard.lesson_type
+  // );
   var sessionId = localStorage.getItem("session_id");
   var ip_address = "172.0.0.1";
   var user_device = "self device";
@@ -72,10 +74,7 @@ function sendResponse(flashcard_id, answer) {
     };
   } else {
     if (current_flashcard.lesson_type == "user_gps") {
-        // only prompt location if there is user_gps slide
-        navigator.geolocation.watchPosition(geo_success, geo_error,
-                                            geo_options);
-
+      navigator.geolocation.watchPosition(geo_success, geo_error,geo_options);
       var data_ = {
         flashcard: flashcard_id,
         session_id: localStorage.getItem("session_id"),
@@ -86,14 +85,6 @@ function sendResponse(flashcard_id, answer) {
           CURRENT_POSITION != null ? CURRENT_POSITION.coords.longitude : "",
       };
     } 
-    // else if(current_flashcard.lesson_type == "user_qrcode"){
-    //     console.log("🚀 ~ file: slide.js ~ line 86 ~ sendResponse ~ current_flashcard.lesson_type", current_flashcard.lesson_type)
-    //     var data_ = {
-    //         flashcard: flashcard_id,
-    //         session_id: localStorage.getItem("session_id"),
-    //         answer: "",
-    //     };
-    // }
     else {
         var data_ = {
             flashcard: flashcard_id,
@@ -112,7 +103,6 @@ function sendResponse(flashcard_id, answer) {
     contentType: "application/json",
     success: function (data) {
       $.ajax({
-        // url: 'http://localhost:8000/courses_api/session/event/'+ flashcard_id + '/' + sessionId,
         url:
           SERVER +
           "courses_api/session/event/" +
@@ -129,10 +119,8 @@ function sendResponse(flashcard_id, answer) {
           alert(res);
         },
       });
-      //alert('FlashCard Response Sent');
     },
     error: function (res) {
-      // alert(JSON.stringify(res))
     },
   });
 }
@@ -143,157 +131,204 @@ function updateMeta(type, answer) {
   }
 }
 
-function nextSlide() {
-  var lesson_id = getParam("lesson_id");
-  console.log(current_slide);
-  if (current_slide < total_slides) {
-    current_slide++;
-    completed = false;
-    if (current_slide == total_slides) {
-      $("#nextButton").html("Submit");
+// function classFind(classList) {
+//   return classList >= "className_";
+// }
+
+function nextSlide(data) {
+  var les_id;
+  console.log("🚀 ~ file: slide.js ~ line 137 ~ nextSlide ~ data", data)
+  var classLists = $(data).attr("class").split(/\s+/);
+  console.log("🚀 ~ file: slide.js ~ line 148 ~ nextSlide ~ classList", classLists)
+  var bedrooms = classLists.filter(name => name.includes('className_'))
+  console.log("🚀 ~ file: slide.js ~ line 154 ~ nextSlide ~ class_name", bedrooms)
+  les_ = bedrooms[0].split("_")
+  console.log("🚀 ~ file: slide.js ~ line 149 ~ nextSlide ~ les_", les_)
+  les_id = les_[1]
+  console.log("🚀 ~ file: slide.js ~ line 138 ~ nextSlide ~ les_id", les_id[1])
+
+  // var lesson_id = getParam("lesson_id");
+  // console.log("current_slide",current_slide);
+  // console.log("total_slides",total_slides);
+  // if (current_slide < total_slides) {
+  //   current_slide++;
+  //   completed = false;
+  //   if (current_slide == total_slides) {
+  // $("#nextButton").html("Submit");
+  //   }
+  // } 
+  // else {
+  //   completed = true;
+  // $(document).ready(function () {
+  //   $.ajax({
+  //     url: SERVER + "courses_api/lesson/student/get/mail/" + lesson_id,
+  //     async: true,
+  //     crossDomain: true,
+  //     crossOrigin: true,
+  //     type: "GET",
+  //     headers: { Authorization: `${localStorage.getItem("user-token")}` },
+  //   })
+  //     .done((response) => {
+  //       console.log(
+  //         "🚀 ~ file: settings.html ~ line 202 ~ response",
+  //         response
+  //       );
+  //     })
+  //     .fail((err) => {
+  //       console.log("errorss...",err)
+  //       console.log("🚀 ~ file: settings.html ~ line 129 ~ errorss", err);
+  //     });
+  // });
+  // swal({
+  //   title: "Submitted",
+  //   text: "You have successfully completed the lesson. Thank you.",
+  //   icon: "success",
+  //   timer: 2000,
+  // });
+  // }
+  // for (current_slide = 0; current_slide < total_slides; current_slide++) {
+  console.log("🚀 ~ file: slide.js ~ line 179 ~ nextSlide ~ loaded_flashcards", loaded_flashcards)
+  // console.log("current_slide",current_slide)
+  // var current_flashcard = loaded_flashcards[current_slide];
+  // console.log("🚀 ~ file: slide.js ~ line 180 ~ nextSlide ~ current_flashcard", current_flashcard)
+  // var flashcard_id = current_flashcard.id;
+  // console.log("flashcard_id",flashcard_id)
+  
+  function search(les_id, loaded_flashcards){
+    for (var i=0; i < loaded_flashcards.length; i++) {
+      if (loaded_flashcards[i].id == les_id) {
+        current_flashcard = loaded_flashcards[i]
+        flashcard_id = loaded_flashcards[i].id
+        console.log("🚀 ~ file: slide.js ~ line 191 ~ nextSlide ~ loaded_flashcards[i]", loaded_flashcards[i])
+        break;
+      }
     }
-  } else {
-    completed = true;
-    $(document).ready(function () {
-      $.ajax({
-        url: SERVER + "courses_api/lesson/student/get/mail/" + lesson_id,
-        async: true,
-        crossDomain: true,
-        crossOrigin: true,
-        type: "GET",
-        headers: { Authorization: `${localStorage.getItem("user-token")}` },
-      })
-        .done((response) => {
-          console.log(
-            "🚀 ~ file: settings.html ~ line 202 ~ response",
-            response
-          );
-        })
-        .fail((err) => {
-          // console.log("errorss...",err)
-          console.log("🚀 ~ file: settings.html ~ line 129 ~ errorss", err);
-        });
-    });
-    swal({
-      title: "Submitted",
-      text: "You have successfully completed the lesson. Thank you.",
-      icon: "success",
-      timer: 2000,
-    });
   }
-  console.log(loaded_flashcards)
-  var current_flashcard = loaded_flashcards[current_slide - 1];
-  current_flashcard = current_flashcard.id
-    ? current_flashcard
-    : loaded_flashcards[current_slide - 2];
-  var flashcard_id = current_flashcard.id;
-  console.log(current_flashcard.lesson_type);
-  updateProgressBar();
 
-  if (!completed) {
-    var type = current_flashcard.lesson_type;
-    console.log("SLIDE JS TYPE ===> ", type);
+  search(les_id, loaded_flashcards)
+  // updateProgressBar();
 
-    if (type == "question_choices") {
-      answer = $(
-        "input[name= choices_" + (current_slide - 1) + "]:checked"
-      ).val();
-      console.log(answer);
-      sendResponse(flashcard_id, answer);
-    } else if (type == "question_checkboxes") {
-      let answer = [];
-      $("input[name= checkboxes_" + (current_slide - 1) + "]:checked").each(
-        (j, k) => {
-          answer.push(k.value);
-        }
-      );
-      console.log(answer.join(","));
-      sendResponse(flashcard_id, answer.join(","));
-    } else if (type == "title_textarea") {
-      answer = $("textarea[name= textarea_" + (current_slide - 1) + "]").val();
-      sendResponse(flashcard_id, answer);
-    } else if (type == "title_input") {
-      answer = $("textarea[name= title_input_" + (current_slide - 1) + "]").val();
-      console.log("title inpt");
-      sendResponse(flashcard_id, answer);
-    } else if (type == "signature") {
-      answer = $(
-        "input[name= input_signature_" + (current_slide - 1) + "]"
-      ).val();
-      sendResponse(flashcard_id, answer);
-    } else if (type == "name_type") {
-      answer = $("input[name= name_type_" + (current_slide - 1) + "]").val();
-      sendResponse(flashcard_id, answer);
-    } else if (type == "user_video_upload") {
-      answer = $("#user-video-tag").find("source").attr("src");
-      sendResponse(flashcard_id, answer);
-    } else if (type == "user_image_upload") {
-      answer = $(`#user-image-display_${flashcard_id}`).attr("src");
-      sendResponse(flashcard_id, answer);
-    } else if (type == "user_gps") {
-      answer = $("#note_" + (current_slide - 1)).val();
-      sendResponse(flashcard_id, answer);
-      // console.log('flashcard_id',flashcard_id)
-      document.removeEventListener("gpsPosition", () => {});
-    }
-    else if (type == "gps_session") {
-      answer = gps_response;
-      sendResponse(flashcard_id, answer);
-    }else if (type == "email_verify") {
-      answer = $("input[id= email_address]").val();
-      sendResponse(flashcard_id, answer);
-    }
-    else if (type == "jitsi_meet"){
-      api.dispose();
-    }
+  // if (true) {
+  var type = current_flashcard.lesson_type;
+  console.log("SLIDE JS TYPE ===> ", type);
 
-    if (
-      current_slide != total_slides &&
-      loaded_flashcards[current_slide].lesson_type == "user_gps"
-    ) {
-      handle_gps_click();
-      document.addEventListener("gpsPosition", (d) => {
-        console.log("pos", CURRENT_POSITION, CURRENT_POSITION_LOW);
-        let lat = CURRENT_POSITION
-          ? CURRENT_POSITION.coords.latitude
-          : CURRENT_POSITION_LOW.coords.latitude;
-        let long = CURRENT_POSITION
-          ? CURRENT_POSITION.coords.longitude
-          : CURRENT_POSITION_LOW.coords.longitude;
-        $("#lat_" + current_slide).val(lat);
-        $("#long_" + current_slide).val(long);
-      });
-    } else if (type == "user_gps") {
-      console.log("User-GPS slide page");
-      answer = $("#note_" + (current_slide - 1)).val();
-      sendResponse(flashcard_id, answer);
-    }
-    if (current_slide != total_slides && loaded_flashcards[current_slide].lesson_type == "jitsi_meet"){
-      startJitsiMeet(loaded_flashcards[current_slide]);
-    }
-    $("#myCarousel").carousel("next");
+  if (type == "question_choices") {
+    answer = $("input:radio.className_"+(les_id)+":checked").val();;
+    console.log("🚀 ~ file: slide.js ~ line 228 ~ nextSlide ~ answer", answer)
+    sendResponse(flashcard_id, answer, current_flashcard);
+    // current_slide++;
+  } else if (type == "question_checkboxes") {
+    let answer = [];
+    $("input:checkbox.className_"+(les_id)+":checked").each(
+      (j, k) => {
+        answer.push(k.value);
+      }
+    );
+
+    console.log(answer.join(","));
+    sendResponse(flashcard_id, answer.join(","), current_flashcard);
+    // current_slide++;
+  } else if (type == "title_textarea") {
+    answer = document.getElementsByClassName("className_"+ (les_id) + "")[0].value;
+    sendResponse(flashcard_id, answer, current_flashcard);
+    // current_slide++;
+  } else if (type == "title_input") {
+    answer = document.getElementsByClassName("className_"+ (les_id) + "")[0].value;
+    console.log("title inpt");
+    sendResponse(flashcard_id, answer, current_flashcard);
+    // current_slide++;
+  } else if (type == "signature") {
+    answer = document.getElementsByClassName("className_"+ (les_id) + "")[0].value;
+    sendResponse(flashcard_id, answer, current_flashcard);
+    // current_slide++;
+  } else if (type == "name_type") {
+    answer = document.getElementsByClassName("className_"+ (les_id) + "")[0].value;
+    sendResponse(flashcard_id, answer, current_flashcard);
+    // current_slide++;
+  } else if (type == "user_video_upload") {
+    answer = $("#user-video-tag").find("source").attr("src");;
+    sendResponse(flashcard_id, answer, current_flashcard);
+    // current_slide++;
+  } else if (type == "user_image_upload") {
+    answer = $(`#user-image-display_${flashcard_id}`).attr("src");
+    sendResponse(flashcard_id, answer, current_flashcard);
+    // current_slide++;
+  } else if (type == "user_gps") {
+    answer = $("#note_" + (les_id)).val();
+    sendResponse(flashcard_id, answer, current_flashcard);
+    document.removeEventListener("gpsPosition", () => {});
+    // current_slide++;
   }
+  else if (type == "gps_session") {
+    answer = gps_response;
+    sendResponse(flashcard_id, answer, current_flashcard);
+    // current_slide++;
+  }else if (type == "email_verify") {
+    answer = $("input[id=email_address]").val();
+    sendResponse(flashcard_id, answer, current_flashcard);
+    // current_slide++;
+  }
+  else if (type == "jitsi_meet"){
+    api.dispose();
+    // current_slide++;
+  }
+
+  if (current_flashcard.lesson_type == "user_gps") {
+    handle_gps_click();
+    document.addEventListener("gpsPosition", (d) => {
+      console.log("pos", CURRENT_POSITION, CURRENT_POSITION_LOW);
+      let lat = CURRENT_POSITION
+        ? CURRENT_POSITION.coords.latitude
+        : CURRENT_POSITION_LOW.coords.latitude;
+      let long = CURRENT_POSITION
+        ? CURRENT_POSITION.coords.longitude
+        : CURRENT_POSITION_LOW.coords.longitude;
+      $("#lat_" + les_id).val(lat);
+      $("#long_" + les_id).val(long);
+    });
+    // current_slide++;
+  } else if (type == "user_gps") {
+    console.log("User-GPS slide page");
+    answer = $("#note_" + (les_id)).val();
+    sendResponse(flashcard_id, answer, current_flashcard);
+    // current_slide++;
+  }
+  if (current_flashcard.lesson_type == "jitsi_meet"){
+    startJitsiMeet(current_flashcard);
+    // current_slide++;
+  }
+    // $("#myCarousel").carousel("next");
+  // }
+  // }
 }
 
-function prevSlide() {
-  if (current_slide > 0) {
-    current_slide--;
-    $("#nextButton").html("Next");
-  }
-  var current_flashcard = loaded_flashcards[current_slide+1];
-  console.log(current_flashcard)
-  if (current_flashcard) {
-    if (current_flashcard.lesson_type == "jitsi_meet"){
-      api.dispose();
-    }
-  }
-  if (loaded_flashcards[current_slide].lesson_type == "jitsi_meet"){
-    startJitsiMeet(loaded_flashcards[current_slide]);
-  }
-  
-  updateProgressBar();
-  console.log(current_slide);
-  $("#myCarousel").carousel("prev");
+function Submit(){
+  var lesson_id = getParam("lesson_id");
+  $(document).ready(function () {
+    $.ajax({
+      url: SERVER + "courses_api/lesson/student/get/mail/" + lesson_id,
+      async: true,
+      crossDomain: true,
+      crossOrigin: true,
+      type: "GET",
+      headers: { Authorization: `${localStorage.getItem("user-token")}` },
+    })
+      .done((response) => {
+        console.log(
+          "🚀 ~ file: settings.html ~ line 202 ~ response",
+          response
+        );
+      })
+      .fail((err) => {
+        console.log("🚀 ~ file: settings.html ~ line 129 ~ errorss", err);
+      });
+  });
+  swal({
+    title: "Submitted",
+    text: "You have successfully completed the lesson. Thank you.",
+    icon: "success",
+    timer: 2000,
+  });
 }
 
 function getParam(sParam) {
@@ -330,13 +365,6 @@ function phone_verification_check() {
 }
 
 function get_session() {
-  // updating behavor to create new session everytime
-
-  // session_id = localStorage.getItem("session_id");
-  // if (session_id) {
-  //  console.log("Already have session_id " + session_id);
-  //  return session_id;
-  // }
   $.ajax({
     url: SERVER + "courses_api/session/get",
     type: "GET",
@@ -427,7 +455,8 @@ function verifyPhone(event) {
   });
 }
 
-function verifyEmail(event) {
+function verifyEmail(event, data) {
+  email_data = data
   if ($("#email_verify")) {
     $("#email_verify").modal("show");
   }
@@ -520,15 +549,6 @@ function radioOnClick(valu) {
       }
     }
   }
-  // [TO FIX REDIRECT] ignore for now
-  // else{
-  //     swal({
-  //         title: "Error",
-  //         text: "You must first login to your profile",
-  //         icon: "warning",
-  //       });
-  //     // window.location.replace("student_login.html");
-  // }
 }
 
 function init() {
@@ -539,27 +559,24 @@ function init() {
   $("#verify-email-modal").load("email/index.html");
   $("#video-modal").load("video/index.html");
   $("#gps-modal").load("gps/index.html");
-  $("#progress-section").hide();
+  // $("#progress-section").hide();
   var lesson_id = getParam("lesson_id");
 
   get_session();
   $.get(
     SERVER + "courses_api/slide/read/" + lesson_id,
     function (response, status, xhr) {
-      // phone_verification_check();
       console.log('>>>>>>>>>>>>>> slide', response);
       console.log(response);
       document.title = response.lesson_name
         ? response.lesson_name
         : "Lesson - " + lesson_id;
       total_slides = response.flashcards.length;
-      $("#progress-section").show();
+      // $("#progress-section").show();
 
-      $("#progress").html(current_slide + " out of " + total_slides);
+      // $("#progress").html(current_slide + " out of " + total_slides);
       var flashcards = response.flashcards;
       console.log("🚀 ~ file: slide.js ~ line 343 ~ flashcards", flashcards);
-      //console.log(flashcards)
-      // XXX make api DO THIS
       flashcards.sort(function (a, b) {
         keyA = a.position;
         keyB = b.position;
@@ -570,7 +587,6 @@ function init() {
       loaded_flashcards = flashcards;
       var i = 0;
       var className = "item";
-      // XXX refactor code below into smaller processing chunk
 
       flashcards.forEach((flashcard, index) => {
         console.log("flashcard=>", flashcard);
@@ -579,14 +595,14 @@ function init() {
         } else {
           className = "item";
         }
-        $("#carousel-indicators").append(
-          '<li data-target="#myCarousel" data-slide-to="' +
-            i +
-            '" class="active"></li>'
-        );
+        // $("#carousel-indicators").append(
+        //   '<li data-target="#myCarousel" data-slide-to="' +
+        //     i +
+        //     '" class="active"></li>'
+        // );
 
         if (flashcard.lesson_type == "verify_phone") {
-          $("#theSlide").append(`
+          $("#myCarousel").append(`
                     <div class="${className} ${
             i == 0 ? "active" : ""
           }" id="flahscard_${i}" id="verify_phone">
@@ -605,7 +621,7 @@ function init() {
         }
 
         if (flashcard.lesson_type == "chiro_front") {
-          $("#theSlide").append(`
+          $("#myCarousel").append(`
                     <div class="${className} ${
             i == 0 ? "active" : ""
           }" id="flahscard_${i}" id="chiro_front">
@@ -629,7 +645,7 @@ function init() {
         }
 
         if (flashcard.lesson_type == "chiro_side") {
-          $("#theSlide").append(`
+          $("#myCarousel").append(`
                     <div class="${className} ${
             i == 0 ? "active" : ""
           }" id="flahscard_${i}" id="chiro_side">
@@ -652,7 +668,7 @@ function init() {
         }
 
         if (flashcard.lesson_type == "user_qr_data") {
-            $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+            $("#myCarousel").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
                 <h1>QR Code</h1>
                 <div id="main" ></div>
                 </div>
@@ -662,7 +678,7 @@ function init() {
         }
 
         if (flashcard.lesson_type == "user_qr_url") {
-          $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+          $("#myCarousel").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
               <h1>QR URL</h1>
               <a href="${flashcard.question}" target="_blank">${flashcard.question}</a>
               </div>
@@ -671,12 +687,12 @@ function init() {
         }
 
         if (flashcard.lesson_type == "gps_session") {
-          $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+          $("#myCarousel").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
               <h1>GPS Session</h1>
               <div id="livedata" style="overflow:auto"></div>
               <button class="btn btn-default" id='start_session'>Start Session</button>
-              <button class="btn btn-primary active" id='stop_session' style='display:none;'>Stop Session</button> 
-              <div id='distance' ></div>
+              <button class="btn btn-primary active className_${flashcard.id}" id='stop_session' style='display:none;'>Stop Session</button> 
+              <div id='distance'></div>
               </div>
           `);
 
@@ -684,20 +700,21 @@ function init() {
         }
 
         if (flashcard.lesson_type == "email_verify") {
-          $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flahscard_${i}" id="email_verify">
+          $("#myCarousel").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flahscard_${i}" id="email_verify">
               <div alt="email_verify">
-                <button class="btn btn-primary" type="button" onclick="verifyEmail(event)"> Click To Verify Email Address </button>
+                <button class="btn btn-primary className_${flashcard.id}" type="button" onclick="verifyEmail(event, this)"> Click To Verify Email Address </button>
                 <p>Verified Email <span id="email_address_info"></span></p>
               </div>
             </div>
           `);
+          
           i++;
         }
 
         if (flashcard.lesson_type == "jitsi_meet") {
-          $("#theSlide").append(`<div class="${className} ${
+          $("#myCarousel").append(`<div class="${className} ${
             i == 0 ? "active" : ""
-          }" id="flashcard_${flashcard.id}">
+          }" id="flashcard_${flashcard.id}" onclick=nextSlide()>
           <h4>Join Conference</h4>
         <div class="btn-group btn-toggle" id="join_conference">
         </div>
@@ -705,7 +722,7 @@ function init() {
         </div>`);
         }
         if (flashcard.lesson_type == "record_webcam") {
-          $("#theSlide").append(`<div class="${className} ${
+          $("#myCarousel").append(`<div class="${className} ${
             i == 0 ? "active" : ""
           }" id="flashcard_${flashcard.id}">
         <h4>Recording Webcam</h4>
@@ -829,7 +846,7 @@ function init() {
         }
 
         if (flashcard.lesson_type == "record_screen") {
-          $("#theSlide").append(`<div class="${className} ${
+          $("#myCarousel").append(`<div class="${className} ${
             i == 0 ? "active" : ""
           }" id="flashcard_${flashcard.id}">
         <h4>Recording Screen</h4>
@@ -964,7 +981,7 @@ function init() {
         }
 
         if (flashcard.lesson_type == "verify_email") {
-          $("#theSlide").append(`
+          $("#myCarousel").append(`
                     <duv class="${className} ${
             i == 0 ? "active" : ""
           }" id="flashcard_${i}" id="verify_email">
@@ -975,10 +992,10 @@ function init() {
         }
 
         if (flashcard.lesson_type == "quick_read") {
-          $("#prevButton").attr("data-type", "quick_read");
-          $("#nextButton").attr("data-type", "quick_read");
+          // $("#prevButton").attr("data-type", "quick_read");
+          // $("#nextButton").attr("data-type", "quick_read");
 
-          $("#theSlide").append(
+          $("#myCarousel").append(
             '<div class="' +
               className +
               '">' +
@@ -1063,9 +1080,9 @@ function init() {
           }, 1);
         }
         if (flashcard.lesson_type == "title_text") {
-          $("#prevButton").attr("data-type", "title_text");
-          $("#nextButton").attr("data-type", "title_text");
-          $("#theSlide").append(
+          // $("#prevButton").attr("data-type", "title_text");
+          // $("#nextButton").attr("data-type", "title_text");
+          $("#myCarousel").append(
             '<div class="' +
               className +
               '"><div alt="title_text" style=""><h1> ' +
@@ -1076,9 +1093,9 @@ function init() {
           );
         }
         if (flashcard.lesson_type == "question_choices") {
-          $("#prevButton").attr("data-type", "question_choices");
-          $("#nextButton").attr("data-type", "question_choices");
-          $("#theSlide").append(
+          // $("#prevButton").attr("data-type", "question_choices");
+          // $("#nextButton").attr("data-type", "question_choices");
+          $("#myCarousel").append(
             '<div class="' +
               className +
               '" id="flashcard_' +
@@ -1100,29 +1117,17 @@ function init() {
             flashcard.options = flashcard.options.split(",");
           }
           flashcard.options.forEach(function (valu) {
-            $("#theSlide")
+            $("#myCarousel")
               .find("ul")
               .each((a, b, c) => {
                 if ($(b).attr("alt") == "question_choices_" + i) {
-                  $(b).append(
-                    "<br><input type='radio' id='" +
-                      valu +
-                      "' value='" +
-                      valu +
-                      "' onclick='radioOnClick(`" +
-                      valu +
-                      "`)' name='choices_" +
-                      i +
-                      "'> <label style='font-weight: normal;' for='" +
-                      valu +
-                      "'>" +
-                      valu +
-                      "</lable>"
+                  $(b).append("<br><input type='radio' class='className_"+flashcard.id+"' id='" +valu +"' value='" +valu +"' onclick=nextSlide(this) name='choices_" +i +"'> <label style='font-weight: normal;' for='" +
+                      valu +"'>" +valu +"</lable>"
                   );
                 }
               });
             if (
-              $("#theSlide").find("ul").attr("alt") ===
+              $("#myCarousel").find("ul").attr("alt") ===
               "question_choices_" + i
             ) {
             }
@@ -1130,9 +1135,9 @@ function init() {
         }
 
         if (flashcard.lesson_type == "question_checkboxes") {
-          $("#prevButton").attr("data-type", "question_checkboxes");
-          $("#nextButton").attr("data-type", "question_checkboxes");
-          $("#theSlide").append(
+          // $("#prevButton").attr("data-type", "question_checkboxes");
+          // $("#nextButton").attr("data-type", "question_checkboxes");
+          $("#myCarousel").append(
             '<div class="' +
               className +
               '" id="flashcard_' +
@@ -1152,18 +1157,18 @@ function init() {
           }
 
           flashcard.options.forEach(function (valu) {
-            $("#theSlide")
+            $("#myCarousel")
               .find("ul")
               .each((a, b, c) => {
                 if ($(b).attr("alt") == "question_checkboxes_" + i) {
                   $(b).append(
-                    "<br><input type='checkbox' id='" +
+                    "<br><input type='checkbox' class='className_"+flashcard.id+"' id='" +
                       valu +
                       "' value='" +
                       valu +
                       "' name='checkboxes_" +
                       i +
-                      "'> <label style='font-weight: normal;' for='" +
+                      "' onclick=nextSlide(this)> <label style='font-weight: normal;' for='" +
                       valu +
                       "'>" +
                       valu +
@@ -1172,7 +1177,7 @@ function init() {
                 }
               });
             if (
-              $("#theSlide").find("ul").attr("alt") ===
+              $("#myCarousel").find("ul").attr("alt") ===
               "question_checkboxes_" + i
             ) {
             }
@@ -1180,7 +1185,7 @@ function init() {
         }
 
         if (flashcard.lesson_type == "iframe_link") {
-          $("#theSlide").append(
+          $("#myCarousel").append(
             '<div class="' +
               className +
               '"><div alt="iframe_link" class="iframe_div"><h1> ' +
@@ -1191,7 +1196,7 @@ function init() {
           );
         }
         if (flashcard.lesson_type == "video_file") {
-          $("#theSlide").append(
+          $("#myCarousel").append(
             '<div class="' +
               className +
               '"><div alt="title_text" style=""><h1>Video File</h1><h1> ' +
@@ -1208,7 +1213,7 @@ function init() {
         }
 
         if (flashcard.lesson_type == "image_file") {
-          $("#theSlide").append(
+          $("#myCarousel").append(
             '<div class="' +
               className +
               '"><div alt="title_text" style=""><h1> ' +
@@ -1220,8 +1225,8 @@ function init() {
         }
 
         if (flashcard.lesson_type == "user_tour") {
-          $("#prevButton").attr("data-type", "user_tour");
-          $("#nextButton").attr("data-type", "user_tour");
+          // $("#prevButton").attr("data-type", "user_tour");
+          // $("#nextButton").attr("data-type", "user_tour");
 
           user_tour_array = [];
 
@@ -1233,7 +1238,7 @@ function init() {
           tempMap++;
           console.log("response user_tour_array=>", user_tour_array);
 
-          $("#theSlide").append(
+          $("#myCarousel").append(
             '<div class="' +
               className +
               '"><div alt="title_text" style="height:100%"><h1>User Tour</h1><h1> ' +
@@ -1253,17 +1258,17 @@ function init() {
           console.log("flashcard.lesson_type == 'user_gps'");
           console.log("flashcard value ===> ", flashcard);
 
-          $("#theSlide").append(
+          $("#myCarousel").append(
             `<div class="' +
           ${className} +'"><div class="title_input">
           <div alt="title_input" style=""><h1>GPS Note:</h1>
           <p> ${flashcard.question}</p>
           <div><label>Latitude: </label>
-          <input id="lat_${i}" value="0" disabled></div>
+          <input id="lat_${flashcard.id}" value="0" disabled></div>
           <div style="margin-top:16px;"><label>Longitude: </label>
-          <input id="long_${i}" value="0" disabled></div>
+          <input id="long_${flashcard.id}" value="0" disabled></div>
           <div class="form-group">
-           <textarea class="form-control" rows="10" name="note" placeholder="note" id="note_${i}"></textarea>
+           <textarea class="form-control className_${flashcard.id}" rows="10" name="note" placeholder="note" id="note_${flashcard.id}" onblur=nextSlide(this)></textarea>
            </div>
            <div class="form-group">
            <button class='btn btn-info gps-entry'>View Map</button>
@@ -1284,11 +1289,11 @@ function init() {
             "user_video_upload flashcard.lesson_type ===> ",
             flashcard.lesson_type
           );
-          $("#theSlide").append(
+          $("#myCarousel").append(
             `<div class="${className}">
             <div alt="title_text" style="">
             <h2> ${flashcard.question}</h2>
-            <input type="file" class="form-control" value="Choose File" id="myFile" onchange="handleVideoUpload('user_video_upload')"/>
+            <input type="file" class="form-control className_${flashcard.id}" value="Choose File" id="myFile" onchange="handleVideoUpload('user_video_upload', this)"/>
 
             <video style="max-height:450px;max-width:1000px;display:none; margin:auto"; controls preload="metadata" id="user-video-tag">
             </video>
@@ -1304,12 +1309,12 @@ function init() {
             "user_image_upload flashcard.lesson_type ===> ",
             flashcard.lesson_type
           );
-          $("#theSlide").append(
+          $("#myCarousel").append(
             `<div class="${className}">
             <h1>User Image Upload</h1>
             <div alt="title_text" style="">
             <p> ${flashcard.question}</p>
-            <input type="file" class="form-control" value="Choose File" id="image_upload_${flashcard.id}" onchange="handleImageUpload('user_image_upload',${flashcard.id})"/> 
+            <input type="file" class="form-control className_${flashcard.id}" value="Choose File" id="image_upload_${flashcard.id}" onchange="handleImageUpload('user_image_upload',${flashcard.id}, this)"/> 
 
             <img style="width:auto; margin:auto; display:none;" id="user-image-display_${flashcard.id}">
 
@@ -1320,35 +1325,35 @@ function init() {
         }
 
         if (flashcard.lesson_type == "title_textarea") {
-          $("#theSlide").append(
+          $("#myCarousel").append(
             '<div class="' +
               className +
               '"><div class="title_textarea"><div alt="title_text" style=""><h1> ' +
               flashcard.question +
               '</h1><textarea name ="textarea_' +
               i +
-              '" class="form-control" placeholder="Enter you answer here"></textarea></div></div></div>'
+              '" class="form-control className_'+flashcard.id+'" placeholder="Enter you answer here" onblur="nextSlide(this)"></textarea></div></div></div>'
           );
         }
         if (flashcard.lesson_type == "title_input") {
-          $("#theSlide").append(
+          $("#myCarousel").append(
             '<div class="' +
               className +
               '"><div class="title_input"><div alt="title_input" style=""><h1> ' +
               flashcard.question +
               '</h1><textarea style="height:100px" name ="title_input_' +
               i +
-              '" class="form-control" placeholder="Enter you answer here"></textarea></div></div></div>'
+              '" class="form-control className_'+flashcard.id+'" placeholder="Enter you answer here" onblur="nextSlide(this)"></textarea></div></div></div>'
           );
         }
 
         if (flashcard.lesson_type == "name_type") {
-          $("#theSlide").append(
+          $("#myCarousel").append(
             '<div class="' +
               className +
               '"><div class="name_type"><div alt="name_type" style=""><h1> Enter your name: </h1><input name ="name_type_' +
               i +
-              '" class="form-control" placeholder="Enter you name here"></div></div></div>'
+              '" class="form-control className_'+flashcard.id+'" placeholder="Enter you name here" onblur="nextSlide(this)"></div></div></div>'
           );
         }
 
@@ -1356,22 +1361,22 @@ function init() {
           $("head").append(
             '<script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>'
           );
-          $("#theSlide").append(`
+          $("#myCarousel").append(`
                 <div class="${className}" id="flashcard_${i}">
                 <div class="text-center alt="signature">
                 <input type="text" hidden name="input_signature_${i}" id="signInput">
-                <img id="slide_signature" hidden> </br>
-                <button class="btn btn-primary" type="button" onclick="signLesson(event,'slide_signature', 'signInput')"> Click To Sign</button>
+                <img id="slide_signature" hidden>
+                <button class="btn btn-primary className_${flashcard.id}" type="button" onclick="signLesson(event,'slide_signature', 'signInput', this)"> Click To Sign</button>
                 </div>
                 </div>`);
         }
-
+       
         i++;
       });
 
-      $("#theSlide").append(
-        '<div class="item"><div alt="quick_read" style=""><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1></div></div>'
-      );
+      // $("#myCarousel").append(
+      //   '<div class="item"><div alt="quick_read" style=""><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1></div></div>'
+      // ); 
       if (session_id) {
         $.get(
           SERVER +
@@ -1493,7 +1498,29 @@ function init() {
   }, 1000);
 }
 
-function handleVideoUpload(key) {
+function handleVideoUpload(key, data) {
+  var les_id;
+  console.log("🚀 ~ file: slide.js ~ line 137 ~ nextSlide ~ data", data)
+  var classLists = $(data).attr("class").split(/\s+/);
+  console.log("🚀 ~ file: slide.js ~ line 148 ~ nextSlide ~ classList", classLists)
+  var bedrooms = classLists.filter(name => name.includes('className_'))
+  console.log("🚀 ~ file: slide.js ~ line 154 ~ nextSlide ~ class_name", bedrooms)
+  les_ = bedrooms[0].split("_")
+  console.log("🚀 ~ file: slide.js ~ line 149 ~ nextSlide ~ les_", les_)
+  les_id = les_[1]
+  console.log("🚀 ~ file: slide.js ~ line 138 ~ nextSlide ~ les_id", les_id[1])
+  function search(les_id, loaded_flashcards){
+    for (var i=0; i < loaded_flashcards.length; i++) {
+      if (loaded_flashcards[i].id == les_id) {
+        current_flashcard = loaded_flashcards[i]
+        flashcard_id = loaded_flashcards[i].id
+        console.log("🚀 ~ file: slide.js ~ line 191 ~ nextSlide ~ loaded_flashcards[i]", loaded_flashcards[i])
+        break;
+      }
+    }
+  }
+
+  search(les_id, loaded_flashcards)
   var file = $("#myFile").prop("files");
   console.log(
     "🚀 ~ file: index.html ~ line 33 ~ handleVideoUpload ~ file",
@@ -1538,9 +1565,9 @@ function handleVideoUpload(key) {
           timer: 1000,
         });
         const file_url = response.file_url;
-        displayVideo(file_url);
+        displayVideo(file_url, data);
 
-        function displayVideo(file_url) {
+        function displayVideo(file_url, data) {
           if (file_url) {
             if (key == "user_video_upload") {
               var strTYPE = "video/mp4";
@@ -1556,7 +1583,7 @@ function handleVideoUpload(key) {
             } else {
               var strTYPE = "video/mp4";
               $("#myCarousel #video").val(file_url);
-              $("#theSlide #flashcard_" + current_slide + "").append(
+              $("#myCarousel #flashcard_" + current_slide + "").append(
                 '<div id="video_url"><p> Video URL : ' +
                   file_url +
                   '</p><video id="videoplayer" style="width:100%"; controls preload="metadata"> <source src="' +
@@ -1570,9 +1597,8 @@ function handleVideoUpload(key) {
               $("#videoplayer")[0].load();
             }
           }
+          nextSlide(data)
         }
-        //   $("#video-modal").hide();
-        //   setTimeout(() => { location.reload() }, 5000);
       }
     })
     .fail(function (error) {
@@ -1586,7 +1612,7 @@ function handleVideoUpload(key) {
     });
 }
 
-function handleImageUpload(key, id) {
+function handleImageUpload(key, id, data) {
   var file = $(`#image_upload_${id}`).prop("files");
   console.log(
     "🚀 ~ file: slide.js ~ line 929 ~ handleImageUpload ~ file",
@@ -1631,15 +1657,16 @@ function handleImageUpload(key, id) {
           timer: 1000,
         });
         const file_url = response.file_url;
-        displayImage(file_url);
+        displayImage(file_url, data);
 
-        function displayImage(file_url) {
+        function displayImage(file_url, data) {
           if (file_url) {
             if (key == "user_image_upload") {
               $(`#user-image-display_${id}`).css("display", "block");
               $(`#user-image-display_${id}`).attr("src", file_url);
             }
           }
+          nextSlide(data)
         }
       }
     })
@@ -1751,7 +1778,7 @@ function start() {
 
     $(document).ready(function () {
       $.ajax({
-        url: SERVER + "sfapp2/api/member_session_start",
+        url: SERVER + "courses_api/member_session_start",
         async: true,
         crossDomain: true,
         type: "POST",
@@ -1760,7 +1787,7 @@ function start() {
         contentType: "application/json; charset=utf-8",
         processData: false,
         headers: {
-          Authorization: localStorage.getItem('token'),
+          Authorization: localStorage.getItem('user-token'),
         },
         success: function (response) {
           console.log("🚀 ~ file: gps_session.html ~ line 1856 ~ response", response.status);
@@ -1772,14 +1799,15 @@ function start() {
     });
   });
 
-  $(document).delegate("#stop_session", "click", function(e) {
+  $(document).delegate("#stop_session", "click", this ,function(e) {
     $("#start_session").show();
     $("#stop_session").hide();
     clearInterval(interval);
-    
+    div_name = this
+
     $(document).ready(function () {
       $.ajax({
-        url: SERVER + "sfapp2/api/member_session_stop",
+        url: SERVER + "courses_api/member_session_stop",
         async: true,
         crossDomain: true,
         type: "POST",
@@ -1788,11 +1816,12 @@ function start() {
         contentType: "application/json; charset=utf-8",
         processData: false,
         headers: {
-          Authorization: localStorage.getItem('token'),
+          Authorization: localStorage.getItem('user-token'),
         },
         success: function (response) {
           console.log("🚀 ~ file: gps_session.html ~ line 1884 ~ response", response);
           gps_response = response;
+          nextSlide(div_name)
           $('#distance').append("<h2>Total Distance : "+ response.distance +" km</h2><h2>Averege Speed : "+ 
                                   response.avg_speed + " m/s</h2><h2>Total Time : "+ timeConvCalc(response.total_time) +"</h2>");
         },
@@ -1828,25 +1857,26 @@ var geo_options = {
   timeout: 2700,
 };
 
-
 function geo_error(err) {
   if (
     err.code == 1 ||
     err.code == err.PERMISSION_DENIED ||
     err.code == err.UNKNOWN_ERROR
   ) {
-    alert("GPS error");
+      alert("GPS error");
   }
   console.log("errror no gps");
   console.warn("ERROR(" + err.code + "): " + err.message);
 }
-
+  
 function geo_success(position) {
   CURRENT_POSITION = position;
   console.log(position.coords.latitude + " " + position.coords.longitude);
   data['latitude'] = position.coords.latitude;
   data['longitude'] = position.coords.longitude;
 }
+  
+navigator.geolocation.watchPosition(geo_success, geo_error, geo_options);
 
 let accelerometer = null;
 try {
