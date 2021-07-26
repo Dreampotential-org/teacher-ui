@@ -1363,6 +1363,7 @@ function sendUpdates() {
     let tour_array=[];
 
     if (current_flashcard_elements.length < 4 && flashcard_type!="user_tour") {
+      console.log("user tour length");
       current_flashcard_elements.forEach((current_flashcard) => {
         this_element = current_flashcard.firstElementChild;
         if (this_element) {
@@ -1372,6 +1373,25 @@ function sendUpdates() {
           } else {
             this_element = current_flashcard.lastElementChild;
             if (this_element.type == 'textarea' || this_element.type == 'text') {
+              attr_value = current_flashcard.lastElementChild.value;
+              attr_array.push(attr_value);
+            }
+          }
+        }
+      });
+    }else if (flashcard_type == "braintree_Config") {
+      console.log("braintree_Config");
+      current_flashcard_elements.forEach((current_flashcard) => {
+        this_element = current_flashcard.firstElementChild;
+        if (this_element) {
+          console.log("this_element=",this_element)
+          if (this_element.type == 'text') {
+            attr_value = current_flashcard.firstElementChild.value;
+            attr_array.push(attr_value);
+          } else {
+            this_element = current_flashcard.lastElementChild;
+            console.log("this_element last=",this_element)
+            if (this_element.type == 'text') {
               attr_value = current_flashcard.lastElementChild.value;
               attr_array.push(attr_value);
             }
@@ -1441,7 +1461,7 @@ function sendUpdates() {
           real_flashcard_elements.push(current_flashcard_element);
         }
       });
-      
+      console.log("real_flashcard_elements=",real_flashcard_elements);
       attr_array[0] = real_flashcard_elements[0].firstElementChild.value;
 
       //working on choices
@@ -1669,7 +1689,20 @@ function sendUpdates() {
         };
         flashcards.push(temp);
         break;
-
+      case 'braintree_Config':
+        temp = {
+          lesson_type: 'braintree_Config',
+          // question: attr_array[0],
+          // image: '',
+          position: position_me,
+          braintree_merchant_ID:attr_array[0],
+          braintree_public_key:attr_array[1],
+          braintree_private_key:attr_array[2],
+          braintree_item_name:attr_array[3],
+          braintree_item_price:attr_array[4],
+        };
+        flashcards.push(temp);
+        break;
       case 'user_gps':
         temp = {
           lesson_type: 'user_gps',
@@ -1815,6 +1848,7 @@ function sendUpdates() {
 }
 
 $(document).ready(function () {
+  console.log("1");
   $('#left-sidebar').load('sidebar.html');
   $('#page-header').load('header.html');
   if (!localStorage.getItem('user-token')) {
@@ -1823,12 +1857,14 @@ $(document).ready(function () {
   }
   if (lesson_id) {
     MODE = 'UPDATE';
+    console.log("2");
   } else {
     MODE = 'CREATE';
   }
   const param = new URL(window.location.href);
   const params = param.searchParams.get('params');
   if (MODE == 'UPDATE') {
+    console.log("3");
     $.ajax({
       url: SERVER + 'courses_api/lesson/read/' + lesson_id,
       type: 'GET',
@@ -1836,6 +1872,9 @@ $(document).ready(function () {
       contentType: 'application/json',
       headers: { Authorization: `Token ${localStorage.getItem('user-token')}` },
       success: function (response) {
+        console.log("4");
+        console.log("response");
+        console.log(response);
         if (params) {
           $('#lesson_slide').attr('href', `/slide.html?lesson_id=${lesson_id}&params=${params}`);
         } else {
@@ -1883,7 +1922,7 @@ $(document).ready(function () {
           if (flashcard.lesson_type == 'title_text') {
             addTitleText(false, flashcard.id, flashcard.question, flashcard.answer, flashcard.position);
           }
-          if (flashcard.lesson_type == 'BrainTree') {
+          if (flashcard.lesson_type == 'braintree_Config') {
             console.log(
               flashcard.id,
               flashcard.braintree_merchant_ID,

@@ -500,6 +500,17 @@ function radioOnClick(valu) {
   }
 }
 
+// braintree toggle function
+function toggleDisplay() {
+  var x = document.getElementById("collapseStripe");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+
+
 function init() {
   $("body").css("display", "none")
   console.log("INIT dom");
@@ -537,7 +548,7 @@ function init() {
       var i = 0;
       var className = "item";
 
-      flashcards.forEach((flashcard, index) => {
+      flashcards.forEach(async (flashcard, index) => {
         console.log("flashcard=>", flashcard);
         if (i == 0) {
           className = "item active";
@@ -549,7 +560,173 @@ function init() {
             i +
             '" class="active"></li>'
         );
+        // braintree
+        if (flashcard.lesson_type == "braintree_Config") {
+          // {% csrf_token %}
+          $("#theSlide").append(
+            `<div class="
+            ${className}
+              ">
+              <form action="/store/Checkout" method="post" id="payment-form">
+              <div id="checkoutMethods">
+                <div style="margin: 10px">
+                  <h2>Checkout with Braintree</h2>
+                  Price of ${flashcard.braintree_item_name}:<input
+                  type="text"
+                  name="itemPrice"
+                  id="itemPrice"
+                  value="${flashcard.braintree_item_price}"
+                  />
+                  <br><br>
+                  Item ID :<input
+                  type="text"
+                  name="item_ID"
+                  id="item_ID"
+                  value="${flashcard.braintree_item_id}"
+                  />
+                  <div id="bt-dropin"></div>
+                    <!-- Used to display form errors. -->
+                    <div id="card-errors" role="alert"></div>
+                  </div>
+                  <input type="hidden" id="nonce" name="payment_method_nonce" />
+                </div>
+              
+              <button id="checkout">Submit Payment</button>
+            </form></div>`
+          );
+          ////////////////////////////
+          var braintree_form_data = new FormData(); 
+          console.log("flashcard.braintree_merchant_ID=",flashcard.braintree_merchant_ID);
+          braintree_form_data.append("BT_MERCHANT_ID", flashcard.braintree_merchant_ID)
+          braintree_form_data.append("BT_PUBLIC_KEY", flashcard.braintree_public_key)
+          braintree_form_data.append("BT_PRIVATE_KEY", flashcard.braintree_private_key)
+          var SERVER = 'http://localhost:8000/';
+          var segment_settings_buy_item = {
+            "async": false,
+            "crossDomain": true,
+            "url": SERVER + 'store/segment_client_token/'+flashcard.braintree_item_id,
+            "method": "POST",
+            "type": "POST",
+            "processData": false,
+            "contentType": false,
+            // "mimeType": "multipart/form-data",
+            "data": braintree_form_data,
+            "headers": {
+                "Authorization": localStorage.getItem("user-token")
+            }
+          };
+          console.log("farrukh promise");
+          // const myPromise = await responsePromise(flashcard.braintree_item_id,braintree_form_data);
+          // console.log(myPromise);
+          $.ajax(segment_settings_buy_item).done(function (braintree_response) {
+            console.log("123");
+            // window.location.href="http://localhost:8086/checkout.html";
+            console.log(braintree_response);
+            $("[id='itemTitle']").html(braintree_response.title);
+            $("[id='itemPrice']").html(braintree_response.price);
+            $("[id='item_ID']").val(braintree_response.id);
+            $("[id='client_token']").val(braintree_response.client_token);
 
+            //////// order send data
+            var form = document.querySelector("#payment-form");
+            console.log("form = ",form);
+            var client_token = braintree_response.client_token;
+            console.log("client_token = ",client_token);
+            braintree.dropin.create(
+              {
+                authorization: client_token,
+                container: "#bt-dropin",
+                // paypal: {
+                //   flow: "vault",
+                // },
+              },
+              function (createErr, instance) {
+                form.addEventListener("submit", function (event) {
+                  event.preventDefault();
+                  instance.requestPaymentMethod(function (err, payload) {
+                    if (err) {
+                      console.log("Error", err);
+                      return;
+                    }
+
+                    // Add the nonce to the form and submit
+                    document.querySelector("#nonce").value = payload.nonce;
+                    // form.submit();
+                    // event.preventDefault()
+                    // update item
+                    var order_form = new FormData();
+                    order_form.append("item_ID", $("#item_ID").val())
+                    order_form.append("title", $("#itemTitle").text())
+                    order_form.append("payment_method_nonce", payload.nonce)
+                    order_form.append("itemPrice", $("#itemPrice").text())
+                    order_form.append("user-name", localStorage.getItem("user-name"))
+                    order_form.append("BT_MERCHANT_ID", flashcard.braintree_merchant_ID)
+                    order_form.append("BT_PUBLIC_KEY", flashcard.braintree_public_key)
+                    order_form.append("BT_PRIVATE_KEY", flashcard.braintree_private_key)
+                    var settings_add_order = {
+                      "async": false,
+                      "crossDomain": true,
+                      "url": SERVER + 'store/segment_checkout',
+                      "method": "POST",
+                      "type": "POST",
+                      "processData": false,
+                      "contentType": false,
+                      "mimeType": "multipart/form-data",
+                      "data": order_form,
+                      "headers": {
+                          "Authorization": localStorage.getItem("user-token")
+                      }
+                    };
+                    $.ajax(settings_add_order).done(function (checkout_response) {
+                      // response = JSON.parse(response);
+                      console.log(checkout_response);
+                      var resp = JSON.parse(checkout_response)
+                      if(resp.success == true){
+                        swal({
+                          title: "Thank you",
+                          text: "Your Order id is "+resp.ID,
+                          icon: "success",
+                        }, function (isConfirmed) {
+                          if(isConfirmed) {
+                            location.reload()
+                          }});
+                      }else{
+                        swal({
+                          title: "Try Again",
+                          text: "Your Order is not complete.",
+                          icon: "error",
+                        }, function (isConfirmed) {
+                          if(isConfirmed) {
+                            location.reload()
+                          }});
+
+                      }
+                    }).fail(function (response) {
+                      console.log("order is Failed!");
+                      swal({
+                          title: "Error!",
+                          text: "Order is failed!",
+                          icon: "warning",
+                      });
+                    });
+                  });
+                });
+              }
+            );
+            //////
+            
+          }).fail(function (response) {
+            console.log("Buy item Failed!");
+            swal({
+                title: "Error!",
+                text: "Buy Item is failed!",
+                icon: "warning",
+            });
+          });
+          ////////////////////////////
+        }
+       
+        // braintree end
         if (flashcard.lesson_type == "verify_phone") {
           $("#theSlide").append(`
                     <div class="${className} ${
@@ -1325,11 +1502,13 @@ function init() {
 
         i++;
       });
-
+      console.log("_______________________________________________");
       $("#theSlide").append(
         '<div class="item"><div alt="quick_read" style=""><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1></div></div>'
       );
+      
       if (session_id) {
+        console.log(response);
         $.get(
           SERVER +
             "courses_api/lesson/response/get/" +
@@ -1450,6 +1629,32 @@ function init() {
   }, 1000);
 }
 
+async function responsePromise(braintree_item_id,braintree_form_data){
+  return new Promise(function(resolve, reject) {
+    $.ajax({
+        url: SERVER + 'store/segment_client_token/'+braintree_item_id,
+        type : 'POST',
+        headers : {
+          "Authorization": localStorage.getItem("user-token")
+        },
+        async : false,
+        crossDomain : true,
+        processData : false,
+        contentType : false,
+        data: braintree_form_data,
+        success: function (data) {
+          // console.log("########### session ########",data.client_token);
+            // var session = $.parseJSON(data);
+            console.log("########### session ########",data);
+            // if (session.is_staff === 1) {
+                resolve(data);
+            // } else {
+            //     resolve(false);
+            // }
+        }
+    });
+  })
+}
 function handleVideoUpload(key) {
   var file = $("#myFile").prop("files");
   console.log(
