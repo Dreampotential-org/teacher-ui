@@ -228,6 +228,10 @@ function nextSlide() {
       answer = $("input[id= email_address]").val();
       sendResponse(flashcard_id, answer);
     }
+    else if (type == "datepicker") {
+      answer = current_flashcard.answer;
+      sendResponse(flashcard_id, answer);
+    }
     else if (type == "jitsi_meet"){
       api.dispose();
     }
@@ -829,6 +833,17 @@ function init() {
               <div alt="email_verify">
                 <button class="btn btn-primary" type="button" onclick="verifyEmail(event)"> Click To Verify Email Address </button>
                 <p>Verified Email <span id="email_address_info"></span></p>
+              </div>
+            </div>
+          `);
+          i++;
+        }
+
+        if (flashcard.lesson_type == "datepicker") {
+          $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flahscard_${i}" id="datepicker">
+              <div alt="datepicker">
+              <h1>${flashcard.question}</h1>
+              <h1>${flashcard.answer}</h1>
               </div>
             </div>
           `);

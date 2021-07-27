@@ -1255,6 +1255,13 @@ function addGpsSession(isNew, id, question, image, posU) {
   sortablePositionFunction(isNew, posU);
 }
 
+function addDatePicker(isNew, id, question, image, posU) {
+
+  $('#sortable').append($('#datepicker').html());
+  $( "#datepicker" ).datepicker();
+  sortablePositionFunction(isNew, posU);
+}
+
 function addBrainTree(isNew, id, merchant_ID, braintree_public_key, braintree_private_key, braintree_item_name, braintree_item_price, posU) {
   if (!isNew) {
     console.log(id, merchant_ID, braintree_public_key, braintree_private_key, braintree_item_name, braintree_item_price, posU);
@@ -1355,10 +1362,9 @@ function sendUpdates() {
     });
     console.log(current_flashcard_elements)
 
-    current_flashcard_elements.shift(); // remove the header
+    current_flashcard_elements.shift();
     flashcard_type = flashcard.getAttribute('data-type');
     position_me += 1;
-    //current_flashcard_elements has all the fields of current selected flashcard
     let choices_array=[];
     let tour_array=[];
 
@@ -1400,21 +1406,19 @@ function sendUpdates() {
       });
     }else if(flashcard_type=="user_tour"){
     
-        real_flashcard_elements = [];
+      real_flashcard_elements = [];
       current_flashcard_elements.forEach((current_flashcard_element) => {
         if (current_flashcard_element.attributes) {
           real_flashcard_elements.push(current_flashcard_element);
         }
       });
-      
-      //working on tours
+
       real_flashcard_elements[0].childNodes.forEach((choice_tour)=>{
         var singleTour = {};
         var i = 1;
         choice_tour.childNodes.forEach((choice) => { 
           choice.childNodes.forEach((choice_unit) => {
             if (choice_unit.type == 'text' || choice_unit.type=='textarea') {
-             
               switch(i) {
                 case 1:
                   singleTour.title = choice_unit.value;
@@ -1428,19 +1432,15 @@ function sendUpdates() {
                 case 4:
                   singleTour.longitude = choice_unit.value;
                   break;
-                case 5:  
-                  // Selecting the value of image
+                case 5:
                   real_flashcard_elements[current_flashcard_elements.length - 1].childNodes.forEach((image_upload_element) => {
                     if (image_upload_element.type == 'text') {
                       attr_array[1] = image_upload_element.value;
                     }
                   });
-
                   singleTour.image = choice_unit.value;
-
                   break;
                 default:
-                  
               }
               i++;
             }
@@ -1451,10 +1451,8 @@ function sendUpdates() {
         tour_array.push(singleTour);
   
       });
-  //   }else if(flashcard_type=="user_qrcode"){
-  //   console.log("🚀 ~ file: lesson.js ~ line 1397 ~ flashcards_div.forEach ~ flashcard_type", flashcard_type)
-  }
-  else {
+    }
+    else {
       real_flashcard_elements = [];
       current_flashcard_elements.forEach((current_flashcard_element) => {
         if (current_flashcard_element.attributes) {
@@ -1751,6 +1749,16 @@ function sendUpdates() {
         };
         flashcards.push(temp);
         break;
+
+      case 'datepicker':
+        temp = {
+          lesson_type: 'datepicker',
+          question: 'Date Picker',
+          answer: $("#datepicker").datepicker("getDate"),
+          position: position_me,
+        };
+        flashcards.push(temp);
+        break;
     }
 
     attr_array = [];
@@ -1848,7 +1856,6 @@ function sendUpdates() {
 }
 
 $(document).ready(function () {
-  console.log("1");
   $('#left-sidebar').load('sidebar.html');
   $('#page-header').load('header.html');
   if (!localStorage.getItem('user-token')) {
@@ -1857,14 +1864,12 @@ $(document).ready(function () {
   }
   if (lesson_id) {
     MODE = 'UPDATE';
-    console.log("2");
   } else {
     MODE = 'CREATE';
   }
   const param = new URL(window.location.href);
   const params = param.searchParams.get('params');
   if (MODE == 'UPDATE') {
-    console.log("3");
     $.ajax({
       url: SERVER + 'courses_api/lesson/read/' + lesson_id,
       type: 'GET',
@@ -1872,8 +1877,6 @@ $(document).ready(function () {
       contentType: 'application/json',
       headers: { Authorization: `Token ${localStorage.getItem('user-token')}` },
       success: function (response) {
-        console.log("4");
-        console.log("response");
         console.log(response);
         if (params) {
           $('#lesson_slide').attr('href', `/slide.html?lesson_id=${lesson_id}&params=${params}`);
@@ -1923,15 +1926,6 @@ $(document).ready(function () {
             addTitleText(false, flashcard.id, flashcard.question, flashcard.answer, flashcard.position);
           }
           if (flashcard.lesson_type == 'braintree_Config') {
-            console.log(
-              flashcard.id,
-              flashcard.braintree_merchant_ID,
-              flashcard.braintree_public_key,
-              flashcard.braintree_private_key,
-              flashcard.braintree_item_name,
-              flashcard.braintree_item_price,
-              flashcard.position
-            );
             addBrainTree(
               false,
               flashcard.id,
@@ -2026,6 +2020,9 @@ $(document).ready(function () {
           }
           if (flashcard.lesson_type == 'gps_session') {
             addGpsSession(false, flashcard.id, flashcard.question, flashcard.options, flashcard.position);
+          }
+          if (flashcard.lesson_type == 'datepicker') {
+            addDatePicker(false, flashcard.id, flashcard.question, flashcard.options, flashcard.position);
           }
           if (flashcard.lesson_type == 'email_verify') {
             addVerifyEmail(false, flashcard.id, null, flashcard.position + 1);
@@ -2254,6 +2251,10 @@ $(document).ready(function () {
 
     if ($('#selectsegment').val() == 'gps_session') {
       addGpsSession(true);
+    }
+
+    if ($('#selectsegment').val() == 'datepicker') {
+      addDatePicker(true);
     }
 
     if ($('#selectsegment').val() == 'email_verify') {
