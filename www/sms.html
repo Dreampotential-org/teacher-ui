@@ -42,6 +42,11 @@
         <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
 
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        
+        <!-- Country flags and code -->
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+        
         <!-- user.html JS, CSS end -->
 
         <link rel="stylesheet" href="css/dashboard.css" />
@@ -69,6 +74,9 @@
             }
             .user-box{
                 margin-bottom:15px;
+            }
+            .d-dflex .iti {
+                display:flex!important;
             }
         </style>
 
@@ -102,6 +110,12 @@
                                             <div class="col-md-8 col-9">
                                                 <p class="font-20">Messages</p>
                                             </div>
+                                            <div class="col-md-4 col-3">
+                                                <button type="button" data-toggle="modal" data-target="#userModal"
+                                                    class="btn btn-primary">
+                                                     Send SMS
+                                                </button>
+                                            </div>
                                             <!-- <div class="col-md-4 col-3 d-table p-0 m-auto">
                                                                         <div class=" d-table-cell text-right">
                                                                             <div class="dropdown">
@@ -121,6 +135,40 @@
                                         <!--<img src="img/john.jpg" class="user-img" alt=""/>
                                                                   <p>John Doe</p>-->
                                     </div>
+                          <!-- Add Send Sms Modal -->
+                    <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">SMS</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                        <form id="send_sms">
+                          <div class="form-group">
+                            <select class="form-control" id="sourceMsgNumber">
+                              <option value="" selected>Select Source Number</option>
+                              <option value="(425) 578-5798">(425) 578-5798</option>
+                            </select>
+                          </div>
+                          <div class="form-group d-dflex">
+                            <input type="tel" class="form-control" id="dest_num_sms" placeholder="Dest Number"  required/>
+                          </div>
+                          <div class="form-group">
+                            <textarea class="form-control" id="message_body" rows="4" placeholder="Message" required></textarea>
+                          </div>
+                          <button type="submit"  class="btn btn-primary float-right">
+                            Send
+                          </button>
+                        </form>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+           
                         <div class="message-datatable">            
                         <table id="inboundCall" class="table table-striped table-bordered" style="width: 100%">
                           <thead>
@@ -244,7 +292,8 @@
                                                                  </div> -->
                                         </div>                      
                                         <div class="chat-footer">
-                                            <form
+                                            <form 
+                                                method="post"
                                                 class="p-1 w-100"
                                                 id="message-form"
                                                 onsubmit="return false;"
@@ -381,7 +430,48 @@
             
         });
             });
-
+            const destNumSmsInputField = document.querySelector("#dest_num_sms");
+      const destNumSmsInput = window.intlTelInput(destNumSmsInputField, {
+        utilsScript:
+        "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+      });
+      $('#send_sms').submit((e) => {
+        e.preventDefault()
+        source_num_sms = $('#sourceMsgNumber').val()
+        des_num_sms = destNumSmsInput.getNumber()
+        body_msg = $("#message_body").val()
+        $.ajax({
+          url: SERVER + "voip/api_voip/send_sms_",
+          async: true,
+          crossDomain: true,
+          crossOrigin: true,
+          type: "POST",
+          data : {
+            "from_num" : source_num_sms,
+            "to_num" : des_num_sms,
+            'body' : body_msg,
+          },
+          headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+        }).done( () => {
+            swal({	
+                title: "message_send",
+                text: "You have successfully send msg",	
+                icon: "success",
+                timer: 2000
+                })
+                $('#send_sms').trigger("reset");              
+        }).fail( (err) => {
+            swal({	
+                title: "not sending msg",	
+                text: "somthing went wrong.",	
+                icon: "error",	
+                timer: 2000
+                });	
+             $('#send_sms').trigger("reset");
+            console.log(err)
+        })
+        
+      })
             /*IF NOT SCROLLED SHOW SCROLL BUTTON*/ 
             var objDiv = document.getElementById("message-box");
             var scrollBtn = document.getElementById("scroll-btn");
@@ -497,13 +587,13 @@
 
                 var html = "";
                 get_sms_to_number(phonenum, function (res) {
-                    console.log(res);
+                    console.log("res",res);
                     var filtered_data = res.filter(
                             (item) =>
                         (item.to == "+1" + phonenum && item.from == "+15102885469") ||
                                 (item.to == "+15102885469" && item.from == "+1" + phonenum)
                     );
-                    console.log(filtered_data);
+                    console.log("f-data",filtered_data);
 
                     filtered_data.sort(function (a, b) {
                         // Turn your strings into dates, and then subtract them
@@ -516,6 +606,7 @@
                     });
 
                     for (var msg of filtered_data) {
+                        console.log("msg",msg)
                         if (msg.to == "+1" + phonenum) {
                             html += `<div class="message sent col-md-9 col-11">
                                             <p class="col-md-12 col-12">${msg.body}</p>
