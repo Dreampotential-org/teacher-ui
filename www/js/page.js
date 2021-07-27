@@ -273,7 +273,7 @@ function get_session() {
   $.ajax({
     url: SERVER + "courses_api/session/get",
     type: "GET",
-    async: true,
+    async: false,
     contentType: "application/json",
     success: function (data) {
       localStorage.setItem("session_id", data.session_id);
