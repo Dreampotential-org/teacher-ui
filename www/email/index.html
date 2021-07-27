@@ -95,7 +95,6 @@
                 $(document).delegate("#submit", "click", function(e) {
                     email_address = $("#email_address").val();
                     code = $("#code_text").val();
-
                     if (email_address == '') {
                         return alert("Please provide your email first");
                     } else {
@@ -111,6 +110,7 @@
                             contentType: 'application/json',
                             success: function (data){
                                 alert("Code Verified")
+                                nextSlide(email_data)
                                 const evt = new Event("emailVerified", {"bubbles":true, "cancelable":false});
                                 document.dispatchEvent(evt);
                             },
