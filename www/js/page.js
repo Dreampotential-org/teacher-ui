@@ -11,6 +11,7 @@ var user_tour_array = [];
 var tempMap = 0;
 var gps_response;
 let api;
+var signLessondata;
 
 function updateSign(data_, event, imgId, signInput, data_sign) {
   var les_id_sign;
@@ -36,10 +37,10 @@ function signLesson(event, imgId, signInput, data_less) {
   if ($("#signature")) {
     $("#signature").modal("show");
   }
-
+  signLessondata = data_less
   document.addEventListener("signatureSubmitted", function (e) {
     if(window.currentSignature){
-        updateSign(JSON.parse(JSON.stringify(window.currentSignature)).data, event, imgId, signInput, data_less);
+      updateSign(JSON.parse(JSON.stringify(window.currentSignature)).data, event, imgId, signInput, signLessondata);
     }
   });
 }
