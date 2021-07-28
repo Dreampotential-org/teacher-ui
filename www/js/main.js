@@ -4,9 +4,9 @@ var WEBSOCKET_HOST = '';
 
 function set_server() {
     if (window.location.origin.includes("compass")) {
-        SERVER = 'http://compasssc.com:8040/';
-        HOST = 'compasssc.com:8040';
-        WEBSOCKET_HOST = 'ws://compasssc.com:8040';
+        SERVER = 'https://vm2967.tmdcloud.com/';
+        HOST = 'https://vm2967.tmdcloud.com';
+        WEBSOCKET_HOST = 'wss://vm2967.tmdcloud.com';
     } else {
         SERVER = 'https://api.dreampotential.org/';
         HOST = 'api.dreampotential.org';
