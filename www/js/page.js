@@ -12,6 +12,7 @@ var tempMap = 0;
 var gps_response;
 let api;
 var signLessondata;
+var email_data;
 
 function updateSign(data_, event, imgId, signInput, data_sign) {
   var les_id_sign;
@@ -111,7 +112,7 @@ function sendResponse(flashcard_id, answer, current_flashcard) {
       });
     },
     error: function (res) {
-    console.log("🚀 ~ file: page.js ~ line 117 ~ sendResponse ~ res", res)
+      console.log("🚀 ~ file: page.js ~ line 117 ~ sendResponse ~ res", res)
     },
   });
 }
@@ -288,10 +289,9 @@ function get_session() {
 function viewMapLocations(tempMap, user_tour_array) {
   console.log("mapppp==>", "#journal-body-tour-" + tempMap);
 
-  $("#journal-body-tour-" + tempMap).html(
-    `<div id='gps-view-tour-${tempMap}' style='width:100%;height:450px;'></div>
-        `
-  );
+  $("#journal-body-tour-" + tempMap).html(`
+    <div id='gps-view-tour-${tempMap}' style='width:100%;height:450px;'></div>
+  `);
 
   console.log("user_tour_array=>", user_tour_array);
 
@@ -469,10 +469,10 @@ function init() {
     SERVER + "courses_api/slide/read/" + lesson_id,
     function (response, status, xhr) {
       console.log('>>>>>>>>> slide', response);
-      console.log(response);
       document.title = response.lesson_name
         ? response.lesson_name
         : "Lesson - " + lesson_id;
+
       total_slides = response.flashcards.length;
 
       var flashcards = response.flashcards;
@@ -494,98 +494,93 @@ function init() {
 
         if (flashcard.lesson_type == "verify_phone") {
           $("#myCarousel").append(`
-                    <div class="${className}" id="flahscard_${i}" id="verify_phone">
-                        <div alt="verify_phone">
-                            <input type="text" hidden name="verify_phone_${i}" id="verifyPhone">
-                            <button class="btn btn-primary" type="button" onclick="verifyPhone(event)"> Click To Verify Phone Number</button>
-                            <p id="phone_verification_status">${
-                              phone_verification_status
-                                ? "verified"
-                                : "not verified"
-                            }</p>
-                            </div>
-                    </div>
-                `);
+            <div class="${className}" id="flahscard_${i}" id="verify_phone">
+              <div alt="verify_phone">
+                <input type="text" hidden name="verify_phone_${i}" id="verifyPhone">
+                <button class="btn btn-primary" type="button" onclick="verifyPhone(event)"> Click To Verify Phone Number</button>
+                <p id="phone_verification_status">${phone_verification_status? "verified": "not verified"}</p>
+              </div>
+            </div>
+          `);
           i++;
         }
 
         if (flashcard.lesson_type == "chiro_front") {
           $("#myCarousel").append(`
-                    <div class="${className}" id="flahscard_${i}" id="chiro_front">
-                        <div alt="chiro_front">
-                        <h1>Chiro Front</h1>
-
-                          <form id="chirofront_form" onsubmit="chiroFront(event)" enctype="multipart/form-data" method="post">
-                            <input name="file" type="file">
-                            <label>Height:</label>
-                            <input name="body_height">
-                            <button class="btn">Submit</button>
-                          </form>
-                          <div id="chirofront_processed">
-                          </div>
-                          <div id="chirofront_details">
-                          </div>
-                        </div>
-                    </div>
-                `);
+            <div class="${className}" id="flahscard_${i}" id="chiro_front">
+              <div alt="chiro_front">
+                <h1>Chiro Front</h1>
+                <form id="chirofront_form" onsubmit="chiroFront(event)" enctype="multipart/form-data" method="post">
+                  <input name="file" type="file">
+                  <label>Height:</label>
+                  <input name="body_height">
+                  <button class="btn">Submit</button>
+                </form>
+                <div id="chirofront_processed"></div>
+                <div id="chirofront_details"></div>
+              </div>
+            </div>
+          `);
           i++;
         }
 
         if (flashcard.lesson_type == "chiro_side") {
           $("#myCarousel").append(`
-                    <div class="${className}" id="flahscard_${i}" id="chiro_side">
-                        <div alt="chiro_side">
-                        <h1>Chiro Side</h1>
-                          <form id="chiroside_form" onsubmit="chiroSide(event)" enctype="multipart/form-data" method="post">
-                            <input name="file" type="file">
-                            <label>Height:</label>
-                            <input name="body_height">
-                            <button class="btn">Submit</button>
-                          </form>
-                          <div id="chiroside_processed">
-                          </div>
-                          <div id="chiroside_details">
-                          </div>
-                        </div>
-                    </div>
-                `);
+            <div class="${className}" id="flahscard_${i}" id="chiro_side">
+              <div alt="chiro_side">
+                <h1>Chiro Side</h1>
+                <form id="chiroside_form" onsubmit="chiroSide(event)" enctype="multipart/form-data" method="post">
+                  <input name="file" type="file">
+                  <label>Height:</label>
+                  <input name="body_height">
+                  <button class="btn">Submit</button>
+                </form>
+                <div id="chiroside_processed"></div>
+                <div id="chiroside_details"></div>
+              </div>
+            </div>
+          `);
           i++;
         }
 
         if (flashcard.lesson_type == "user_qr_data") {
-            $("#myCarousel").append(`<div class="${className}" id="flashcard_${flashcard.id}">
+            $("#myCarousel").append(`
+              <div class="${className}" id="flashcard_${flashcard.id}">
                 <h1>QR Code</h1>
                 <div id="main" ></div>
-                </div>
+              </div>
             `);
             qrcodeResponse(lesson_id);
             i++;
         }
 
         if (flashcard.lesson_type == "user_qr_url") {
-          $("#myCarousel").append(`<div class="${className}" id="flashcard_${flashcard.id}">
+          $("#myCarousel").append(`
+            <div class="${className}" id="flashcard_${flashcard.id}">
               <h1>QR URL</h1>
               <a href="${flashcard.question}" target="_blank">${flashcard.question}</a>
-              </div>
+            </div>
           `);
           i++;
         }
 
         if (flashcard.lesson_type == "gps_session") {
-          $("#myCarousel").append(`<div class="${className}" id="flashcard_${flashcard.id}">
+          $("#myCarousel").append(`
+            <div class="${className}" id="flashcard_${flashcard.id}">
               <h1>GPS Session</h1>
               <div id="livedata" style="overflow:auto"></div>
               <button class="btn btn-default" id='start_session'>Start Session</button>
               <button class="btn btn-primary active className_${flashcard.id}" id='stop_session' style='display:none;'>Stop Session</button> 
               <div id='distance'></div>
-              </div>
+            </div>
           `);
 
           i++;
         }
 
         if (flashcard.lesson_type == "email_verify") {
-          $("#myCarousel").append(`<div class="${className}" id="flahscard_${i}" id="email_verify">
+          $("#myCarousel").append(`
+            <div class="${className}" id="flahscard_${i}" id="email_verify">
               <div alt="email_verify">
                 <button class="btn btn-primary className_${flashcard.id}" type="button" onclick="verifyEmail(event, this)"> Click To Verify Email Address </button>
                 <p>Verified Email <span id="email_address_info"></span></p>
@@ -597,26 +592,25 @@ function init() {
         }
 
         if (flashcard.lesson_type == "jitsi_meet") {
-          $("#myCarousel").append(`<div class="${className}" id="flashcard_${flashcard.id}" onclick=nextSlide()>
-          <h4>Join Conference</h4>
-        <div class="btn-group btn-toggle" id="join_conference">
-        </div>
-        
-        </div>`);
+          $("#myCarousel").append(`
+            <div class="${className}" id="flashcard_${flashcard.id}" onclick=nextSlide()>
+              <h4>Join Conference</h4>
+              <div class="btn-group btn-toggle" id="join_conference"></div>
+            </div>
+          `);
         }
         if (flashcard.lesson_type == "record_webcam") {
-          $("#myCarousel").append(`<div class="${className}" id="flashcard_${flashcard.id}">
-                <h4>Recording Webcam</h4>
-                <div class="btn-group btn-toggle" id="recording"> 
-                    <button class="btn btn-default" id="start_recording">ON</button>
-                    <button class="btn btn-primary active" id="stop_recording">OFF</button>
-                </div>
-                <hr>
-                <video controls autoplay id="record_webcam">
-
-                </video>
-                </div>
-            `);
+          $("#myCarousel").append(`
+            <div class="${className}" id="flashcard_${flashcard.id}">
+              <h4>Recording Webcam</h4>
+              <div class="btn-group btn-toggle" id="recording"> 
+                  <button class="btn btn-default" id="start_recording">ON</button>
+                  <button class="btn btn-primary active" id="stop_recording">OFF</button>
+              </div>
+              <hr>
+              <video controls autoplay id="record_webcam"></video>
+            </div>
+          `);
 
           var video = document.querySelector("#record_webcam");
           let start = document.getElementById("start_recording");
@@ -722,19 +716,17 @@ function init() {
         }
 
         if (flashcard.lesson_type == "record_screen") {
-          $("#myCarousel").append(`<div class="${className}" id="flashcard_${flashcard.id}">
-        <h4>Recording Screen</h4>
-        <div class="btn-group btn-toggle"> 
-            <button class="btn btn-default" id="start_recording_screen">ON</button>
-            <button class="btn btn-primary active" id="stop_recording_screen">OFF</button>
-        </div>
-        <hr>
-
-        <video controls autoplay id="record_screen">
-
-        </video>
-        
-        </div>`);
+          $("#myCarousel").append(`
+            <div class="${className}" id="flashcard_${flashcard.id}">
+              <h4>Recording Screen</h4>
+              <div class="btn-group btn-toggle"> 
+                <button class="btn btn-default" id="start_recording_screen">ON</button>
+                <button class="btn btn-primary active" id="stop_recording_screen">OFF</button>
+              </div>
+              <hr>
+              <video controls autoplay id="record_screen"></video>F
+            </div>
+          `);
           var video = document.querySelector("#record_screen");
           let start_screen = document.getElementById("start_recording_screen");
           let stop_screen = document.getElementById("stop_recording_screen");
@@ -849,10 +841,10 @@ function init() {
 
         if (flashcard.lesson_type == "verify_email") {
           $("#myCarousel").append(`
-                    <duv class="${className}" id="flashcard_${i}" id="verify_email">
-                        <h1>Email Verification Div Goes here </h1>
-                    </div>
-                `);
+            <div class="${className}" id="flashcard_${i}" id="verify_email">
+              <h1>Email Verification Div Goes here </h1>
+            </div>
+          `);
           i++;
         }
 
@@ -1139,36 +1131,30 @@ function init() {
 
         if (flashcard.lesson_type == "user_video_upload") {
           console.log("user_video_upload flashcard.lesson_type ===> ",flashcard.lesson_type);
-          $("#myCarousel").append(
-            `<div class="${className}">
-            <div alt="title_text" style="">
-            <h2> ${flashcard.question}</h2>
-            <input type="file" class="form-control className_${flashcard.id}" value="Choose File" id="myFile" onchange="handleVideoUpload('user_video_upload', this)"/>
-
-            <video style="max-height:450px;max-width:1000px;display:none; margin:auto"; controls preload="metadata" id="user-video-tag">
-            </video>
-
+          $("#myCarousel").append(`
+            <div class="${className}">
+              <div alt="title_text" style="">
+                <h2> ${flashcard.question}</h2>
+                <input type="file" class="form-control className_${flashcard.id}" value="Choose File" id="myFile" onchange="handleVideoUpload('user_video_upload', this)"/>
+                <video style="max-height:450px;max-width:1000px;display:none; margin:auto"; controls preload="metadata" id="user-video-tag"></video>
+              </div>
             </div>
-          </div>
           `
           );
         }
 
         if (flashcard.lesson_type == "user_image_upload") {
           console.log("user_image_upload flashcard.lesson_type ===> ",flashcard.lesson_type);
-          $("#myCarousel").append(
-            `<div class="${className}">
-            <h1>User Image Upload</h1>
-            <div alt="title_text" style="">
-            <p> ${flashcard.question}</p>
-            <input type="file" class="form-control className_${flashcard.id}" value="Choose File" id="image_upload_${flashcard.id}" onchange="handleImageUpload('user_image_upload',${flashcard.id}, this)"/> 
-
-            <img style="width:auto; margin:auto; display:none;" id="user-image-display_${flashcard.id}">
-
+          $("#myCarousel").append(`
+            <div class="${className}">
+              <h1>User Image Upload</h1>
+              <div alt="title_text" style="">
+                <p> ${flashcard.question}</p>
+                <input type="file" class="form-control className_${flashcard.id}" value="Choose File" id="image_upload_${flashcard.id}" onchange="handleImageUpload('user_image_upload',${flashcard.id}, this)"/> 
+                <img style="width:auto; margin:auto; display:none;" id="user-image-display_${flashcard.id}">
+              </div>
             </div>
-          </div>
-          `
-          );
+          `);
         }
 
         if (flashcard.lesson_type == "title_textarea") {
@@ -1209,13 +1195,14 @@ function init() {
             '<script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>'
           );
           $("#myCarousel").append(`
-                <div class="${className}" id="flashcard_${flashcard.id}">
-                <div class="text-center alt="signature">
+            <div class="${className}" id="flashcard_${flashcard.id}">
+              <div class="text-center alt="signature">
                 <input type="text" hidden name="input_signature_${flashcard.id}" id="signInput">
                 <img id="slide_signature" hidden>
                 <button class="btn btn-primary className_${flashcard.id}" type="button" onclick="signLesson(event,'slide_signature', 'signInput', this)"> Click To Sign</button>
-                </div>
-                </div>`);
+              </div>
+            </div>
+          `);
         }
         i++;
       });
@@ -1310,7 +1297,7 @@ function init() {
           }
         )
         .done((res) =>
-            console.log("🚀 ~ file: slide.js ~ line 727 ~ res", res)
+          console.log("🚀 ~ file: slide.js ~ line 727 ~ res", res)
         )
         .fail((err) => console.log("Invitation err", err));
       }
@@ -1531,6 +1518,7 @@ function qrcodeResponse(data){
     },
   });
 }
+
 function Base64ToImage(base64img, callback) {
   var img = new Image();
   img.onload = function() {

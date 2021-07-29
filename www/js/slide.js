@@ -1517,7 +1517,6 @@ function init() {
 
         i++;
       });
-      console.log("_______________________________________________");
       $("#theSlide").append(
         '<div class="item"><div alt="quick_read" style=""><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1></div></div>'
       );
@@ -1978,9 +1977,7 @@ function start() {
     });
   });
 }
-// I have Added page.js for rendering data on page.html.
-// I have added previous code in slide.js for work similarly like previous code.
-// I have modified code in page.js for fixing bug on signature.
+
 function timeConvCalc(diffInMilliSeconds) {
   const days = Math.floor(diffInMilliSeconds / 86400);
   diffInMilliSeconds -= days * 86400;
