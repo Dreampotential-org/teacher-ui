@@ -593,7 +593,7 @@
                     var filtered_data = res.filter(
                             (item) =>
                         (item.to == "+1" + phonenum && (item.from == "+15102885469" || item.from == "+14255785798")) ||
-                                (item.to == "+15102885469" && item.from == "+1" + phonenum)
+                                (item.to == "+15102885469" || item.to == "+14255785798") && item.from == "+1" + phonenum)
                     );
                     console.log("f-data",filtered_data);
 
