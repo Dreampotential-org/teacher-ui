@@ -46,46 +46,26 @@
                 }
                 var signData = signaturePad.toDataURL('image/png');
                 var form = new FormData();
-                form.append("sign_data", signData);        
-                var settings = {
-                    "async": true,
-                    "crossDomain": true,
-                    "url": SERVER + "/signature_api/new",
-                    "method": "POST",
-                    "processData": false,
-                    "contentType": false,
-                    "mimeType": "multipart/form-data",
-                    "data": form,
-                    "headers": {
-                        // "Authorization": localStorage.getItem("token"),
-                    },                
-                }                
-                
-                // $.ajax(settings).done(function (response) { 
-                //     const res = JSON.parse(response);                   
-                    // window.currentSignature = {id: res.sign_id,data: res.sign_data};
-                    window.currentSignature = {data: signData};
-                    const evt = new Event("signatureSubmitted", {"bubbles":true, "cancelable":false});
-                    document.dispatchEvent(evt);
-                    swal({
-                        text: 'Greate, Signature saved',
-                        html: true,
-                        title: "Good job!",
-                        icon: "success",
-                    });
-                    $('.swal-button--confirm').on('click', function(e){
-                        $("#clear-sign").click()
-                        $('#signature').modal('hide');
-                        if(window.location.pathname.endsWith('/signature/')){
-                            if($('#signature-preview-body')){
-                                $('#sign-preview').attr('src',res.sign_data);
-                                $('#sign-preview').removeAttr('hidden');
-                            }
+                form.append("sign_data", signData);
+                window.currentSignature = {data: signData};
+                const evt = new Event("signatureSubmitted", {"bubbles":true, "cancelable":false});
+                document.dispatchEvent(evt);
+                swal({
+                    text: 'Greate, Signature saved',
+                    html: true,
+                    title: "Good job!",
+                    icon: "success",
+                });
+                $('.swal-button--confirm').on('click', function(e){
+                    $("#clear-sign").click()
+                    $('#signature').modal('hide');
+                    if(window.location.pathname.endsWith('/signature/')){
+                        if($('#signature-preview-body')){
+                            $('#sign-preview').attr('src',res.sign_data);
+                            $('#sign-preview').removeAttr('hidden');
                         }
-                    });         
-                // }).fail(function (err) {                    
-                //     alert("ERROR")
-                // });
+                    }
+                });
             });
             
             $('#clear-sign').on('click', function () {

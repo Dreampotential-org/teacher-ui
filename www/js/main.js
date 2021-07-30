@@ -1,7 +1,20 @@
-var SERVER = 'https://api.dreampotential.org/';
-// var SERVER = 'http://localhost:8000/'
-var HOST = 'api.dreampotential.org';
-var WEBSOCKET_HOST = 'wss://api.dreampotential.org';
+var SERVER = '';
+var HOST = '';
+var WEBSOCKET_HOST = '';
+
+function set_server() {
+    if (window.location.origin.includes("compass")) {
+        SERVER = 'https://vm2967.tmdcloud.com/';
+        HOST = 'https://vm2967.tmdcloud.com';
+        WEBSOCKET_HOST = 'wss://vm2967.tmdcloud.com';
+    } else {
+        SERVER = 'https://api.dreampotential.org/';
+        HOST = 'api.dreampotential.org';
+        WEBSOCKET_HOST = 'wss://api.dreampotential.org';
+    }
+};
+set_server()
+
 
 function init() {}
 
