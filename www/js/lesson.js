@@ -1879,11 +1879,14 @@ $(document).ready(function () {
       success: function (response) {
         console.log(response);
         if (params) {
+          $('#lesson_page').attr('href', `/page.html?lesson_id=${lesson_id}&params=${params}`);
           $('#lesson_slide').attr('href', `/slide.html?lesson_id=${lesson_id}&params=${params}`);
         } else {
+          $('#lesson_page').attr('href', '/page.html?lesson_id=' + lesson_id);
           $('#lesson_slide').attr('href', '/slide.html?lesson_id=' + lesson_id);
         }
         $('#lesson_responses').attr('href', '/lesson_responses.html?lesson_id=' + lesson_id);
+        $('#lesson_responses_v2').attr('href', '/lesson_responses_v2.html?lesson_id=' + lesson_id);
 
         $('#lesson_name').val(response.lesson_name);
         $('#lesson_is_public').prop('checked', response.lesson_is_public);
