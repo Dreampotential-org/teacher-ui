@@ -2,6 +2,7 @@
 <html lang="en">
 
     <head>
+        <base href="../">
         <title>Teacher Portal</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -29,22 +30,26 @@
         <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
         <!-- user.html JS, CSS end -->
 
-        <link rel="stylesheet" href="css/dashboard.css" />
-        <link rel="stylesheet" href="css/sidebar.css" />
-        <link rel="stylesheet" href="css/setting.css" />
-        <link rel="stylesheet" href="css/sms.css" />
-        <link rel="stylesheet" href="css/header.css" />
-        <link rel="stylesheet" href="css/administration.css" />
-        <link rel="stylesheet" href="css/student_list.css" />
-        <link rel="stylesheet" href="css/lesson_list.css" />
+        <link rel="stylesheet" href="../css/dashboard.css" />
+        <link rel="stylesheet" href="../css/sidebar.css" />
+        <link rel="stylesheet" href="../css/setting.css" />
+        <link rel="stylesheet" href="../css/sms.css" />
+        <link rel="stylesheet" href="../css/header.css" />
+        <link rel="stylesheet" href="../css/administration.css" />
+        <link rel="stylesheet" href="../css/student_list.css" />
+        <link rel="stylesheet" href="../css/lesson_list.css" />
 
-        <script src="js/main.js"></script>
+        <script src="../js/main.js"></script>
         <!--<script src="js/student_lesson.js"></script>-->
 
         <style>
             .p-0 .container-fluid {
                 padding-left: 0px !important;
                 padding-right: 0px !important;
+            }
+            a.lesson-list-a, a.lesson-list-a:hover, a.lesson-list-a:focus, a.lesson-list-a:active {
+                text-decoration: none;
+                color: inherit;
             }
         </style>
 
@@ -360,14 +365,14 @@
         }
 
         $(document).ready(function () {
-            $("#left-sidebar").load("sidebar.html");
-            $("#page-header").load("header.html");
+            $("#left-sidebar").load("/sidebar.html");
+            $("#page-header").load("/header.html");
 
             $.ajax({
                 async: true,
                 crossDomain: true,
                 crossOrigin: true,
-                url: SERVER + "students_list/get/classenrolled/",
+                url: SERVER + "students_list/student/classes",
                 type: "GET",
                 headers: { "Authorization": `Token ${localStorage.getItem('user-token')}` }
             }).done((c) => {
@@ -377,19 +382,26 @@
 
                 $('#lessonLoader').remove();
                 student_classes.forEach((item, i) => {
-                    let html = `<div class="col-md-3">
+                    let html = `<a class="lesson-list-a" href="">
+                        <div class="col-md-3">
                         <div class="lesson_box">
                             <p>Class id: ${item.class_enrolled.id}</p>
                             <div class="lesson_name">${item.class_enrolled.class_name}</div>
-                            <div class="lessons_count">Lessons: ${item.lessons_count||0}</div>
+                            <div class="lessons_count">Lessons: ${item.lesson_count||0}</div>
                             <div class="student_count">Students Enrolled: ${item.students_enrolled}</div>
-                            <div class="read_status"> <i class="fa fa-check"></i> Mark as Completed</div>
+                            <div class="student_count">Completed Lessons: ${item.lesson_completed}</div>
+                            <div class="student_count">Percent Completed: ${item.percent_completed}</div>
+                            <div class="progress" style="margin-top:16px;">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: ${item.percent_completed}%" aria-valuenow="${String(item.percent_completed)}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="read_status" style="padding-top: 40px;"> <i class="fa fa-check"></i> Mark as Completed</div>
                             <hr>
                             <div class="action_icons" align="right">
                                 <a href="#"><i class="fa fa-eye"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-pencil"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-times"></i></a>
                             </div>
                         </div>
-                    </div>`
+                        </div>
+                    </a>`
                 $('#tabDiv').append(html)
 
                 });

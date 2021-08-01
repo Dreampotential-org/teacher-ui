@@ -72,7 +72,7 @@ $(document).ready(function() {
     var settings = {
         "async": true,
         "crossDomain": true,
-        "url": SERVER + "students_list/get/students/",
+        "url": SERVER + "students_list/get/students/?teacher=true",
         "method": "GET",
         "processData": false,
         "contentType": false,

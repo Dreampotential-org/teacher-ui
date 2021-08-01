@@ -404,7 +404,7 @@ function SidebarCollapse() {
         
         if (option_length === 1) {
             all_students.forEach((item, i) => {
-                $("#studentlist").append($('<option>').val(item.name).text(item.name))
+                $("#studentlist").append($('<option>').val(item.id).text(item.name))
             })
         }
     })

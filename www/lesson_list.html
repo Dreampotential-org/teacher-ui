@@ -605,8 +605,8 @@
                         data:data
                     }).done((res) => {
                         swal({
-                        title: "Lesson Added To Class",
-                        text: "You have successfully updated lesson name",
+                        title: "Lesson Updated",
+                        text: "You have successfully added lesson to class",
                         icon: "success",
                         timer: 2000
                     })
@@ -693,7 +693,7 @@
                             async: true,
                             crossDomain: true,
                             crossOrigin: true,
-                            url: SERVER + "students_list/get/students/",
+                            url: SERVER + "students_list/get/students/?teacher=true",
                             type: "GET",
                             headers: {
                                 "Authorization": `${localStorage.getItem('user-token')}`
