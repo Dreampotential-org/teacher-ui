@@ -97,7 +97,7 @@ $(document).ready(function() {
                 if(response.is_teacher)
                     window.location.replace("student_dashboard.html"); //replace with teacher dashboard when designed
                 else
-                    window.location.replace("student_class_dashboard.html"); 
+                    window.location.replace("student/dashboard.html"); 
             },
             error: function(e) {
                 swal({
