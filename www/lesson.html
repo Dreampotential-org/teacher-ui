@@ -581,19 +581,20 @@
                         </div>
                     </div>
                     <div class="speed_read" id="sign_b64" style="display: none; padding-top: 15px">
-                        <div data-type="signature" style="margin-top:50px">
-                            <div class="row">
-                                <h4 class="col-xs-10 col-lg-10">Signature</h4>
-                                <a class="remove_flashcard col-xs-2 col-lg-2"
-                                    style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                    x </a>
-                            </div>
-
-                            <div class="form-group">
-                                <input type="text" hidden name="input_signature" id="signInput">
-                                <img id="lesson_signature" hidden src="">
-                                <button class="btn btn-primary" type="button"
-                                    onclick="signLesson(event, 'lesson_signature', 'signInput')"> Click To Sign</button>
+                        <div data-type="sign_b64" style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div data-type="signature">
+                                <div class="row">
+                                    <h4 class="col-xs-10 col-lg-10">Signature</h4>
+                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                        x </a>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" hidden name="input_signature" id="signInput">
+                                    <img id="lesson_signature" hidden src="">
+                                    <button class="btn btn-primary" type="button"
+                                        onclick="signLesson(event, 'lesson_signature', 'signInput')"> Click To Sign</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -607,7 +608,6 @@
                                     style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
                                     x </a>
                             </div>
-
                             <div class="form-group">
                                 <input type="text" hidden name="input_signature" id="verifyPhone">
                                 <button class="btn btn-primary" type="button"> Click To Verify your Phone</button>
@@ -711,9 +711,6 @@
     </script>
     <script>
         $(document).ready(function () {
-            // $("#sortable").sortable({
-            //     stop: sortEventHandler
-            // });
 
             function sortEventHandler() {
                 var i = 0;

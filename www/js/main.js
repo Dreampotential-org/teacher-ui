@@ -8,7 +8,8 @@ function set_server() {
         HOST = 'https://vm2967.tmdcloud.com';
         WEBSOCKET_HOST = 'wss://vm2967.tmdcloud.com';
     } else {
-        SERVER = 'https://api.dreampotential.org/';
+        // SERVER = 'https://api.dreampotential.org/';
+        SERVER = 'http://localhost:8000/'
         HOST = 'api.dreampotential.org';
         WEBSOCKET_HOST = 'wss://api.dreampotential.org';
     }

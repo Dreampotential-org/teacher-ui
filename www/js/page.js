@@ -5,14 +5,12 @@ var loaded_flashcards = "";
 var pct = 0;
 var completed = false;
 var signature = [];
-var phone_verification_status = false;
 var session_id = null;
 var user_tour_array = [];
 var tempMap = 0;
 var gps_response;
 let api;
 var signLessondata;
-var email_data;
 
 function updateSign(data_, event, imgId, signInput, data_sign) {
   var les_id_sign;
@@ -185,6 +183,10 @@ function nextSlide(data) {
     answer = $("input[id=email_address]").val();
     sendResponse(flashcard_id, answer, current_flashcard);
   }
+  else if (type == "verify_phone") {
+    answer = $("input[id=phone_number]").val();
+    sendResponse(flashcard_id, answer, current_flashcard);
+  }
   else if (type == "jitsi_meet"){
     api.dispose();
   }
@@ -263,10 +265,8 @@ function phone_verification_check() {
     async: true,
     contentType: "application/json",
     success: function (data) {
-      phone_verification_status = true;
     },
     error: function (res) {
-      phone_verification_status = false;
     },
   });
 }
@@ -281,7 +281,6 @@ function get_session() {
       localStorage.setItem("session_id", data.session_id);
     },
     error: function (res) {
-      phone_verification_status = false;
     },
   });
 }
@@ -347,25 +346,25 @@ function viewMapLocations(tempMap, user_tour_array) {
   }
 }
 
-function verifyPhone(event) {
+function verifyPhone(event, data) {
   if ($("#verify_phone")) {
     $("#verify_phone").modal("show");
   }
 
   document.addEventListener("phoneVerified", function (e) {
     $("#verify_phone").modal("hide");
-    phone_verification_status = true;
+    nextSlide(data)
   });
 }
 
 function verifyEmail(event, data) {
-  email_data = data
   if ($("#email_verify")) {
     $("#email_verify").modal("show");
   }
 
   document.addEventListener("emailVerified", function (e) {
     $("#email_verify").modal("hide");
+    nextSlide(data)
   });
 }
 
@@ -497,12 +496,10 @@ function init() {
             <div class="${className}" id="flahscard_${i}" id="verify_phone">
               <div alt="verify_phone">
                 <input type="text" hidden name="verify_phone_${i}" id="verifyPhone">
-                <button class="btn btn-primary" type="button" onclick="verifyPhone(event)"> Click To Verify Phone Number</button>
-                <p id="phone_verification_status">${phone_verification_status? "verified": "not verified"}</p>
+                <button class="btn btn-primary className_${flashcard.id}" type="button" onclick="verifyPhone(event, this)"> Click To Verify Phone Number</button>
               </div>
             </div>
           `);
-          i++;
         }
 
         if (flashcard.lesson_type == "chiro_front") {
@@ -521,7 +518,6 @@ function init() {
               </div>
             </div>
           `);
-          i++;
         }
 
         if (flashcard.lesson_type == "chiro_side") {
@@ -540,18 +536,16 @@ function init() {
               </div>
             </div>
           `);
-          i++;
         }
 
         if (flashcard.lesson_type == "user_qr_data") {
-            $("#myCarousel").append(`
-              <div class="${className}" id="flashcard_${flashcard.id}">
-                <h1>QR Code</h1>
-                <div id="main" ></div>
-              </div>
-            `);
-            qrcodeResponse(lesson_id);
-            i++;
+          $("#myCarousel").append(`
+            <div class="${className}" id="flashcard_${flashcard.id}">
+              <h1>QR Code</h1>
+              <div id="main" ></div>
+            </div>
+          `);
+          qrcodeResponse(lesson_id);
         }
 
         if (flashcard.lesson_type == "user_qr_url") {
@@ -561,7 +555,6 @@ function init() {
               <a href="${flashcard.question}" target="_blank">${flashcard.question}</a>
             </div>
           `);
-          i++;
         }
 
         if (flashcard.lesson_type == "gps_session") {
@@ -574,8 +567,6 @@ function init() {
               <div id='distance'></div>
             </div>
           `);
-
-          i++;
         }
 
         if (flashcard.lesson_type == "email_verify") {
@@ -587,8 +578,6 @@ function init() {
               </div>
             </div>
           `);
-          
-          i++;
         }
 
         if (flashcard.lesson_type == "jitsi_meet") {
@@ -837,15 +826,6 @@ function init() {
             console.log(stream.getAudioTracks());
             tracks.forEach((track) => track.stop());
           });
-        }
-
-        if (flashcard.lesson_type == "verify_email") {
-          $("#myCarousel").append(`
-            <div class="${className}" id="flashcard_${i}" id="verify_email">
-              <h1>Email Verification Div Goes here </h1>
-            </div>
-          `);
-          i++;
         }
 
         if (flashcard.lesson_type == "quick_read") {
