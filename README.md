@@ -1,4 +1,15 @@
-# teacher-ui  
+# teacher-ui
+
+```
+How to start dev env
+
+./script/start-dev.sh
+start webservice - localhost:8087
+
+```
+
+
+
 ```
 
 start webservice - localhost:8084
