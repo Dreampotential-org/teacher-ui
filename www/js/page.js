@@ -187,6 +187,10 @@ function nextSlide(data) {
     answer = $("input[id=phone_number]").val();
     sendResponse(flashcard_id, answer, current_flashcard);
   }
+  else if (type == "datepicker") {
+    answer = current_flashcard.answer;
+    sendResponse(flashcard_id, answer);
+  }
   else if (type == "jitsi_meet"){
     api.dispose();
   }
@@ -568,6 +572,18 @@ function init() {
             </div>
           `);
         }
+
+        if (flashcard.lesson_type == "datepicker") {
+          $("#myCarousel").append(`
+            <div class="${className}" id="flashcard_${flashcard.id}" id="datepicker">
+              <div alt="datepicker">
+              <h1>${flashcard.question}</h1>
+              <h1>${flashcard.answer}</h1>
+              </div>
+            </div>
+          `);
+        }
+
 
         if (flashcard.lesson_type == "email_verify") {
           $("#myCarousel").append(`
