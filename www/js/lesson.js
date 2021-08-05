@@ -777,20 +777,20 @@ function addTitleTextarea(isNew, id, question, posU) {
 
 function addSignaturePad(isNew, id, sign_data, posU) {
   if (!isNew) {
-    $('#sign_b64').find('input').first().val(sign_data);
-    $('#sign_b64').find('input').last().attr('data-id', id);
-    // $("#sign_b64").find("button").last().html("Redraw Signature")
-    $('#sign_b64').find('img').last().attr('src', sign_data);
-    $('#sign_b64').find('img').last().attr('hidden', false);
+    $('#signature').find('input').first().val(sign_data);
+    $('#signature').find('input').last().attr('data-id', id);
+    // $("#signature").find("button").last().html("Redraw Signature")
+    $('#signature').find('img').last().attr('src', sign_data);
+    $('#signature').find('img').last().attr('hidden', false);
   } else {
   }
 
-  $('#sign_b64')
+  $('#signature')
     .find('input')
     .first()
     .attr('name', 'input_signature_' + sign_count);
 
-  $('#sortable').append($('#sign_b64').html());
+  $('#sortable').append($('#signature').html());
 
   sign_count++;
   sortablePositionFunction(isNew, posU);
@@ -2184,7 +2184,7 @@ $(document).ready(function () {
       addTitleTextarea(true);
     }
 
-    if ($('#selectsegment').val() == 'sign_b64') {
+    if ($('#selectsegment').val() == 'signature') {
       addSignaturePad(true);
     }
 
