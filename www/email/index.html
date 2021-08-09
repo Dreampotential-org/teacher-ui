@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
     <head></head>
-
     <body id="email-verification-body">
         <div class="modal" id="email_verify" tabindex="-1" role="dialog"  aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -91,7 +90,6 @@
                     }
                 });
 
-
                 $(document).delegate("#submit", "click", function(e) {
                     email_address = $("#email_address").val();
                     code = $("#code_text").val();
@@ -110,7 +108,6 @@
                             contentType: 'application/json',
                             success: function (data){
                                 alert("Code Verified")
-                                nextSlide(email_data)
                                 const evt = new Event("emailVerified", {"bubbles":true, "cancelable":false});
                                 document.dispatchEvent(evt);
                             },
@@ -120,7 +117,6 @@
                         })   
                     }
                 });
-
 
                 $("#change-email").on('click', function() {
                     stepOne()

@@ -218,7 +218,6 @@ function nextSlide() {
     } else if (type == "user_gps") {
       answer = $("#note_" + (current_slide - 1)).val();
       sendResponse(flashcard_id, answer);
-      // console.log('flashcard_id',flashcard_id)
       document.removeEventListener("gpsPosition", () => {});
     }
     else if (type == "gps_session") {
@@ -227,6 +226,10 @@ function nextSlide() {
     }else if (type == "email_verify") {
       answer = $("input[id= email_address]").val();
       sendResponse(flashcard_id, answer);
+    }
+    else if (type == "verify_phone") {
+      answer = $("input[id=phone_number]").val();
+      sendResponse(flashcard_id, answer, current_flashcard);
     }
     else if (type == "datepicker") {
       answer = current_flashcard.answer;
@@ -560,13 +563,9 @@ function init() {
           className = "item";
         }
         $("#carousel-indicators").append(
-          '<li data-target="#myCarousel" data-slide-to="' +
-            i +
-            '" class="active"></li>'
+          '<li data-target="#myCarousel" data-slide-to="' + i + '" class="active"></li>'
         );
-        // braintree
         if (flashcard.lesson_type == "braintree_Config") {
-          // {% csrf_token %}
           $("#theSlide").append(
             `<div class="
             ${className}
@@ -598,13 +597,13 @@ function init() {
               <button id="checkout">Submit Payment</button>
             </form></div>`
           );
-          ////////////////////////////
+          
           var braintree_form_data = new FormData(); 
           console.log("flashcard.braintree_merchant_ID=",flashcard.braintree_merchant_ID);
           braintree_form_data.append("BT_MERCHANT_ID", flashcard.braintree_merchant_ID)
           braintree_form_data.append("BT_PUBLIC_KEY", flashcard.braintree_public_key)
           braintree_form_data.append("BT_PRIVATE_KEY", flashcard.braintree_private_key)
-          var SERVER = 'http://localhost:8000/';
+
           var segment_settings_buy_item = {
             "async": false,
             "crossDomain": true,
@@ -613,25 +612,18 @@ function init() {
             "type": "POST",
             "processData": false,
             "contentType": false,
-            // "mimeType": "multipart/form-data",
             "data": braintree_form_data,
             "headers": {
                 "Authorization": localStorage.getItem("user-token")
             }
           };
-          console.log("farrukh promise");
-          // const myPromise = await responsePromise(flashcard.braintree_item_id,braintree_form_data);
-          // console.log(myPromise);
           $.ajax(segment_settings_buy_item).done(function (braintree_response) {
-            console.log("123");
-            // window.location.href="http://localhost:8086/checkout.html";
             console.log(braintree_response);
             $("[id='itemTitle']").html(braintree_response.title);
             $("[id='itemPrice']").html(braintree_response.price);
             $("[id='item_ID']").val(braintree_response.id);
             $("[id='client_token']").val(braintree_response.client_token);
 
-            //////// order send data
             var form = document.querySelector("#payment-form");
             console.log("form = ",form);
             var client_token = braintree_response.client_token;
@@ -640,9 +632,6 @@ function init() {
               {
                 authorization: client_token,
                 container: "#bt-dropin",
-                // paypal: {
-                //   flow: "vault",
-                // },
               },
               function (createErr, instance) {
                 form.addEventListener("submit", function (event) {
@@ -653,12 +642,10 @@ function init() {
                       return;
                     }
 
-                    // Add the nonce to the form and submit
                     document.querySelector("#nonce").value = payload.nonce;
-                    // form.submit();
-                    // event.preventDefault()
-                    // update item
+
                     var order_form = new FormData();
+
                     order_form.append("item_ID", $("#item_ID").val())
                     order_form.append("title", $("#itemTitle").text())
                     order_form.append("payment_method_nonce", payload.nonce)
@@ -667,6 +654,7 @@ function init() {
                     order_form.append("BT_MERCHANT_ID", flashcard.braintree_merchant_ID)
                     order_form.append("BT_PUBLIC_KEY", flashcard.braintree_public_key)
                     order_form.append("BT_PRIVATE_KEY", flashcard.braintree_private_key)
+
                     var settings_add_order = {
                       "async": false,
                       "crossDomain": true,
@@ -682,7 +670,6 @@ function init() {
                       }
                     };
                     $.ajax(settings_add_order).done(function (checkout_response) {
-                      // response = JSON.parse(response);
                       console.log(checkout_response);
                       var resp = JSON.parse(checkout_response)
                       if(resp.success == true){
@@ -717,7 +704,6 @@ function init() {
                 });
               }
             );
-            //////
             
           }).fail(function (response) {
             console.log("Buy item Failed!");
@@ -727,152 +713,129 @@ function init() {
                 icon: "warning",
             });
           });
-          ////////////////////////////
         }
        
-        // braintree end
         if (flashcard.lesson_type == "verify_phone") {
           $("#theSlide").append(`
-                    <div class="${className} ${
-            i == 0 ? "active" : ""
-          }" id="flahscard_${i}" id="verify_phone">
-                        <div alt="verify_phone">
-                            <input type="text" hidden name="verify_phone_${i}" id="verifyPhone">
-                            <button class="btn btn-primary" type="button" onclick="verifyPhone(event)"> Click To Verify Phone Number</button>
-                            <p id="phone_verification_status">${
-                              phone_verification_status
-                                ? "verified"
-                                : "not verified"
-                            }</p>
-                            </div>
-                    </div>
-                `);
-          i++;
+            <div class="${className} ${i == 0 ? "active" : ""}" id="flahscard_${i}" id="verify_phone">
+              <div alt="verify_phone">
+                <input type="text" hidden name="verify_phone_${i}" id="verifyPhone">
+                <button class="btn btn-primary" type="button" onclick="verifyPhone(event)"> Click To Verify Phone Number</button>
+                <p id="phone_verification_status">${phone_verification_status? "verified": "not verified"}</p>
+              </div>
+            </div>
+          `);
         }
 
         if (flashcard.lesson_type == "chiro_front") {
           $("#theSlide").append(`
-                    <div class="${className} ${
-            i == 0 ? "active" : ""
-          }" id="flahscard_${i}" id="chiro_front">
-                        <div alt="chiro_front">
-                        <h1>Chiro Front</h1>
-                          <form id="chirofront_form" onsubmit="chiroFront(event)" enctype="multipart/form-data" method="post">
-                            <input name="file" type="file">
-                            <label>Height:</label>
-                            <input name="body_height">
-                            <button class="btn">Submit</button>
-                          </form>
-                          <div id="chirofront_processed">
-                          </div>
-                          <div id="chirofront_details">
-                          </div>
-                        </div>
-                    </div>
-                `);
-          i++;
+            <div class="${className} ${i == 0 ? "active" : ""}" id="flahscard_${i}" id="chiro_front">
+              <div alt="chiro_front">
+                <h1>Chiro Front</h1>
+                <form id="chirofront_form" onsubmit="chiroFront(event)" enctype="multipart/form-data" method="post">
+                  <input name="file" type="file">
+                  <label>Height:</label>
+                  <input name="body_height">
+                  <button class="btn">Submit</button>
+                </form>
+                <div id="chirofront_processed"></div>
+                <div id="chirofront_details"></div>
+              </div>
+            </div>
+          `);
         }
 
         if (flashcard.lesson_type == "chiro_side") {
           $("#theSlide").append(`
-                    <div class="${className} ${
-            i == 0 ? "active" : ""
-          }" id="flahscard_${i}" id="chiro_side">
-                        <div alt="chiro_side">
-                        <h1>Chiro Side</h1>
-                          <form id="chiroside_form" onsubmit="chiroSide(event)" enctype="multipart/form-data" method="post">
-                            <input name="file" type="file">
-                            <label>Height:</label>
-                            <input name="body_height">
-                            <button class="btn">Submit</button>
-                          </form>
-                          <div id="chiroside_processed">
-                          </div>
-                          <div id="chiroside_details">
-                          </div>
-                        </div>
-                    </div>
-                `);
-          i++;
+            <div class="${className} ${i == 0 ? "active" : ""}" id="flahscard_${i}" id="chiro_side">
+              <div alt="chiro_side">
+                <h1>Chiro Side</h1>
+                <form id="chiroside_form" onsubmit="chiroSide(event)" enctype="multipart/form-data" method="post">
+                  <input name="file" type="file">
+                  <label>Height:</label>
+                  <input name="body_height">
+                  <button class="btn">Submit</button>
+                </form>
+                <div id="chiroside_processed"></div>
+                <div id="chiroside_details"></div>
+              </div>
+            </div>
+          `);
         }
 
         if (flashcard.lesson_type == "user_qr_data") {
-            $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+            $("#theSlide").append(`
+              <div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
                 <h1>QR Code</h1>
                 <div id="main" ></div>
-                </div>
+              </div>
             `);
             qrcodeResponse(lesson_id);
-            i++;
         }
 
         if (flashcard.lesson_type == "user_qr_url") {
-          $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+          $("#theSlide").append(`
+            <div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
               <h1>QR URL</h1>
               <a href="${flashcard.question}" target="_blank">${flashcard.question}</a>
-              </div>
+            </div>
           `);
-          i++;
         }
 
         if (flashcard.lesson_type == "gps_session") {
-          $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+          $("#theSlide").append(`
+            <div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
               <h1>GPS Session</h1>
               <div id="livedata" style="overflow:auto"></div>
               <button class="btn btn-default" id='start_session'>Start Session</button>
               <button class="btn btn-primary active" id='stop_session' style='display:none;'>Stop Session</button> 
               <div id='distance' ></div>
-              </div>
+            </div>
           `);
-
-          i++;
         }
 
         if (flashcard.lesson_type == "email_verify") {
-          $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flahscard_${i}" id="email_verify">
+          $("#theSlide").append(`
+            <div class="${className} ${i == 0 ? "active" : ""}" id="flahscard_${i}" id="email_verify">
               <div alt="email_verify">
                 <button class="btn btn-primary" type="button" onclick="verifyEmail(event)"> Click To Verify Email Address </button>
                 <p>Verified Email <span id="email_address_info"></span></p>
               </div>
             </div>
           `);
-          i++;
         }
 
         if (flashcard.lesson_type == "datepicker") {
-          $("#theSlide").append(`<div class="${className} ${i == 0 ? "active" : ""}" id="flahscard_${i}" id="datepicker">
+          $("#theSlide").append(`
+            <div class="${className} ${i == 0 ? "active" : ""}" id="flahscard_${i}" id="datepicker">
               <div alt="datepicker">
               <h1>${flashcard.question}</h1>
               <h1>${flashcard.answer}</h1>
               </div>
             </div>
           `);
-          i++;
         }
 
         if (flashcard.lesson_type == "jitsi_meet") {
-          $("#theSlide").append(`<div class="${className} ${
-            i == 0 ? "active" : ""
-          }" id="flashcard_${flashcard.id}">
-          <h4>Join Conference</h4>
-        <div class="btn-group btn-toggle" id="join_conference">
-        </div>
-        
-        </div>`);
+          $("#theSlide").append(`
+            <div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+              <h4>Join Conference</h4>
+              <div class="btn-group btn-toggle" id="join_conference"></div>
+            </div>
+          `);
         }
         if (flashcard.lesson_type == "record_webcam") {
-          $("#theSlide").append(`<div class="${className} ${
-            i == 0 ? "active" : ""
-          }" id="flashcard_${flashcard.id}">
-        <h4>Recording Webcam</h4>
-        <div class="btn-group btn-toggle" id="recording"> 
-            <button class="btn btn-default" id="start_recording">ON</button>
-            <button class="btn btn-primary active" id="stop_recording">OFF</button>
-        </div>
-        <hr>
-        <video controls autoplay id="record_webcam">
-        </video>
-        </div>`);
+          $("#theSlide").append(`
+            <div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+              <h4>Recording Webcam</h4>
+              <div class="btn-group btn-toggle" id="recording"> 
+                <button class="btn btn-default" id="start_recording">ON</button>
+                <button class="btn btn-primary active" id="stop_recording">OFF</button>
+              </div>
+              <hr>
+              <video controls autoplay id="record_webcam"></video>
+            </div>
+          `);
           // let recording = document.getElementById("start_recording");
           var video = document.querySelector("#record_webcam");
           let start = document.getElementById("start_recording");
@@ -984,19 +947,17 @@ function init() {
         }
 
         if (flashcard.lesson_type == "record_screen") {
-          $("#theSlide").append(`<div class="${className} ${
-            i == 0 ? "active" : ""
-          }" id="flashcard_${flashcard.id}">
-        <h4>Recording Screen</h4>
-        <div class="btn-group btn-toggle"> 
-            <button class="btn btn-default" id="start_recording_screen">ON</button>
-            <button class="btn btn-primary active" id="stop_recording_screen">OFF</button>
-        </div>
-        <hr>
-        <video controls autoplay id="record_screen">
-        </video>
-        
-        </div>`);
+          $("#theSlide").append(`
+            <div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+              <h4>Recording Screen</h4>
+              <div class="btn-group btn-toggle"> 
+                <button class="btn btn-default" id="start_recording_screen">ON</button>
+                <button class="btn btn-primary active" id="stop_recording_screen">OFF</button>
+              </div>
+              <hr>
+              <video controls autoplay id="record_screen"></video>
+            </div>
+          `);
           var video = document.querySelector("#record_screen");
           let start_screen = document.getElementById("start_recording_screen");
           let stop_screen = document.getElementById("stop_recording_screen");
@@ -1016,11 +977,9 @@ function init() {
                 sampleRate: 44100,
               },
             });
-            // webcamStream = await navigator.mediaDevices.getUserMedia({
-            //   video: true,
-            // });
+
             stream.addTrack(audioStream.getAudioTracks()[0]);
-            // stream.addTrack(webcamStream.getVideoTracks()[0]);
+
             recorder = new MediaRecorder(stream);
 
             const chunks = [];
@@ -1072,7 +1031,6 @@ function init() {
                       icon: "success",
                       timer: 1000,
                     });
-                    // const file_url = response.file_url;
                   }
                 })
                 .fail(function (error) {
@@ -1108,23 +1066,11 @@ function init() {
             start_screen.classList.remove("btn-primary");
             start_screen.classList.add("btn-default");
 
-            // stream.getVideoTracks()[0].stop();
             let tracks = stream.getTracks();
             console.log(tracks);
             console.log(stream.getAudioTracks());
             tracks.forEach((track) => track.stop());
           });
-        }
-
-        if (flashcard.lesson_type == "verify_email") {
-          $("#theSlide").append(`
-                    <duv class="${className} ${
-            i == 0 ? "active" : ""
-          }" id="flashcard_${i}" id="verify_email">
-                        <h1>Email Verification Div Goes here </h1>
-                    </div>
-                `);
-          i++;
         }
 
         if (flashcard.lesson_type == "quick_read") {
@@ -1379,7 +1325,6 @@ function init() {
           user_tour_array = [];
 
           flashcard.options.forEach(function (res) {
-            // user_tour_array.push(JSON.parse(res.replace(/'/g, '"')));
             user_tour_array.push(res);
           });
 
@@ -1407,29 +1352,27 @@ function init() {
           console.log("flashcard value ===> ", flashcard);
 
           $("#theSlide").append(
-            `<div class="' +
-          ${className} +'"><div class="title_input">
-          <div alt="title_input" style=""><h1>GPS Note:</h1>
-          <p> ${flashcard.question}</p>
-          <div><label>Latitude: </label>
-          <input id="lat_${i}" value="0" disabled></div>
-          <div style="margin-top:16px;"><label>Longitude: </label>
-          <input id="long_${i}" value="0" disabled></div>
-          <div class="form-group">
-           <textarea class="form-control" rows="10" name="note" placeholder="note" id="note_${i}"></textarea>
-           </div>
-           <div class="form-group">
-           <button class='btn btn-info gps-entry'>View Map</button>
-           </div>
-           <div id="journalModal">
-           <div id='journal-body'></div>
-           </div>
-          </div>
-          </div>
-          </div>
-          `
-          );
-          // handle_gps_click();
+            `<div class="' +${className} +'"><div class="title_input">
+              <div alt="title_input" style=""><h1>GPS Note:</h1>
+                <p> ${flashcard.question}</p>
+                <div><label>Latitude: </label>
+                  <input id="lat_${i}" value="0" disabled>
+                </div>
+                <div style="margin-top:16px;"><label>Longitude: </label>
+                  <input id="long_${i}" value="0" disabled></div>
+                  <div class="form-group">
+                    <textarea class="form-control" rows="10" name="note" placeholder="note" id="note_${i}"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <button class='btn btn-info gps-entry'>View Map</button>
+                  </div>
+                  <div id="journalModal">
+                    <div id='journal-body'></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `);
         }
 
         if (flashcard.lesson_type == "user_video_upload") {
@@ -1437,17 +1380,16 @@ function init() {
             "user_video_upload flashcard.lesson_type ===> ",
             flashcard.lesson_type
           );
-          $("#theSlide").append(
-            `<div class="${className}">
-            <div alt="title_text" style="">
-            <h2> ${flashcard.question}</h2>
-            <input type="file" class="form-control" value="Choose File" id="myFile" onchange="handleVideoUpload('user_video_upload')"/>
-            <video style="max-height:450px;max-width:1000px;display:none; margin:auto"; controls preload="metadata" id="user-video-tag">
-            </video>
+          $("#theSlide").append(`
+            <div class="${className}">
+              <div alt="title_text" style="">
+                <h2> ${flashcard.question}</h2>
+                <input type="file" class="form-control" value="Choose File" id="myFile" onchange="handleVideoUpload('user_video_upload')"/>
+                <video style="max-height:450px;max-width:1000px;display:none; margin:auto"; controls preload="metadata" id="user-video-tag">
+                </video>
+              </div>
             </div>
-          </div>
-          `
-          );
+          `);
         }
 
         if (flashcard.lesson_type == "user_image_upload") {
@@ -1455,17 +1397,16 @@ function init() {
             "user_image_upload flashcard.lesson_type ===> ",
             flashcard.lesson_type
           );
-          $("#theSlide").append(
-            `<div class="${className}">
-            <h1>User Image Upload</h1>
-            <div alt="title_text" style="">
-            <p> ${flashcard.question}</p>
-            <input type="file" class="form-control" value="Choose File" id="image_upload_${flashcard.id}" onchange="handleImageUpload('user_image_upload',${flashcard.id})"/> 
-            <img style="width:auto; margin:auto; display:none;" id="user-image-display_${flashcard.id}">
+          $("#theSlide").append(`
+            <div class="${className}">
+              <h1>User Image Upload</h1>
+              <div alt="title_text" style="">
+                <p> ${flashcard.question}</p>
+                <input type="file" class="form-control" value="Choose File" id="image_upload_${flashcard.id}" onchange="handleImageUpload('user_image_upload',${flashcard.id})"/> 
+                <img style="width:auto; margin:auto; display:none;" id="user-image-display_${flashcard.id}">
+              </div>
             </div>
-          </div>
-          `
-          );
+          `);
         }
 
         if (flashcard.lesson_type == "title_textarea") {
@@ -1506,18 +1447,17 @@ function init() {
             '<script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>'
           );
           $("#theSlide").append(`
-                <div class="${className}" id="flashcard_${i}">
-                <div class="text-center alt="signature">
+            <div class="${className}" id="flashcard_${i}">
+              <div class="text-center alt="signature">
                 <input type="text" hidden name="input_signature_${i}" id="signInput">
                 <img id="slide_signature" hidden> </br>
                 <button class="btn btn-primary" type="button" onclick="signLesson(event,'slide_signature', 'signInput')"> Click To Sign</button>
-                </div>
-                </div>`);
+              </div>
+            </div>
+          `);
         }
-
         i++;
       });
-      console.log("_______________________________________________");
       $("#theSlide").append(
         '<div class="item"><div alt="quick_read" style=""><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1></div></div>'
       );
@@ -1978,9 +1918,7 @@ function start() {
     });
   });
 }
-// I have Added page.js for rendering data on page.html.
-// I have added previous code in slide.js for work similarly like previous code.
-// I have modified code in page.js for fixing bug on signature.
+
 function timeConvCalc(diffInMilliSeconds) {
   const days = Math.floor(diffInMilliSeconds / 86400);
   diffInMilliSeconds -= days * 86400;

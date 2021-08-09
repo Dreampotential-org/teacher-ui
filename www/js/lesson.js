@@ -777,20 +777,20 @@ function addTitleTextarea(isNew, id, question, posU) {
 
 function addSignaturePad(isNew, id, sign_data, posU) {
   if (!isNew) {
-    $('#sign_b64').find('input').first().val(sign_data);
-    $('#sign_b64').find('input').last().attr('data-id', id);
-    // $("#sign_b64").find("button").last().html("Redraw Signature")
-    $('#sign_b64').find('img').last().attr('src', sign_data);
-    $('#sign_b64').find('img').last().attr('hidden', false);
+    $('#signature').find('input').first().val(sign_data);
+    $('#signature').find('input').last().attr('data-id', id);
+    // $("#signature").find("button").last().html("Redraw Signature")
+    $('#signature').find('img').last().attr('src', sign_data);
+    $('#signature').find('img').last().attr('hidden', false);
   } else {
   }
 
-  $('#sign_b64')
+  $('#signature')
     .find('input')
     .first()
     .attr('name', 'input_signature_' + sign_count);
 
-  $('#sortable').append($('#sign_b64').html());
+  $('#sortable').append($('#signature').html());
 
   sign_count++;
   sortablePositionFunction(isNew, posU);
@@ -1182,30 +1182,20 @@ function initMap(image_id) {
 function addVerifyPhone(isNew, id, question, image, posU) {
   if (!isNew) {
   } else {
-    $('#title_textarea').find('textarea').first().html('');
   }
 
-  $('#verify_phone')
-    .find('input')
-    .first()
-    .attr('name', 'verify_phone_' + verify_phone_count);
   $('#sortable').append($('#verify_phone').html());
-
-  verify_phone_count++;
   sortablePositionFunction(isNew, posU);
+  verify_phone_count++;
 }
 
 function addUserGps(isNew, id, question, image, posU) {
   if (!isNew) {
-    // $('#user_gps').find('textarea').first().html(question);
-    // $('#user_gps').find('textarea').last().attr('data-id', id);
   } else {
-    // $('#user_gps').find('textarea').first().html('');
   }
   $('#sortable').append($('#user_gps').html());
   user_gps_count++;
   sortablePositionFunction(isNew, posU);
-  // handle_gps_click();
 }
 
 function addUserQRUrl(isNew, id, question, posU) {
@@ -1648,14 +1638,6 @@ function sendUpdates() {
         flashcards.push(temp);
         break;
 
-      case 'verify_phone':
-        temp = {
-          lesson_type: 'verify_phone',
-          position: position_me,
-        };
-        flashcards.push(temp);
-        break;
-
       case 'user_video_upload':
         temp = {
           lesson_type: 'user_video_upload',
@@ -1690,8 +1672,6 @@ function sendUpdates() {
       case 'braintree_Config':
         temp = {
           lesson_type: 'braintree_Config',
-          // question: attr_array[0],
-          // image: '',
           position: position_me,
           braintree_merchant_ID:attr_array[0],
           braintree_public_key:attr_array[1],
@@ -1704,10 +1684,7 @@ function sendUpdates() {
       case 'user_gps':
         temp = {
           lesson_type: 'user_gps',
-          // question: attr_array[0],
           question: 'User GPS',
-          // latitude:CURRENT_POSITION.coords.latitude,
-          // longitude:CURRENT_POSITION.coords.longitude,
           position: position_me,
         };
         flashcards.push(temp);
@@ -1740,6 +1717,15 @@ function sendUpdates() {
         flashcards.push(temp);
         break;
 
+      case 'verify_phone':
+        temp = {
+          lesson_type: 'verify_phone',
+          question: "Verified Phone",
+          position: position_me,
+        };
+        flashcards.push(temp);
+        break;
+  
       case 'gps_session':
         temp = {
           lesson_type: 'gps_session',
@@ -1760,7 +1746,7 @@ function sendUpdates() {
         flashcards.push(temp);
         break;
     }
-
+    console.log("====== flashcards", flashcards)
     attr_array = [];
   });
   
@@ -1879,11 +1865,14 @@ $(document).ready(function () {
       success: function (response) {
         console.log(response);
         if (params) {
+          $('#lesson_page').attr('href', `/page.html?lesson_id=${lesson_id}&params=${params}`);
           $('#lesson_slide').attr('href', `/slide.html?lesson_id=${lesson_id}&params=${params}`);
         } else {
+          $('#lesson_page').attr('href', '/page.html?lesson_id=' + lesson_id);
           $('#lesson_slide').attr('href', '/slide.html?lesson_id=' + lesson_id);
         }
         $('#lesson_responses').attr('href', '/lesson_responses.html?lesson_id=' + lesson_id);
+        $('#lesson_responses_v2').attr('href', '/lesson_responses_v2.html?lesson_id=' + lesson_id);
 
         $('#lesson_name').val(response.lesson_name);
         $('#lesson_is_public').prop('checked', response.lesson_is_public);
@@ -2195,7 +2184,7 @@ $(document).ready(function () {
       addTitleTextarea(true);
     }
 
-    if ($('#selectsegment').val() == 'sign_b64') {
+    if ($('#selectsegment').val() == 'signature') {
       addSignaturePad(true);
     }
 

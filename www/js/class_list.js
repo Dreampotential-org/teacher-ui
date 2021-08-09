@@ -379,6 +379,7 @@ function SidebarCollapse() {
                     "student": student,
                     "class": class_,
                 },
+                headers: { "Authorization": `Token ${localStorage.getItem('user-token')}` },
                 success: () => {
                     location.reload()
                 }
@@ -403,7 +404,7 @@ function SidebarCollapse() {
         
         if (option_length === 1) {
             all_students.forEach((item, i) => {
-                $("#studentlist").append($('<option>').val(item.name).text(item.name))
+                $("#studentlist").append($('<option>').val(item.id).text(item.name))
             })
         }
     })

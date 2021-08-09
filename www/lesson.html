@@ -55,8 +55,10 @@
 
                 </select>
                 <div class="row view_lesson_response">
-                    <a id="lesson_slide" class="col-lg-6">View Lesson</a>
+                    <a id="lesson_slide" class="col-lg-6">Lesson Slide View</a>
+                    <a id="lesson_page" class="col-lg-6">Lesson Page View</a>
                     <a id="lesson_responses" class="col-lg-6">View Responses</a>
+                    <a id="lesson_responses_v2" class="col-lg-6">Responses V2</a>
                 </div>
 
                 <div id="is_public_contanier">
@@ -82,7 +84,7 @@
                     <option value="audio_file">Audio File</option>
                     <option value="title_textarea">Title Textarea</option>
                     <option value="verify_phone">Verify Phone</option>
-                    <option value="sign_b64">Signature Image</option>
+                    <option value="signature">Signature Image</option>
                     <option value="brain_tree">BrainTree</option>
                     <option value="user_video_upload">User Video Upload</option>
                     <option value="user_image_upload">User Image Upload</option>
@@ -578,20 +580,21 @@
                             </div>
                         </div>
                     </div>
-                    <div class="speed_read" id="sign_b64" style="display: none; padding-top: 15px">
-                        <div data-type="signature" style="margin-top:50px">
-                            <div class="row">
-                                <h4 class="col-xs-10 col-lg-10">Signature</h4>
-                                <a class="remove_flashcard col-xs-2 col-lg-2"
-                                    style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                    x </a>
-                            </div>
-
-                            <div class="form-group">
-                                <input type="text" hidden name="input_signature" id="signInput">
-                                <img id="lesson_signature" hidden src="">
-                                <button class="btn btn-primary" type="button"
-                                    onclick="signLesson(event, 'lesson_signature', 'signInput')"> Click To Sign</button>
+                    <div class="speed_read" id="signature" style="display: none; padding-top: 15px">
+                        <div data-type="signature" style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div data-type="signature">
+                                <div class="row">
+                                    <h4 class="col-xs-10 col-lg-10">Signature</h4>
+                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                        x </a>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" hidden name="input_signature" id="signInput">
+                                    <img id="lesson_signature" hidden src="">
+                                    <button class="btn btn-primary" type="button"
+                                        onclick="signLesson(event, 'lesson_signature', 'signInput')"> Click To Sign</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -605,7 +608,6 @@
                                     style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
                                     x </a>
                             </div>
-
                             <div class="form-group">
                                 <input type="text" hidden name="input_signature" id="verifyPhone">
                                 <button class="btn btn-primary" type="button"> Click To Verify your Phone</button>
@@ -709,9 +711,6 @@
     </script>
     <script>
         $(document).ready(function () {
-            // $("#sortable").sortable({
-            //     stop: sortEventHandler
-            // });
 
             function sortEventHandler() {
                 var i = 0;

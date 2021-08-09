@@ -97,6 +97,7 @@
                                                             <tr>
                                                                 <th>Course Id</th>
                                                                 <th>Course Name</th>
+                                                                <th>Class Name</th>
                                                                 <th>Edit</th>
                                                             </tr>
                                                         </thead>
@@ -407,6 +408,38 @@
                                onchange="handleAudioSelect(this)" required />
                     </form>
                     <div id="sign-modal"></div>
+
+                    <div class="modal fade" id="add-to-class-modal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Add To Class</h5>
+                                    
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="add_class_id">Lesson Id</label>
+                                        <input type="text" class="form-control" id="add_class_id" placeholder="Lesson Id" disabled />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="classlist">Select Class:</label>
+                                        <select class="form-control" id="classlist-select" placeholder="Select Class">
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="add-student float-right">
+                                        <button type="button" onclick="addToSelectedClass()" class="btn btn-primary" id="AddLessonToClassBtn" disabled>
+                                            <i class=""></i> Add To Class
+                                        </button>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -431,7 +464,7 @@
         <script>
             var userToken = localStorage.getItem("user-token");
             var user_lessons = [];
-            var classList;
+            var classList = [];
             var studentList;
             var table;
 
@@ -537,6 +570,61 @@
             function addLesson() {
             }
 
+            function openAddToClassModal(lessonId) {
+                $("#add-to-class-modal #add_class_id").val(lessonId);
+                $('#add-to-class-modal #classlist-select').empty();
+                $('#add-to-class-modal #classlist-select').append(`<option value=false>Select Class</option>`)
+                for(let cls of [...classList]){
+                    $('#add-to-class-modal #classlist-select').append(
+                        `<option value="${cls.id}">${cls.class_name}</option>`
+                    )
+                }
+                $("#add-to-class-modal").modal();
+                $('#add-to-class-modal #classlist-select').on("change",(e)=>{
+                    if(e.target.value != 'false'){
+                        $('#AddLessonToClassBtn').attr('disabled', false);
+                    }
+                    else{
+                        $('#AddLessonToClassBtn').attr('disabled', true);
+                    }
+                })
+            }
+
+            function addToSelectedClass(){
+                if($('#add-to-class-modal #classlist-select').val()=='false') return;
+                let data = {class_id:$('#add-to-class-modal #classlist-select').val(), lesson_id:$("#add-to-class-modal #add_class_id").val()}
+                $.ajax({
+                        async: true,
+                        crossDomain: true,
+                        crossOrigin: true,
+                        url: SERVER + "courses_api/lesson/add_to_class",
+                        type: "POST",
+                        headers: {
+                            "Authorization": `Token ${localStorage.getItem('user-token')}`
+                        },
+                        data:data
+                    }).done((res) => {
+                        swal({
+                        title: "Lesson Updated",
+                        text: "You have successfully added lesson to class",
+                        icon: "success",
+                        timer: 2000
+                    })
+                    // location.reload()
+                    }).fail((err) => {
+                        alert(err|'Something went wrong')
+                    })
+            }
+
+            function getBtnOrClassName(item,i){
+                if(item._class)
+                    return item._class.class_name;
+                else{
+                    return `<button onclick="openAddToClassModal('${item.courseid}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i>Add To Class</button>`
+                }
+            }
+
+
             $(document).ready(function () {
                 $("#left-sidebar").load("sidebar.html");
                 $("#page-header").load("header.html");
@@ -554,6 +642,7 @@
                         let tempArray = [];
                         tempArray.courseid = q.id;
                         tempArray.coursename = q.lesson_name;
+                        tempArray._class = q._class;
                         user_lessons.push(tempArray)
                     })
 
@@ -563,6 +652,7 @@
                         $("#users-data").append(`<tr>
                             <td>${item.courseid}</td>
                             <td>${item.coursename}</td>
+                            <td>${getBtnOrClassName(item,item.courseid)}</td>
                             <td><button onclick="editSystemUser('${item.courseid}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
                               <button onclick="openStudentLesson('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-eye"></i></button>
                               <button onclick="on('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-user-plus"></i></button></td>
@@ -603,7 +693,7 @@
                             async: true,
                             crossDomain: true,
                             crossOrigin: true,
-                            url: SERVER + "students_list/get/students/",
+                            url: SERVER + "students_list/get/students/?teacher=true",
                             type: "GET",
                             headers: {
                                 "Authorization": `${localStorage.getItem('user-token')}`

@@ -3,9 +3,9 @@ function init() {
     var lesson_id = getParam("lesson_id")
     get_lesson_results(lesson_id)
 
-
-
 }
+
+
 function get_lesson_results(lesson_id) {
 
     $.ajax({
@@ -19,7 +19,6 @@ function get_lesson_results(lesson_id) {
             "Authorization": `${localStorage.getItem('user-token')}`
         },
         success: function (obj, textstatus) {
-            console.log(obj)
             var html = render_table_header(obj.flash_cards)
             html += render_results(obj.user_responses)
             $('table').html(html)
@@ -28,11 +27,10 @@ function get_lesson_results(lesson_id) {
 }
 
 
-
 function render_table_header(flash_cards) {
     var html = '<tr>'
     for (var flash_card of flash_cards) {
-        if (['question_checkboxes', 'title_input', 'email_verify'].includes(
+        if (['question_checkboxes', 'title_input', 'email_verify', 'question_choices', 'verify_phone'].includes(
                 flash_card.lesson_type)) {
             html =  html + "<th>" + flash_card.question + "</td>"
         }
@@ -68,7 +66,6 @@ function render_results(user_results) {
     }
     console.log(html)
     return html
-    //$("table").append(html)
 }
 
 
@@ -82,5 +79,5 @@ function getParam(sParam){
         }
     }
 }
-window.addEventListener('DOMContentLoaded', init, false);
 
+window.addEventListener('DOMContentLoaded', init, false);
