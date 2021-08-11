@@ -22,7 +22,6 @@
     <link rel="stylesheet" href="css/administration.css" />
     <link rel="stylesheet" href="css/student_list.css" />
     <link rel="stylesheet" href="css/lesson_list.css" />
-    <link rel = "stylesheet" href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css">
     <link rel="shortcut icon" href="#">
     <script src="js/main.js"></script>
     <script src="js/lesson.js"></script>
@@ -30,8 +29,6 @@
     <!-- firebase -->
     <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <style>
         .h1 {
           font-size: 18px;
@@ -102,9 +99,12 @@
                     <option value="email_verify">Email Verify</option>
                     <option value="datepicker">Date Picker</option>
                 </select>
-                <button class="btn form-control btn-success" style="margin-top: 20px;margin-bottom: 10px;"
+                <button class="btn form-control btn-success" style="margin-top: 15px"
                     id="add">Add</button>
-                <input type="text" class="form-control" name="lesson_name" id="lesson_name" placeholder="Lesson Name">
+                <input type="text" class="form-control" name="lesson_name" style="margin-top: 15px"
+                    id="lesson_name" placeholder="Lesson Name">
+                <button onclick="openAddToClassModal()" style="margin-top: 15px"
+                    class="btn form-control btn-success">Add To Class</button>
             </div>
         </div>
         <div class="row">
@@ -159,7 +159,6 @@
                                 <a class="remove_flashcard col-xs-2 col-lg-2"
                                     style="color:rgb(46, 46, 46);font-size:16px;text-align:right;"> x </a>
                             </div>
-                            <input type="text" id="datepicker">
                         </div>
                     </div>
                     <div class="speed_read" id="email_verify" style="display: none; padding-top: 15px">
@@ -581,20 +580,19 @@
                         </div>
                     </div>
                     <div class="speed_read" id="signature" style="display: none; padding-top: 15px">
-                        <div data-type="signature" style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
-                            <div data-type="signature">
-                                <div class="row">
-                                    <h4 class="col-xs-10 col-lg-10">Signature</h4>
-                                    <a class="remove_flashcard col-xs-2 col-lg-2"
-                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                        x </a>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" hidden name="input_signature" id="signInput">
-                                    <img id="lesson_signature" hidden src="">
-                                    <button class="btn btn-primary" type="button"
-                                        onclick="signLesson(event, 'lesson_signature', 'signInput')"> Click To Sign</button>
-                                </div>
+                        <div data-type="signature" 
+                            style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div class="row">
+                                <h4 class="col-xs-10 col-lg-10">Signature</h4>
+                                <a class="remove_flashcard col-xs-2 col-lg-2"
+                                    style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                    x </a>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" hidden name="input_signature" id="signInput">
+                                <img id="lesson_signature" hidden src="">
+                                <button class="btn btn-primary" type="button"
+                                    onclick="signLesson(event, 'lesson_signature', 'signInput')"> Click To Sign</button>
                             </div>
                         </div>
                     </div>
@@ -676,6 +674,38 @@
             </div>
             </form>
         </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="add-to-class-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add To Class</h5>
+                    
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="add_class_id">Lesson Id</label>
+                        <input type="text" class="form-control" id="add_class_id" placeholder="Lesson Id" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="classlist">Select Class:</label>
+                        <select class="form-control" id="classlist-select" placeholder="Select Class">
+                        </select>
+                    </div>
+                    
+                    <div class="add-student float-right">
+                        <button type="button" onclick="addToSelectedClass()" class="btn btn-primary" id="AddLessonToClassBtn" disabled>
+                            <i class=""></i> Add To Class
+                        </button>
+                    </div>
+                    
+                </div>
+            </div>
         </div>
     </div>
 

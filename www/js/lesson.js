@@ -38,6 +38,7 @@ var lng_dataid="";
 var qr_url_count=0;
 var qr_data_count=0;
 var email_verify_count=0;
+var classList = [];
 
 window.addEventListener('DOMContentLoaded', init, false);
 var lesson_id = getParam('lesson_id');
@@ -1248,7 +1249,6 @@ function addGpsSession(isNew, id, question, image, posU) {
 function addDatePicker(isNew, id, question, image, posU) {
 
   $('#sortable').append($('#datepicker').html());
-  $( "#datepicker" ).datepicker();
   sortablePositionFunction(isNew, posU);
 }
 
@@ -1739,8 +1739,7 @@ function sendUpdates() {
       case 'datepicker':
         temp = {
           lesson_type: 'datepicker',
-          question: 'Date Picker',
-          answer: $("#datepicker").datepicker("getDate"),
+          question: 'Date',
           position: position_me,
         };
         flashcards.push(temp);
@@ -2251,6 +2250,73 @@ $(document).ready(function () {
     }
   });
 });
+
+function openAddToClassModal() {
+  var sgPageURL = window.location.search.substring(1);
+  var sParameterName = sgPageURL.split('=');
+
+  $.ajax({
+    async: true,
+    crossDomain: true,
+    crossOrigin: true,
+    url: SERVER + "students_list/get/class/",
+    type: "GET",
+    headers: {
+      "Authorization": `${localStorage.getItem('user-token')}`
+    }
+
+  }).done((cls) => {
+    classList = cls;
+    for(let cls of [...classList]){
+      $('#add-to-class-modal #classlist-select').append(
+        `<option value="${cls.id}">${cls.class_name}</option>`
+      )
+    }
+  }).fail((fail) => {
+    console.log(fail);
+    alert('ERROR2');
+  })
+
+  $("#add-to-class-modal #add_class_id").val(sParameterName[1]);
+  $('#add-to-class-modal #classlist-select').empty();
+  $('#add-to-class-modal #classlist-select').append(`<option value=false>Select Class</option>`)
+  $("#add-to-class-modal").modal();
+  $('#add-to-class-modal #classlist-select').on("change",(e)=>{
+    if(e.target.value != 'false'){
+      $('#AddLessonToClassBtn').attr('disabled', false);
+    }
+    else{
+      $('#AddLessonToClassBtn').attr('disabled', true);
+    }
+  })
+}
+
+function addToSelectedClass(){
+  if($('#add-to-class-modal #classlist-select').val()=='false') return;
+  let data = {class_id:$('#add-to-class-modal #classlist-select').val(), lesson_id:$("#add-to-class-modal #add_class_id").val()}
+
+  $.ajax({
+    async: true,
+    crossDomain: true,
+    crossOrigin: true,
+    url: SERVER + "courses_api/lesson/add_to_class",
+    data: data,
+    type: "POST",
+    headers: {
+      "Authorization": `Token ${localStorage.getItem('user-token')}`
+    }
+  }).done((res) => {
+    swal({
+      title: "Lesson Updated",
+      text: "You have successfully added lesson to class",
+      icon: "success",
+      timer: 2000
+    })
+    location.reload()
+  }).fail((err) => {
+    alert(err|'Something went wrong')
+  })
+}
 
 $(document).on('click', '#settingshtml', function (e) {
   $('#settingshtml').attr('href', '/settings.html?lesson_id=' + lesson_id);

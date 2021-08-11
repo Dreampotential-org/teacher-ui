@@ -225,13 +225,16 @@ function SidebarCollapse() {
     
     $("#addClass").submit((event) => {
         event.preventDefault()
+        data_ = {
+            "class_name": $("#class_name").val(),
+            "class_is_public":$('#class_is_public').prop('checked')
+        },
         $.ajax({
+            data: JSON.stringify(data_),
+            contentType: 'application/json',
             type: 'POST',
             url: SERVER + 'students_list/get/class/',
             headers: { "Authorization": `${localStorage.getItem('user-token')}` },
-            data: {
-                "class_name": $("#class_name").val()
-            },
             success: () => {
                 location.reload()
             }
@@ -250,14 +253,17 @@ function SidebarCollapse() {
     })
     
     $("#updateClass").on('click', () => {
+        data_ = {
+            "id" : $("#classid").val(),
+            "class_name" : $("#classname").val(),
+            "class_is_public" : $('#is_class_public_contanier').val()
+        }
         $.ajax({
+            data: JSON.stringify(data_),
+            contentType: 'application/json',
             type: 'PUT',
             url: SERVER + 'students_list/get/class/',
             headers: { "Authorization": `${localStorage.getItem('user-token')}` },
-            data: {
-                "id": $("#classid").val(),
-                "class_name": $("#classname").val()
-            },
             success: () => {
                 location.reload()
             }
@@ -271,6 +277,7 @@ function SidebarCollapse() {
         $("#classid").val(system_users[i].id);
         $("#classname").val(system_users[i].class_name);
         $("#cid").val(system_users[i].id)
+        $("#is_class_public_contanier").val(system_users[i].public)
     }
     
     function editSystemStudent(i, id) {

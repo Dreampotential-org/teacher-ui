@@ -232,7 +232,7 @@ function nextSlide() {
       sendResponse(flashcard_id, answer, current_flashcard);
     }
     else if (type == "datepicker") {
-      answer = current_flashcard.answer;
+      answer = $("#datepicker").val();
       sendResponse(flashcard_id, answer);
     }
     else if (type == "jitsi_meet"){
@@ -808,12 +808,10 @@ function init() {
         if (flashcard.lesson_type == "datepicker") {
           $("#theSlide").append(`
             <div class="${className} ${i == 0 ? "active" : ""}" id="flahscard_${i}" id="datepicker">
-              <div alt="datepicker">
-              <h1>${flashcard.question}</h1>
-              <h1>${flashcard.answer}</h1>
-              </div>
+              <p>Date: <input type="text" id="datepicker"></p>
             </div>
           `);
+          $( "#datepicker" ).datepicker({ dateFormat: "yy-mm-dd" })
         }
 
         if (flashcard.lesson_type == "jitsi_meet") {

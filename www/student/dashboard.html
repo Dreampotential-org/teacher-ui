@@ -75,8 +75,8 @@
                     <div class="container my-2">
                         <section id="tabs">
                             <div class="container">
-                                <div id="tabDiv" class="row">
-                                    <div class="col-md-12">
+                                <div id="tab">
+                                    <div class="col-lg-12">
                                         <p class="list-of-students">Student Dashboard</p>
                                         <div class="col-sm-12">
                                             <span>Welcome back <span id="student-name"></span>!</span>
@@ -106,27 +106,31 @@
                                             </circle>
                                             </svg>
                                         </div>
-                                    </div>                                   
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12 page_style">
-                                        <nav aria-label="...">
-                                            <ul class="pagination">
-                                                <li class="page-item disabled">
-                                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                                </li>
-                                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                                </li>
-                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#">Next</a>
-                                                </li>
-                                            </ul>
-                                        </nav>
                                     </div>
+                                    <div id="customtabdiv">
+                                        <div id="tabdiv" class="row"></div>
+                                        <div  id="paginations">
+                                            <div class="col-sm-12 page_style">
+                                                <nav aria-label="...">
+                                                    <ul class="pagination">
+                                                        <li class="page-item disabled">
+                                                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                                        </li>
+                                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                                        <li class="page-item">
+                                                            <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+                                                        </li>
+                                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                        <li class="page-item">
+                                                            <a class="page-link" href="#">Next</a>
+                                                        </li>
+                                                    </ul>
+                                                </nav>
+                                            </div>
+                                        </div>  
+                                    </div>                                 
                                 </div>
+                                
                                 <div id="systemUserDetail" style='display:block'>
                                     <div>
                                         <button onclick="goBack()" class="btn">
@@ -158,7 +162,40 @@
                                         </button>
                                     </form>
                                 </div>
+                                <div id="UserClassDetail" style='display:none'>
+                                    <div>
+                                        <button onclick="newgoBack()" class="btn">
+                                            <i class="fa fa-chevron-left"></i> Back
+                                        </button>
+                                        <button class="btn btn-danger float-right" id="showDelete">
+                                            <i class="fa fa-trash"></i> Delete
+                                        </button>
+                                    </div>
+                                    
+                                    <h2 class="text-center">
+                                        <b id="userTitle">Update Class</b>
+                                    </h2>
+                                    
+                                    <form class="pt-2 pt-3">
+                                        <div class="form-group">
+                                            <label for="class_id">Class Id</label>
+                                            <input type="text" class="form-control" id="classid" placeholder="Class Id" disabled/>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="class_name">Class Name</label>
+                                            <input type="text" class="form-control" id="class_name" placeholder="Class Name" />
+                                        </div>
 
+                                        <div class="form-group">
+                                            <label for="is_class_public">Class Public</label>
+                                            <input type="text" class="form-control" id="is_class_public" />
+                                        </div>
+
+                                        <button type="button" id="updateClass" class="btn btn-primary">Submit</button>
+                                    </form>
+                                </div>
+                            </div>
                         </section>
 
                         <div class="div-go-back">
@@ -277,14 +314,13 @@
 
     <script>
         $.ajaxSetup({
-    statusCode: {
-        401: function (jqxhr, textStatus, errorThrown) {
-                // alert('You must login to proceed');
-                localStorage.removeItem('user-token');
-                $('body').load('student_login.html');
+            statusCode: {
+                401: function (jqxhr, textStatus, errorThrown) {
+                    localStorage.removeItem('user-token');
+                    $('body').load('student_login.html');
+                }
             }
-        }
-    });
+        });
         var userToken = localStorage.getItem("user-token");
         var student_classes = []
         var user_lessons = [];
@@ -357,7 +393,7 @@
         }
 
         function goBack() {
-            $("#tabDiv").show();
+            $("#customtabdiv").show();
             $("#systemUserDetail").hide();
             $(".div-student-builder").hide();
             $(".div-go-back").hide();
@@ -378,15 +414,11 @@
 
 
         function openStudentLesson(i) {
-            // window.location.replace("student_lesson.html");
-            // $(".div-student-builder").show();
-            // $(".div-go-back").show();
-            // $("#tabDiv").hide();
 
             $(".div-student-builder").show();
             $(".div-student-builder").load("student_lesson.html");
             $(".div-go-back").show();
-            $("#tabDiv").hide();
+            $("#customtabdiv").hide();
             $("#tabs").hide();
         }
 
@@ -400,7 +432,7 @@
             $.ajax({
                 async: true,
                 crossDomain: true,
-                crossOrigin: true,
+                crossOrigin: true,  
                 url: SERVER + "students_list/student/classes",
                 type: "GET",
                 headers: { "Authorization": `Token ${localStorage.getItem('user-token')}` }
@@ -411,41 +443,60 @@
 
                 $('#classLoader').remove();
                 student_classes.forEach((item, i) => {
-                    let html = `<a class="lesson-list-a" href="student/lessons.html?classId=${item.class_enrolled.id}">
-                        <div class="col-md-3">
-                        <div class="lesson_box">
-                            <p>Class id: ${item.class_enrolled.id}</p>
-                            <div class="lesson_name">${item.class_enrolled.class_name}</div>
-                            <div class="lessons_count">Lessons: ${item.lesson_count||0}</div>
-                            <div class="student_count">Students Enrolled: ${item.students_enrolled}</div>
-                            <div class="student_count">Completed Lessons: ${item.lesson_completed}</div>
-                            <div class="student_count">Percent Completed: ${item.percent_completed}</div>
-                            <div class="progress" style="margin-top:16px;">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: ${item.percent_completed}%" aria-valuenow="${String(item.percent_completed)}" aria-valuemin="0" aria-valuemax="100"></div>
+                    let html = `
+                        <a class="lesson-list-a" href="student/lessons.html?classId=${item.class_enrolled.id}">
+                            <div class="col-md-3">
+                                <div class="lesson_box">
+                                    <p>Class id: ${item.class_enrolled.id}</p>
+                                    <div class="lesson_name">${item.class_enrolled.class_name}</div>
+                                    <div class="lessons_count">Lessons: ${item.lesson_count||0}</div>
+                                    <div class="student_count">Students Enrolled: ${item.students_enrolled}</div>
+                                    <div class="student_count">Completed Lessons: ${item.lesson_completed}</div>
+                                    <div class="student_count">Percent Completed: ${item.percent_completed}</div>
+                                    <div class="progress" style="margin-top:16px;">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: ${item.percent_completed}%" aria-valuenow="${String(item.percent_completed)}" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <div class="read_status" style="padding-top: 40px;"> <i class="fa fa-check"></i> Mark as Completed</div>
+                                    <hr>
+                                    <div class="action_icons" align="right">
+                                        <a href="#"><i class="fa fa-eye"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-pencil"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-times"></i></a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="read_status" style="padding-top: 40px;"> <i class="fa fa-check"></i> Mark as Completed</div>
-                            <hr>
-                            <div class="action_icons" align="right">
-                                <a href="#"><i class="fa fa-eye"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-pencil"></i></a> &nbsp;&nbsp;<a href="#"><i class="fa fa-times"></i></a>
-                            </div>
-                        </div>
-                        </div>
-                    </a>`
-                $('#tabDiv').append(html)
+                        </a>`
+                    $('#customtabdiv').append(html)
 
                 });
                 $.ajax({
                     async: true,
                     crossDomain: true,
                     crossOrigin: true,
-                    url: SERVER + "students_list/get/class/",
+                    url: SERVER + "students_list/get/publicclass/",
                     type: "GET",
                     headers: {
                         "Authorization": `${localStorage.getItem('user-token')}`
                     }
-
                 }).done((cls) => {
                     classList = cls;
+                    classList.forEach((item, i) => {
+                        let html = `<div class="col-md-3 card-main">
+                                <div class="class_box" id="customtabdiv">
+                                    <p>Class ID: ${item.id}</p>
+                                    <div class="class_name">${item.class_name}</div>
+                                    <div class="read_status"> <i class="fa fa-check"></i> Mark as Completed</div>
+                                    <hr>
+                                    <div class="action_icons" align="right">
+                                        <a href=""><i class="fa fa-eye"></i></a>
+                                        &nbsp;&nbsp;
+                                        <button onclick="hideshowid()" class="button-pencil"><i class="fa fa-pencil"></i></button>
+                                        &nbsp;&nbsp;
+                                        <a href=""><i class="fa fa-times"></i></a>
+                                    </div>
+                                </div>
+                            </div>`
+                        $('#tabdiv').append(html)
+                    });
+
                     $.ajax({
                         async: true,
                         crossDomain: true,
@@ -468,12 +519,24 @@
                 alert('ERROR')
             });
 
-            $("#tabDiv").show();
+            $("#customtabdiv").show();
             $(".div-student-builder").hide();
             $(".div-go-back").hide();
             $("#systemUserDetail").hide();
+            
         });
 
+        function hideshowid() {
+            $("#customtabdiv").hide();
+            $("#UserClassDetail").show();
+            $("paginations").hide();
+        }
+        function newgoBack() {
+            $("#customtabdiv").show();
+            $("#UserClassDetail").hide();
+            $("paginations").show();
+        }
+        
         $("#upadetLesson").submit((event) => {
             event.preventDefault()
             $.ajax({
@@ -492,7 +555,7 @@
                     icon: "success",
                     timer: 2000
                 })
-                location.reload()
+                location.reload() 
             }).fail((err) => {
                 swal({
                     title: "Not Exist",
