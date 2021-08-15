@@ -298,6 +298,7 @@ function SidebarCollapse() {
     
     function showClassLink(i) {
         let item = system_users[i];
+        $('#classLinkInput').val('');
         $("#linkTitle").text('Link to class '+item.class_name);
         $("#showClassLink").modal();
         if(item.classLink){

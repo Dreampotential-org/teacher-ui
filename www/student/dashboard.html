@@ -464,7 +464,7 @@
                                 </div>
                             </div>
                         </a>`
-                    $('#customtabdiv').append(html)
+                    $('#tabdiv').append(html)
 
                 });
                 $.ajax({
@@ -480,7 +480,7 @@
                     classList = cls;
                     classList.forEach((item, i) => {
                         let html = `<div class="col-md-3 card-main">
-                                <div class="class_box" id="customtabdiv">
+                                <div class="class_box" id="">
                                     <p>Class ID: ${item.id}</p>
                                     <div class="class_name">${item.class_name}</div>
                                     <div class="read_status"> <i class="fa fa-check"></i> Mark as Completed</div>
