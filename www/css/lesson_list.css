@@ -105,3 +105,28 @@ button {
 .page_style {
     padding-top: 15px;
 }
+.class_box {
+    border: 1px solid #132644;
+    border-radius: 5px;
+    padding: 10px 15px;
+    background: #d3d3d340;
+    margin-bottom: 10px;
+}
+.class_box:hover {
+    background: #132644;
+    color: white;
+}
+.class_name {
+    font-weight: bold;
+    font-size: 18px;
+    padding-top: 15px;
+}
+
+.button-pencil{
+    border: navajowhite;
+    color: #007bff;
+    background: transparent;
+} 
+.button-pencil:focus{
+    outline: none;
+}

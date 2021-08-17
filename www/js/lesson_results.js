@@ -30,7 +30,7 @@ function get_lesson_results(lesson_id) {
 function render_table_header(flash_cards) {
     var html = '<tr>'
     for (var flash_card of flash_cards) {
-        if (['question_checkboxes', 'title_input', 'email_verify', 'question_choices', 'verify_phone'].includes(
+        if (['question_checkboxes', 'title_input', 'email_verify', 'question_choices', 'verify_phone', 'datepicker'].includes(
                 flash_card.lesson_type)) {
             html =  html + "<th>" + flash_card.question + "</td>"
         }
