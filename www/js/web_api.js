@@ -409,3 +409,23 @@ function setup_activity_view_events() {
     })
 }
 
+
+function get_all_active_numbers(callback) {
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": SERVER + "voip/api_voip/active",
+        "method": "GET",
+        "processData": false,
+        "contentType": false,
+        "headers": {
+            "Authorization": 'Token ' + localStorage.getItem("user-token"),
+        }
+    }
+    $.ajax(settings).done(function (response) {
+        callback(response.active)
+    }).fail(function (err) {
+        console.log(err)
+        // alert("ERROR")
+    })
+}

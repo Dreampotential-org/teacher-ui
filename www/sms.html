@@ -572,8 +572,8 @@
                             </circle>
                           </svg>
                         </div> `
-                var filter_div = '<div><p id="table_filter" >Filter : <select id="filter_twilio"><option value="">ALL</option><option value="+14255785798">+14255785798</option><option value="+15103807171">+15103807171</option><option>+15102144636</option><option value="+15102885469">+15102885469</option></select></p></div>'        
-            
+                var filter_div = '<div>Filter : <select id="filter_twilio"><option value="">ALL</option></select></div>'        
+
                 $("#message-box").empty();
                 $("#user-name").empty();
                 $("#filter-message").empty();
@@ -604,7 +604,14 @@
 
                 var html = "";
                 get_sms_to_number(phonenum, function (res) {
-                    
+                    $(document).ready(function(){
+                        get_all_active_numbers(function(response){
+                            
+                            for (var numbers of response){
+                                $('#filter_twilio').append('<option value='+numbers+'>'+numbers+'</option>' )
+                            }
+                        });
+                    });
                     $("#message-box").empty();
                     var filtered_data = res.filter(
                                 (item) =>
