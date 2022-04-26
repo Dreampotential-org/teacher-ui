@@ -423,7 +423,7 @@ function verifyEmail(event) {
 }
 
 async function startJitsiMeet(flashcard) {
-  var domain = "meet.lifeforceenergy.us";
+  var domain = "meet.jit.si";
   var options = {
     roomName: flashcard.question,
     // width: 700,
@@ -1397,7 +1397,6 @@ function init() {
           );
           $("#theSlide").append(`
             <div class="${className}">
-              <h1>User Image Upload</h1>
               <div alt="title_text" style="">
                 <p> ${flashcard.question}</p>
                 <input type="file" class="form-control" value="Choose File" id="image_upload_${flashcard.id}" onchange="handleImageUpload('user_image_upload',${flashcard.id})"/> 

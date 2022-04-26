@@ -373,7 +373,7 @@ function verifyEmail(event, data) {
 }
 
 async function startJitsiMeet(flashcard) {
-  var domain = "meet.lifeforceenergy.us";
+  var domain = "meet.jit.si";
   var options = {
     roomName: flashcard.question,
     configOverwrite: {
@@ -1141,7 +1141,6 @@ function init() {
           console.log("user_image_upload flashcard.lesson_type ===> ",flashcard.lesson_type);
           $("#myCarousel").append(`
             <div class="${className}">
-              <h1>User Image Upload</h1>
               <div alt="title_text" style="">
                 <p> ${flashcard.question}</p>
                 <input type="file" class="form-control className_${flashcard.id}" value="Choose File" id="image_upload_${flashcard.id}" onchange="handleImageUpload('user_image_upload',${flashcard.id}, this)"/> 
