@@ -541,7 +541,7 @@ function init() {
       total_slides = response.flashcards.length;
       $("#progress-section").show();
 
-      $("#progress").html(current_slide + " out of " + total_slides);
+      $("#progress").html(current_slide + 1 + " out of " + total_slides);
       var flashcards = response.flashcards;
       console.log("🚀 ~ file: slide.js ~ line 343 ~ flashcards", flashcards);
       flashcards.sort(function (a, b) {

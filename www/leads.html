@@ -150,7 +150,10 @@
                                                        <th>Status</th>
                                                        <th>Ask</th>
                                                        <th>Notes</th>
+                                                       <th>Tax Overdue</th>
+                                                       <th>Contact ID</th>
                                                        <th>Last call</th>
+                                                       <th>Last Dial Number</th>
                                                        <th>Call Member</th>
                                                   </tr>
                                              </thead>
@@ -379,6 +382,9 @@
                                                        <button type="button" id="save_notes" class="btn btn-primary float-right">
                                                             save
                                                        </button>
+                                                       <button type="button" id="next_call" class="btn btn-primary float-right">
+                                                            next
+                                                       </button>
                                                   </div>
                                              </div>
                                         </div>
@@ -472,7 +478,10 @@
                                    <td>${item.fields.status}</td>
                                    <td>${item.fields.ask}</td>
                                    <td>${item.fields.notes}</td>
+                                   <td>${item.fields.tax_overdue}</td>
+                                   <td>${item.fields.contact_id}</td>
                                    <td>${item.fields.last_call || "-"}</td>
+                                   <td>${item.fields.last_dial_number || "-"}</td>
                                    <td><button onclick="selectNum('${index}')" class="btn btn-primary btn-edit" type="button"><i class="fa fa-phone-square"></i></button></td>
                                    </tr>`);
                          })
@@ -766,6 +775,7 @@
                var source_num;
                var dest_num;
                var index;
+               var your_num;
                const yourNumberInputField = document.querySelector("#yourNumber");
                const yourNumberInput = window.intlTelInput(yourNumberInputField, {
                  utilsScript:
@@ -819,6 +829,11 @@
                }
                })
 
+               $("#next_call").click( () => {
+                    $("#notesModal").toggle();
+                    $('#notesModal').modal('hide'); 
+               })
+
                // play pause music on conference call.
                var audio_files = {
                     'koyal_bird' : "https://audio-previews.elements.envatousercontent.com/files/237106115/preview.mp3",
@@ -870,6 +885,7 @@
                               "pk" : user_leads[index].pk,
                               "notes" : notes,
                               "status" : status,
+                              "last_dial_number" : your_num
                          },
                          headers: { "Authorization": `${localStorage.getItem('user-token')}` }
                     }).done( () => {

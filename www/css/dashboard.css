@@ -130,3 +130,9 @@ label.datetimeLabel {
 .input-cls {
   margin-bottom: 10px;
 }
+
+@media (min-width: 1200px){
+  .container {
+      max-width: 1500px !important;
+  }
+}
