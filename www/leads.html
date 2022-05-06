@@ -377,6 +377,24 @@
                                                        </select><br>
                                                        <label for="phone">Notes</label>
                                                        <textarea class="form-control" id="notes_call" placeholder="write Notes"></textarea>
+                                                       <label for="edit_name">Name</label>
+                                                       <input type="text" class="form-control" id="edit_nameid" placeholder="Name" />
+                                                       <label for="edit_phone">Phone</label>
+                                                       <input type="phone" class="form-control" id="edit_phoneid" placeholder="Phone" />
+                                                       <label for="edit_email">email</label>
+                                                       <input type="email" class="form-control" id="edit_emailid" placeholder="email" />
+                                                       <label for="edit_state">State</label>
+                                                       <input type="text" class="form-control" id="edit_stateid" placeholder="State" />
+                                                       <label for="edit_ask">Ask</label>
+                                                       <input type="text" class="form-control" id="edit_askid" placeholder="Ask" />
+                                                       <label for="edit_ask">Tax Overdue</label>
+                                                       <input type="text" class="form-control" id="edit_Tax_Overdueid" placeholder="Ask" />
+                                                       <label for="edit_ask">Contact Id</label>
+                                                       <input type="text" class="form-control" id="edit_Contact_Idid" placeholder="Ask" />
+                                                       <label for="edit_ask">Last call</label>
+                                                       <input type="text" class="form-control" id="edit_Last_callid" placeholder="Ask" />
+                                                       <label for="edit_ask">Last Dial Number</label>
+                                                       <input type="text" class="form-control" id="edit_Last_Dial_Numberid" placeholder="Ask" />
                                                   </div>
                                                   <div class="modal-footer">
                                                        <button type="button" id="save_notes" class="btn btn-primary float-right">
@@ -765,10 +783,12 @@
                })
 
                // open 1'st overlay
+               var next_index = "";
                function selectNum(index) {
                     $("#selectNumberModel").modal();
                     $("#makeCall").val(index)
                     $("#dest_num_call").val(user_leads[index].fields.phone)
+                    next_index = index; 
                }
 
                // makeCall and open overlay 2
@@ -808,6 +828,15 @@
                          $("#Zillow_url").empty();
                          $("#Zillow_url").append(`name : ${user_leads[index].fields.name}  <br> Zillow url : <a href="${user_leads[index].fields.url}">${user_leads[index].fields.url}</a> <br><br>`);
                          $('#notes_call').val(user_leads[index].fields.notes);
+                         $('#edit_nameid').val(user_leads[index].fields.name);
+                         $('#edit_phoneid').val(user_leads[index].fields.phone);
+                         $('#edit_emailid').val(user_leads[index].fields.email);
+                         $('#edit_stateid').val(user_leads[index].fields.state);
+                         $('#edit_askid').val(user_leads[index].fields.ask);
+                         $('#edit_Tax_Overdueid').val(user_leads[index].fields.tax_overdue);
+                         $('#edit_Contact_Idid').val(user_leads[index].fields.contact_id);
+                         $('#edit_Last_callid').val(user_leads[index].fields.last_call);
+                         $('#edit_Last_Dial_Numberid').val(user_leads[index].fields.last_dial_number);
                          
                          $.ajax({
                               url : SERVER + "voip/api_voip/join_conference",
@@ -828,10 +857,17 @@
                     })
                }
                })
+               function nextNum(next_index) {
+                    $("#selectNumberModel").modal();
+                    $("#makeCall").val(next_index)
+                    $("#dest_num_call").val(user_leads[next_index].fields.phone)
+               }
 
                $("#next_call").click( () => {
                     $("#notesModal").toggle();
                     $('#notesModal').modal('hide'); 
+                    next_index = ++next_index; 
+                    nextNum(next_index);
                })
 
                // play pause music on conference call.
