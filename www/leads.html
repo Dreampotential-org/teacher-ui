@@ -155,6 +155,7 @@
                                                        <th>Last call</th>
                                                        <th>Last Dial Number</th>
                                                        <th>Call Member</th>
+                                                       <th>Message Member</th>
                                                   </tr>
                                              </thead>
                                              <tbody id="lead_data">
@@ -412,6 +413,38 @@
                     </div>
                </div>
           </div>
+          <div class="modal fade" id="smsModel" tabindex="-1" role="dialog" aria-hidden="true">
+               <div class="modal-dialog" role="document">
+                   <div class="modal-content">
+                       <div class="modal-header">
+                           <h5 class="modal-title">SMS</h5>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                               <span aria-hidden="true">&times;</span>
+                           </button>
+                       </div>
+                       <div class="modal-body">
+               <form id="send_sms">
+                 <div class="form-group">
+                   <select class="form-control" id="MsgNumber">
+                     <option value="" selected>Select Source Number</option>
+                     <option value="(425) 578-5798">(425) 578-5798</option>
+                   </select>
+                 </div>
+                 <div class="form-group d-dflex">
+                   <input type="tel" class="form-control" id="dest_num_sms" placeholder="Dest Number"  required/>
+                 </div>
+                 <div class="form-group">
+                   <textarea class="form-control" id="message_body" rows="4" placeholder="Message" required></textarea>
+                 </div>
+                 <button type="submit"  class="btn btn-primary float-right">
+                   Send
+                 </button>
+               </form>
+                           </form>
+                       </div>
+                   </div>
+               </div>
+           </div>
 
           <!-- DataTable - filter -->
           <p id="table_filter" style="display:none">
@@ -501,6 +534,7 @@
                                    <td>${item.fields.last_call || "-"}</td>
                                    <td>${item.fields.last_dial_number || "-"}</td>
                                    <td><button onclick="selectNum('${index}')" class="btn btn-primary btn-edit" type="button"><i class="fa fa-phone-square"></i></button></td>
+                                   <td><button onclick="textNum('${index}')"  class="btn btn-primary btn-edit" type="button"><i class="fa fa-envelope-square"  style="font-size:20px;"></i></button></td>
                                    </tr>`);
                          })
                          // DataTable and modification
@@ -791,6 +825,10 @@
                     next_index = index; 
                }
 
+               function textNum(index){
+                    $("#smsModel").modal();
+                    $("#dest_num_sms").val(user_leads[index].fields.phone)
+               }
                // makeCall and open overlay 2
                var source_num;
                var dest_num;
@@ -941,6 +979,47 @@
                $(document).ready(function(){
                     $('[data-toggle="tooltip"]').tooltip();
                });
+               const destNumSmsInputField = document.querySelector("#dest_num_sms");
+               const destNumSmsInput = window.intlTelInput(destNumSmsInputField, {
+                 utilsScript:
+                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+               });
+               $('#send_sms').submit((e) => {
+                    e.preventDefault()
+                    source_num_sms = $('#MsgNumber').val()
+                    des_num_sms = destNumSmsInput.getNumber()
+                    body_msg = $("#message_body").val()
+                    $.ajax({
+                      url: SERVER + "voip/api_voip/send_sms_",
+                      async: true,
+                      crossDomain: true,
+                      crossOrigin: true,
+                      type: "POST",
+                      data : {
+                        "from_num" : source_num_sms,
+                        "to_num" : des_num_sms,
+                        'body' : body_msg,
+                      },
+                      headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+                    }).done( () => {
+                        swal({	
+                            title: "message_send",
+                            text: "You have successfully send msg",	
+                            icon: "success",
+                            timer: 2000
+                            })
+                            $('#send_sms').trigger("reset");              
+                    }).fail( (err) => {
+                        swal({	
+                            title: "not sending msg",	
+                            text: "somthing went wrong.",	
+                            icon: "error",	
+                            timer: 2000
+                            });	
+                         $('#send_sms').trigger("reset");
+                        console.log(err)
+                    })
+               })
           </script>
      </body>
 </html>
