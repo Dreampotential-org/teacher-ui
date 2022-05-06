@@ -1333,6 +1333,7 @@ function sendUpdates() {
 
   sortable_div = document.getElementById('sortable').childNodes;
   sortable_div.forEach((flashcard_div) => {
+    console.log()
     try {
       if (flashcard_div.getAttribute && flashcard_div.getAttribute('data-position')) {
         flashcards_div.push(flashcard_div);
@@ -1350,6 +1351,7 @@ function sendUpdates() {
         current_flashcard_elements.push(flashcard_element);
       }
     });
+    console.log("currrent....")
     console.log(current_flashcard_elements)
 
     current_flashcard_elements.shift();
@@ -1477,6 +1479,7 @@ function sendUpdates() {
           lesson_type: 'jitsi_meet',
           question: attr_array[0],
           position: position_me,
+          is_required: document.getElementById('required_jitsi_meet').checked,
         };
         flashcards.push(temp);
         break;
@@ -1485,6 +1488,7 @@ function sendUpdates() {
           lesson_type: 'record_webcam',
           question: attr_array[0],
           position: position_me,
+          is_required: document.getElementById('required_record_webcam').checked,
         };
         flashcards.push(temp);
         break;
@@ -1493,6 +1497,7 @@ function sendUpdates() {
           lesson_type: 'record_screen',
           question: attr_array[0],
           position: position_me,
+          is_required: document.getElementById('required_record_screen').checked,
         };
         flashcards.push(temp);
         break;
@@ -1501,6 +1506,7 @@ function sendUpdates() {
           lesson_type: 'chiro_front',
           question: attr_array[0],
           position: position_me,
+          is_required: document.getElementById('required_chiro_front').checked,
         };
         flashcards.push(temp);
         break;
@@ -1510,6 +1516,7 @@ function sendUpdates() {
           lesson_type: 'chiro_side',
           question: attr_array[0],
           position: position_me,
+          is_required: document.getElementById('required_chiro_side').checked,
         };
         flashcards.push(temp);
         break;
@@ -1518,6 +1525,7 @@ function sendUpdates() {
           lesson_type: 'quick_read',
           question: attr_array[0],
           position: position_me,
+          is_required: document.getElementById('required_quick_read').checked,
         };
         flashcards.push(temp);
         break;
@@ -1528,6 +1536,7 @@ function sendUpdates() {
           question: attr_array[0],
           answer: attr_array[1],
           position: position_me,
+          is_required: document.getElementById('required_title_text').checked,
         };
         flashcards.push(temp);
         break;
@@ -1537,6 +1546,7 @@ function sendUpdates() {
           lesson_type: 'title_input',
           question: attr_array[0],
           position: position_me,
+          is_required: document.getElementById('required_title_input').checked,
         };
         flashcards.push(temp);
         break;
@@ -1547,6 +1557,7 @@ function sendUpdates() {
           question: attr_array[0],
           image: attr_array[1],
           position: position_me,
+          is_required: document.getElementById('required_iframe_link').checked,
         };
         flashcards.push(temp);
         break;
@@ -1556,6 +1567,7 @@ function sendUpdates() {
           lesson_type: 'title_textarea',
           question: attr_array[0],
           position: position_me,
+          is_required: document.getElementById('required_title_textarea').checked,
         };
         flashcards.push(temp);
         break;
@@ -1566,6 +1578,7 @@ function sendUpdates() {
           question: attr_array[0],
           image: attr_array[1],
           position: position_me,
+          is_required: document.getElementById('required_image_file').checked,
         };
         flashcards.push(temp);
         break;
@@ -1576,7 +1589,8 @@ function sendUpdates() {
             options: tour_array,
             position: position_me,
             latitude: 0,
-            longitude:0
+            longitude:0,
+            is_required: document.getElementById('required_user_tour').checked,
           };
           flashcards.push(temp);
           break;
@@ -1587,6 +1601,7 @@ function sendUpdates() {
           question: attr_array[0],
           image: attr_array[1],
           position: position_me,
+          is_required: document.getElementById('required_video_file').checked,
         };
         flashcards.push(temp);
         break;
@@ -1597,6 +1612,7 @@ function sendUpdates() {
           question: attr_array[0],
           image: attr_array[1],
           position: position_me,
+          is_required: document.getElementById('required_audio_file').checked,
         };
         flashcards.push(temp);
         break;
@@ -1608,6 +1624,7 @@ function sendUpdates() {
           options: choices_array,
           image: attr_array[1],
           position: position_me,
+          is_required: document.getElementById('required_question_choices').checked,
         };
         flashcards.push(temp);
         break;
@@ -1619,6 +1636,7 @@ function sendUpdates() {
           options: choices_array,
           image: attr_array[1],
           position: position_me,
+          is_required: document.getElementById('required_question_checkboxes').checked,
         };
         flashcards.push(temp);
         break;
@@ -1626,6 +1644,7 @@ function sendUpdates() {
         temp = {
           lesson_type: 'signature',
           position: position_me,
+          is_required: document.getElementById('required_signature').checked,
         };
         flashcards.push(temp);
         break;
@@ -1634,6 +1653,7 @@ function sendUpdates() {
           lesson_type: 'name_type',
           question: attr_array[0],
           position: position_me,
+          is_required: document.getElementById('required_name_type').checked,
         };
         flashcards.push(temp);
         break;
@@ -1645,6 +1665,7 @@ function sendUpdates() {
           // image: attr_array[0],
           image: '',
           position: position_me,
+          is_required: document.getElementById('required_user_video_upload').checked,
         };
         flashcards.push(temp);
         break;
@@ -1656,6 +1677,7 @@ function sendUpdates() {
           // image: attr_array[0],
           image: '',
           position: position_me,
+          is_required: document.getElementById('required_user_audio_upload').checked,
         };
         flashcards.push(temp);
           break;
@@ -1666,6 +1688,7 @@ function sendUpdates() {
           question: attr_array[0],
           image: '',
           position: position_me,
+          is_required: document.getElementById('required_user_image_upload').checked,
         };
         flashcards.push(temp);
         break;
@@ -1678,6 +1701,7 @@ function sendUpdates() {
           braintree_private_key:attr_array[2],
           braintree_item_name:attr_array[3],
           braintree_item_price:attr_array[4],
+          is_required: document.getElementById('required_braintree_Config').checked,
         };
         flashcards.push(temp);
         break;
@@ -1686,6 +1710,7 @@ function sendUpdates() {
           lesson_type: 'user_gps',
           question: 'User GPS',
           position: position_me,
+          is_required: document.getElementById('required_user_gps').checked,
         };
         flashcards.push(temp);
         break;
@@ -1695,6 +1720,7 @@ function sendUpdates() {
           lesson_type: 'user_qr_url',
           question: SERVER + "courses_api/QRcodeData=" + lesson_id,
           position: position_me,
+          is_required: document.getElementById('required_qr_url').checked,
         };
         flashcards.push(temp);
         break;
@@ -1704,6 +1730,7 @@ function sendUpdates() {
           lesson_type: 'user_qr_data',
           question: attr_array[0],
           position: position_me,
+          is_required: document.getElementById('required_user_qr_data').checked,
         };
         flashcards.push(temp);
         break;
@@ -1713,6 +1740,7 @@ function sendUpdates() {
           lesson_type: 'email_verify',
           question: "Verified Email",
           position: position_me,
+          is_required: document.getElementById('required_email_verify').checked,
         };
         flashcards.push(temp);
         break;
@@ -1722,6 +1750,7 @@ function sendUpdates() {
           lesson_type: 'verify_phone',
           question: "Verified Phone",
           position: position_me,
+          is_required: document.getElementById('required_verify_phone').checked,
         };
         flashcards.push(temp);
         break;
@@ -1732,6 +1761,7 @@ function sendUpdates() {
           question: 'GPS Session',
           answer: attr_array[1],
           position: position_me,
+          is_required: document.getElementById('required_gps_session').checked,
         };
         flashcards.push(temp);
         break;
@@ -1741,6 +1771,7 @@ function sendUpdates() {
           lesson_type: 'datepicker',
           question: 'Date',
           position: position_me,
+          is_required: document.getElementById('required_datepicker').checked,
         };
         flashcards.push(temp);
         break;
@@ -1787,6 +1818,8 @@ function sendUpdates() {
   }
 
   data_.meta_attributes = meta_attributes.join(',');
+  console.log("data before....")
+  console.log(data_)
 
   if (MODE == 'CREATE') {
     $.ajax({
