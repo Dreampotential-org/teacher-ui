@@ -155,6 +155,7 @@
                                                        <th>Last call</th>
                                                        <th>Last Dial Number</th>
                                                        <th>Call Member</th>
+                                                       <th>Message Member</th>
                                                   </tr>
                                              </thead>
                                              <tbody id="lead_data">
@@ -317,7 +318,7 @@
                               <!--select number  1'st overlay  -->
                               <div class="modal fade" id="selectNumberModel" tabindex="-1" aria-labelledby="selectNumberModel" role="dialog" aria-hidden="true">
                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
+                                        <div  class="modal-content">
                                              <div class="modal-header">
                                                   <h5 class="modal-title">
                                                        select Number
@@ -341,7 +342,10 @@
                                                        </div>
                                                        <div class="form-group">
                                                             <label for="yourNumber">your number</label>
-                                                            <input type="tel" class="form-control" id="yourNumber" placeholder="Your Number for join_conference"  required/>
+                                                            <div id="addField">
+                                                                 <input type="tel" class="form-control" id="yourNumber" placeholder="Your Number for join_conference"  required/>
+                                                                 <button><i class="fa fa-plus" id="addNum" aria-hidden="true"></i></button>
+                                                            </div>     
                                                        </div>
                                                        <div class="modal-footer">
                                                             <button class="btn btn-primary float-right" id="makeCall" type="button"><i class="fa fa-phone-square"></i> Call</button> 
@@ -377,6 +381,24 @@
                                                        </select><br>
                                                        <label for="phone">Notes</label>
                                                        <textarea class="form-control" id="notes_call" placeholder="write Notes"></textarea>
+                                                       <label for="edit_name">Name</label>
+                                                       <input type="text" class="form-control" id="edit_nameid" placeholder="Name" />
+                                                       <label for="edit_phone">Phone</label>
+                                                       <input type="phone" class="form-control" id="edit_phoneid" placeholder="Phone" />
+                                                       <label for="edit_email">email</label>
+                                                       <input type="email" class="form-control" id="edit_emailid" placeholder="email" />
+                                                       <label for="edit_state">State</label>
+                                                       <input type="text" class="form-control" id="edit_stateid" placeholder="State" />
+                                                       <label for="edit_ask">Ask</label>
+                                                       <input type="text" class="form-control" id="edit_askid" placeholder="Ask" />
+                                                       <label for="edit_ask">Tax Overdue</label>
+                                                       <input type="text" class="form-control" id="edit_Tax_Overdueid" placeholder="Ask" />
+                                                       <label for="edit_ask">Contact Id</label>
+                                                       <input type="text" class="form-control" id="edit_Contact_Idid" placeholder="Ask" />
+                                                       <label for="edit_ask">Last call</label>
+                                                       <input type="text" class="form-control" id="edit_Last_callid" placeholder="Ask" />
+                                                       <label for="edit_ask">Last Dial Number</label>
+                                                       <input type="text" class="form-control" id="edit_Last_Dial_Numberid" placeholder="Ask" />
                                                   </div>
                                                   <div class="modal-footer">
                                                        <button type="button" id="save_notes" class="btn btn-primary float-right">
@@ -394,6 +416,38 @@
                     </div>
                </div>
           </div>
+          <div class="modal fade" id="smsModel" tabindex="-1" role="dialog" aria-hidden="true">
+               <div class="modal-dialog" role="document">
+                   <div class="modal-content">
+                       <div class="modal-header">
+                           <h5 class="modal-title">SMS</h5>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                               <span aria-hidden="true">&times;</span>
+                           </button>
+                       </div>
+                       <div class="modal-body">
+               <form id="send_sms">
+                 <div class="form-group">
+                   <select class="form-control" id="MsgNumber">
+                     <option value="" selected>Select Source Number</option>
+                     <option value="(425) 578-5798">(425) 578-5798</option>
+                   </select>
+                 </div>
+                 <div class="form-group d-dflex">
+                   <input type="tel" class="form-control" id="dest_num_sms" placeholder="Dest Number"  required/>
+                 </div>
+                 <div class="form-group">
+                   <textarea class="form-control" id="message_body" rows="4" placeholder="Message" required></textarea>
+                 </div>
+                 <button type="submit"  class="btn btn-primary float-right">
+                   Send
+                 </button>
+               </form>
+                           </form>
+                       </div>
+                   </div>
+               </div>
+           </div>
 
           <!-- DataTable - filter -->
           <p id="table_filter" style="display:none">
@@ -483,6 +537,7 @@
                                    <td>${item.fields.last_call || "-"}</td>
                                    <td>${item.fields.last_dial_number || "-"}</td>
                                    <td><button onclick="selectNum('${index}')" class="btn btn-primary btn-edit" type="button"><i class="fa fa-phone-square"></i></button></td>
+                                   <td><button onclick="textNum('${index}')"  class="btn btn-primary btn-edit" type="button"><i class="fa fa-envelope-square"  style="font-size:20px;"></i></button></td>
                                    </tr>`);
                          })
                          // DataTable and modification
@@ -765,12 +820,18 @@
                })
 
                // open 1'st overlay
+               var next_index = "";
                function selectNum(index) {
                     $("#selectNumberModel").modal();
                     $("#makeCall").val(index)
                     $("#dest_num_call").val(user_leads[index].fields.phone)
+                    next_index = index; 
                }
 
+               function textNum(index){
+                    $("#smsModel").modal();
+                    $("#dest_num_sms").val(user_leads[index].fields.phone)
+               }
                // makeCall and open overlay 2
                var source_num;
                var dest_num;
@@ -781,6 +842,16 @@
                  utilsScript:
                    "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
                });
+
+               var count = 0
+               $("#addNum").click( () => {
+                         if(count < 2){
+                              add = ''
+                              $("#addField").append(`<input type="tel" class="form-control" id="yourNumber('${count}')" placeholder="Your Number for join_conference"  required/>`);
+                              count = count + 1;
+                         }                    
+                    })
+
                $("#makeCall").click( () => {
                     index = $("#makeCall").val()
                     source_num = $('#sourceCallNumber option:selected').val()
@@ -808,6 +879,15 @@
                          $("#Zillow_url").empty();
                          $("#Zillow_url").append(`name : ${user_leads[index].fields.name}  <br> Zillow url : <a href="${user_leads[index].fields.url}">${user_leads[index].fields.url}</a> <br><br>`);
                          $('#notes_call').val(user_leads[index].fields.notes);
+                         $('#edit_nameid').val(user_leads[index].fields.name);
+                         $('#edit_phoneid').val(user_leads[index].fields.phone);
+                         $('#edit_emailid').val(user_leads[index].fields.email);
+                         $('#edit_stateid').val(user_leads[index].fields.state);
+                         $('#edit_askid').val(user_leads[index].fields.ask);
+                         $('#edit_Tax_Overdueid').val(user_leads[index].fields.tax_overdue);
+                         $('#edit_Contact_Idid').val(user_leads[index].fields.contact_id);
+                         $('#edit_Last_callid').val(user_leads[index].fields.last_call);
+                         $('#edit_Last_Dial_Numberid').val(user_leads[index].fields.last_dial_number);
                          
                          $.ajax({
                               url : SERVER + "voip/api_voip/join_conference",
@@ -828,10 +908,17 @@
                     })
                }
                })
+               function nextNum(next_index) {
+                    $("#selectNumberModel").modal();
+                    $("#makeCall").val(next_index)
+                    $("#dest_num_call").val(user_leads[next_index].fields.phone)
+               }
 
                $("#next_call").click( () => {
                     $("#notesModal").toggle();
                     $('#notesModal').modal('hide'); 
+                    next_index = ++next_index; 
+                    nextNum(next_index);
                })
 
                // play pause music on conference call.
@@ -905,6 +992,47 @@
                $(document).ready(function(){
                     $('[data-toggle="tooltip"]').tooltip();
                });
+               const destNumSmsInputField = document.querySelector("#dest_num_sms");
+               const destNumSmsInput = window.intlTelInput(destNumSmsInputField, {
+                 utilsScript:
+                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+               });
+               $('#send_sms').submit((e) => {
+                    e.preventDefault()
+                    source_num_sms = $('#MsgNumber').val()
+                    des_num_sms = destNumSmsInput.getNumber()
+                    body_msg = $("#message_body").val()
+                    $.ajax({
+                      url: SERVER + "voip/api_voip/send_sms_",
+                      async: true,
+                      crossDomain: true,
+                      crossOrigin: true,
+                      type: "POST",
+                      data : {
+                        "from_num" : source_num_sms,
+                        "to_num" : des_num_sms,
+                        'body' : body_msg,
+                      },
+                      headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+                    }).done( () => {
+                        swal({	
+                            title: "message_send",
+                            text: "You have successfully send msg",	
+                            icon: "success",
+                            timer: 2000
+                            })
+                            $('#send_sms').trigger("reset");              
+                    }).fail( (err) => {
+                        swal({	
+                            title: "not sending msg",	
+                            text: "somthing went wrong.",	
+                            icon: "error",	
+                            timer: 2000
+                            });	
+                         $('#send_sms').trigger("reset");
+                        console.log(err)
+                    })
+               })
           </script>
      </body>
 </html>
