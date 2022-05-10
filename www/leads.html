@@ -318,7 +318,7 @@
                               <!--select number  1'st overlay  -->
                               <div class="modal fade" id="selectNumberModel" tabindex="-1" aria-labelledby="selectNumberModel" role="dialog" aria-hidden="true">
                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
+                                        <div  class="modal-content">
                                              <div class="modal-header">
                                                   <h5 class="modal-title">
                                                        select Number
@@ -342,7 +342,10 @@
                                                        </div>
                                                        <div class="form-group">
                                                             <label for="yourNumber">your number</label>
-                                                            <input type="tel" class="form-control" id="yourNumber" placeholder="Your Number for join_conference"  required/>
+                                                            <div id="addField">
+                                                                 <input type="tel" class="form-control" id="yourNumber" placeholder="Your Number for join_conference"  required/>
+                                                                 <button><i class="fa fa-plus" id="addNum" aria-hidden="true"></i></button>
+                                                            </div>     
                                                        </div>
                                                        <div class="modal-footer">
                                                             <button class="btn btn-primary float-right" id="makeCall" type="button"><i class="fa fa-phone-square"></i> Call</button> 
@@ -839,6 +842,16 @@
                  utilsScript:
                    "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
                });
+
+               var count = 0
+               $("#addNum").click( () => {
+                         if(count < 2){
+                              add = ''
+                              $("#addField").append(`<input type="tel" class="form-control" id="yourNumber('${count}')" placeholder="Your Number for join_conference"  required/>`);
+                              count = count + 1;
+                         }                    
+                    })
+
                $("#makeCall").click( () => {
                     index = $("#makeCall").val()
                     source_num = $('#sourceCallNumber option:selected').val()
