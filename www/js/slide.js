@@ -21,15 +21,23 @@ function updateProgressBar() {
 }
 
 function updateSign(data_, event, imgId, signInput) {
-  console.log("yo",event, event.target.parentNode);
-  if(event && data_){
-    console.log($('#flashcard_'+current_slide).find('#'+imgId)[0])
-    $('#flashcard_'+current_slide).find('#'+imgId).attr('src',data_);
-    $('#flashcard_'+current_slide).find('#'+imgId).removeAttr('hidden');
-    $('#flashcard_'+current_slide).find('#'+signInput).val(data_);
-    $('#flashcard_'+current_slide).find('button.btn').text('Redraw Signature');
+  console.log("yo", event, event.target.parentNode);
+  if (event && data_) {
+    console.log($("#flashcard_" + current_slide).find("#" + imgId)[0]);
+    $("#flashcard_" + current_slide)
+      .find("#" + imgId)
+      .attr("src", data_);
+    $("#flashcard_" + current_slide)
+      .find("#" + imgId)
+      .removeAttr("hidden");
+    $("#flashcard_" + current_slide)
+      .find("#" + signInput)
+      .val(data_);
+    $("#flashcard_" + current_slide)
+      .find("button.btn")
+      .text("Redraw Signature");
   }
-  document.removeEventListener("signatureSubmitted",(e)=>{});
+  document.removeEventListener("signatureSubmitted", (e) => {});
   window.currentSignature = undefined;
 }
 
@@ -39,8 +47,13 @@ function signLesson(event, imgId, signInput) {
   }
 
   document.addEventListener("signatureSubmitted", function (e) {
-    if(window.currentSignature)
-      updateSign(JSON.parse(JSON.stringify(window.currentSignature)).data, event, imgId, signInput);
+    if (window.currentSignature)
+      updateSign(
+        JSON.parse(JSON.stringify(window.currentSignature)).data,
+        event,
+        imgId,
+        signInput
+      );
   });
 }
 
@@ -72,7 +85,7 @@ function sendResponse(flashcard_id, answer) {
     };
   } else {
     if (current_flashcard.lesson_type == "user_gps") {
-      navigator.geolocation.watchPosition(geo_success, geo_error,geo_options);
+      navigator.geolocation.watchPosition(geo_success, geo_error, geo_options);
       var data_ = {
         flashcard: flashcard_id,
         session_id: localStorage.getItem("session_id"),
@@ -82,13 +95,12 @@ function sendResponse(flashcard_id, answer) {
         longitude:
           CURRENT_POSITION != null ? CURRENT_POSITION.coords.longitude : "",
       };
-    } 
-    else {
-        var data_ = {
-            flashcard: flashcard_id,
-            session_id: localStorage.getItem("session_id"),
-            answer: answer ? answer : "",
-        };
+    } else {
+      var data_ = {
+        flashcard: flashcard_id,
+        session_id: localStorage.getItem("session_id"),
+        answer: answer ? answer : "",
+      };
     }
   }
 
@@ -118,8 +130,7 @@ function sendResponse(flashcard_id, answer) {
         },
       });
     },
-    error: function (res) {
-    },
+    error: function (res) {},
   });
 }
 
@@ -129,10 +140,82 @@ function updateMeta(type, answer) {
   }
 }
 
+function checkEmptyResponse(slideIndex, flashCardType) {
+  switch (flashCardType) {
+    case "question_choices":
+      answer = $("input[name= choices_" + (slideIndex) + "]:checked").val();
+      break;
+    case "title_textarea":
+      answer = $("textarea[name= textarea_" + (slideIndex) + "]").val();
+      break;
+    case "question_checkboxes":
+      answer = $("input[name= choices_" + (slideIndex) + "]:checked").val();
+      // let question_checkboxes = [];
+      // $("input[name= checkboxes_" + (slideIndex) + "]:checked").each(
+      //   (j, k) => {
+      //     question_checkboxes.push(k.value);
+      //   }
+      // );
+      // if (question_checkboxes.length == 0) {
+      //   return true
+      // }
+      break;
+    case "title_input":
+      answer = $(
+        "textarea[name= title_input_" + (slideIndex) + "]"
+      ).val();
+      break;
+    case "signature":
+      answer = $(
+        "input[name= input_signature_" + (slideIndex) + "]"
+      ).val();
+      break;
+    case "name_type":
+      answer = $("input[name= name_type_" + (slideIndex) + "]").val();
+      break;
+    case "user_video_upload":
+      answer = $("#user-video-tag").find("source").attr("src");
+      break;
+    case "user_image_upload":
+      answer = $(`#user-image-display_${flashcard_id}`).attr("src");
+      break;
+    case "user_gps":
+      answer = $("#note_" + (slideIndex)).val();
+      break;
+    case "email_verify":
+      answer = $("input[id= email_address]").val();
+      break;
+    case "gps_session":
+      break;
+    case "verify_phone":
+      answer = $("input[id=phone_number]").val();
+      break;
+    case "datepicker":
+      answer = $("#datepicker").val();
+      break;
+    case "jitsi_meet":
+      break;
+    default:
+      return true;
+  }
+  if (!answer){
+    document.getElementById("theSlide").style.color = "red";
+    return true
+  }
+  return false
+}
+
 function nextSlide() {
   var lesson_id = getParam("lesson_id");
   console.log(current_slide);
   if (current_slide < total_slides) {
+    var current_flashcard = loaded_flashcards[current_slide];
+    document.getElementById("theSlide").style.color = null;
+    if (current_flashcard.is_required == true) {
+      if (checkEmptyResponse(current_slide, current_flashcard.lesson_type)){
+        return
+      }
+    }
     current_slide++;
     completed = false;
     if (current_slide == total_slides) {
@@ -166,8 +249,9 @@ function nextSlide() {
       timer: 2000,
     });
   }
-  console.log(loaded_flashcards)
+  console.log(loaded_flashcards);
   var current_flashcard = loaded_flashcards[current_slide - 1];
+  console.log(current_flashcard);
   current_flashcard = current_flashcard.id
     ? current_flashcard
     : loaded_flashcards[current_slide - 2];
@@ -198,7 +282,9 @@ function nextSlide() {
       answer = $("textarea[name= textarea_" + (current_slide - 1) + "]").val();
       sendResponse(flashcard_id, answer);
     } else if (type == "title_input") {
-      answer = $("textarea[name= title_input_" + (current_slide - 1) + "]").val();
+      answer = $(
+        "textarea[name= title_input_" + (current_slide - 1) + "]"
+      ).val();
       console.log("title inpt");
       sendResponse(flashcard_id, answer);
     } else if (type == "signature") {
@@ -219,23 +305,19 @@ function nextSlide() {
       answer = $("#note_" + (current_slide - 1)).val();
       sendResponse(flashcard_id, answer);
       document.removeEventListener("gpsPosition", () => {});
-    }
-    else if (type == "gps_session") {
+    } else if (type == "gps_session") {
       answer = gps_response;
       sendResponse(flashcard_id, answer);
-    }else if (type == "email_verify") {
+    } else if (type == "email_verify") {
       answer = $("input[id= email_address]").val();
       sendResponse(flashcard_id, answer);
-    }
-    else if (type == "verify_phone") {
+    } else if (type == "verify_phone") {
       answer = $("input[id=phone_number]").val();
       sendResponse(flashcard_id, answer, current_flashcard);
-    }
-    else if (type == "datepicker") {
+    } else if (type == "datepicker") {
       answer = $("#datepicker").val();
       sendResponse(flashcard_id, answer);
-    }
-    else if (type == "jitsi_meet"){
+    } else if (type == "jitsi_meet") {
       api.dispose();
     }
 
@@ -260,7 +342,10 @@ function nextSlide() {
       answer = $("#note_" + (current_slide - 1)).val();
       sendResponse(flashcard_id, answer);
     }
-    if (current_slide != total_slides && loaded_flashcards[current_slide].lesson_type == "jitsi_meet"){
+    if (
+      current_slide != total_slides &&
+      loaded_flashcards[current_slide].lesson_type == "jitsi_meet"
+    ) {
       startJitsiMeet(loaded_flashcards[current_slide]);
     }
     $("#myCarousel").carousel("next");
@@ -272,17 +357,17 @@ function prevSlide() {
     current_slide--;
     $("#nextButton").html("Next");
   }
-  var current_flashcard = loaded_flashcards[current_slide+1];
-  console.log(current_flashcard)
+  var current_flashcard = loaded_flashcards[current_slide + 1];
+  console.log(current_flashcard);
   if (current_flashcard) {
-    if (current_flashcard.lesson_type == "jitsi_meet"){
+    if (current_flashcard.lesson_type == "jitsi_meet") {
       api.dispose();
     }
   }
-  if (loaded_flashcards[current_slide].lesson_type == "jitsi_meet"){
+  if (loaded_flashcards[current_slide].lesson_type == "jitsi_meet") {
     startJitsiMeet(loaded_flashcards[current_slide]);
   }
-  
+
   updateProgressBar();
   console.log(current_slide);
   $("#myCarousel").carousel("prev");
@@ -517,9 +602,8 @@ function toggleDisplay() {
   }
 }
 
-
 function init() {
-  $("body").css("display", "none")
+  $("body").css("display", "none");
   console.log("INIT dom");
   $("#sign-modal").load("signature/index.html");
   $("#verify-phone-modal").load("phone/index.html");
@@ -533,7 +617,7 @@ function init() {
   $.get(
     SERVER + "courses_api/slide/read/" + lesson_id,
     function (response, status, xhr) {
-      console.log('>>>>>>>>>>>>>> slide', response);
+      console.log(">>>>>>>>>>>>>> slide", response);
       console.log(response);
       document.title = response.lesson_name
         ? response.lesson_name
@@ -563,7 +647,9 @@ function init() {
           className = "item";
         }
         $("#carousel-indicators").append(
-          '<li data-target="#myCarousel" data-slide-to="' + i + '" class="active"></li>'
+          '<li data-target="#myCarousel" data-slide-to="' +
+            i +
+            '" class="active"></li>'
         );
         if (flashcard.lesson_type == "braintree_Config") {
           $("#theSlide").append(
@@ -597,131 +683,172 @@ function init() {
               <button id="checkout">Submit Payment</button>
             </form></div>`
           );
-          
-          var braintree_form_data = new FormData(); 
-          console.log("flashcard.braintree_merchant_ID=",flashcard.braintree_merchant_ID);
-          braintree_form_data.append("BT_MERCHANT_ID", flashcard.braintree_merchant_ID)
-          braintree_form_data.append("BT_PUBLIC_KEY", flashcard.braintree_public_key)
-          braintree_form_data.append("BT_PRIVATE_KEY", flashcard.braintree_private_key)
+
+          var braintree_form_data = new FormData();
+          console.log(
+            "flashcard.braintree_merchant_ID=",
+            flashcard.braintree_merchant_ID
+          );
+          braintree_form_data.append(
+            "BT_MERCHANT_ID",
+            flashcard.braintree_merchant_ID
+          );
+          braintree_form_data.append(
+            "BT_PUBLIC_KEY",
+            flashcard.braintree_public_key
+          );
+          braintree_form_data.append(
+            "BT_PRIVATE_KEY",
+            flashcard.braintree_private_key
+          );
 
           var segment_settings_buy_item = {
-            "async": false,
-            "crossDomain": true,
-            "url": SERVER + 'store/segment_client_token/'+flashcard.braintree_item_id,
-            "method": "POST",
-            "type": "POST",
-            "processData": false,
-            "contentType": false,
-            "data": braintree_form_data,
-            "headers": {
-                "Authorization": localStorage.getItem("user-token")
-            }
+            async: false,
+            crossDomain: true,
+            url:
+              SERVER +
+              "store/segment_client_token/" +
+              flashcard.braintree_item_id,
+            method: "POST",
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: braintree_form_data,
+            headers: {
+              Authorization: localStorage.getItem("user-token"),
+            },
           };
-          $.ajax(segment_settings_buy_item).done(function (braintree_response) {
-            console.log(braintree_response);
-            $("[id='itemTitle']").html(braintree_response.title);
-            $("[id='itemPrice']").html(braintree_response.price);
-            $("[id='item_ID']").val(braintree_response.id);
-            $("[id='client_token']").val(braintree_response.client_token);
+          $.ajax(segment_settings_buy_item)
+            .done(function (braintree_response) {
+              console.log(braintree_response);
+              $("[id='itemTitle']").html(braintree_response.title);
+              $("[id='itemPrice']").html(braintree_response.price);
+              $("[id='item_ID']").val(braintree_response.id);
+              $("[id='client_token']").val(braintree_response.client_token);
 
-            var form = document.querySelector("#payment-form");
-            console.log("form = ",form);
-            var client_token = braintree_response.client_token;
-            console.log("client_token = ",client_token);
-            braintree.dropin.create(
-              {
-                authorization: client_token,
-                container: "#bt-dropin",
-              },
-              function (createErr, instance) {
-                form.addEventListener("submit", function (event) {
-                  event.preventDefault();
-                  instance.requestPaymentMethod(function (err, payload) {
-                    if (err) {
-                      console.log("Error", err);
-                      return;
-                    }
-
-                    document.querySelector("#nonce").value = payload.nonce;
-
-                    var order_form = new FormData();
-
-                    order_form.append("item_ID", $("#item_ID").val())
-                    order_form.append("title", $("#itemTitle").text())
-                    order_form.append("payment_method_nonce", payload.nonce)
-                    order_form.append("itemPrice", $("#itemPrice").text())
-                    order_form.append("user-name", localStorage.getItem("user-name"))
-                    order_form.append("BT_MERCHANT_ID", flashcard.braintree_merchant_ID)
-                    order_form.append("BT_PUBLIC_KEY", flashcard.braintree_public_key)
-                    order_form.append("BT_PRIVATE_KEY", flashcard.braintree_private_key)
-
-                    var settings_add_order = {
-                      "async": false,
-                      "crossDomain": true,
-                      "url": SERVER + 'store/segment_checkout',
-                      "method": "POST",
-                      "type": "POST",
-                      "processData": false,
-                      "contentType": false,
-                      "mimeType": "multipart/form-data",
-                      "data": order_form,
-                      "headers": {
-                          "Authorization": localStorage.getItem("user-token")
+              var form = document.querySelector("#payment-form");
+              console.log("form = ", form);
+              var client_token = braintree_response.client_token;
+              console.log("client_token = ", client_token);
+              braintree.dropin.create(
+                {
+                  authorization: client_token,
+                  container: "#bt-dropin",
+                },
+                function (createErr, instance) {
+                  form.addEventListener("submit", function (event) {
+                    event.preventDefault();
+                    instance.requestPaymentMethod(function (err, payload) {
+                      if (err) {
+                        console.log("Error", err);
+                        return;
                       }
-                    };
-                    $.ajax(settings_add_order).done(function (checkout_response) {
-                      console.log(checkout_response);
-                      var resp = JSON.parse(checkout_response)
-                      if(resp.success == true){
-                        swal({
-                          title: "Thank you",
-                          text: "Your Order id is "+resp.ID,
-                          icon: "success",
-                        }, function (isConfirmed) {
-                          if(isConfirmed) {
-                            location.reload()
-                          }});
-                      }else{
-                        swal({
-                          title: "Try Again",
-                          text: "Your Order is not complete.",
-                          icon: "error",
-                        }, function (isConfirmed) {
-                          if(isConfirmed) {
-                            location.reload()
-                          }});
 
-                      }
-                    }).fail(function (response) {
-                      console.log("order is Failed!");
-                      swal({
-                          title: "Error!",
-                          text: "Order is failed!",
-                          icon: "warning",
-                      });
+                      document.querySelector("#nonce").value = payload.nonce;
+
+                      var order_form = new FormData();
+
+                      order_form.append("item_ID", $("#item_ID").val());
+                      order_form.append("title", $("#itemTitle").text());
+                      order_form.append("payment_method_nonce", payload.nonce);
+                      order_form.append("itemPrice", $("#itemPrice").text());
+                      order_form.append(
+                        "user-name",
+                        localStorage.getItem("user-name")
+                      );
+                      order_form.append(
+                        "BT_MERCHANT_ID",
+                        flashcard.braintree_merchant_ID
+                      );
+                      order_form.append(
+                        "BT_PUBLIC_KEY",
+                        flashcard.braintree_public_key
+                      );
+                      order_form.append(
+                        "BT_PRIVATE_KEY",
+                        flashcard.braintree_private_key
+                      );
+
+                      var settings_add_order = {
+                        async: false,
+                        crossDomain: true,
+                        url: SERVER + "store/segment_checkout",
+                        method: "POST",
+                        type: "POST",
+                        processData: false,
+                        contentType: false,
+                        mimeType: "multipart/form-data",
+                        data: order_form,
+                        headers: {
+                          Authorization: localStorage.getItem("user-token"),
+                        },
+                      };
+                      $.ajax(settings_add_order)
+                        .done(function (checkout_response) {
+                          console.log(checkout_response);
+                          var resp = JSON.parse(checkout_response);
+                          if (resp.success == true) {
+                            swal(
+                              {
+                                title: "Thank you",
+                                text: "Your Order id is " + resp.ID,
+                                icon: "success",
+                              },
+                              function (isConfirmed) {
+                                if (isConfirmed) {
+                                  location.reload();
+                                }
+                              }
+                            );
+                          } else {
+                            swal(
+                              {
+                                title: "Try Again",
+                                text: "Your Order is not complete.",
+                                icon: "error",
+                              },
+                              function (isConfirmed) {
+                                if (isConfirmed) {
+                                  location.reload();
+                                }
+                              }
+                            );
+                          }
+                        })
+                        .fail(function (response) {
+                          console.log("order is Failed!");
+                          swal({
+                            title: "Error!",
+                            text: "Order is failed!",
+                            icon: "warning",
+                          });
+                        });
                     });
                   });
-                });
-              }
-            );
-            
-          }).fail(function (response) {
-            console.log("Buy item Failed!");
-            swal({
+                }
+              );
+            })
+            .fail(function (response) {
+              console.log("Buy item Failed!");
+              swal({
                 title: "Error!",
                 text: "Buy Item is failed!",
                 icon: "warning",
+              });
             });
-          });
         }
-       
+
         if (flashcard.lesson_type == "verify_phone") {
           $("#theSlide").append(`
-            <div class="${className} ${i == 0 ? "active" : ""}" id="flahscard_${i}" id="verify_phone">
+            <div class="${className} ${
+            i == 0 ? "active" : ""
+          }" id="flahscard_${i}" id="verify_phone">
               <div alt="verify_phone">
                 <input type="text" hidden name="verify_phone_${i}" id="verifyPhone">
                 <button class="btn btn-primary" type="button" onclick="verifyPhone(event)"> Click To Verify Phone Number</button>
-                <p id="phone_verification_status">${phone_verification_status? "verified": "not verified"}</p>
+                <p id="phone_verification_status">${
+                  phone_verification_status ? "verified" : "not verified"
+                }</p>
               </div>
             </div>
           `);
@@ -729,7 +856,9 @@ function init() {
 
         if (flashcard.lesson_type == "chiro_front") {
           $("#theSlide").append(`
-            <div class="${className} ${i == 0 ? "active" : ""}" id="flahscard_${i}" id="chiro_front">
+            <div class="${className} ${
+            i == 0 ? "active" : ""
+          }" id="flahscard_${i}" id="chiro_front">
               <div alt="chiro_front">
                 <h1>Chiro Front</h1>
                 <form id="chirofront_form" onsubmit="chiroFront(event)" enctype="multipart/form-data" method="post">
@@ -747,7 +876,9 @@ function init() {
 
         if (flashcard.lesson_type == "chiro_side") {
           $("#theSlide").append(`
-            <div class="${className} ${i == 0 ? "active" : ""}" id="flahscard_${i}" id="chiro_side">
+            <div class="${className} ${
+            i == 0 ? "active" : ""
+          }" id="flahscard_${i}" id="chiro_side">
               <div alt="chiro_side">
                 <h1>Chiro Side</h1>
                 <form id="chiroside_form" onsubmit="chiroSide(event)" enctype="multipart/form-data" method="post">
@@ -764,27 +895,35 @@ function init() {
         }
 
         if (flashcard.lesson_type == "user_qr_data") {
-            $("#theSlide").append(`
-              <div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+          $("#theSlide").append(`
+              <div class="${className} ${
+            i == 0 ? "active" : ""
+          }" id="flashcard_${flashcard.id}">
                 <h1>QR Code</h1>
                 <div id="main" ></div>
               </div>
             `);
-            qrcodeResponse(lesson_id);
+          qrcodeResponse(lesson_id);
         }
 
         if (flashcard.lesson_type == "user_qr_url") {
           $("#theSlide").append(`
-            <div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+            <div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${
+            flashcard.id
+          }">
               <h1>QR URL</h1>
-              <a href="${flashcard.question}" target="_blank">${flashcard.question}</a>
+              <a href="${flashcard.question}" target="_blank">${
+            flashcard.question
+          }</a>
             </div>
           `);
         }
 
         if (flashcard.lesson_type == "gps_session") {
           $("#theSlide").append(`
-            <div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+            <div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${
+            flashcard.id
+          }">
               <h1>GPS Session</h1>
               <div id="livedata" style="overflow:auto"></div>
               <button class="btn btn-default" id='start_session'>Start Session</button>
@@ -796,7 +935,9 @@ function init() {
 
         if (flashcard.lesson_type == "email_verify") {
           $("#theSlide").append(`
-            <div class="${className} ${i == 0 ? "active" : ""}" id="flahscard_${i}" id="email_verify">
+            <div class="${className} ${
+            i == 0 ? "active" : ""
+          }" id="flahscard_${i}" id="email_verify">
               <div alt="email_verify">
                 <button class="btn btn-primary" type="button" onclick="verifyEmail(event)"> Click To Verify Email Address </button>
                 <p>Verified Email <span id="email_address_info"></span></p>
@@ -807,16 +948,20 @@ function init() {
 
         if (flashcard.lesson_type == "datepicker") {
           $("#theSlide").append(`
-            <div class="${className} ${i == 0 ? "active" : ""}" id="flahscard_${i}" id="datepicker">
+            <div class="${className} ${
+            i == 0 ? "active" : ""
+          }" id="flahscard_${i}" id="datepicker">
               <p>Date: <input type="text" id="datepicker"></p>
             </div>
           `);
-          $( "#datepicker" ).datepicker({ dateFormat: "yy-mm-dd" })
+          $("#datepicker").datepicker({ dateFormat: "yy-mm-dd" });
         }
 
         if (flashcard.lesson_type == "jitsi_meet") {
           $("#theSlide").append(`
-            <div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+            <div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${
+            flashcard.id
+          }">
               <h4>Join Conference</h4>
               <div class="btn-group btn-toggle" id="join_conference"></div>
             </div>
@@ -824,7 +969,9 @@ function init() {
         }
         if (flashcard.lesson_type == "record_webcam") {
           $("#theSlide").append(`
-            <div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+            <div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${
+            flashcard.id
+          }">
               <h4>Recording Webcam</h4>
               <div class="btn-group btn-toggle" id="recording"> 
                 <button class="btn btn-default" id="start_recording">ON</button>
@@ -946,7 +1093,9 @@ function init() {
 
         if (flashcard.lesson_type == "record_screen") {
           $("#theSlide").append(`
-            <div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${flashcard.id}">
+            <div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${
+            flashcard.id
+          }">
               <h4>Recording Screen</h4>
               <div class="btn-group btn-toggle"> 
                 <button class="btn btn-default" id="start_recording_screen">ON</button>
@@ -1370,7 +1519,8 @@ function init() {
                 </div>
               </div>
             </div>
-          `);
+          `
+          );
         }
 
         if (flashcard.lesson_type == "user_video_upload") {
@@ -1458,7 +1608,7 @@ function init() {
       $("#theSlide").append(
         '<div class="item"><div alt="quick_read" style=""><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1></div></div>'
       );
-      
+
       if (session_id) {
         console.log(response);
         $.get(
@@ -1468,11 +1618,14 @@ function init() {
             "/" +
             localStorage.getItem("session_id"),
           function (response) {
-            console.log("🚀 ~ file: slide.js ~ line 1510 ~ init ~ response", response)
+            console.log(
+              "🚀 ~ file: slide.js ~ line 1510 ~ init ~ response",
+              response
+            );
             response.forEach(function (rf) {
-              console.log("🚀 ~ file: slide.js ~ line 777 ~ rf", rf)
+              console.log("🚀 ~ file: slide.js ~ line 777 ~ rf", rf);
               loaded_flashcards.forEach(function (f, i) {
-                console.log("🚀 ~ file: slide.js ~ line 1538 ~ f", f)
+                console.log("🚀 ~ file: slide.js ~ line 1538 ~ f", f);
                 if (rf.flashcard[0].id == f.id) {
                   if (f.lesson_type == "title_textarea") {
                     $("textarea[name=textarea_" + i).val(rf.answer);
@@ -1506,9 +1659,11 @@ function init() {
                   }
 
                   if (f.lesson_type == "question_checkboxes") {
-                      console.log(rf.answer)
+                    console.log(rf.answer);
                     rf.answer.split(",").forEach((v) => {
-                      if (!(v))  { v = false; }
+                      if (!v) {
+                        v = false;
+                      }
                       $(
                         "input[name=checkboxes_" + i + "][value=" + v + "]"
                       ).attr("checked", true);
@@ -1541,8 +1696,7 @@ function init() {
                     let ans = {};
                     try {
                       ans = JSON.parse(rf.answer);
-                    } catch (e) {
-                    }
+                    } catch (e) {}
                     $("#gps_sess" + i).val(rf.answer);
                     console.log("set previos gps value");
                   }
@@ -1554,10 +1708,10 @@ function init() {
             });
           }
         )
-        .done((res) =>
+          .done((res) =>
             console.log("🚀 ~ file: slide.js ~ line 727 ~ res", res)
-        )
-        .fail((err) => console.log("Invitation err", err));
+          )
+          .fail((err) => console.log("Invitation err", err));
       }
       if (total_slides && flashcards[0].lesson_type == "user_gps") {
         handle_gps_click();
@@ -1576,36 +1730,36 @@ function init() {
     }
   );
   // make load cleanly
-  setTimeout(function() {
-    $("body").css('display', 'block')
+  setTimeout(function () {
+    $("body").css("display", "block");
   }, 1000);
 }
 
-async function responsePromise(braintree_item_id,braintree_form_data){
-  return new Promise(function(resolve, reject) {
+async function responsePromise(braintree_item_id, braintree_form_data) {
+  return new Promise(function (resolve, reject) {
     $.ajax({
-        url: SERVER + 'store/segment_client_token/'+braintree_item_id,
-        type : 'POST',
-        headers : {
-          "Authorization": localStorage.getItem("user-token")
-        },
-        async : false,
-        crossDomain : true,
-        processData : false,
-        contentType : false,
-        data: braintree_form_data,
-        success: function (data) {
-          // console.log("########### session ########",data.client_token);
-            // var session = $.parseJSON(data);
-            console.log("########### session ########",data);
-            // if (session.is_staff === 1) {
-                resolve(data);
-            // } else {
-            //     resolve(false);
-            // }
-        }
+      url: SERVER + "store/segment_client_token/" + braintree_item_id,
+      type: "POST",
+      headers: {
+        Authorization: localStorage.getItem("user-token"),
+      },
+      async: false,
+      crossDomain: true,
+      processData: false,
+      contentType: false,
+      data: braintree_form_data,
+      success: function (data) {
+        // console.log("########### session ########",data.client_token);
+        // var session = $.parseJSON(data);
+        console.log("########### session ########", data);
+        // if (session.is_staff === 1) {
+        resolve(data);
+        // } else {
+        //     resolve(false);
+        // }
+      },
     });
-  })
+  });
 }
 function handleVideoUpload(key) {
   var file = $("#myFile").prop("files");
@@ -1766,8 +1920,8 @@ function handleImageUpload(key, id) {
     });
 }
 
-function qrcodeResponse(data){
-  $("#main").html("")
+function qrcodeResponse(data) {
+  $("#main").html("");
   $.ajax({
     async: true,
     url: SERVER + "courses_api/qrcode",
@@ -1780,18 +1934,21 @@ function qrcodeResponse(data){
     processData: false,
     success: function (responseqrcode) {
       var base64img = "data:image/png;base64," + responseqrcode;
-      Base64ToImage(base64img, function(img) {
-        document.getElementById('main').appendChild(img);   
+      Base64ToImage(base64img, function (img) {
+        document.getElementById("main").appendChild(img);
       });
     },
     error: function (res) {
-      console.log("🚀 ~ file: slide.js ~ line 1766 ~ flashcards.forEach ~ res", res)
+      console.log(
+        "🚀 ~ file: slide.js ~ line 1766 ~ flashcards.forEach ~ res",
+        res
+      );
     },
   });
 }
 function Base64ToImage(base64img, callback) {
   var img = new Image();
-  img.onload = function() {
+  img.onload = function () {
     callback(img);
   };
   img.src = base64img;
@@ -1803,62 +1960,74 @@ var interval;
 var CURRENT_POSITION = null;
 
 function start() {
-  $(document).delegate("#start_session", "click", function(e) {
+  $(document).delegate("#start_session", "click", function (e) {
     $("#start_session").hide();
     $("#stop_session").show();
-    $('#distance').html('');
-    $('#livedata').html('');
+    $("#distance").html("");
+    $("#livedata").html("");
 
     var start_session_time = new Date();
     const out = document.getElementById("livedata");
 
-    interval = setInterval(function() {
+    interval = setInterval(function () {
       var interval_time = new Date();
-      
-      var diffInMilliSeconds = Math.round(Math.abs(interval_time - start_session_time) / 1000);
+
+      var diffInMilliSeconds = Math.round(
+        Math.abs(interval_time - start_session_time) / 1000
+      );
       const diff = timeConvCalc(diffInMilliSeconds);
       a = diff.split(": ");
-      const total_time = ((parseInt(a[0]))*60*60) + ((parseInt(a[1]))*60) + parseInt(a[2]);
+      const total_time =
+        parseInt(a[0]) * 60 * 60 + parseInt(a[1]) * 60 + parseInt(a[2]);
 
-      dist_array.push(data['latitude']);
-      dist_array.push(data['longitude']);
+      dist_array.push(data["latitude"]);
+      dist_array.push(data["longitude"]);
       var lat1 = dist_array[0];
       var lon1 = dist_array[1];
-      var lat2 = data['latitude'];
-      var lon2 = data['longitude'];
+      var lat2 = data["latitude"];
+      var lon2 = data["longitude"];
       const dista = getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2);
-      
-      avg_speed = (dista *1000) / total_time;
 
-      const isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
+      avg_speed = (dista * 1000) / total_time;
+
+      const isScrolledToBottom =
+        out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
       const newElement = document.createElement("div");
-      newElement.textContent = format("Total Distance : ", dista, 'Speed :', avg_speed, "Total Time :", diff);
-      out.appendChild(newElement)
+      newElement.textContent = format(
+        "Total Distance : ",
+        dista,
+        "Speed :",
+        avg_speed,
+        "Total Time :",
+        diff
+      );
+      out.appendChild(newElement);
       if (isScrolledToBottom) {
         out.scrollTop = out.scrollHeight - out.clientHeight;
       }
 
       function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
         var R = 6371;
-        var dLat = deg2rad(lat2-lat1);
-        var dLon = deg2rad(lon2-lon1); 
-        var a = 
-          Math.sin(dLat/2) * Math.sin(dLat/2) +
-          Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
-          Math.sin(dLon/2) * Math.sin(dLon/2)
-          ;
-        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        var dLat = deg2rad(lat2 - lat1);
+        var dLon = deg2rad(lon2 - lon1);
+        var a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(deg2rad(lat1)) *
+            Math.cos(deg2rad(lat2)) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         var d = R * c;
         return d;
       }
 
       function deg2rad(deg) {
-        return deg * (Math.PI/180)
+        return deg * (Math.PI / 180);
       }
     }, 1000);
-    
-    function format () {
-      return Array.prototype.slice.call(arguments).join(' ');
+
+    function format() {
+      return Array.prototype.slice.call(arguments).join(" ");
     }
 
     $(document).ready(function () {
@@ -1872,10 +2041,13 @@ function start() {
         contentType: "application/json; charset=utf-8",
         processData: false,
         headers: {
-          Authorization: localStorage.getItem('user-token'),
+          Authorization: localStorage.getItem("user-token"),
         },
         success: function (response) {
-          console.log("🚀 ~ file: gps_session.html ~ line 1856 ~ response", response.status);
+          console.log(
+            "🚀 ~ file: gps_session.html ~ line 1856 ~ response",
+            response.status
+          );
         },
         error: function (err) {
           console.log("🚀 ~ file: gps_session.html ~ line 1859 ~ err", err);
@@ -1884,7 +2056,7 @@ function start() {
     });
   });
 
-  $(document).delegate("#stop_session", "click", function(e) {
+  $(document).delegate("#stop_session", "click", function (e) {
     $("#start_session").show();
     $("#stop_session").hide();
     clearInterval(interval);
@@ -1900,13 +2072,23 @@ function start() {
         contentType: "application/json; charset=utf-8",
         processData: false,
         headers: {
-          Authorization: localStorage.getItem('user-token'),
+          Authorization: localStorage.getItem("user-token"),
         },
         success: function (response) {
-          console.log("🚀 ~ file: gps_session.html ~ line 1884 ~ response", response);
+          console.log(
+            "🚀 ~ file: gps_session.html ~ line 1884 ~ response",
+            response
+          );
           gps_response = response;
-          $('#distance').append("<h2>Total Distance : "+ response.distance +" km</h2><h2>Averege Speed : "+ 
-                                  response.avg_speed + " m/s</h2><h2>Total Time : "+ timeConvCalc(response.total_time) +"</h2>");
+          $("#distance").append(
+            "<h2>Total Distance : " +
+              response.distance +
+              " km</h2><h2>Averege Speed : " +
+              response.avg_speed +
+              " m/s</h2><h2>Total Time : " +
+              timeConvCalc(response.total_time) +
+              "</h2>"
+          );
         },
         error: function (err) {
           console.log("🚀 ~ file: gps_session.html ~ line 1889 ~ err", err);
@@ -1923,13 +2105,16 @@ function timeConvCalc(diffInMilliSeconds) {
   diffInMilliSeconds -= hours * 3600;
   const minutes = Math.floor(diffInMilliSeconds / 60) % 60;
   diffInMilliSeconds -= minutes * 60;
-  let difference = '';
+  let difference = "";
   if (days > 0) {
-    difference += (days === 1) ? `${days}: ` : `${days}: `;
+    difference += days === 1 ? `${days}: ` : `${days}: `;
   }
-  difference += (hours === 0 || hours === 1) ? `${hours}: ` : `${hours}: `;
-  difference += (minutes === 0 || hours === 1) ? `${minutes}: ` : `${minutes}: `;
-  difference += (diffInMilliSeconds === 0 || minutes === 1 || hours === 1 ) ? `${diffInMilliSeconds}` : `${diffInMilliSeconds}`;
+  difference += hours === 0 || hours === 1 ? `${hours}: ` : `${hours}: `;
+  difference += minutes === 0 || hours === 1 ? `${minutes}: ` : `${minutes}: `;
+  difference +=
+    diffInMilliSeconds === 0 || minutes === 1 || hours === 1
+      ? `${diffInMilliSeconds}`
+      : `${diffInMilliSeconds}`;
 
   return difference;
 }
@@ -1946,40 +2131,40 @@ function geo_error(err) {
     err.code == err.PERMISSION_DENIED ||
     err.code == err.UNKNOWN_ERROR
   ) {
-      alert("GPS error");
+    alert("GPS error");
   }
   console.log("errror no gps");
   console.warn("ERROR(" + err.code + "): " + err.message);
 }
-  
+
 function geo_success(position) {
   CURRENT_POSITION = position;
   console.log(position.coords.latitude + " " + position.coords.longitude);
-  data['latitude'] = position.coords.latitude;
-  data['longitude'] = position.coords.longitude;
+  data["latitude"] = position.coords.latitude;
+  data["longitude"] = position.coords.longitude;
 }
 
 let accelerometer = null;
 try {
   accelerometer = new Accelerometer({ frequency: 60 });
   accelerometer.onerror = (event) => {
-    if (event.error.name === 'NotAllowedError') {
-      console.log('Permission to access sensor was denied.');
-    } else if (event.error.name === 'NotReadableError') {
-      console.log('Cannot connect to the sensor.');
+    if (event.error.name === "NotAllowedError") {
+      console.log("Permission to access sensor was denied.");
+    } else if (event.error.name === "NotReadableError") {
+      console.log("Cannot connect to the sensor.");
     }
   };
-  accelerometer.addEventListener('reading', () => {
+  accelerometer.addEventListener("reading", () => {
     console.log("Acceleration along the X-axis " + acl.x);
     console.log("Acceleration along the Y-axis " + acl.y);
     console.log("Acceleration along the Z-axis " + acl.z);
   });
   accelerometer.start();
 } catch (error) {
-  if (error.name === 'SecurityError') {
-    console.log('Sensor construction was blocked by the Permissions Policy.');
-  } else if (error.name === 'ReferenceError') {
-    console.log('Sensor is not supported by the User Agent.');
+  if (error.name === "SecurityError") {
+    console.log("Sensor construction was blocked by the Permissions Policy.");
+  } else if (error.name === "ReferenceError") {
+    console.log("Sensor is not supported by the User Agent.");
   } else {
     throw error;
   }
