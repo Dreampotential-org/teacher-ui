@@ -136,3 +136,15 @@ label.datetimeLabel {
       max-width: 1500px !important;
   }
 }
+.model_main{
+  /* display: block; */
+  background: rgba(255, 255, 255, 0.23);
+  width: 700px;
+  margin: 0 auto;
+}
+.button_main{
+  margin-left: 15px !important;
+}
+.footer_inner{
+  display: flex !important;
+}
