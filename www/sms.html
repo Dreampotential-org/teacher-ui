@@ -605,18 +605,18 @@
                 var html = "";
                 get_sms_to_number(phonenum, function (res) {
                     $(document).ready(function(){
-                        get_all_active_numbers(function(response){
+                
                             
-                            for (var numbers of response){
-                                $('#filter_twilio').append('<option value='+numbers+'>'+numbers+'</option>' )
-                            }
-                        });
+                        $('#filter_twilio').append('<option selected="selected" value='+phonenum+'>'+phonenum+'</option>' )
+                            
+                       
                     });
-                    $("#message-box").empty();
+                    //$("#message-box").empty();
                     var filtered_data = res.filter(
                                 (item) =>
                             (item.to == phonenum || item.from == phonenum)
                     );
+
 
                     filtered_data.sort(function (a, b) {
                         // Turn your strings into dates, and then subtract them
@@ -642,7 +642,7 @@
                                         </div>`;
                         }
                     }
-                    
+                    console.log(html)
                     $("#message-box").empty();
                     $("#message-box").append(html);
                     scroll_to_bottom();
@@ -652,7 +652,7 @@
                         $("#message-box").empty();
                         $('#message-box').append(loader);
                         var item1=$(this).val()
-                        console.log("itemm selected twilio number is",item1)
+                        console.log(loader)
 
                         $.ajax({
 
@@ -667,7 +667,7 @@
                             },
                             headers: { "Authorization": `${localStorage.getItem('user-token')}` }
                         }).done( function (response) {
-                                $("#message-box").empty();
+                                //$("#message-box").empty();
                                 var filtered_data = response.messages.filter((item) => (item.to == phonenum || item.from == phonenum)        
                                 );
                                 filtered_data.sort(function (a, b) {

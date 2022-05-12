@@ -318,6 +318,7 @@ function get_sms_to_number(to_number, callback) {
         "crossDomain": true,
         "processData": false,
         "contentType": false,
+        "data" :to_number,
         "mimeType": "multipart/form-data",
         "url": SERVER + "voip/api_voip/list_sms",
         "method": "POST",

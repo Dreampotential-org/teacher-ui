@@ -401,6 +401,9 @@
                                                        <input type="text" class="form-control" id="edit_Last_Dial_Numberid" placeholder="Ask" />
                                                   </div>
                                                   <div class="modal-footer">
+                                                       <button type="button" id="send_smsid" onclick="sendText()"  class="btn btn-primary float-right">
+                                                            send sms
+                                                       </button>
                                                        <button type="button" id="save_notes" class="btn btn-primary float-right">
                                                             save
                                                        </button>
@@ -933,6 +936,18 @@
                     $("#makeCall").val(next_index)
                     $("#dest_num_call").val(user_leads[next_index].fields.phone)
                }
+               function sendText(index) {
+
+                    $("#dest_num_sms").val(user_leads[index].fields.phone)
+               }
+               $("#send_smsid").click( () => {
+                    $("#selectNumberModel").toggle();
+                    $('#selectNumberModel').modal('hide'); 
+
+                    $('#smsModel').modal(); 
+                     
+                    sendText(index);
+               })
 
                $("#next_call").click( () => {
                     $("#notesModal").toggle();
@@ -1071,12 +1086,12 @@
                          var t = today.getHours() + ":" + today.getMinutes();
                          var time = document.createTextNode(t);
                          var span = document.createElement("span");
-                         p?.appendChild(message);
-                         span?.appendChild(time);
-                         div?.appendChild(p);
-                         div?.appendChild(span);
-                         objDiv?.appendChild(div);                      
-                         document.getElementById("message").value = "";
+                         p.appendChild(message);
+                         span.appendChild(time);
+                         div.appendChild(p);
+                         div.appendChild(span);
+                         objDiv.appendChild(div);                      
+                         document.getElementById("message")
                          scroll_to_bottom();
                     }
                }
@@ -1085,7 +1100,7 @@
                var scrollBtn = document.getElementById("scroll-btn");
                var maxScrollValue = 0;
                objDiv.onscroll = function (e) {
-                    if (objDiv?.scrollTop !== maxScrollValue) {
+                    if (objDiv.scrollTop !== maxScrollValue) {
                          scrollBtn.style.display = "block";
                     } else {
                          scrollBtn.style.display = "none";
@@ -1094,7 +1109,7 @@
                /*SCROLL MESSAGE BOX TO BOTTOM*/
                function scroll_to_bottom() {
                     var objDiv = document.getElementById("message-box");
-                    objDiv.scrollTop = objDiv?.scrollHeight;
+                    objDiv.scrollTop = objDiv.scrollHeight;
                     scrollBtn.style.display = "none";
                     if (maxScrollValue < objDiv.scrollTop)
                         maxScrollValue = objDiv.scrollTop;
