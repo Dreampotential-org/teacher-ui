@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <style>
+            input {
+                font-size: 19px !important;
+            }
+
+            h1 {
+                font-size: 26px !important;
+            }
+            #main img{
+                width: 400px !important;
+                margin: 0 auto !important;
+                display: inherit !important;
+            }
+            #livedata {
+                height: 120px;
+            }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+        <link rel = "stylesheet" href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css">
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="js/main.js"></script>
+        <script src="js/slide.js"></script>
+        <script src="js/gps.js"></script>
+        <link rel="stylesheet" href="css/slide.css">
+        <!-- firebase -->
+        <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEYIL86ek3icvHx6F-55qSFCfhe2fynfg"></script>
+    </head>
+
+    <body>
+        <div class="container">
+            <br>
+            <!--            <div id="myCarousel" class="carousel" data-ride="carousel" data-interval="false" data-wrap="false">
+                             Wrapper for slides 
+                            <div class="carousel-inner" id="theSlide" style="border:2px;border-style:solid;padding:10px;min-height:300px" role="listbox"></div>
+                            <div class="col-lg-6" style="margin-top:10px">
+                                <button id="nextButton" onclick="nextSlide()">Next</button>
+                                <button id="prevButton" onclick="prevSlide()">Previous</button>
+                            </div>
+                            <div class="col-lg-6" style="margin-top:10px;" id="progress-section">
+                                <p style="color: #777777;">Progress: <span id="progress"> </span> answered</p>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>-->
+            <style>
+                .form-control{
+                    height: 40px;
+                }
+                input[type=checkbox], input[type=radio] {
+                    height: 25px;
+                    width: 25px;
+                    margin: 15px 10px 0px 0px;
+                }
+            </style>
+            <div class="row">
+                <div class="col-sm-12">
+                    <form>
+                        <div class="form-group">
+                            <label for="formGroupExampleInput">What's your full name?</label>
+                            <input type="text" class="form-control" id="full_name" placeholder="What's your full name?">
+                        </div>
+                        <div class="form-group">
+                            <label for="formGroupExampleInput2">Lorem Ipsum Idolor</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                <label class="form-check-label" for="inlineRadio1">Lorem Ipsum</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                <label class="form-check-label" for="inlineRadio2">Lorem Ipsum</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                                <label class="form-check-label" for="inlineRadio3"> <input type="text" class="form-control" id="full_name" placeholder="Others"></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="formGroupExampleInput">Your title here</label>
+                            <input type="text" class="form-control" id="full_name" placeholder="Answer Text">
+                        </div>
+                        <button type="button" class="btn btn-primary">Next</button>
+                        <br><br>
+                        <div class="row">
+                            <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 text-center">
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <label class="form-check-label" for="inlineRadio2">Completed 1 of 10</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="sign-modal"></div>
+        <div id="verify-phone-modal"></div>
+        <div id="verify-email-modal"></div>
+        <div id="video-modal"></div>
+        <div id="gps-modal"></div>
+        <script src="https://meet.jit.si/external_api.js"></script>
+        <!-- brainTree  -->
+        <script src="https://js.braintreegateway.com/web/dropin/1.13.0/js/dropin.min.js"></script>
+
+    </body>
+</html>
