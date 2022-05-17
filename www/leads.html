@@ -333,7 +333,7 @@
                                                             <label for="sourceCallNumber">select source Number</label>
                                                             <select class="form-control" id="sourceCallNumber">
                                                                  <option value="Select Source Number" selected>Select Source Number</option>
-                                                                 <option value="(425) 578-5798">(425) 578-5798</option>
+                                                                 <option selected="selected" value="(425) 578-5798">(425) 578-5798</option>
                                                             </select>
                                                        </div>
                                                        <div class="form-group">
@@ -355,7 +355,6 @@
                                         </div>
                                    </div> 
                               </div>
-
                               <!-- 2'nd overlay Add notes on number called -->
                               <div class="modal fade" id="notesModal" aria-labelledby="notesModal" tabindex="-1" role="dialog" aria-hidden="true">
                                    <div class="modal-dialog" role="document">
@@ -433,7 +432,7 @@
                  <div class="form-group">
                    <select class="form-control" id="MsgNumber">
                      <option value="" selected>Select Source Number</option>
-                     <option value="(425) 578-5798">(425) 578-5798</option>
+                     <option selected="selected" value="(425) 578-5798">(425) 578-5798</option>
                    </select>
                  </div>
                  <div class="form-group d-dflex">
@@ -442,11 +441,10 @@
                  <div class="form-group">
                       <div class="input-group">
                               <div  class="chat-footer footer_inner">
-                                   <form id="composeid">
-                                        <input type="text" class="form-control" placeholder="Compose ..."  id="message_body"/>
-                                   </form>
+                                   <input type="text"  class="form-control" placeholder="Compose ..."  id="message_body"/>
                                    <div class="input-group-append button_main">
                                         <button
+                                        id="sendtxt"
                                         class="btn btn-primary"
                                         type="submit"
                                         onclick="send_message()"
@@ -854,6 +852,48 @@
                function textNum(index){
                     $("#smsModel").modal();
                     $("#dest_num_sms").val(user_leads[index].fields.phone)
+                    var html = "";
+                    get_sms_to_number(user_leads[index].fields.phone, function (res) {
+    
+                         console.log(user_leads[index].fields.phone)
+                         console.log(res)
+
+                         //$("#message-box").empty();
+
+                         var filtered_data = res.messages.filter((item) => (item.to == user_leads[index].fields.phone || item.from == user_leads[index].fields.phone)        
+                         );
+
+                         console.log(filtered_data)
+
+                         filtered_data.sort(function (a, b) {
+                         // Turn your strings into dates, and then subtract them
+                         // to get a value that is either negative, positive, or zero.
+                         if (a.date_created < b.date_created)
+                              return -1;
+                         if (a.date_created > b.date_created)
+                              return 1;
+                         return 0;
+                         });
+                         console.log(filtered_data)
+
+                         for (var msg of filtered_data) {
+                         
+                         if (msg.to == phonenum) {
+                              html += `<div class="message sent col-md-9 col-11">
+                                             <p class="col-md-12 col-12">${msg.body}</p>
+                                             <span>${msg.date_created}</span>
+                                             </div>`;
+                         } else {
+                              html += `<div class="message received col-md-9 col-11">
+                                             <p class="col-md-12 col-12">${msg.body}</p>
+                                             <span>${msg.date_created}</span>
+                                             </div>`;
+                         }
+                         }
+                         console.log(html)
+                         $("#message-box").empty();
+                         $("#message-box").append(html);
+                    });     
                }
                // makeCall and open overlay 2
                var source_num;
@@ -926,8 +966,6 @@
                                    
                          },
                          headers: { "Authorization": `${localStorage.getItem('user-token')}` }
-                    }).done( ()=> {                        
-                        table.reload();
                     })
                }
                })
@@ -936,9 +974,55 @@
                     $("#makeCall").val(next_index)
                     $("#dest_num_call").val(user_leads[next_index].fields.phone)
                }
+               var phonenum;
                function sendText(index) {
 
-                    $("#dest_num_sms").val(user_leads[index].fields.phone)
+                    phonenum = user_leads[index] ? user_leads[index].fields.phone : undefined
+                    console.log(phonenum)
+                    $("#dest_num_sms").val(phonenum)
+                    var html = "";
+                    get_sms_to_number(phonenum, function (res) {
+    
+                         console.log(phonenum)
+                         console.log(res)
+
+                         //$("#message-box").empty();
+                         if (phonenum !== undefined) {
+                              var filtered_data = res.messages && res.messages.filter((item) => (item.to ==  phonenum || item.from == phonenum)        
+                              );
+                         }
+
+                         console.log(filtered_data)
+
+                         filtered_data && filtered_data.sort(function (a, b) {
+                         // Turn your strings into dates, and then subtract them
+                         // to get a value that is either negative, positive, or zero.
+                         if (a.date_created < b.date_created)
+                              return -1;
+                         if (a.date_created > b.date_created)
+                              return 1;
+                         return 0;
+                         });
+                         console.log(filtered_data)
+
+                         for (var msg of filtered_data) {
+                         
+                         if (msg.to == phonenum) {
+                              html += `<div class="message sent col-md-9 col-11">
+                                             <p class="col-md-12 col-12">${msg.body}</p>
+                                             <span>${msg.date_created}</span>
+                                             </div>`;
+                         } else {
+                              html += `<div class="message received col-md-9 col-11">
+                                             <p class="col-md-12 col-12">${msg.body}</p>
+                                             <span>${msg.date_created}</span>
+                                             </div>`;
+                         }
+                         }
+                         console.log(html)
+                         $("#message-box").empty();
+                         $("#message-box").append(html);
+                    });     
                }
                $("#send_smsid").click( () => {
                     $("#selectNumberModel").toggle();
@@ -1058,7 +1142,7 @@
                             icon: "success",
                             timer: 2000
                             });
-                            $('#composeid').trigger("reset");
+                            rest_compose();
                     }).fail( (err) => {
                         swal({	
                             title: "not sending msg",	
@@ -1070,7 +1154,13 @@
                         console.log(err)
                     })
                })
-                              
+                
+         
+               function rest_compose(){
+                    document.getElementById("message_body").value = "";
+                    
+
+               }
                function send_message() {
                     var msg = document.getElementById("message_body").value;
                     var today = new Date();
@@ -1094,27 +1184,21 @@
                          document.getElementById("message")
                          scroll_to_bottom();
                     }
+
                }
                
                var objDiv = document.getElementById("message-box");
                var scrollBtn = document.getElementById("scroll-btn");
                var maxScrollValue = 0;
-               objDiv.onscroll = function (e) {
-                    if (objDiv.scrollTop !== maxScrollValue) {
-                         scrollBtn.style.display = "block";
-                    } else {
-                         scrollBtn.style.display = "none";
-                    }
-               };
+
                /*SCROLL MESSAGE BOX TO BOTTOM*/
                function scroll_to_bottom() {
                     var objDiv = document.getElementById("message-box");
                     objDiv.scrollTop = objDiv.scrollHeight;
-                    scrollBtn.style.display = "none";
                     if (maxScrollValue < objDiv.scrollTop)
                         maxScrollValue = objDiv.scrollTop;
                 }
-                scroll_to_bottom();
+               scroll_to_bottom();
                 
           </script>
      </body>

@@ -310,31 +310,30 @@ function upload_to_twilio(image) {
 }
 
 function get_sms_to_number(to_number, callback) {
-    var form = new FormData();
-    form.append("to_number", to_number);
-
-    var settings = {
-        "async": true,
-        "crossDomain": true,
-        "processData": false,
-        "contentType": false,
-        "data" :to_number,
-        "mimeType": "multipart/form-data",
-        "url": SERVER + "voip/api_voip/list_sms",
-        "method": "POST",
-    }
-    $.ajax(settings).done(function (response) {
-        response = JSON.parse(response)
-        // XXX Santosh here is what msg look like to populate
-        // SMS chat interface.
-        for (var msg of response.messages) {
-            console.log(msg);
+    if (to_number !== undefined) {
+        var form = new FormData();
+        form.append("to_number", to_number);
+    
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+            "processData": false,
+            "contentType": false,
+            "data" :form,
+            "mimeType": "multipart/form-data",
+            "url": SERVER + "voip/api_voip/list_sms",
+            "method": "POST",
         }
-        callback(response.messages)
-    }).fail(function (err) {
-        console.log(err)
-        // alert("ERROR")
-    })
+        $.ajax(settings).done(function (response) {
+            response = JSON.parse(response)
+            // XXX Santosh here is what msg look like to populate
+            // SMS chat interface.
+            callback(response)
+        }).fail(function (err) {
+            console.log(err)
+            // alert("ERROR")
+        })
+    }
 }
 
 function format_date(created_at) {
