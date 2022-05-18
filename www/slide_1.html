@@ -10,13 +10,40 @@
             h1 {
                 font-size: 26px !important;
             }
-            #main img{
+/*            #main img{
                 width: 400px !important;
                 margin: 0 auto !important;
                 display: inherit !important;
-            }
+            }*/
             #livedata {
                 height: 120px;
+            }
+            .form-control{
+                height: 40px;
+            }
+            input[type=checkbox], input[type=radio] {
+                height: 25px;
+                width: 25px;
+                margin: 15px 10px 0px 0px;
+            }
+            .btn-padding{
+                padding: 5px 35px;
+            }
+            label {
+                position: absolute;
+                margin-top: 7px;
+                padding-left: 15px;
+            }
+            div#theSlide {
+                border-radius: 10px;
+            }
+            ul {
+                padding-left: 8px;
+            }
+            #main img {
+                width: 100% !important;
+                margin: 0 auto !important;
+                display: inherit !important;
             }
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -41,67 +68,19 @@
     <body>
         <div class="container">
             <br>
-            <!--            <div id="myCarousel" class="carousel" data-ride="carousel" data-interval="false" data-wrap="false">
-                             Wrapper for slides 
-                            <div class="carousel-inner" id="theSlide" style="border:2px;border-style:solid;padding:10px;min-height:300px" role="listbox"></div>
-                            <div class="col-lg-6" style="margin-top:10px">
-                                <button id="nextButton" onclick="nextSlide()">Next</button>
-                                <button id="prevButton" onclick="prevSlide()">Previous</button>
-                            </div>
-                            <div class="col-lg-6" style="margin-top:10px;" id="progress-section">
-                                <p style="color: #777777;">Progress: <span id="progress"> </span> answered</p>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>-->
-            <style>
-                .form-control{
-                    height: 40px;
-                }
-                input[type=checkbox], input[type=radio] {
-                    height: 25px;
-                    width: 25px;
-                    margin: 15px 10px 0px 0px;
-                }
-            </style>
-            <div class="row">
-                <div class="col-sm-12">
-                    <form>
-                        <div class="form-group">
-                            <label for="formGroupExampleInput">What's your full name?</label>
-                            <input type="text" class="form-control" id="full_name" placeholder="What's your full name?">
-                        </div>
-                        <div class="form-group">
-                            <label for="formGroupExampleInput2">Lorem Ipsum Idolor</label>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                <label class="form-check-label" for="inlineRadio1">Lorem Ipsum</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                <label class="form-check-label" for="inlineRadio2">Lorem Ipsum</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
-                                <label class="form-check-label" for="inlineRadio3"> <input type="text" class="form-control" id="full_name" placeholder="Others"></label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="formGroupExampleInput">Your title here</label>
-                            <input type="text" class="form-control" id="full_name" placeholder="Answer Text">
-                        </div>
-                        <button type="button" class="btn btn-primary">Next</button>
-                        <br><br>
-                        <div class="row">
-                            <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 text-center">
-                                <div class="progress">
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <label class="form-check-label" for="inlineRadio2">Completed 1 of 10</label>
-                            </div>
-                        </div>
-                    </form>
+            <div id="myCarousel" class="carousel" data-ride="carousel" data-interval="false" data-wrap="false">
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner" id="theSlide" style="border:2px;border-style:solid;padding:10px;min-height:300px" role="listbox"></div>
+                <div class="col-lg-6" style="margin-top:10px; padding-left:0px">
+                    <button id="nextButton" class="btn btn-primary btn-padding" onclick="nextSlide()">Next</button>
+                    <button id="prevButton" class="btn btn-default btn-padding" onclick="prevSlide()">Previous</button>
+                </div>
+                <br><br>
+                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center" id="progress-section">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <p style="color: #777777;">Progress: <span id="progress"> </span> answered</p>
                 </div>
             </div>
         </div>
