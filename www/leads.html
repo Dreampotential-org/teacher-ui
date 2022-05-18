@@ -409,6 +409,9 @@
                                                        <button type="button" id="next_call" class="btn btn-primary float-right">
                                                             next
                                                        </button>
+                                                       <button type="button" id="add_call" class="btn btn-primary float-right">
+                                                            Add other call
+                                                       </button>
                                                   </div>
                                              </div>
                                         </div>
@@ -915,6 +918,12 @@
                          }                    
                     })
 
+               $("#add_call").click( () => {
+                    $("#notesModal").hide()
+                    $("#selectNumberModel").show();
+
+               })
+
                $("#makeCall").click( () => {
                     index = $("#makeCall").val()
                     source_num = $('#sourceCallNumber option:selected').val()
@@ -938,7 +947,9 @@
                     } else{
 
                          $("#save_notes").val(user_leads[index].pk)
+                         $("#selectNumberModel").toggle();
                          $("#notesModal").modal();
+                         $("#notesModal").show();
                          $("#Zillow_url").empty();
                          $("#Zillow_url").append(`name : ${user_leads[index].fields.name}  <br> Zillow url : <a href="${user_leads[index].fields.url}">${user_leads[index].fields.url}</a> <br><br>`);
                          $('#notes_call').val(user_leads[index].fields.notes);
@@ -964,10 +975,11 @@
                                    "your_number" : your_num,
                                    "id": user_leads[index].pk
                                    
-                         },
-                         headers: { "Authorization": `${localStorage.getItem('user-token')}` }
-                    })
-               }
+                              },
+                              headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+                         })
+                    }
+                    $("#selectNumberModel").show();
                })
                function nextNum(next_index) {
                     $("#selectNumberModel").modal();
