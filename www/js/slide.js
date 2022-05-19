@@ -148,6 +148,9 @@ function checkEmptyResponse(slideIndex, flashCardType) {
     case "title_textarea":
       answer = $("textarea[name= textarea_" + (slideIndex) + "]").val();
       break;
+    case "title_text":
+      answer = $("input[name= text_" + (slideIndex) + "]").val();
+      break;
     case "question_checkboxes":
       answer = $("input[name= choices_" + (slideIndex) + "]:checked").val();
       // let question_checkboxes = [];
