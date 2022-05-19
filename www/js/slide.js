@@ -1609,7 +1609,7 @@ function init() {
         i++;
       });
       $("#theSlide").append(
-        '<div class="item"><div alt="quick_read" style=""><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1></div></div>'
+        '<div class="item"><div alt="quick_read" style="background: #d3d3d361;padding: 20%;text-align: center;box-shadow: 2px 2px 9px 3px #958a8ab5;height: 300px;width: 100%;"><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1></div></div>'
       );
 
       if (session_id) {
