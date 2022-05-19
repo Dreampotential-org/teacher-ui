@@ -207,7 +207,7 @@ function checkEmptyResponse(slideIndex, flashCardType) {
 
 function nextSlide() {
   var lesson_id = getParam("lesson_id");
-  console.log(current_slide);
+  const this_slide = getParam("this_slide");
   if (current_slide < total_slides) {
     var current_flashcard = loaded_flashcards[current_slide];
     document.getElementById("theSlide").style.color = null;
@@ -852,6 +852,61 @@ function init() {
               </div>
             </div>
           `);
+        }
+
+        if (flashcard.lesson_type == 'stripe_Config') {
+          $("#theSlide").append(`
+            <div class="${className}" id="flahscard_${i}" id="stripe_payment">
+                <h3>Pay to stripe</h3>
+                <form id='stripe-payment-form_${i}'>
+                <div class="form-group">
+                    <label for='price'>Price ($)</label>
+                    <input type="text" class="form-control" id="price" name="price" placeholder="eg. 100">
+                </div>
+                <div class="form-group">
+                    <label for='description'>Description (optional)</label>
+                    <input type="text" class="form-control" id="description" name="description" placeholder="eg. Tuition fees">
+                </div>
+                <button type="submit" id='stripe_submit' class="btn btn-primary">Checkout</button>
+                </form>
+            </div>
+          `);
+
+          $(`#stripe-payment-form_${i}`).submit(function (event) {
+            event.preventDefault();
+
+            let price = $(`#price`).val();
+            let description = $(`#description`).val();
+
+            const data = {
+              price,
+              description
+            }
+
+            $.ajax({
+              url: SERVER + "store_stripe/checkout/",
+              type: "POST",
+              data: data,
+              headers: {
+                  Authorization: `${localStorage.getItem("user-token")}`,
+              },
+              success: (res) => {
+                if (res) {
+                  console.log('redirecting');
+                  $('#stripe_submit').attr('disabled', true);
+                  window.open(res.redirect, '_blank');
+                }
+              },
+              error: (err) => {
+                console.log(err)
+                swal({
+                  title: "Error!",
+                  text: "Payment is failed!",
+                  icon: "warning",
+                }); console.log(err);
+              },
+          });
+          })
         }
 
         if (flashcard.lesson_type == "chiro_front") {

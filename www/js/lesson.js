@@ -10,6 +10,7 @@ var verify_phone_count = 0;
 var title_textarea_count = 0;
 var title_input_count = 0;
 var braintree_count = 0;
+var stripe_payment_count = 0;
 var question_checkboxes_count = 0;
 var question_text_count = 0;
 var name_type_count = 0;
@@ -1411,11 +1412,82 @@ function addBrainTree(
   sortablePositionFunction(isNew, posU);
 }
 
+
+function addStripePayment(
+  isNew,
+  posU
+) {
+  // if (!isNew) {
+  //   console.log(
+  //     isNew,
+  //     id,
+  //     stripe_publishable_key,
+  //     stripe_secret_key,
+  //     posU
+  //   );
+    
+  // } else {
+  //   console.log("empty values");
+  //   $("#stripe_payment")
+  //     .find("#stripe_publishable_key")
+  //     .attr("value", '');
+  //   $("#stripe_payment")
+  //     .find("#stripe_secret_key")
+  //     .attr("value", '');
+  //   $("#stripe_payment")
+  //     .find("#sender_full_name")
+  //     .attr("value", '');
+  //   $("#stripe_payment")
+  //     .find("#sender_email")
+  //     .attr("value", '');
+  //   $("#stripe_payment")
+  //     .find("#payment_amount")
+  //     .attr("value", '');
+  // }
+
+  // $("#stripe_payment")
+  //   .find("#stripe_publishable_key")
+  //   .attr("name", "stripe_publishable_key" + stripe_payment_count);
+  // $("#stripe_payment")
+  //   .find("#braintree_public_key")
+  //   .attr("name", "braintree_public_key_" + stripe_payment_count);
+  // $("#stripe_payment")
+  //   .find("#braintree_private_key")
+  //   .attr("name", "braintree_private_key_" + stripe_payment_count);
+  // $("#stripe_payment")
+  //   .find("#braintree_item_name")
+  //   .attr("name", "braintree_item_name_" + stripe_payment_count);
+  // $("#stripe_payment")
+  //   .find("#braintree_item_price")
+  //   .attr("name", "braintree_item_price_" + stripe_payment_count);
+
+  $('#form-stripe-connect').hide();
+
+  $.ajax({
+    url: SERVER + "store_stripe/check_connection/",
+    type: "GET",
+    headers: {
+        Authorization: `${localStorage.getItem("user-token")}`,
+    },
+    success: function (res) {
+      $('#form-stripe-connect').hide()
+    },
+    error: function (err) {
+      $('#form-stripe-connect').show()
+    },
+});
+  
+  $("#sortable").append($("#stripe_payment").html());
+  stripe_payment_count++;
+  sortablePositionFunction(isNew, posU);
+}
+
 function sendUpdates() {
   console.log("send updates---");
   var lesson_name = $("#lesson_name").val();
   var lesson_visiblity = $("#lesson_is_public").prop("checked");
   var meta_attributes = [];
+  var isValid = true;
   data_ = {
     lesson_name: lesson_name,
     lesson_is_public: lesson_visiblity,
@@ -1520,7 +1592,37 @@ function sendUpdates() {
           }
         }
       });
-    } else if (flashcard_type == "user_tour") {
+      
+    } else if (flashcard_type == 'stripe_Config') {
+      console.log("stripe_Config");
+      current_flashcard_elements.forEach((current_flashcard) => {
+        this_element = current_flashcard.firstElementChild;
+        if (this_element) {
+          console.log("this_element=", this_element);
+          if (this_element.type == "text" || this_element.type == 'email') {
+            attr_value = current_flashcard.firstElementChild.value;
+            
+            if (!attr_value)  {
+                isValid = false;
+                swal({
+                  title: "Error Stripe payment",
+                  text: "Please fill all fields",
+                  icon: "error",
+                })
+            }
+            attr_array.push(attr_value);
+          } else {
+            this_element = current_flashcard.lastElementChild;
+            console.log("this_element last=", this_element);
+            if (this_element.type == "text") {
+              attr_value = current_flashcard.lastElementChild.value;
+              attr_array.push(attr_value);
+            }
+          }
+        }
+      });
+    }
+    else if (flashcard_type == "user_tour") {
       real_flashcard_elements = [];
       current_flashcard_elements.forEach((current_flashcard_element) => {
         if (current_flashcard_element.attributes) {
@@ -1838,6 +1940,15 @@ function sendUpdates() {
         };
         flashcards.push(temp);
         break;
+      case "stripe_Config":
+        temp = {
+          lesson_type: "stripe_Config",
+          position: position_me,
+          is_required: document.getElementById("required_stripe_Config").checked
+        }
+        console.log('received')
+        flashcards.push(temp);
+        break;
       case "user_gps":
         temp = {
           lesson_type: "user_gps",
@@ -1955,7 +2066,7 @@ function sendUpdates() {
   data_.meta_attributes = meta_attributes.join(",");
   console.log("data before....");
   console.log(data_);
-
+  if (isValid) {
   if (MODE == "CREATE") {
     $.ajax({
       url: SERVER + "courses_api/lesson/create",
@@ -2008,7 +2119,7 @@ function sendUpdates() {
         });
       },
     });
-  }
+  }}
 }
 
 function toggleCheckedWhenMarkIsRequired(flashCardType, isRequired) {
@@ -2123,6 +2234,14 @@ $(document).ready(function () {
               flashcard.position
             );
           }
+
+          if (flashcard.lesson_type == 'stripe_Config') {
+            addStripePayment(
+              false,
+              flashcard.id,
+            )
+          }
+
           if (flashcard.lesson_type == "jitsi_meet") {
             addJitsiMeet(
               false,
@@ -2543,6 +2662,10 @@ $(document).ready(function () {
 
     if ($("#selectsegment").val() == "brain_tree") {
       addBrainTree(true);
+    }
+
+    if ($("#selectsegment").val() == "stripe_payment") {
+      addStripePayment(true)
     }
 
     if ($("#selectsegment").val() == "verify_phone") {
