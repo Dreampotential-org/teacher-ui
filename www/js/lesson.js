@@ -2170,6 +2170,7 @@ $(document).ready(function () {
           "href",
           "/lesson_responses_v2.html?lesson_id=" + lesson_id
         );
+        $('#payments').attr('href', '/payments.html?lesson_id=' + lesson_id);
 
         $("#lesson_name").val(response.lesson_name);
         $("#lesson_is_public").prop("checked", response.lesson_is_public);

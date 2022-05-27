@@ -883,7 +883,8 @@ function init() {
 
             const data = {
               price,
-              description
+              description,
+              lesson_id
             }
 
             $.ajax({
