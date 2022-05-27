@@ -4,6 +4,7 @@ $(document).ready(function () {
     const urlParams = getUrlParams();
 
     lesson_id = urlParams.get("lesson_id");
+    $('#lesson-name').text(lesson_id);
     fetchPaymentDataForLesson(lesson_id);
 });
 
@@ -19,6 +20,7 @@ const fetchPaymentDataForLesson = (lessonId) => {
         `${SERVER}store_stripe/payments/${lessonId}/`,
         function (data, status) {
             if (status === "success") {
+
                 data?.data?.map((d, index) => {
                     $("#payment-body").append(
                         getTableRow(index+1, d?.user, d?.amount, d?.status)
