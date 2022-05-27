@@ -11,7 +11,7 @@ $(document).ready(() => {
             console.log(res);
             $("#stripe-connect-button").show();
             $("#stripe-connect-button").attr("disabled", true);
-            $("#stripe-connect-button").text("Connected to stripe");
+            $("#stripe-connect-button").text("Stripe Integration is Active and Working");
         },
         error: function (err) {
             $("#stripe-connect-button").show();
