@@ -473,7 +473,7 @@
                                    </div>
                               </div>
                               <div class="col-md-12 col-12 col-lg-12 col12 message-box" id="message-box">
-                               </div>                           
+                              </div>                           
   
                          </div>
                     </div>
@@ -972,7 +972,7 @@
                          $("#notesModal").modal();
                          $("#notesModal").show();
                          $("#Zillow_url").empty();
-                         $("#Zillow_url").append(`name : ${user_leads[index].fields.first_name}  <br> Zillow url : <a href="${user_leads[index].fields.url}">${user_leads[index].fields.url}</a> <br><br>`);
+                         $("#Zillow_url").append(`name : ${user_leads[index].fields.first_name}  ${user_leads[index].fields.last_name}  <br> Zillow url : <a href="${user_leads[index].fields.url}">${user_leads[index].fields.url}</a> <br><br>`);
                          $('#notes_call').val(user_leads[index].fields.notes);
                          $('#edit_first_nameid').val(user_leads[index].fields.first_name);
                          $('#edit_last_nameid').val(user_leads[index].fields.last_name);
