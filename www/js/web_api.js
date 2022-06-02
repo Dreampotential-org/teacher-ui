@@ -310,6 +310,7 @@ function upload_to_twilio(image) {
 }
 
 function get_sms_to_number(to_number, callback) {
+<<<<<<< HEAD
     if (to_number !== undefined) {
         var form = new FormData();
         form.append("to_number", to_number);
@@ -323,6 +324,27 @@ function get_sms_to_number(to_number, callback) {
             "mimeType": "multipart/form-data",
             "url": SERVER + "voip/api_voip/list_sms",
             "method": "POST",
+=======
+    var form = new FormData();
+    form.append("to_number", to_number);
+
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "processData": false,
+        "contentType": false,
+        "mimeType": "multipart/form-data",
+        "url": SERVER + "voip/api_voip/list_sms",
+        "method": "POST",
+        "data": form,
+    }
+    $.ajax(settings).done(function (response) {
+        response = JSON.parse(response)
+        // XXX Santosh here is what msg look like to populate
+        // SMS chat interface.
+        for (var msg of response.messages) {
+            console.log(msg);
+>>>>>>> i think i maybeneed to add this?
         }
         $.ajax(settings).done(function (response) {
             response = JSON.parse(response)
