@@ -116,7 +116,7 @@
      <body>
           <div class="container-fluid p-0">
                <!-- Bootstrap row -->
-               <div class="row" id="body-row">
+               <div class="row body-row" >
                     <div id="left_sidebar">
                     </div>
                     <div class="col p-0 content-div">
@@ -215,7 +215,7 @@
                                         </div>
                                         <div class="form-group">
                                              <label for="ask">Ask</label>
-                                             <input type="text" class="form-control" id="ask" placeholder="Ask" />
+                                             <input type="text" class="form-control" id="ask" placeholder="Ask" />`
                                         </div>
                                         <div class="form-group">
                                              <label for="new_notes">Notes</label>
@@ -524,7 +524,7 @@
                     $("#left_sidebar").load("sidebar.html");
                     $("#page_header").load("header.html");
                });
-               $("#body-row .collapse").collapse("hide");
+               $(".body-row .collapse").collapse("hide");
 
                function left_sidebar() {
                     SidebarCollapse();
@@ -877,14 +877,15 @@
                     $("#smsModel").modal();
                     $("#dest_num_sms").val(user_leads[index].fields.phone)
                     var html = "";
-                    get_sms_to_number(user_leads[index].fields.phone, function (res) {
+                    num= user_leads[index].fields.phone
+                    get_sms_to_number(num, function (res) {
     
                          console.log(user_leads[index].fields.phone)
                          console.log(res)
 
                          //$("#message-box").empty();
 
-                         var filtered_data = res.messages.filter((item) => (item.to == user_leads[index].fields.phone || item.from == user_leads[index].fields.phone)        
+                         var filtered_data = res.messages.filter((item) => (item.to == num || item.from == num)        
                          );
 
                          console.log(filtered_data)
@@ -902,7 +903,7 @@
 
                          for (var msg of filtered_data) {
                          
-                         if (msg.to == phonenum) {
+                         if (msg.to == num) {
                               html += `<div class="message sent col-md-9 col-11">
                                              <p class="col-md-12 col-12">${msg.body}</p>
                                              <span>${msg.date_created}</span>
@@ -1022,7 +1023,7 @@
 
                          //$("#message-box").empty();
                          if (phonenum !== undefined) {
-                              var filtered_data = res.messages && res.messages.filter((item) => (item.to ==  phonenum || item.from == phonenum)        
+                              var filtered_data =res.messages.filter((item) => (item.to ==  phonenum || item.from == phonenum)        
                               );
                          }
 
@@ -1152,10 +1153,11 @@
                });
 
                // For send messages and show chats
+               var des_num_sms1
                $('#send_sms').submit((e) => {
                     e.preventDefault()
                     source_num_sms = $('#MsgNumber').val()
-                    des_num_sms = destNumSmsInput.getNumber()
+                    des_num_sms1 = destNumSmsInput.getNumber()
                     body_msg = $("#message_body").val()
                     $.ajax({
                       url: SERVER + "voip/api_voip/send_sms_",
