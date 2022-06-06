@@ -145,6 +145,26 @@
             html {
                 scroll-behavior: smooth;
             }
+            @media screen and (min-width: 768px) {
+                .lesson_content_area{
+                    padding: 0px 80px 0px 80px;
+                }
+                .make_public_css{
+                    margin-left: -50px;
+                }
+            }
+            @media screen and (max-width: 768px) {
+                .lesson_content_area{
+                    padding: 15px;
+                }
+                .make_public_css{
+                    margin-left: 0px;
+                }
+                .all_lesson_mob{
+                    display: grid;
+                    margin: 10px 0px;
+                }
+            }
         </style>
     </head>
     <body>
@@ -206,7 +226,7 @@
                     </select>
                 </div>
                 <div class="col-sm-3 col-sm-offset-1">
-                    <div class="dropdown">
+                    <div class="dropdown all_lesson_mob">
                         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                             <i class="glyphicon glyphicon-file"></i> All Lessons &nbsp;&nbsp;
                             <span class="caret"></span>
@@ -217,7 +237,7 @@
                     </div>
                 </div>
                 <div class="col-sm-2 col-sm-offset-4 float-sm-right">
-                    <span style="margin-left: -50px;">
+                    <span class="make_public_css">
                         <span>Make Public</span> 
                         <label class="switch" id="is_public_contanier">
                             <input type="checkbox" id="lesson_is_public">
@@ -231,10 +251,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-3">
+                <div class="col-xs-12 col-sm-3">
                     <div id="question_list"></div>
                 </div>
-                <div class="col-sm-9" style="background: #f5f5f5;padding: 0px 80px 0px 80px">
+                <div class="col-xs-12 col-sm-9 lesson_content_area" style="background: #f5f5f5;">
                     <div class="row">
                         <div class="col-xs-12" id="sortable">
 
@@ -247,8 +267,8 @@
                                     <div data-type="user_qr_url"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">QR URL</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">QR URL</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch" >
                                                     <input type="checkbox" id="required_qr_url">
@@ -268,8 +288,8 @@
                                     <div data-type="user_qr_data"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">QR Data</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">QR Data</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_user_qr_data">
@@ -289,8 +309,8 @@
                                     <div data-type="gps_session"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">Gps Session</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">Gps Session</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_gps_session">
@@ -306,8 +326,8 @@
                                     <div data-type="datepicker"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">Date Picker</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">Date Picker</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_datepicker">
@@ -323,8 +343,8 @@
                                     <div data-type="email_verify"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">Email Verify</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">Email Verify</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_email_verify">
@@ -340,8 +360,8 @@
                                     <div data-type="jitsi_meet"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">Jitsi Meet</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">Jitsi Meet</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_jitsi_meet">
@@ -361,8 +381,8 @@
                                     <div data-type="record_webcam"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">Record Webcam</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">Record Webcam</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_record_webcam">
@@ -379,8 +399,8 @@
                                     <div data-type="record_screen"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">Record Screen</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">Record Screen</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_record_screen">
@@ -397,8 +417,8 @@
                                     <div data-type="speed_read"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">Speed Read</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">Speed Read</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_quick_read">
@@ -421,8 +441,8 @@
                                     <div data-type="title_textarea"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">Question Text</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">Question Text</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_title_textarea">
@@ -444,8 +464,8 @@
                                     <div data-type="title_text"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">Title Text</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">Title Text</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_title_text">
@@ -469,8 +489,8 @@
                                     <div data-type="title_input"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">Prompt Text Input</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">Prompt Text Input</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_title_input">
@@ -490,8 +510,8 @@
                                     <div data-type="name_type"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">Name Type</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">Name Type</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch" >
                                                     <input type="checkbox" id="required_name_type">
@@ -512,8 +532,8 @@
                                     <div data-type="user_video_upload"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">User Video Upload</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">User Video Upload</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_user_video_upload">
@@ -542,8 +562,8 @@
                                     <div data-type="user_image_upload"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">User Image Upload</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">User Image Upload</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_user_image_upload">
@@ -571,8 +591,8 @@
                                     <div data-type="user_audio_upload"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">User Audio Upload</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">User Audio Upload</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_user_audio_upload">
@@ -601,8 +621,8 @@
                                     <div data-type="user_gps"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">User GPS</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">User GPS</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_user_gps">
@@ -622,8 +642,8 @@
                                     <div data-type="question_choices"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">Question Choices</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">Question Choices</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_question_choices">
@@ -663,8 +683,8 @@
                                     <div data-type="question_checkboxes"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">Question Checkboxes</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">Question Checkboxes</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_question_checkboxes">
@@ -704,8 +724,8 @@
                                     <div data-type="video_file"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">Video File</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">Video File</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_video_file">
@@ -741,8 +761,8 @@
                                     <div data-type="image_file"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">Image File</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">Image File</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_image_file">
@@ -772,8 +792,8 @@
                                     <div data-type="audio_file"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">Audio File</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">Audio File</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_audio_file">
@@ -809,8 +829,8 @@
                                     <div data-type="user_tour"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">User Tour</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">User Tour</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="user_tour">
@@ -858,8 +878,8 @@
                                     <div data-type="iframe_link"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">Iframe Link</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">Iframe Link</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_iframe_link">
@@ -883,8 +903,8 @@
                                     <div data-type="signature"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">Signature</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">Signature</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_signature">
@@ -908,8 +928,8 @@
                                     <div data-type="verify_phone"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">Verify phone</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">Verify phone</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_verify_phone">
@@ -931,8 +951,8 @@
                                     <div data-type="chiro_front"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">Chiroposture front</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">Chiroposture front</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_chiro_front">
@@ -950,8 +970,8 @@
                                     <div data-type="chiro_side"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">Chiroposture Side</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">Chiroposture Side</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_chiro_side">
@@ -969,8 +989,8 @@
                                     <div data-type="braintree_Config"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
-                                            <h4 class="col-xs-7 col-lg-7">BrainTree Info</h4>
-                                            <div class="col-xs-3 col-lg-3">
+                                            <h4 class="col-xs-12 col-lg-7">BrainTree Info</h4>
+                                            <div class="col-xs-10 col-lg-3">
                                                 <span>Make Required</span> 
                                                 <label class="switch">
                                                     <input type="checkbox" id="required_braintree_Config">
@@ -1090,7 +1110,7 @@
                                 lesson.lesson_name = 'No Title';
                             }
                             $("#select_lesson_new").append(
-                                    "<li style='padding: 5px 10px;border-bottom: 1px solid;' value='" + lesson.id + "'><a href = /lesson.html?lesson_id="+ lesson.id +">" + lesson.lesson_name + "</a><li>"
+                                    "<li style='padding: 5px 10px;border-bottom: 1px solid;' value='" + lesson.id + "'><a href = /lesson.html?lesson_id=" + lesson.id + ">" + lesson.lesson_name + "</a><li>"
                                     );
                         }
                     });
