@@ -147,13 +147,24 @@
             }
             @media screen and (min-width: 768px) {
                 .lesson_content_area{
-                    padding: 0px 80px 0px 80px;
+                    padding: 0px 80px 50px 80px;
                 }
                 .make_public_css{
                     margin-left: -50px;
                 }
+                .static_section {
+                    position: fixed;
+                    width: 100%;
+                    z-index: 999;
+                    background: white;
+                    padding-left: 0px;
+                    padding-right: 40px;
+                }
             }
             @media screen and (max-width: 768px) {
+                .padding_btm{
+                    padding-bottom: 10px;
+                }
                 .lesson_content_area{
                     padding: 15px;
                 }
@@ -169,102 +180,116 @@
     </head>
     <body>
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-3"><span class="page_header">Segment Builder</span></div>
-                <div class="col-sm-9 float-sm-right">
-                    <span style="float: right;margin-top: 20px;display: block;">
-                        <a type="button" class="btn btn-default" id="lesson_responses">Responses</a>
-                        <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                Preview Lesson &nbsp;|&nbsp;
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <li><a id="lesson_slide">Preview Lesson Slide</a></li>
-                                <li><a id="lesson_page">Preview Lesson Page</a></li>
-                            </ul>
-                        </div>
-                        <button type="button" class="btn btn-success" onclick="openAddToClassModal()">Add to Class</button>
-                    </span>
-                </div>
-            </div>
-            <hr style="margin-bottom: 8px;">
-            <div class="row" style="padding-bottom: 10px;">
-                <div class="col-sm-2">
-                    <select class="form-control " id="selectsegment">
-                        <option selected value="select_type">Select Segment Type</option>
-                        <option value="name_type">Name Type</option>
-                        <option value="speed_read">Speed Read</option>
-                        <option value="title_text">Title Text</option>
-                        <option value="title_input">Prompt Text Input</option>
-                        <option value="question_choices">Question Choices</option>
-                        <option value="question_checkboxes">Question Checkboxes</option>
-                        <option value="iframe_link">Iframe Link</option>
-                        <option value="video_file">Video File</option>
-                        <option value="image_file">Image File</option>
-                        <option value="audio_file">Audio File</option>
-                        <option value="title_textarea">Title Textarea</option>
-                        <option value="verify_phone">Verify Phone</option>
-                        <option value="signature">Signature Image</option>
-                        <option value="brain_tree">BrainTree</option>
-                        <option value="user_video_upload">User Video Upload</option>
-                        <option value="user_image_upload">User Image Upload</option>
-                        <option value="user_audio_upload">User Audio Upload</option>
-                        <option value="user_gps">User Gps</option>
-                        <option value="user_tour">User Tour</option>
-                        <option value="jitsi_meet">Jitsi Meet</option>
-                        <option value="record_webcam">Record WebCam</option>
-                        <option value="record_screen">Record Screen</option>
-                        <option value="chiro_front">Chiroposture Front</option>
-                        <option value="chiro_side">Chiroposture Side</option>
-                        <option value="user_qr_url">QR URL</option>
-                        <option value="user_qr_data">QR Data</option>
-                        <option value="gps_session">Gps Session</option>
-                        <option value="email_verify">Email Verify</option>
-                        <option value="datepicker">Date Picker</option>
-                        <option value="stripe_payment">Stripe payment</option>
-                    </select>
-                </div>
-                <div class="col-sm-3 col-sm-offset-1">
-                    <div class="dropdown all_lesson_mob">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            <i class="glyphicon glyphicon-file"></i> All Lessons &nbsp;&nbsp;
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" id="select_lesson_new">
-
-                        </ul>
+            <div class="static_section">
+                <div class="row">
+                    <div class="col-sm-3"><span class="page_header">Segment Builder</span></div>
+                    <div class="col-sm-9 float-sm-right">
+                        <span style="margin-top: 20px;display: block;">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-4 col-sm-offset-2 padding_btm">
+                                    <a type="button" class="btn btn-default" id="lesson_responses">Responses</a>
+                                    <div class="dropdown">
+                                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                            Preview Lesson &nbsp;|&nbsp;
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                            <li><a id="lesson_slide">Preview Lesson Slide</a></li>
+                                            <li><a id="lesson_page">Preview Lesson Page</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-xs-8 col-sm-4">
+                                    <input type="text" class="form-control" name="lesson_name" id="lesson_name" placeholder="Lesson Name">
+                                </div> 
+                                <div class="col-xs-4 col-sm-2">
+                                    <button type="button" class="btn btn-success" onclick="openAddToClassModal()">Add to Class</button>
+                                </div>
+                            </div>
+                        </span>
                     </div>
                 </div>
-                <div class="col-sm-2 col-sm-offset-4 float-sm-right">
-                    <span class="make_public_css">
-                        <span>Make Public</span> 
-                        <label class="switch" id="is_public_contanier">
-                            <input type="checkbox" id="lesson_is_public">
-                            <span class="slider round"></span>
-                        </label>
-                    </span>
-                    &nbsp;&nbsp;
-                    <a href="#" id="settingshtml" style="float: right;margin-top: 3px;font-size: 25px;color: black;">
-                        <i class="fa fa-gear"></i>
-                    </a>
+                <hr style="margin-bottom: 8px;">
+                <div class="row" style="padding-bottom: 10px;">
+                    <div class="col-sm-2 padding_btm">
+                        <select class="form-control " id="selectsegment">
+                            <option selected value="select_type">Select Segment Type</option>
+                            <option value="name_type">Name Type</option>
+                            <option value="speed_read">Speed Read</option>
+                            <option value="title_text">Title Text</option>
+                            <option value="title_input">Prompt Text Input</option>
+                            <option value="question_choices">Question Choices</option>
+                            <option value="question_checkboxes">Question Checkboxes</option>
+                            <option value="iframe_link">Iframe Link</option>
+                            <option value="video_file">Video File</option>
+                            <option value="image_file">Image File</option>
+                            <option value="audio_file">Audio File</option>
+                            <option value="title_textarea">Title Textarea</option>
+                            <option value="verify_phone">Verify Phone</option>
+                            <option value="signature">Signature Image</option>
+                            <option value="brain_tree">BrainTree</option>
+                            <option value="user_video_upload">User Video Upload</option>
+                            <option value="user_image_upload">User Image Upload</option>
+                            <option value="user_audio_upload">User Audio Upload</option>
+                            <option value="user_gps">User Gps</option>
+                            <option value="user_tour">User Tour</option>
+                            <option value="jitsi_meet">Jitsi Meet</option>
+                            <option value="record_webcam">Record WebCam</option>
+                            <option value="record_screen">Record Screen</option>
+                            <option value="chiro_front">Chiroposture Front</option>
+                            <option value="chiro_side">Chiroposture Side</option>
+                            <option value="user_qr_url">QR URL</option>
+                            <option value="user_qr_data">QR Data</option>
+                            <option value="gps_session">Gps Session</option>
+                            <option value="email_verify">Email Verify</option>
+                            <option value="datepicker">Date Picker</option>
+                            <option value="stripe_payment">Stripe payment</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <button class="btn form-control btn-success" id="add">Add</button>
+                    </div>
+                    <div class="col-sm-3 col-sm-offset-1">
+                        <div class="dropdown all_lesson_mob">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <i class="glyphicon glyphicon-file"></i> All Lessons &nbsp;&nbsp;
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" id="select_lesson_new">
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-sm-offset-2 float-sm-right">
+                        <span class="make_public_css">
+                            <span>Make Public</span> 
+                            <label class="switch" id="is_public_contanier">
+                                <input type="checkbox" id="lesson_is_public">
+                                <span class="slider round"></span>
+                            </label>
+                        </span>
+                        &nbsp;&nbsp;
+                        <a href="#" id="settingshtml" style="float: right;margin-top: 3px;font-size: 25px;color: black;">
+                            <i class="fa fa-gear"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" style="margin-top: 12%;">
                 <div class="col-xs-12 col-sm-3">
                     <div id="question_list"></div>
                 </div>
                 <div class="col-xs-12 col-sm-9 lesson_content_area" style="background: #f5f5f5;">
                     <div class="row">
                         <div class="col-xs-12" id="sortable">
-
+                            <button type="submit" class="form-control btn btn-success" style="margin-top: 50px;">Save</button>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
                             <form id="lesson_form">
-                                <div class="speed_read" id="user_qr_url" style="display: block; padding-top: 15px">
-                                    <div data-type="user_qr_url"
+                                <div class="speed_read" id="user_qr_url" style="display: none; padding-top: 15px">
+                                    <div id="user_qr_url"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">QR URL</h4>
@@ -284,8 +309,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="speed_read" id="user_qr_data" style="display: block; padding-top: 15px">
-                                    <div data-type="user_qr_data"
+                                <div class="speed_read" id="user_qr_data" style="display: none; padding-top: 15px">
+                                    <div id="user_qr_data"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">QR Data</h4>
@@ -305,8 +330,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="speed_read" id="gps_session" style="display: block; padding-top: 15px">
-                                    <div data-type="gps_session"
+                                <div class="speed_read" id="gps_session" style="display: none; padding-top: 15px">
+                                    <div id="gps_session"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">Gps Session</h4>
@@ -322,8 +347,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="speed_read" id="datepicker" style="display: block; padding-top: 15px">
-                                    <div data-type="datepicker"
+                                <div class="speed_read" id="datepicker" style="display: none; padding-top: 15px">
+                                    <div id="datepicker"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">Date Picker</h4>
@@ -339,8 +364,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="speed_read" id="email_verify" style="display: block; padding-top: 15px">
-                                    <div data-type="email_verify"
+                                <div class="speed_read" id="email_verify" style="display: none; padding-top: 15px">
+                                    <div id="email_verify"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">Email Verify</h4>
@@ -356,8 +381,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="speed_read" id="jitsi_meet" style="display: block; padding-top: 15px">
-                                    <div data-type="jitsi_meet"
+                                <div class="speed_read" id="jitsi_meet" style="display: none; padding-top: 15px">
+                                    <div id="jitsi_meet"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">Jitsi Meet</h4>
@@ -377,8 +402,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="speed_read" id="record_webcam" style="display: block; padding-top: 15px">
-                                    <div data-type="record_webcam"
+                                <div class="speed_read" id="record_webcam" style="display: none; padding-top: 15px">
+                                    <div id="record_webcam"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">Record Webcam</h4>
@@ -395,8 +420,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="speed_read" id="record_screen" style="display: block; padding-top: 15px">
-                                    <div data-type="record_screen"
+                                <div class="speed_read" id="record_screen" style="display: none; padding-top: 15px">
+                                    <div id="record_screen"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">Record Screen</h4>
@@ -413,8 +438,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="speed_read" id="speed_read" style="display: block; padding-top: 15px">
-                                    <div data-type="speed_read"
+                                <div class="speed_read" id="speed_read" style="display: none; padding-top: 15px">
+                                    <div id="speed_read"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">Speed Read</h4>
@@ -437,8 +462,8 @@
                                     </div>
                                 </div>
 
-                                <div class="speed_read" id="title_textarea" style="display: block; padding-top: 15px">
-                                    <div data-type="title_textarea"
+                                <div class="speed_read" id="title_textarea" style="display: none; padding-top: 15px">
+                                    <div id="title_textarea"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">Question Text</h4>
@@ -460,8 +485,8 @@
                                     </div>
                                 </div>
 
-                                <div class="speed_read" id="title_text" style="display: block; padding-top: 15px">
-                                    <div data-type="title_text"
+                                <div class="speed_read" id="title_text" style="display: none; padding-top: 15px">
+                                    <div id="title_text"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">Title Text</h4>
@@ -485,8 +510,8 @@
                                     </div>
                                 </div>
 
-                                <div class="speed_read" id="title_input" style="display: block; padding-top: 15px">
-                                    <div data-type="title_input"
+                                <div class="speed_read" id="title_input" style="display: none; padding-top: 15px">
+                                    <div id="title_input"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">Prompt Text Input</h4>
@@ -506,8 +531,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="speed_read" id="name_type" style="display: block; padding-top: 15px">
-                                    <div data-type="name_type"
+                                <div class="speed_read" id="name_type" style="display: none; padding-top: 15px">
+                                    <div id="name_type"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">Name Type</h4>
@@ -528,8 +553,8 @@
                                 </div>
 
 
-                                <div class="speed_read" id="user_video_upload" style="display: block; padding-top: 15px">
-                                    <div data-type="user_video_upload"
+                                <div class="speed_read" id="user_video_upload" style="display: none; padding-top: 15px">
+                                    <div id="user_video_upload"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">User Video Upload</h4>
@@ -558,8 +583,8 @@
                                     </div>
                                 </div>
 
-                                <div class="speed_read" id="user_image_upload" style="display: block; padding-top: 15px">
-                                    <div data-type="user_image_upload"
+                                <div class="speed_read" id="user_image_upload" style="display: none; padding-top: 15px">
+                                    <div id="user_image_upload"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">User Image Upload</h4>
@@ -587,8 +612,8 @@
                                             </div> -->
                                     </div>
                                 </div>
-                                <div class="speed_read" id="user_audio_upload" style="display: block; padding-top: 15px">
-                                    <div data-type="user_audio_upload"
+                                <div class="speed_read" id="user_audio_upload" style="display: none; padding-top: 15px">
+                                    <div id="user_audio_upload"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">User Audio Upload</h4>
@@ -617,8 +642,8 @@
                                     </div>
                                 </div>
 
-                                <div class="speed_read" id="user_gps" style="display: block; padding-top: 15px">
-                                    <div data-type="user_gps"
+                                <div class="speed_read" id="user_gps" style="display: none; padding-top: 15px">
+                                    <div id="user_gps"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">User GPS</h4>
@@ -638,8 +663,8 @@
                                     </div>
                                 </div>
 
-                                <div class="speed_read" id="question_choices" style="display: block; padding-top: 15px">
-                                    <div data-type="question_choices"
+                                <div class="speed_read" id="question_choices" style="display: none; padding-top: 15px">
+                                    <div id="question_choices"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">Question Choices</h4>
@@ -679,8 +704,8 @@
 
                                 </div>
 
-                                <div class="speed_read" id="question_checkboxes" style="display: block; padding-top: 15px">
-                                    <div data-type="question_checkboxes"
+                                <div class="speed_read" id="question_checkboxes" style="display: none; padding-top: 15px">
+                                    <div id="question_checkboxes"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">Question Checkboxes</h4>
@@ -720,8 +745,8 @@
 
                                 </div>
 
-                                <div class="speed_read" id="video_file" style="display: block; padding-top: 15px">
-                                    <div data-type="video_file"
+                                <div class="speed_read" id="video_file" style="display: none; padding-top: 15px">
+                                    <div id="video_file"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">Video File</h4>
@@ -757,8 +782,8 @@
                                     </div>
                                 </div>
 
-                                <div class="speed_read" id="image_file" style="display: block; padding-top: 15px">
-                                    <div data-type="image_file"
+                                <div class="speed_read" id="image_file" style="display: none; padding-top: 15px">
+                                    <div id="image_file"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">Image File</h4>
@@ -788,8 +813,8 @@
                                 </div>
 
 
-                                <div class="speed_read" id="audio_file" style="display: block; padding-top: 15px">
-                                    <div data-type="audio_file"
+                                <div class="speed_read" id="audio_file" style="display: none; padding-top: 15px">
+                                    <div id="audio_file"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">Audio File</h4>
@@ -825,8 +850,8 @@
                                     </div>
                                 </div>
 
-                                <div class="speed_read" id="user_tour" style="display: block; padding-top: 15px">
-                                    <div data-type="user_tour"
+                                <div class="speed_read" id="user_tour" style="display: none; padding-top: 15px">
+                                    <div id="user_tour"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">User Tour</h4>
@@ -874,8 +899,8 @@
                                 </div>
                                 <!-- </div> -->
 
-                                <div class="speed_read" id="iframe_link" style="display: block; padding-top: 15px">
-                                    <div data-type="iframe_link"
+                                <div class="speed_read" id="iframe_link" style="display: none; padding-top: 15px">
+                                    <div id="iframe_link"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">Iframe Link</h4>
@@ -899,8 +924,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="speed_read" id="signature" style="display: block; padding-top: 15px">
-                                    <div data-type="signature"
+                                <div class="speed_read" id="signature" style="display: none; padding-top: 15px">
+                                    <div id="signature"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">Signature</h4>
@@ -924,8 +949,8 @@
                                     </div>
                                 </div>
 
-                                <div class="speed_read" id="verify_phone" style="display: block; padding-top: 15px">
-                                    <div data-type="verify_phone"
+                                <div class="speed_read" id="verify_phone" style="display: none; padding-top: 15px">
+                                    <div id="verify_phone"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">Verify phone</h4>
@@ -947,8 +972,8 @@
                                     </div>
                                 </div>
 
-                                <div class="speed_read" id="chiro_front" style="display: block; padding-top: 15px">
-                                    <div data-type="chiro_front"
+                                <div class="speed_read" id="chiro_front" style="display: none; padding-top: 15px">
+                                    <div id="chiro_front"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">Chiroposture front</h4>
@@ -966,8 +991,8 @@
                                     </div>
                                 </div>
 
-                                <div class="speed_read" id="chiro_side" style="display: block; padding-top: 15px">
-                                    <div data-type="chiro_side"
+                                <div class="speed_read" id="chiro_side" style="display: none; padding-top: 15px">
+                                    <div id="chiro_side"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">Chiroposture Side</h4>
@@ -985,8 +1010,8 @@
                                     </div>
                                 </div>
 
-                                <div class="speed_read" id="brain_tree" style="display: block; padding-top: 15px">
-                                    <div data-type="braintree_Config"
+                                <div class="speed_read" id="brain_tree" style="display: none; padding-top: 15px">
+                                    <div id="braintree_Config"
                                          style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
                                         <div class="row">
                                             <h4 class="col-xs-12 col-lg-7">BrainTree Info</h4>
@@ -1024,9 +1049,26 @@
                                     </div>
                                 </div>
 
-                                <br>
-                                <button type="submit" class="form-control btn btn-success">Save</button>
-                                <br><br> <br><br>
+                                <div class="speed_read" id="stripe_payment" style="display: none; padding-top: 15px">
+                                    <div id="stripe_Config"
+                                         style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style:solid;background: white;">
+                                        <div class="row">
+                                            <h4 class="col-xs-12 col-lg-7">Stripe Payment Block</h4>
+                                            <div class="col-xs-10 col-lg-3">
+                                                <span>Make Required</span> 
+                                                <label class="switch">
+                                                    <input type="checkbox" id="required_stripe_Config">
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                            <a class="remove_flashcard col-xs-2 col-lg-2"
+                                               style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                x </a>
+
+                                        </div>
+                                        <a href="userProfile.html" class="btn btn-primary" id="form-stripe-connect">Connect to stripe</a>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
