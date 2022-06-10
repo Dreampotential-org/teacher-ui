@@ -1415,39 +1415,30 @@ function addBrainTree(
 
 function addStripePayment(
   isNew,
+  id,
+  price,
   posU
 ) {
-  // if (!isNew) {
-  //   console.log(
-  //     isNew,
-  //     id,
-  //     stripe_publishable_key,
-  //     stripe_secret_key,
-  //     posU
-  //   );
-    
-  // } else {
-  //   console.log("empty values");
-  //   $("#stripe_payment")
-  //     .find("#stripe_publishable_key")
-  //     .attr("value", '');
-  //   $("#stripe_payment")
-  //     .find("#stripe_secret_key")
-  //     .attr("value", '');
-  //   $("#stripe_payment")
-  //     .find("#sender_full_name")
-  //     .attr("value", '');
-  //   $("#stripe_payment")
-  //     .find("#sender_email")
-  //     .attr("value", '');
-  //   $("#stripe_payment")
-  //     .find("#payment_amount")
-  //     .attr("value", '');
-  // }
+  if (!isNew) {
+    console.log(
+      isNew,
+      id,
+      price,
+      posU
+    );
 
-  // $("#stripe_payment")
-  //   .find("#stripe_publishable_key")
-  //   .attr("name", "stripe_publishable_key" + stripe_payment_count);
+    $("#stripe_payment").find("#stripe_price").attr("value", price);
+    
+  } else {
+    console.log("empty values");
+    $("#stripe_payment")
+      .find("#stripe_price")
+      .attr("value", '');
+  }
+
+  $("#stripe_payment")
+    .find("#stripe_price")
+    .attr("name", "stripe_price_" + stripe_payment_count);
   // $("#stripe_payment")
   //   .find("#braintree_public_key")
   //   .attr("name", "braintree_public_key_" + stripe_payment_count);
@@ -1461,6 +1452,8 @@ function addStripePayment(
   //   .find("#braintree_item_price")
   //   .attr("name", "braintree_item_price_" + stripe_payment_count);
 
+
+  // This is a connect to stripe button visibility logic
   $('#form-stripe-connect').hide();
 
   $.ajax({
@@ -1941,9 +1934,11 @@ function sendUpdates() {
         flashcards.push(temp);
         break;
       case "stripe_Config":
+        console.log('stripe', attr_array[0])
         temp = {
           lesson_type: "stripe_Config",
           position: position_me,
+          stripe_product_price: attr_array[0],
           is_required: document.getElementById("required_stripe_Config").checked
         }
         console.log('received')
@@ -2240,6 +2235,7 @@ $(document).ready(function () {
             addStripePayment(
               false,
               flashcard.id,
+              flashcard?.stripe_item?.price
             )
           }
 

@@ -862,14 +862,10 @@ function init() {
             <div class="${className}" id="flahscard_${i}" id="stripe_payment">
                 <h3>Pay to stripe</h3>
                 <form id='stripe-payment-form_${i}'>
-                <div class="form-group">
-                    <label for='price'>Price ($)</label>
-                    <input type="text" class="form-control" id="price" name="price" placeholder="eg. 100">
+                <div style='margin-top: 2rem;'>
+                  <h5>Amount: $${flashcard.stripe_item?.price}</h5>
                 </div>
-                <div class="form-group">
-                    <label for='description'>Description (optional)</label>
-                    <input type="text" class="form-control" id="description" name="description" placeholder="eg. Tuition fees">
-                </div>
+                
                 <button type="submit" id='stripe_submit' class="btn btn-primary">Checkout</button>
                 </form>
             </div>
@@ -878,13 +874,9 @@ function init() {
           $(`#stripe-payment-form_${i}`).submit(function (event) {
             event.preventDefault();
 
-            let price = $(`#price`).val();
-            let description = $(`#description`).val();
-
             const data = {
-              price,
-              description,
-              lesson_id
+              stripe_price_id: flashcard.stripe_item?.stripe_price_id,
+              lesson_id,
             }
 
             $.ajax({
