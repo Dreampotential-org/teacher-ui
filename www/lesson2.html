@@ -160,6 +160,15 @@
                     padding-left: 0px;
                     padding-right: 40px;
                 }
+                div#question_list{
+                    margin: 5px;
+                    padding: 5px;
+                    max-height: 450px;
+                    overflow: auto;
+                    text-align: justify;
+                    position: fixed;
+                    min-width: 23%;
+                }
             }
             @media screen and (max-width: 768px) {
                 .padding_btm{
@@ -174,6 +183,13 @@
                 .all_lesson_mob{
                     display: grid;
                     margin: 10px 0px;
+                }
+                div#question_list{
+                    margin: 5px;
+                    padding: 5px;
+                    max-height: 200px;
+                    overflow: auto;
+                    text-align: justify;
                 }
             }
         </style>
@@ -249,7 +265,7 @@
                     <div class="col-sm-2">
                         <button class="btn form-control btn-success" id="add">Add</button>
                     </div>
-                    <div class="col-sm-3 col-sm-offset-1">
+                    <div class="col-sm-2 col-sm-offset-1">
                         <div class="dropdown all_lesson_mob">
                             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 <i class="glyphicon glyphicon-file"></i> All Lessons &nbsp;&nbsp;
@@ -260,7 +276,10 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-sm-2 col-sm-offset-2 float-sm-right">
+                    <div class="col-sm-3">
+                        <button type="submit"  form="lesson_form" class="form-control btn btn-success" style="margin-top: 0px;width: 70%;">Save</button>
+                    </div>
+                    <div class="col-sm-2 float-sm-right">
                         <span class="make_public_css">
                             <span>Make Public</span> 
                             <label class="switch" id="is_public_contanier">
@@ -282,7 +301,6 @@
                 <div class="col-xs-12 col-sm-9 lesson_content_area" style="background: #f5f5f5;">
                     <div class="row">
                         <div class="col-xs-12" id="sortable">
-                            <button type="submit" class="form-control btn btn-success" style="margin-top: 50px;">Save</button>
                         </div>
                     </div>
                     <div class="row">
