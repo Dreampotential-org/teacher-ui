@@ -860,7 +860,7 @@ function init() {
                 <h3>Pay to stripe</h3>
                 <form id='stripe-payment-form_${i}'>
                 <div style='margin-top: 2rem;'>
-                  <h5>Amount: $${flashcard.stripe_item?.price}</h5>
+                  <h5>Amount: $${flashcard.stripe_item?.price} ${flashcard.stripe_item?.stripe_recurring_price && " <small>(Recurring)</small>"}</h5>
                 </div>
                 
                 <button type="submit" id='stripe_submit' class="btn btn-primary">Checkout</button>

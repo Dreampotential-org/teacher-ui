@@ -1417,6 +1417,7 @@ function addStripePayment(
   isNew,
   id,
   price,
+  checked,
   posU
 ) {
   if (!isNew) {
@@ -1424,20 +1425,31 @@ function addStripePayment(
       isNew,
       id,
       price,
+      checked,
       posU
     );
 
     $("#stripe_payment").find("#stripe_price").attr("value", price);
-    
+    $('#stripe_payment')
+      .find('#stripe_recurring_price')
+      .attr('checked', checked);
+
   } else {
     console.log("empty values");
     $("#stripe_payment")
       .find("#stripe_price")
       .attr("value", '');
+      $('#stripe_payment')
+      .find('#stripe_recurring_price')
+      .attr('checked', false);
   }
 
   $("#stripe_payment")
     .find("#stripe_price")
+    .attr("name", "stripe_price_" + stripe_payment_count);
+  
+  $('#stripe_payment')
+    .find('#stripe_recurring_price')
     .attr("name", "stripe_price_" + stripe_payment_count);
   // $("#stripe_payment")
   //   .find("#braintree_public_key")
@@ -1589,10 +1601,11 @@ function sendUpdates() {
     } else if (flashcard_type == 'stripe_Config') {
       console.log("stripe_Config");
       current_flashcard_elements.forEach((current_flashcard) => {
+        console.log({current_flashcard})
         this_element = current_flashcard.firstElementChild;
         if (this_element) {
           console.log("this_element=", this_element);
-          if (this_element.type == "text" || this_element.type == 'email') {
+          if (this_element.type == "text") {
             attr_value = current_flashcard.firstElementChild.value;
             
             if (!attr_value)  {
@@ -1604,7 +1617,8 @@ function sendUpdates() {
                 })
             }
             attr_array.push(attr_value);
-          } else {
+          }
+          else {
             this_element = current_flashcard.lastElementChild;
             console.log("this_element last=", this_element);
             if (this_element.type == "text") {
@@ -1934,11 +1948,11 @@ function sendUpdates() {
         flashcards.push(temp);
         break;
       case "stripe_Config":
-        console.log('stripe', attr_array[0])
         temp = {
           lesson_type: "stripe_Config",
           position: position_me,
           stripe_product_price: attr_array[0],
+          stripe_recurring_price: document.getElementById('stripe_recurring_price').checked,
           is_required: document.getElementById("required_stripe_Config").checked
         }
         console.log('received')
@@ -2235,7 +2249,8 @@ $(document).ready(function () {
             addStripePayment(
               false,
               flashcard.id,
-              flashcard?.stripe_item?.price
+              flashcard?.stripe_item?.price,
+              flashcard?.stripe_item?.stripe_recurring_price,
             )
           }
 
