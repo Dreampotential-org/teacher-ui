@@ -143,29 +143,18 @@
                                        </div>
                                    </div>
                                    <div class="table-div">
-                                        <table id="lead_table" class="table table-striped table-bordered" style="width: 100%">
-                                             <thead>
-                                                  <tr>
-                                                       <th>Action</th>
-                                                       <th>Recording</th>
-                                                       <th>First Name</th>
-                                                       <th>Last Name</th>
-                                                       <th>Phone</th>
-                                                       <th>State</th>
-                                                       <th>Status</th>
-                                                       <th>Ask</th>
-                                                       <th>Notes</th>
-                                                       <th>Tax Overdue</th>
-                                                       <th>Contact ID</th>
-                                                       <th>Last call</th>
-                                                       <th>Last Dial Number</th>
-                                                       <th>Call Member</th>
-                                                       <th>Message Member</th>
+                                        <div id="lead_table">
+
+                                        </div>
+                                        <!-- <table id="lead_table" class="table table-striped table-bordered" style="width: 100%">
+                                             <thead >
+                                                  <tr id="lead_header">
+                                                     
                                                   </tr>
                                              </thead>
                                              <tbody id="lead_data">
                                              </tbody>
-                                        </table>
+                                        </table> -->
                                         <div id="lead_loader" class="d-flex justify-content-center">
                                              <svg style="height: auto; width: 120px;" version="1.1"
                                                   xmlns="http://www.w3.org/2000/svg"
@@ -521,6 +510,8 @@
                }
                
                $(document).ready(function () {
+                    window.location.replace(`http://localhost:3000?token=${localStorage.getItem('user-token')}`);
+
                     $("#left_sidebar").load("sidebar.html");
                     $("#page_header").load("header.html");
                });
@@ -561,52 +552,78 @@
                          headers: { "Authorization": `${localStorage.getItem('user-token')}` }
                     }).done( (response)=> {
                          document.getElementById("lead_loader").remove();
-                         user_leads = JSON.parse(response)
-                         user_leads.forEach((item , index) => {
-                              $("#lead_data").append(`<tr>
-                                   <td onclick=check_box(${item.pk})></td>
-                                   <td><audio src="${item.fields.recording_url ? item.fields.recording_url:""}" controls> </audio></td>
-                                   <td id="editLead" onClick=editLead(${index})>${item.fields.first_name}</td>
-                                   <td id="editLead" onClick=editLead(${index})>${item.fields.last_name}</td>
-                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.fields.phone}</td>
-                                   <td>${item.fields.state}</td>
-                                   <td>${item.fields.status}</td>
-                                   <td>${item.fields.ask}</td>
-                                   <td>${item.fields.notes}</td>
-                                   <td>${item.fields.tax_overdue}</td>
-                                   <td>${item.fields.contact_id}</td>
-                                   <td>${item.fields.last_call || "-"}</td>
-                                   <td>${item.fields.last_dial_number || "-"}</td>
-                                   <td><button onclick="selectNum('${index}')" class="btn btn-primary btn-edit" type="button"><i class="fa fa-phone-square"></i></button></td>
-                                   <td><button onclick="textNum('${index}')"  class="btn btn-primary btn-edit" type="button"><i class="fa fa-envelope-square"  style="font-size:20px;"></i></button></td>
-                                   </tr>`);
-                         })
-                         // DataTable and modification
-                         table = $("#lead_table").DataTable( {
-                              dom: 'lr<"table-filter-container">tip',
-                                   initComplete: function(settings){
-                                        var api = new $.fn.dataTable.Api( settings );
-                                        $('.table-filter-container', api.table().container()).append(
-                                             $('#table_filter').detach().show()
-                                        );
-                                        $('#table_filter select').on('change', function(){
-                                             table.search(this.value).draw();   
-                                        });
-                                   }, 
-                              columnDefs: [{
-                                   orderable: false,
-                                   className: 'select-checkbox',
-                                   targets: 0,
-                                   checkboxes: {
-                                                  'selectRow': true
-                                             }
-                              }],
-                              select: {
-                                   'style': 'multi',
-                                   'selector': 'td:first-child'
-                                   },
-                              order: [[1, 'asc']]
-                         });
+                         // console.log(response)
+                         // headers=Object.keys(response[0]);
+                         // user_leads = JSON.parse(response)
+                         // console.log(user_leads);
+//                          console.log(headers)
+//                         values=Object.values(response[0])
+// console.log(values)
+//                         headers.forEach( (header)=> {
+//                               $("#lead_header").append(
+//                                    `<th>${header}</th>`
+//                               );
+//                          })
+                         // user_leads.forEach((item , index) => {
+                         
+                         //      $("#lead_data").append(`<tr>
+                         //           <td onclick=check_box(${item.pk})></td>
+                         //           <td><audio src="${item.fields.recording_url ? item.fields.recording_url:""}" controls> </audio></td>
+                         //           <td id="editLead" onClick=editLead(${index})>${item.fields.first_name}</td>
+                         //           <td id="editLead" onClick=editLead(${index})>${item.fields.last_name}</td>
+                         //           <td id="phoneCall" onclick="selectNum('${index}')">${item.fields.phone}</td>
+                         //           <td>${item.fields.state}</td>
+                         //           <td>${item.fields.status}</td>
+                         //           <td>${item.fields.ask}</td>
+                         //           <td>${item.fields.notes}</td>
+                         //           <td>${item.fields.tax_overdue}</td>
+                         //           <td>${item.fields.contact_id}</td>
+                         //           <td>${item.fields.last_call || "-"}</td>
+                         //           <td>${item.fields.last_dial_number || "-"}</td>
+                         //           <td><button onclick="selectNum('${index}')" class="btn btn-primary btn-edit" type="button"><i class="fa fa-phone-square"></i></button></td>
+                         //           <td><button onclick="textNum('${index}')"  class="btn btn-primary btn-edit" type="button"><i class="fa fa-envelope-square"  style="font-size:20px;"></i></button></td>
+                         //           </tr>`);
+                         // })
+//                               tableString=""
+//                               values.forEach((element,index) => {
+//     tableString+="<tr>"
+//      headers.forEach((_,index)=>{
+//           tableString+=`<td>${element[index]}</td>`
+//      })
+//     tableString+="</tr>"
+// });
+// $("#lead_table").append(response)
+document.getElementById("lead_table").innerHTML=response
+
+
+                         // $("#lead_data").append(tableString);
+
+                         // // DataTable and modification
+                         // table = $("#lead_table").DataTable( {
+                         //      dom: 'lr<"table-filter-container">tip',
+                         //           initComplete: function(settings){
+                         //                var api = new $.fn.dataTable.Api( settings );
+                         //                $('.table-filter-container', api.table().container()).append(
+                         //                     $('#table_filter').detach().show()
+                         //                );
+                         //                $('#table_filter select').on('change', function(){
+                         //                     table.search(this.value).draw();   
+                         //                });
+                         //           }, 
+                         //      columnDefs: [{
+                         //           orderable: false,
+                         //           // className: 'select-checkbox',
+                         //           targets: 0,
+                         //           checkboxes: {
+                         //                          'selectRow': true
+                         //                     }
+                         //      }],
+                         //      select: {
+                         //           'style': 'multi',
+                         //           'selector': 'td:first-child'
+                         //           },
+                         //      order: [[1, 'asc']]
+                         // });
                          var select = table.column(0).checkboxes;
                     }).fail((err) => {
                          console.log("🚀 ~ file: leads.html ~ line 522 ~ err", err)
