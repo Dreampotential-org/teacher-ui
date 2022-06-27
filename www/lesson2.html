@@ -141,6 +141,7 @@
                 border: 1px solid lightgray;
                 border-radius: 5px;
                 margin-bottom: 10px;
+                display: block;
             }
             html {
                 scroll-behavior: smooth;
@@ -1189,7 +1190,7 @@
                                 const qustion_nbr = flashcard.question;
                                 const lssn_type = flashcard.lesson_type;
                                 let lssn_name = lssn_type.replace("_", " ");
-                                $('#question_list').append("<div class='qustion_number'> <span>" + i + "</span> <a href=#" + lssn_type + "><span style='text-transform: capitalize;margin-left: 10px;'>" + lssn_name + "</span></a></div>");
+                                $('#question_list').append("<a href=#" + lssn_type + " class='qustion_number'> <span>" + i + "</span> <span style='text-transform: capitalize;margin-left: 10px;'>" + lssn_name + "</span></a>");
                             });
 
                         }
