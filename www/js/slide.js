@@ -228,21 +228,21 @@ function nextSlide() {
     completed = true;
     $(document).ready(function () {
       $.ajax({
-        url: SERVER + "courses_api/lesson/student/get/mail/" + lesson_id,
+        url: SERVER + "lesson_notifications/lesson/notify/" + lesson_id,
         async: true,
         crossDomain: true,
         crossOrigin: true,
-        type: "GET",
-        headers: { Authorization: `${localStorage.getItem("user-token")}` },
+        type: "POST",
+        // headers: { Authorization: `Token ${localStorage.getItem("user-token")}` },
       })
         .done((response) => {
           console.log(
-            "🚀 ~ file: settings.html ~ line 202 ~ response",
+            "🚀 ~ file: slide.html ~ line 240 ~ response",
             response
           );
         })
         .fail((err) => {
-          console.log("🚀 ~ file: settings.html ~ line 129 ~ errorss", err);
+          console.log("🚀 ~ file: slide.html ~ line 245 ~ errorss", err);
         });
     });
     swal({
@@ -322,6 +322,14 @@ function nextSlide() {
       sendResponse(flashcard_id, answer);
     } else if (type == "jitsi_meet") {
       api.dispose();
+    }
+    else if (type == "contact_form") {
+      answer = {};
+      $('#flashcard_'+(current_slide-1)).find('form').serializeArray().forEach(entry=>{
+        answer[entry.name] = entry.value;
+      });
+      console.log(answer);
+      sendResponse(flashcard_id, JSON.stringify(answer));
     }
 
     if (
@@ -615,7 +623,11 @@ function init() {
   $("#gps-modal").load("gps/index.html");
   $("#progress-section").hide();
   var lesson_id = getParam("lesson_id");
-
+  const params = new Proxy(new URLSearchParams(window.location.search), {
+    get: (searchParams, prop) => searchParams.get(prop),
+  });
+  if(params.iFrame == 1)
+    $("#carouselNav").hide();
   get_session();
   $.get(
     SERVER + "courses_api/slide/read/" + lesson_id,
@@ -627,7 +639,10 @@ function init() {
         : "Lesson - " + lesson_id;
       total_slides = response.flashcards.length;
       $("#progress-section").show();
-
+      if(params.iFrame == 1){
+        $("#carouselNav").hide();
+        $("#progress-section").hide();
+      }
       $("#progress").html(current_slide + 1 + " out of " + total_slides);
       var flashcards = response.flashcards;
       console.log("🚀 ~ file: slide.js ~ line 343 ~ flashcards", flashcards);
@@ -1662,10 +1677,41 @@ function init() {
             </div>
           `);
         }
+        else if (flashcard.lesson_type == "contact_form") {
+          $("#theSlide").append(`
+            <div class="${className} p-4" id="flashcard_${i}">
+              <div class="" alt="contact_form">
+                <h3 class="center-block text-center"> ${flashcard.question?flashcard.question:'Get Started'} </h3>
+                <form method="POST">
+                  <div class="form-group">
+                    <label for="fullName">FULL NAME</label>
+                    <input type="text" class="form-control" id="fullName" name="name" placeholder="You Name">
+                  </div>
+                  <div class="form-group">
+                    <label for="InputEmail1">EMAIL</label>
+                    <input type="email" class="form-control" name="email" id="InputEmail1" placeholder="Email">
+                  </div>
+                  <div class="form-group">
+                    <label for="InputPhone">PHONE NUMBER</label>
+                    <input type="text" class="form-control" name="phone" id="InputPhone" placeholder="1234567890">
+                  </div>
+                  <div class="form-group">
+                    <label for="InputWEBSITE">WEBSITE</label>
+                    <input type="text" class="form-control" name="website" id="InputWebsite" placeholder="https://dreampotential.org">
+                  </div>  
+                  <button onclick="nextSlide();nextSlide()" type="button" class="btn btn-primary center-block"><b>SUBMIT</b></button>
+                </form>
+              </div>
+            </div>
+          `);
+          $('#theSlide')[0].style.padding = '2rem';
+        }
         i++;
       });
       $("#theSlide").append(
-        '<div class="item"><div alt="quick_read" style="background: #d3d3d361;padding: 20%;text-align: center;box-shadow: 2px 2px 9px 3px #958a8ab5;height: 300px;width: 100%;"><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1></div></div>'
+        `<div class="item"><div alt="quick_read" style="background: #d3d3d361;padding: 20%;text-align: center;box-shadow: 2px 2px 9px 3px #958a8ab5;height: 300px;width: 100%;"><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1>
+          <button type="button" onclick="current_slide=0;$('#myCarousel').carousel('prev');"> Submit another response </button>
+        </div></div>`
       );
 
       if (session_id) {
