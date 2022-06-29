@@ -1532,11 +1532,6 @@ function sendUpdates() {
   var attr_array = [];
   position_me = 0;
 
-  // tour_array.push({title: 'here is title1', description: 'here is description', image: 'url1',
-  // latitude: '18.94722755', longitude: '72.8207752'});
-  // tour_array.push({title: 'here is title3', description: 'here is description', image: 'url1',
-  // latitude: '18.922064', longitude: '72.834641'});
-
   if (document.querySelector("#name:checked")) {
     meta_attributes.push("name");
   }
@@ -1557,6 +1552,8 @@ function sendUpdates() {
         flashcard_div.getAttribute &&
         flashcard_div.getAttribute("data-position")
       ) {
+        console.log("PUSH NEW FLASCARD_DIV")
+        console.log(flashcard_div)
         flashcards_div.push(flashcard_div);
       }
     } catch (e) {
@@ -1620,7 +1617,7 @@ function sendUpdates() {
           }
         }
       });
-      
+
     } else if (flashcard_type == 'stripe_Config') {
       console.log("stripe_Config");
       current_flashcard_elements.forEach((current_flashcard) => {
@@ -1630,7 +1627,7 @@ function sendUpdates() {
           console.log("this_element=", this_element);
           if (this_element.type == "text") {
             attr_value = current_flashcard.firstElementChild.value;
-            
+
             if (!attr_value)  {
                 isValid = false;
                 swal({
@@ -1910,6 +1907,8 @@ function sendUpdates() {
         flashcards.push(temp);
         break;
       case "name_type":
+        console.log("HERE IS PARSING NAME TYPE")
+        console.log(attr_array)
         temp = {
           lesson_type: "name_type",
           question: attr_array[0],
