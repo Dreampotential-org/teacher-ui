@@ -151,7 +151,7 @@
                     padding: 0px 80px 50px 80px;
                 }
                 .make_public_css{
-                    margin-left: -50px;
+                    /*margin-left: -50px;*/
                 }
                 .static_section {
                     position: fixed;
@@ -203,8 +203,8 @@
                     <div class="col-sm-9 float-sm-right">
                         <span style="margin-top: 20px;display: block;">
                             <div class="row">
-                                <div class="col-xs-12 col-sm-4 col-sm-offset-2 padding_btm">
-                                    <a type="button" class="btn btn-default" id="lesson_responses">Responses</a>
+                                <div class="col-xs-12 col-sm-5 col-sm-offset-3 padding_btm" align="right">
+                                    <a style="width: 50%" type="button" class="btn btn-default" id="lesson_responses">Responses</a>
                                     <div class="dropdown">
                                         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                             Preview Lesson &nbsp;|&nbsp;
@@ -216,11 +216,11 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="col-xs-8 col-sm-4">
-                                    <input type="text" class="form-control" name="lesson_name" id="lesson_name" placeholder="Lesson Name">
-                                </div> 
-                                <div class="col-xs-4 col-sm-2">
-                                    <button type="button" class="btn btn-success" onclick="openAddToClassModal()">Add to Class</button>
+                                <div class="col-xs-6 col-sm-2" align="right">
+                                    <button type="submit"  form="lesson_form" class="form-control btn btn-success" style="margin-top: 0px;">Save</button>
+                                </div>
+                                <div class="col-xs-6 col-sm-2">
+                                    <button type="button" class="form-control btn btn-success" onclick="openAddToClassModal()">Add to Class</button>
                                 </div>
                             </div>
                         </span>
@@ -266,7 +266,7 @@
                     <div class="col-sm-2">
                         <button class="btn form-control btn-success" id="add">Add</button>
                     </div>
-                    <div class="col-sm-2 col-sm-offset-1">
+                    <div class="col-sm-4 col-sm-offset-1">
                         <div class="dropdown all_lesson_mob">
                             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 <i class="glyphicon glyphicon-file"></i> All Lessons &nbsp;&nbsp;
@@ -277,10 +277,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-sm-3">
-                        <button type="submit"  form="lesson_form" class="form-control btn btn-success" style="margin-top: 0px;width: 70%;">Save</button>
-                    </div>
-                    <div class="col-sm-2 float-sm-right">
+                    <div class="col-sm-3 float-sm-right">
                         <span class="make_public_css">
                             <span>Make Public</span> 
                             <label class="switch" id="is_public_contanier">
@@ -1106,6 +1103,10 @@
                                     <div class="form-group">
                                         <label for="add_class_id">Lesson Id</label>
                                         <input type="text" class="form-control" id="add_class_id" placeholder="Lesson Id" disabled />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="add_class_id">Lesson Name</label>
+                                        <input type="text" class="form-control" name="lesson_name" id="lesson_name" placeholder="Lesson Name">
                                     </div>
                                     <div class="form-group">
                                         <label for="classlist">Select Class:</label>
