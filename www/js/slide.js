@@ -858,26 +858,85 @@ function init() {
           $("#theSlide").append(`
             <div class="${className}" id="flahscard_${i}" id="stripe_payment">
                 <h3>Pay to stripe</h3>
-                <form id='stripe-payment-form_${i}'>
-                <div style='margin-top: 2rem;'>
-                  <h5>Amount: $${flashcard.stripe_item?.price} ${flashcard.stripe_item?.stripe_recurring_price && " <small>(Recurring)</small>"}</h5>
-                </div>
-                
-                <button type="submit" id='stripe_submit' class="btn btn-primary">Checkout</button>
-                </form>
+                 <form id='stripe-payment-form_${i}'>
+                 <div style='margin-top: 2rem;'>
+                   <h4>Amount: $${flashcard.stripe_item?.price} ${flashcard.stripe_item?.stripe_recurring_price ? " <small>(Recurring)</small>" : ""}</h4>
+                 </div>
+
+                  <div style='margin-top: 1rem;'>
+                    <label for='full_name'  >Full Name: </label>
+                    <br>
+                    <input type='text' name='full_name' id='full_name' placeholder='eg. Jane Doe' />
+                  </div>
+                  <div style='margin-top: 1rem;'>
+                    <label for='email'  style='margin-bottom:0'>Email: </label>
+                    <br>
+                    <input type='email' name='email' id='email' placeholder='eg. janedoe@example.com' />
+                  </div>
+                  <div style='margin-top: 1rem;'>
+                    <label for='card_number'  style='margin-bottom:0'>Card Number: </label>
+                    <br>
+                    <input type='number' name='card_number' id='card_number' placeholder='eg.4242424242424242' />
+                  </div>
+                  <div style='margin-top: 1rem;'>
+                    <label for='exp_month' style='margin-bottom:0' >Expiry Date</label>
+                    <br>
+                    <input type='month' name='exp_mth' id='exp_month' placeholder='eg. Mar 2021' />
+                  </div>
+                  <div style='margin-top: 1rem;'>
+                    <label for='cvc' style='margin-bottom:0' >CVC: </label>
+                    <br>
+                    <input type='number' max=999 name='cvc' id='cvc' placeholder='eg. 444' />
+                  </div>
+                 <button type="submit" id='stripe_submit' class="btn btn-primary" style='margin-top: 1rem'>Checkout</button>
+                 </form>
             </div>
           `);
 
           $(`#stripe-payment-form_${i}`).submit(function (event) {
             event.preventDefault();
+            $('#stripe_submit').attr('disabled', true);
 
-            const data = {
-              stripe_price_id: flashcard.stripe_item?.stripe_price_id,
-              lesson_id,
-            }
+            const formData =$(this).serializeArray()
+            const data = {};
+            formData.forEach(({name, value}) => {
+              if(name=== 'exp_mth') {
+                const yearMth = value.split('-');
+                data['expiry_year'] = yearMth[0];
+                data['expiry_month'] = yearMth[1];
+              } else {
+                data[name] = value;
+              }
+            })
+
+             console.log({data});
+
+          //   $.ajax({
+          //     url: SERVER + "store_stripe/checkout/",
+          //     type: "POST",
+          //     data: data,
+          //     headers: {
+          //         Authorization: `${localStorage.getItem("user-token")}`,
+          //     },
+          //     success: (res) => {
+          //       if (res) {
+          //         console.log('redirecting');
+          //         $('#stripe_submit').attr('disabled', true);
+          //         window.open(res.redirect, '_blank');
+          //       }
+          //     },
+          //     error: (err) => {
+          //       console.log(err)
+          //       swal({
+          //         title: "Error!",
+          //         text: "Payment is failed!",
+          //         icon: "warning",
+          //       }); console.log(err);
+          //     },
+          // });
 
             $.ajax({
-              url: SERVER + "store_stripe/checkout/",
+              url: SERVER + "store_stripe/pay_stripe/" + flashcard.id + "/",
               type: "POST",
               data: data,
               headers: {
@@ -885,9 +944,12 @@ function init() {
               },
               success: (res) => {
                 if (res) {
-                  console.log('redirecting');
-                  $('#stripe_submit').attr('disabled', true);
-                  window.open(res.redirect, '_blank');
+                  console.log(res);
+                  swal({
+                    title: "Success!",
+                    text: "Payment is successful!",
+                    icon: "success",
+                  })
                 }
               },
               error: (err) => {
@@ -896,7 +958,7 @@ function init() {
                   title: "Error!",
                   text: "Payment is failed!",
                   icon: "warning",
-                }); console.log(err);
+                }); 
               },
           });
           })
