@@ -304,6 +304,7 @@ $(document).on("click", ".send_voice_mail_btn", function(){
 // })
 
 
+
 $(document).on('click', '.remove_voice_msgs', function(){
 	
 	$("#remove_voice_msgs_btn").attr("data-id", $(this).attr("data-id"));
