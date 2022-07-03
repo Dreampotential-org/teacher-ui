@@ -551,7 +551,7 @@
                var call_data;
                var table;
                $(document).ready(function () {
-
+                    // SERVER = "http://127.0.0.1:8000/"
                     $.ajax({
                          url : SERVER + "voip/api_voip/getlead",
                          async : true,
@@ -561,6 +561,7 @@
                          headers: { "Authorization": `${localStorage.getItem('user-token')}` }
                     }).done( (response)=> {
                          document.getElementById("lead_loader").remove();
+                         response = (response).replaceAll(NaN,'""')
                          user_leads = JSON.parse(response)
                          user_leads.forEach((item , index) => {
                               $("#lead_data").append(`<tr>
@@ -622,6 +623,7 @@
                // submit csvFile
                $("#uplodCsv").click(function() {
                     var form = new FormData();
+                    // SERVER = "http://127.0.0.1:8000/"
                     form.append("csvFile", document.getElementById("csvFile").files[0])
                     var settings = {
                          "async": true,
@@ -681,6 +683,7 @@
 
                // delete lead from editPage
                $('#deleteLead').click( () => {
+                    // SERVER = "http://127.0.0.1:8000/"
                     pk = $('#deleteLead').val()
                     $.ajax({
                          url : SERVER + "voip/api_voip/getlead",
@@ -707,6 +710,7 @@
 
                // submit edited lead
                $("#submitLead").click( () => {
+                    // SERVER = "http://127.0.0.1:8000/"
                     pk = $('#submitLead').val()
                     first_name = $('#edit_first_name').val()
                     last_name = $('#edit_last_name').val()
@@ -765,6 +769,7 @@
 
                //  select and delete multipleLead
                $('#deleteMultiple').click( () =>{
+                    // SERVER = "http://127.0.0.1:8000/"
                     if ( list_delete.length !== 0 ){
                          swal({
                               title: "Are you sure?",
