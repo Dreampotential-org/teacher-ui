@@ -237,38 +237,41 @@ const createDownloadLink = (blob) => {
     $("#recordingsList").append(audio_html);
     $("#recordingsList").append(html);
 
+
+	$(document).on('click','#SaveVoiceMail_to_server', function(){
+
+		// var SERVER = "http://127.0.0.1:8000/";
+		var fd = new FormData();
+			  
+		fd.append("audio_data",blob, filename);
+		$.ajax({
+	
+			url : SERVER + "ringlessVoiceMail_api/upload/",
+			data: fd,
+			cache: false,
+			contentType: false,
+			processData: false,
+			method: 'POST',
+			type: 'POST', // For jQuery < 1.9
+			headers: { "Authorization": "Token "+`${localStorage.getItem('user-token')}` },
+			success: function(data){
+				getVoicemailList();
+				$("#recordingsList").html("");
+				$("#recordRinglessVoiceMailModal").modal("toggle")
+			}
+			
+		}).done( function (response) {
+			console.log(response);   
+		}).fail( (err) => {
+				console.log(err);
+		})
+	
+	});
+
 }
 
 
-$(document).on('click','#SaveVoiceMail_to_server', function(){
 
-	// var SERVER = "http://127.0.0.1:8000/";
-	var fd = new FormData();
-		  
-	fd.append("audio_data",blob, filename);
-	$.ajax({
-
-		url : SERVER + "ringlessVoiceMail_api/upload/",
-		data: fd,
-		cache: false,
-		contentType: false,
-		processData: false,
-		method: 'POST',
-		type: 'POST', // For jQuery < 1.9
-		headers: { "Authorization": "Token "+`${localStorage.getItem('user-token')}` },
-		success: function(data){
-			getVoicemailList();
-			$("#recordingsList").html("");
-			$("#recordRinglessVoiceMailModal").modal("toggle")
-		}
-		
-	}).done( function (response) {
-		console.log(response);   
-	}).fail( (err) => {
-			console.log(err);
-	})
-
-});
 
 
 $(document).on("click", ".send_voice_mail_btn", function(){
