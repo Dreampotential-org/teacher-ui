@@ -313,7 +313,6 @@ function get_sms_to_number(to_number, callback) {
     if (to_number !== undefined) {
         var form = new FormData();
         form.append("to_number", to_number);
-    
         var settings = {
             "async": true,
             "crossDomain": true,
