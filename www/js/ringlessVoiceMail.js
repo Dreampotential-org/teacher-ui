@@ -1,25 +1,87 @@
-//webkitURL is deprecated but nevertheless
-URL = window.URL || window.webkitURL;
+var passwordResetToken = getParam("token");
+var userToken = localStorage.getItem("user-token");
 
-var gumStream; 						//stream from getUserMedia()
-var rec; 							//Recorder.js object
-var input; 							//MediaStreamAudioSourceNode we'll be recording
+console.log("MODE: PASSWORD_RESET, Token - " + passwordResetToken);
 
-// shim for AudioContext when it's not avb. 
-var AudioContext = window.AudioContext || window.webkitAudioContext;
-var audioContext //audio context to help us record
+if (userToken == null) {
+	window.location.replace("student_login.html");
+}
 
-var recordButton = document.getElementById("recordButton");
-console.log(recordButton);
-var stopButton = document.getElementById("stopButton");
-var pauseButton = document.getElementById("pauseButton");
 
-//add events to those 2 buttons
-recordButton.addEventListener("click", startRecording);
-stopButton.addEventListener("click", stopRecording);
-pauseButton.addEventListener("click", pauseRecording);
+function getParam(sParam) {
+	var sPageURL = window.location.search.substring(1);
+	var sURLVariables = sPageURL.split("&");
+	for (var i = 0; i < sURLVariables.length; i++) {
+		var sParameterName = sURLVariables[i].split("=");
+		if (sParameterName[0] == sParam) {
+			return sParameterName[1];
+		}
+	}
+}
 
-function startRecording() {
+$(document).ready(function() {
+
+	$("#left-sidebar").load("sidebar.html");
+    $("#page-header").load("header.html");
+	//webkitURL is deprecated but nevertheless
+	URL = window.URL || window.webkitURL;
+
+	var gumStream; 						//stream from getUserMedia()
+	var rec; 							//Recorder.js object
+	var input; 							//MediaStreamAudioSourceNode we'll be recording
+
+	// shim for AudioContext when it's not avb. 
+	var AudioContext = window.AudioContext || window.webkitAudioContext;
+	var audioContext //audio context to help us record
+
+	var recordButton = document.getElementById("recordButton");
+	console.log(recordButton);
+	var stopButton = document.getElementById("stopButton");
+	var pauseButton = document.getElementById("pauseButton");
+
+	//add events to those 2 buttons
+	recordButton.addEventListener("click", startRecording);
+	stopButton.addEventListener("click", stopRecording);
+	pauseButton.addEventListener("click", pauseRecording);
+
+
+	$('#loading-image').parent("div").css("display" , "block");
+
+	getVoicemailList();
+        
+
+})
+
+$("#body-row .collapse").collapse("hide");
+
+
+function left_sidebar() {
+	SidebarCollapse();
+}
+
+function SidebarCollapse() {
+	$(".menu-collapsed").toggleClass("d-none");
+	$(".sidebar-submenu").toggleClass("d-none");
+	$(".submenu-icon").toggleClass("d-none");
+	$("#sidebar-container").toggleClass(
+			"sidebar-expanded sidebar-collapsed"
+			);
+
+	// Treating d-flex/d-none on separators with title
+	var SeparatorTitle = $(".sidebar-separator-title");
+	if (SeparatorTitle.hasClass("d-flex")) {
+		SeparatorTitle.removeClass("d-flex");
+	} else {
+		SeparatorTitle.addClass("d-flex");
+	}
+
+	// Collapse/Expand icon
+	//$('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
+}
+
+
+
+const startRecording = () =>  {
 	console.log("recordButton clicked");
     $("#recordingsList").html("");
 
@@ -84,7 +146,7 @@ function startRecording() {
 	});
 }
 
-function pauseRecording(){
+const pauseRecording = () => {
 	console.log("pauseButton clicked rec.recording=",rec.recording );
 	if (rec.recording){
 		//pause
@@ -98,7 +160,7 @@ function pauseRecording(){
 	}
 }
 
-function stopRecording() {
+const stopRecording = () =>  {
 	console.log("stopButton clicked");
 
 	//disable the stop button, enable the record too allow for new recordings
@@ -119,7 +181,7 @@ function stopRecording() {
 	rec.exportWAV(createDownloadLink);
 }
 
-function createDownloadLink(blob)  {
+const createDownloadLink = (blob) => {
 	
 	var url = URL.createObjectURL(blob);
 	var au = document.createElement('audio');
@@ -175,66 +237,38 @@ function createDownloadLink(blob)  {
     $("#recordingsList").append(audio_html);
     $("#recordingsList").append(html);
 
-    $(document).on('click','#SaveVoiceMail_to_server', function(){
-
-        // var SERVER = "http://127.0.0.1:8000/";
-        var fd = new FormData();
-              
-        fd.append("audio_data",blob, filename);
-        $.ajax({
-
-            url : SERVER + "ringlessVoiceMail_api/upload/",
-            data: fd,
-            cache: false,
-            contentType: false,
-            processData: false,
-            method: 'POST',
-            type: 'POST', // For jQuery < 1.9
-            headers: { "Authorization": "Token "+`${localStorage.getItem('user-token')}` },
-            success: function(data){
-
-				$.ajax({
-					url: SERVER + "ringlessVoiceMail_api/fetch/",
-					async: true,
-					crossDomain: true,
-					crossOrigin: true,
-					type: "GET",
-					contentType : 'json',
-					headers: { "Authorization": "Token "+`${localStorage.getItem('user-token')}` }
-				}).done( (response) => {
-					console.log(response)
-					if(response.message == "success")
-					{
-					var html = "";
-					for (const element of response. ringlessVoiceMails) {
-						html += "<tr><td> "+ element.id  +" </td><td> " + element.voiceMail_name  +" </td> <td> <a class='btn btn-primary fa fa-send send_voice_mail_btn' href='javascript:;' data-id="+element.id+"> Send </a> <a class='btn btn-danger fa fa-trash remove_voice_msgs' href='javascript:;' data-id="+element.id+"> Delete </a></td></tr>";
-						
-					}
-					$("#inbound-data").html(html);
-					}          
-				}).fail( (err) => {
-					swal({	
-						title: "not fetching voicemail list.",	
-						text: "somthing went wrong.",	
-						icon: "error",	
-						timer: 2000
-						});	
-					console.log(err)
-				})
-                $("#recordingsList").html("");
-				$("#recordRinglessVoiceMailModal").modal("toggle")
-            }
-            
-        }).done( function (response) {
-            console.log(response);   
-        }).fail( (err) => {
-                console.log(err);
-        })
-    
-});
-
-
 }
+
+
+$(document).on('click','#SaveVoiceMail_to_server', function(){
+
+	// var SERVER = "http://127.0.0.1:8000/";
+	var fd = new FormData();
+		  
+	fd.append("audio_data",blob, filename);
+	$.ajax({
+
+		url : SERVER + "ringlessVoiceMail_api/upload/",
+		data: fd,
+		cache: false,
+		contentType: false,
+		processData: false,
+		method: 'POST',
+		type: 'POST', // For jQuery < 1.9
+		headers: { "Authorization": "Token "+`${localStorage.getItem('user-token')}` },
+		success: function(data){
+			getVoicemailList();
+			$("#recordingsList").html("");
+			$("#recordRinglessVoiceMailModal").modal("toggle")
+		}
+		
+	}).done( function (response) {
+		console.log(response);   
+	}).fail( (err) => {
+			console.log(err);
+	})
+
+});
 
 
 $(document).on("click", ".send_voice_mail_btn", function(){
@@ -269,42 +303,6 @@ $(document).on("click", ".send_voice_mail_btn", function(){
 	
 })
 
-// $(document).on('click', '#sendVoiceMail', function(){
-// 	var val = $("#voiceMailLead").val();
-// 	var voice_id = $(this).attr("data-voice_id");
-
-// 	var SERVER = "http://127.0.0.1:8000/";
-// 	$.ajax({
-// 		url : SERVER + "ringlessVoiceMail_api/send/",
-// 		async : true,
-// 		crossDomain : true,
-// 		crossOrigin : true,
-// 		type : 'POST',
-// 		data : {
-// 			"receiver" : val,
-// 			"voice_id" : voice_id
-// 		},
-// 		headers: { "Authorization": `${localStorage.getItem('user-token')}` }
-//    }).done( (response)=> {
-// 	swal({	
-// 		title: "Success",	
-// 		text: "Ringless voice mail has been sent.",	
-// 		icon: "Success",	
-// 		timer: 2000
-// 		});	
-// 		$("#recordingsList").html("");
-
-		
-// 	})
-// 	.fail( (err) => {
-// 		console.log(err);
-// 	})
-// 	$("#leadsModal").modal("toggle");
-
-// })
-
-
-
 $(document).on('click', '.remove_voice_msgs', function(){
 	
 	$("#remove_voice_msgs_btn").attr("data-id", $(this).attr("data-id"));
@@ -329,34 +327,7 @@ $(document).on("click","#remove_voice_msgs_btn",function(){
 		headers: { "Authorization": `${localStorage.getItem('user-token')}` }
    }).done( (response)=> {
 
-		$.ajax({
-			url: SERVER + "ringlessVoiceMail_api/fetch/",
-			async: true,
-			crossDomain: true,
-			crossOrigin: true,
-			type: "GET",
-			contentType : 'json',
-			headers: { "Authorization": "Token "+`${localStorage.getItem('user-token')}` }
-		}).done( (response) => {
-			console.log(response)
-			if(response.message == "success")
-			{
-				var html = "";
-				for (const element of response. ringlessVoiceMails) {
-					html += "<tr><td> "+ element.id  +" </td><td> " + element.voiceMail_name  +" </td> <td> <a class='btn btn-primary fa fa-send send_voice_mail_btn' href='javascript:;' data-id="+element.id+"> Send </a> <a class='btn btn-danger fa fa-trash remove_voice_msgs' href='javascript:;' data-id="+element.id+"> Delete </a></td></tr>";
-					
-				}
-				$("#inbound-data").html(html);
-			}          
-		}).fail( (err) => {
-			swal({	
-				title: "not fetching voicemail list.",	
-				text: "somthing went wrong.",	
-				icon: "error",	
-				timer: 2000
-				});	
-			console.log(err)
-		})
+		getVoicemailList();
 		
 		swal({	
 			title: "Success",	
@@ -381,3 +352,38 @@ $(document).on("click","#remove_voice_msgs_btn",function(){
 	})
 
 })
+
+const getVoicemailList = () => {
+	$.ajax({
+		url: SERVER + "ringlessVoiceMail_api/fetch/",
+		async: true,
+		crossDomain: true,
+		crossOrigin: true,
+		type: "GET",
+		contentType : 'json',
+		headers: { "Authorization": "Token "+`${localStorage.getItem('user-token')}` }
+	  }).done( (response) => {
+		  console.log(response)
+		  if(response.message == "success")
+		  {
+			  var html = "";
+			  for (const element of response. ringlessVoiceMails) {
+				  html += "<tr><td> "+ element.id  +" </td><td> " + element.voiceMail_name  +" </td> <td> <a class='btn btn-primary fa fa-send send_voice_mail_btn' href='javascript:;' data-id="+element.id+"> Send </a> <a class='btn btn-danger fa fa-trash remove_voice_msgs' href='javascript:;' data-id="+element.id+"> Delete </a></td></tr>";
+				  
+			  }
+			  $("#inbound-data").html(html);
+			  $('#loading-image').parent("div").css("display" , "none");
+			  
+		  }          
+	  }).fail( (err) => {
+		  swal({	
+			  title: "not fetching voicemail list.",	
+			  text: "somthing went wrong.",	
+			  icon: "error",	
+			  timer: 2000
+			  });	
+		  //  $('#send_sms').trigger("reset");
+		  console.log(err)
+		  $('#loading-image').parent("div").css("display" , "none");
+	  })
+}
