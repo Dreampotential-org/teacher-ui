@@ -253,17 +253,17 @@ const createDownloadLink = (blob) => {
 			processData: false,
 			method: 'POST',
 			type: 'POST', // For jQuery < 1.9
-			headers: { "Authorization": "Token "+`${localStorage.getItem('user-token')}` },
-			success: function(data){
-				getVoicemailList();
-				$("#recordingsList").html("");
-				$("#recordRinglessVoiceMailModal").modal("toggle")
-			}
+			headers: { "Authorization": "Token "+`${localStorage.getItem('user-token')}` }
+			
 			
 		}).done( function (response) {
-			console.log(response);   
+			console.log(response); 
+			$("#recordingsList").html("");
+			$("#recordRinglessVoiceMailModal").modal("toggle")
+			getVoicemailList();  
 		}).fail( (err) => {
 				console.log(err);
+				
 		})
 	
 	});
@@ -282,7 +282,7 @@ $(document).on("click", ".send_voice_mail_btn", function(){
 	$("#sendVoiceMail").attr("data-Voice_id", $(this).attr("data-id"))
 	$.ajax({
 		url : SERVER + "voip/api_voip/getlead",
-		async : true,
+		async : false,
 		crossDomain : true,
 		crossOrigin : true,
 		type : 'GET',
@@ -320,14 +320,15 @@ $(document).on("click","#remove_voice_msgs_btn",function(){
 	// var SERVER = "http://127.0.0.1:8000/";
 	$.ajax({
 		url : SERVER + "ringlessVoiceMail_api/remove/",
-		async : true,
+		async : false,
 		crossDomain : true,
 		crossOrigin : true,
 		type : 'DELETE',
+		method : 'DELETE',
 		data : {
 			"voice_id" : voice_id
 		},
-		headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+		headers: { "Authorization": "Token "+`${localStorage.getItem('user-token')}` }
    }).done( (response)=> {
 
 		getVoicemailList();
@@ -335,10 +336,10 @@ $(document).on("click","#remove_voice_msgs_btn",function(){
 		swal({	
 			title: "Success",	
 			text: "Ringless voice mail has been deleted.",	
-			icon: "Success",	
+			icon: "success",	
 			timer: 2000
 			});	
-		
+			
 		$('#loading-image').parent("div").css("display" , "none");
 		
 	})
@@ -351,15 +352,17 @@ $(document).on("click","#remove_voice_msgs_btn",function(){
 			});	
 		console.log(err)
 		$('#loading-image').parent("div").css("display" , "none");
+		
 	
 	})
 
 })
 
 const getVoicemailList = () => {
+	// var SERVER = "http://127.0.0.1:8000/";
 	$.ajax({
 		url: SERVER + "ringlessVoiceMail_api/fetch/",
-		async: true,
+		async: false,
 		crossDomain: true,
 		crossOrigin: true,
 		type: "GET",
@@ -390,3 +393,48 @@ const getVoicemailList = () => {
 		  $('#loading-image').parent("div").css("display" , "none");
 	  })
 }
+
+$(document).on("click", "#sendVoiceMail", function(){
+	var voice_id = $(this).attr("data-voice_id");
+	var receiver = $("#voiceMailLead").val()
+	if(receiver == "")
+	{
+		swal({	
+			title: "Error",	
+			text: "Please select receiver",	
+			icon: "error",	
+			timer: 2000
+			});
+			
+		return false;
+	}
+	// var SERVER = "http://127.0.0.1:8000/";
+	$.ajax({
+		url: SERVER + "ringlessVoiceMail_api/send/",
+		async: false,
+		crossDomain: true,
+		crossOrigin: true,
+		method: 'POST',
+		type: 'POST', // For jQuery < 1.9
+		data : {
+			voice_id : voice_id,
+			receiver : receiver
+		},
+		headers: { "Authorization": "Token "+`${localStorage.getItem('user-token')}` }
+	  }).done( (response) => {
+		  console.log(response)
+		  swal({	
+			title: "Success",	
+			text: "Voice mail has been sent successfully.",	
+			icon: "success",	
+			timer: 2000
+			});
+		           
+			$("#leadsModal").modal("toggle");
+	  }).fail( (err) => {
+		  
+		  $('#loading-image').parent("div").css("display" , "none");
+		  $("#leadsModal").modal("toggle");
+	  })
+	  
+})
