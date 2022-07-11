@@ -1031,7 +1031,7 @@ function init() {
             <div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${
             flashcard.id
           }">
-              <h4>Recording Webcam</h4>
+              <h4>Recording Webcam Testing</h4>
               <div class="btn-group btn-toggle" id="recording"> 
                 <button class="btn btn-default" id="start_recording">ON</button>
                 <button class="btn btn-primary active" id="stop_recording">OFF</button>
@@ -1049,11 +1049,27 @@ function init() {
           let chunks = [];
           let stream, mediaRecorder;
 
-          async function startRecordingWebCam() {
-            stream = await navigator.mediaDevices.getUserMedia({
-              video: true,
-              audio: true,
-            });
+           function startRecordingWebCam() {
+
+            start.onclick = function() {
+              navigator.mediaDevices.getUserMedia({
+               audio: true,
+               video: true
+             })
+             .then(stream => {
+               window.localStream = stream;
+               video.srcObject = stream;
+               audio.srcObject = stream;
+             })
+             .catch((err) => {
+               console.log(err);
+             });
+           };
+
+            // stream = await navigator.mediaDevices.getUserMedia({
+            //   video: true,
+            //   audio: true,
+            // });
             mediaRecorder = new MediaRecorder(stream, options);
             mediaRecorder.start();
             mediaRecorder.ondataavailable = function (ev) {
@@ -1135,19 +1151,13 @@ function init() {
             // stop.classList.add("btn-default");
             console.log("start recording video", mediaRecorder.state);
           });
-          stop.addEventListener("click", (ev) => {
-            mediaRecorder.stop();
-            stop.classList.remove("btn-default");
-            stop.classList.add("btn-primary");
-            stop.classList.add("active");
-            start.classList.remove("active");
-            start.classList.remove("btn-primary");
-            start.classList.add("btn-default");
-            stream.getTracks().forEach(function (track) {
-              track.stop();
-            });
-            console.log("stop recording video", mediaRecorder.state);
-          });
+          stop.onclick = function() {
+            localStream.getVideoTracks()[0].stop();
+            video.src = '';
+            
+            localStream.getAudioTracks()[0].stop();
+            audio.src = '';
+          };
         }
 
         if (flashcard.lesson_type == "record_screen") {
