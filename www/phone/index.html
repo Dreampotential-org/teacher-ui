@@ -1,135 +1,241 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <script src="js/main.js"></script>
-    </head>
-    <body id="phone-verification-body">
-        <div class="modal" id="verify_phone" tabindex="-1" role="dialog"  aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalCenterTitle2">Phone Verification</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="step_one">
-                            <div class="verify_phone_illustration" style="display:flex;">
+  <head>
+    <script src="js/main.js"></script>
+    <link rel="stylesheet" href="css/index.css">
+  </head>
+  <body id="phone-verification-body">
+    <div
+      class="modal"
+      id="verify_phone"
+      tabindex="-1"
+      role="dialog"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle2">
+              Phone Verification
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body modalbody" >
+            <div id="step_one">
+              <!-- <div class="verify_phone_illustration" style="display:flex;">
                                 <img src="https://teacher.dreampotential.org/img/Confirm.svg" style="height:250px;margin:0 auto;"/>
                             </div>
                             <div id="phone_block">
                                 <label>Phone Number:</label>
                                 <input class="form-control" type="text" id="phone_number" placeholder="Enter your phone number">
-                            </div>
-                        </div>
-                        <div id="step_two">
-                            <div class="verify_phone_illustration" style="display:flex;">
-                                <img src="https://teacher.dreampotential.org/img/Confirm.svg" style="height:250px;margin:0 auto;"/>
-                            </div>
-                            <div id="code_block" >
-                                <p>OTP has been sent to phone number <span id="phone_number_info"></span></p>
-                                <p style="text-decoration:underline;cursor: pointer;" id="change-number">Change Number</p>
-                                <label >Code:</label>
-                                <input class="form-control" type="number" id="2fa_code" placeholder="Enter the code">
-                            </div>
-                        </div>
+                            </div> -->
+              <!-- UPDATED DESIGN STARTS-->
+
+              <div class="left-div">
+                <div class="col-lg-6 col-sm-12 col-md-12">
+                  <div>
+                    <div class="title">
+                      Enter Your Mobile Number
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" id="send_sms" class="btn btn-primary">Next</button>
-                        <button type="button" id="submit_code" class="btn btn-primary">Submit Code</button>
+                    <div class="desc">
+                      We will send you 4 digit verification code
                     </div>
+                    <div class="outer-div">
+                      <div style="color: #a5a1a1">+63</div>
+                      <input type="number" id="phone_number" class="number-input" />
+                    </div>
+                    <button
+                      type="button"
+                      class="btn otp-btn"
+                      id="send_sms" >
+                      Generate OTP
+                    </button>
+                  </div>
                 </div>
+                <div
+                  class="col-lg-6 col-sm-12 col-md-12"
+                  class="phone-img">
+                  <img src="../www/img/Frame (1).png" style="width: 100%" />
+                </div>
+
+             
+              </div>
             </div>
+            <!-- UPDATED DESIGN ENDS-->
+            <div id="step_two">
+              <!-- UPDATED DESIGN STARTS-->
+              <div class="col-lg-6 col-sm-12 col-md-12">
+                <div class="verifyotp">
+                  OTP Verification
+                </div>
+                <div class="desc" >
+                <p>
+                    Enter the OTP sent to
+                    <span id="phone_number_info"></span> <img id="change-number" src="../www/img/Vector (1).png" />     
+                </p>
+                </div>
+
+                <div
+                  class="'otpinp otpbox" id="2fa_code">
+                  <input
+                    type="number"  class="inputbox" />
+
+                  <input
+                    type="number" class="inputbox"/>
+
+                  <input
+                    type="number" class="inputbox"/>
+
+                  <input
+                    type="number" class="inputbox" />
+                </div>
+                <div class="bottomtext" > 
+                  Didn't receive OTP ? <span class="link" >RESEND</span>
+              </div>
+              <button
+              type="button"
+              class="btn otp-btn"
+              id="submit_code"
+              >
+                Verify & Continue
+            </button>
+              </div>
+          
+              <div
+                class="col-lg-6 col-sm-12 col-md-12 phone-img">
+                <img src="../www/img/Frame (1).png" style="width: 100%" />
+              </div>
+              <!-- UPDATED DESIGN ENDS-->
+
+              <!-- <div class="verify_phone_illustration" style="display: flex">
+                <img
+                  src="https://teacher.dreampotential.org/img/Confirm.svg"
+                  style="height: 250px; margin: 0 auto"
+                />
+              </div>
+              <div id="code_block">
+                <p>
+                  OTP has been sent to phone number
+                  <span id="phone_number_info"></span>
+                </p>
+                <p
+                  style="text-decoration: underline; cursor: pointer"
+                  id="change-number"
+                >
+                  Change Number
+                </p>
+                <label>Code:</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  id="2fa_code"
+                  placeholder="Enter the code"
+                />
+              </div> -->
+            </div>
+          </div>
+          <!-- <div class="modal-footer">
+            <button type="button" id="send_sms" class="btn btn-primary">
+              Next
+            </button>
+            <button type="button" id="submit_code" class="btn btn-primary">
+              Submit Code
+            </button>
+          </div> -->
         </div>
-        <script> 
-            var phone_number = '';
-            var code ='';
+      </div>
+    </div>
+    <script>
+      var phone_number = "";
+      var code = "";
 
-            function One(){
-                $("#step_one").show()
-                $("#step_two").hide()
-                $("#send_sms").show()
-                $("#submit_code").hide()
-            }
+      function One() {
+        $("#step_one").show();
+        $("#step_two").hide();
+        $("#send_sms").show();
+        $("#submit_code").hide();
+      }
 
-            function Two(){
-                $("#step_one").hide()
-                $("#step_two").show()
-                $("#send_sms").hide()
-                $("#submit_code").show()
-            }
+      function Two() {
+        $("#step_one").hide();
+        $("#step_two").show();
+        $("#send_sms").hide();
+        $("#submit_code").show();
+      }
 
-            $(document).ready(function() {
-                One()
+      $(document).ready(function () {
+        One();
 
-                $(document).delegate("#send_sms", 'click', function () {
-                    Two()
-                    phone_number = $("#phone_number").val();
-                    if (phone_number == '') {
-                        return alert("Please provide your number first");
-                    } else {
-                        $("#phone_number_info").html('<b>'+phone_number+'</b>');
+        $(document).delegate("#send_sms", "click", function () {
+          Two();
+          phone_number = $("#phone_number").val();
+          if (phone_number == "") {
+            return alert("Please provide your number first");
+          } else {
+            $("#phone_number_info").html("<b>" + phone_number + "</b>");
 
-                        var data_ ={
-                            "phone_number":phone_number,
-                            "session_id":localStorage.session_id
-                        }
+            var data_ = {
+              phone_number: phone_number,
+              session_id: localStorage.session_id,
+            };
 
-                        $.ajax({
-                            "url": SERVER + "courses_api/confirm/phone",
-                            'data': JSON.stringify(data_),
-                            'type': 'POST',
-                            'contentType': 'application/json',
-                            'success': function (data){
-                                alert("SMS Sent")
-                            },
-                            'error': function(res){
+            $.ajax({
+              url: SERVER + "courses_api/confirm/phone",
+              data: JSON.stringify(data_),
+              type: "POST",
+              contentType: "application/json",
+              success: function (data) {
+                alert("SMS Sent");
+              },
+              error: function (res) {},
+            });
+          }
+        });
 
-                            }
-                        })
-                    }
+        $(document).delegate("#submit_code", "click", function () {
+          phone_number = $("#phone_number").val();
+          code = $("#2fa_code").val();
+          console.log(phone_number);
+          if (phone_number == "") {
+            return alert("Please provide your number first");
+          } else {
+            var data_ = {
+              phone_number: phone_number,
+              session_id: localStorage.session_id,
+              code_2fa: code,
+            };
+
+            $.ajax({
+              url: SERVER + "courses_api/verify/phone",
+              data: JSON.stringify(data_),
+              type: "POST",
+              contentType: "application/json",
+              success: function (data) {
+                alert("Code Verified");
+                const evt = new Event("phoneVerified", {
+                  bubbles: true,
+                  cancelable: false,
                 });
+                document.dispatchEvent(evt);
+              },
+              error: function (res) {
+                alert("Code didn't match");
+              },
+            });
+          }
+        });
 
-
-                $(document).delegate("#submit_code", 'click', function () {
-                    phone_number = $("#phone_number").val();
-                    code = $("#2fa_code").val();
-                    console.log(phone_number)
-                    if (phone_number == '') {
-                        return alert("Please provide your number first");
-                    } else {
-                        var data_ ={
-                            "phone_number":phone_number,
-                            "session_id": localStorage.session_id,
-                            "code_2fa":code
-                        }
-
-                        $.ajax({
-                            "url": SERVER + "courses_api/verify/phone",
-                            'data': JSON.stringify(data_),
-                            'type': 'POST',
-                            'contentType': 'application/json',
-                            'success': function (data){
-                                alert("Code Verified")
-                                const evt = new Event(
-                                "phoneVerified",
-                                {"bubbles":true, "cancelable":false});
-                                document.dispatchEvent(evt);
-
-                            },
-                            'error': function(res){
-                                alert("Code didn't match");
-                            }
-                        })   
-                    }
-                });
-
-
-                $("#change-number").on('click', function() {
-                    One()
-                })
-            }); 
-        </script>
-    </body>
+        $("#change-number").on("click", function () {
+          One();
+        });
+      });
+    </script>
+  </body>
 </html>
