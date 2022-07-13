@@ -15,9 +15,6 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalCenterTitle2">
-              Phone Verification
-            </h5>
             <button
               type="button"
               class="close"
@@ -54,92 +51,93 @@
                     <button
                       type="button"
                       class="btn otp-btn"
-                      id="send_sms" >
+                      id="send_sms">
                       Generate OTP
                     </button>
                   </div>
                 </div>
                 <div
-                  class="col-lg-6 col-sm-12 col-md-12"
-                  class="phone-img">
+                  class="col-lg-6 col-sm-12 col-md-12 phone-img ">
+                  <img src="../www/img/Frame (1).png" style="width: 100%" />
+                </div>
+                 
+              </div>
+            </div>
+            <div id="step_two">
+              <div class="left-div">
+                <div class="col-lg-6 col-sm-12 col-md-12">
+                  <div>
+                    <div class="verifyotp">
+                      OTP Verification
+                    </div>
+                    <div class="desc" >
+                      <p>
+                          Enter the OTP sent to
+                          <span id="phone_number_info"></span> <img id="change-number" src="../www/img/Vector (1).png" />     
+                      </p>
+                      </div>
+                      <div
+                      class="'otpinp otpbox" id="2fa_code">
+                      <input
+                        type="number"  class="inputbox" />
+    
+                      <input
+                        type="number" class="inputbox"/>
+    
+                      <input
+                        type="number" class="inputbox"/>
+    
+                      <input
+                        type="number" class="inputbox" />
+                    </div>
+                    <div class="bottomtext" > 
+                      Didn't receive OTP ? <span class="link" >RESEND</span>
+                  </div>
+                    <button
+                      type="button"
+                      class="btn otp-btn"
+                      id="goVerfiy" >
+                      Verify & Continue
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="col-lg-6 col-sm-12 col-md-12 phone-img ">
                   <img src="../www/img/Frame (1).png" style="width: 100%" />
                 </div>
 
              
               </div>
             </div>
-            <!-- UPDATED DESIGN ENDS-->
-            <div id="step_two">
-              <!-- UPDATED DESIGN STARTS-->
-              <div class="col-lg-6 col-sm-12 col-md-12">
-                <div class="verifyotp">
-                  OTP Verification
-                </div>
-                <div class="desc" >
-                <p>
-                    Enter the OTP sent to
-                    <span id="phone_number_info"></span> <img id="change-number" src="../www/img/Vector (1).png" />     
-                </p>
-                </div>
 
+            <!-- // -->
+            <div id="step_three">
+
+
+              <div class="left-div">
+                <div class="col-lg-6 col-sm-12 col-md-12 verifydiv" >
+                  <div>
+                    <div class="verifydec">
+                      You have successfully Verified your phone
+                    </div>
+
+                    <button
+                      type="button"
+                      class="btn otp-btn">
+                       Verified
+                    </button>
+                  </div>
+                </div>
                 <div
-                  class="'otpinp otpbox" id="2fa_code">
-                  <input
-                    type="number"  class="inputbox" />
-
-                  <input
-                    type="number" class="inputbox"/>
-
-                  <input
-                    type="number" class="inputbox"/>
-
-                  <input
-                    type="number" class="inputbox" />
+                  class="col-lg-6 col-sm-12 col-md-12 phone-img">
+                  <img src="../www/img/Frame (1).png" style="width: 100%" />
                 </div>
-                <div class="bottomtext" > 
-                  Didn't receive OTP ? <span class="link" >RESEND</span>
-              </div>
-              <button
-              type="button"
-              class="btn otp-btn"
-              id="submit_code"
-              >
-                Verify & Continue
-            </button>
-              </div>
-          
-              <div
-                class="col-lg-6 col-sm-12 col-md-12 phone-img">
-                <img src="../www/img/Frame (1).png" style="width: 100%" />
-              </div>
-              <!-- UPDATED DESIGN ENDS-->
 
-              <!-- <div class="verify_phone_illustration" style="display: flex">
-                <img
-                  src="https://teacher.dreampotential.org/img/Confirm.svg"
-                  style="height: 250px; margin: 0 auto"
-                />
+             
               </div>
-              <div id="code_block">
-                <p>
-                  OTP has been sent to phone number
-                  <span id="phone_number_info"></span>
-                </p>
-                <p
-                  style="text-decoration: underline; cursor: pointer"
-                  id="change-number"
-                >
-                  Change Number
-                </p>
-                <label>Code:</label>
-                <input
-                  class="form-control"
-                  type="number"
-                  id="2fa_code"
-                  placeholder="Enter the code"
-                />
-              </div> -->
             </div>
+            <!-- /// -->
+          
           </div>
           <!-- <div class="modal-footer">
             <button type="button" id="send_sms" class="btn btn-primary">
@@ -159,6 +157,7 @@
       function One() {
         $("#step_one").show();
         $("#step_two").hide();
+        $("#step_three").hide();
         $("#send_sms").show();
         $("#submit_code").hide();
       }
@@ -166,9 +165,20 @@
       function Two() {
         $("#step_one").hide();
         $("#step_two").show();
+        $("#step_three").hide();
         $("#send_sms").hide();
         $("#submit_code").show();
       }
+      function Three() {
+        $("#step_one").hide();
+        $("#step_two").hide();
+        $("#step_three").show();
+        $("#goVerfiy").show();
+      }
+
+    
+      
+     
 
       $(document).ready(function () {
         One();
@@ -230,6 +240,10 @@
               },
             });
           }
+        });
+        $(document).delegate("#goVerfiy", "click", function () {
+          Three();
+        
         });
 
         $("#change-number").on("click", function () {
