@@ -442,9 +442,9 @@
              
             
         });
-            });
-            const destNumSmsInputField = document.querySelector("#dest_num_sms");
-      const destNumSmsInput = window.intlTelInput(destNumSmsInputField, {
+        });
+        const destNumSmsInputField = document.querySelector("#dest_num_sms");
+        const destNumSmsInput = window.intlTelInput(destNumSmsInputField, {
         utilsScript:
         "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
       });
@@ -560,6 +560,7 @@
 
             /*ON CLICKING USER CHAT*/
             function open_chat(chat, phonenum, user_name) {
+                console.log("🚀 ~ file: sms.html ~ line 563 ~ open_chat ~ phonenum", phonenum)
                 //using chat id extract messages here.
                 var loader = `<div id="message_loader" class="d-flex justify-content-center">
                             <svg style="height: auto; width: 100px;" version="1.1"

@@ -1,6 +1,8 @@
 $(document).ready(() => {
     // Check if account is already connected to stripe
     $("#stripe-connect-button").hide();
+    $("#stripe-disconnect-button").hide();
+
     $.ajax({
         url: SERVER + "store_stripe/check_connection/",
         type: "GET",
@@ -11,7 +13,10 @@ $(document).ready(() => {
             console.log(res);
             $("#stripe-connect-button").show();
             $("#stripe-connect-button").attr("disabled", true);
-            $("#stripe-connect-button").text("Stripe Integration is Active and Working");
+            $("#stripe-connect-button").text(
+                "Stripe Integration is Active and Working"
+            );
+            $("#stripe-disconnect-button").show();
         },
         error: function (err) {
             $("#stripe-connect-button").show();
@@ -27,7 +32,42 @@ $(document).ready(() => {
                 Authorization: `${localStorage.getItem("user-token")}`,
             },
             success: (res) => {
-                window.location.href = res.redirect;
+                if (res.redirect) {
+                    console.log("redirecting.");
+                    window.location.href = res.redirect;
+                }
+                window.location.reload();
+                if (res.message) {
+                    swal({
+                        title: "Success",
+                        text: res.message,
+                        icon: "success",
+                        button: "Ok",
+                    });
+                }
+            },
+            error: (err) => {
+                swal({
+                    title: "Error",
+                    text: "Some error occurred",
+                    icon: "error",
+                    button: "Ok",
+                });
+                console.log(err);
+            },
+        });
+    });
+
+    $("#stripe-disconnect-button").click(() => {
+        $.ajax({
+            url: SERVER + "store_stripe/disconnect/",
+            type: "POST",
+            headers: {
+                Authorization: `${localStorage.getItem("user-token")}`,
+            },
+            success: (res) => {
+                console.log(res);
+                window.location.reload();
             },
             error: (err) => {
                 swal({

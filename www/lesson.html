@@ -162,6 +162,7 @@
                     <option value="email_verify">Email Verify</option>
                     <option value="datepicker">Date Picker</option>
                     <option value="stripe_payment">Stripe payment</option>
+                    <option value="contact_form">Contact Form</option>
                 </select>
                 <button class="btn form-control btn-success" style="margin-top: 15px" id="add">Add</button>
                 <input type="text" class="form-control" name="lesson_name" style="margin-top: 15px" id="lesson_name"
@@ -900,6 +901,30 @@
                         </div>
                     </div>
 
+                    <div class="speed_read" id="contact_form" style="display: none; padding-top: 15px">
+                        <div data-type="contact_form"
+                            style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                            <div class="row">
+                                <h4 class="col-xs-7 col-lg-7">Contact Form</h4>
+                                <div class="col-xs-3 col-lg-3">
+                                     <span>Make Required</span> 
+                                    <label class="switch">
+                                        <input type="checkbox" id="required_contact_form">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                
+                                <a class="remove_flashcard col-xs-2 col-lg-2"
+                                    style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                    x </a>
+                            </div>
+                            <div class="form-group">
+                                <h4 class="">Form Title</h4>
+                                <input type="text" class="form-control" id="title_contact_form" placeholder="Title">
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="speed_read" id="brain_tree" style="display: none; padding-top: 15px">
                         <div data-type="braintree_Config"
                             style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
@@ -956,11 +981,18 @@
                                     x </a>
                                     
                             </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="stripe_price"
+                                    placeholder="Price">
+
+                                <input type="checkbox" name="recurring" id="stripe_recurring_price">
+                                <label for="">Recurring price</label>
+                            </div>
                             <a href="userProfile.html" class="btn btn-primary" id="form-stripe-connect">Connect to stripe</a>
                         </div>
                     </div>
 
-                    <button type="submit" class="form-control btn btn-primary" style="margin-top: 50px;">Save</button>
+                    <button id="lesson_submit_btn" type="submit" class="form-control btn btn-primary" style="margin-top: 50px;">Save</button>
                 </form>
             </div>
         </div>
