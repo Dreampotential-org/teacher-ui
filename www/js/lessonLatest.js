@@ -228,21 +228,21 @@ function nextSlide() {
     completed = true;
     $(document).ready(function () {
       $.ajax({
-        url: SERVER + "lesson_notifications/lesson/notify/" + lesson_id,
+        url: SERVER + "courses_api/lesson/student/get/mail/" + lesson_id,
         async: true,
         crossDomain: true,
         crossOrigin: true,
-        type: "POST",
-        // headers: { Authorization: `Token ${localStorage.getItem("user-token")}` },
+        type: "GET",
+        headers: { Authorization: `${localStorage.getItem("user-token")}` },
       })
         .done((response) => {
           console.log(
-            "🚀 ~ file: slide.html ~ line 240 ~ response",
+            "🚀 ~ file: settings.html ~ line 202 ~ response",
             response
           );
         })
         .fail((err) => {
-          console.log("🚀 ~ file: slide.html ~ line 245 ~ errorss", err);
+          console.log("🚀 ~ file: settings.html ~ line 129 ~ errorss", err);
         });
     });
     swal({
@@ -322,14 +322,6 @@ function nextSlide() {
       sendResponse(flashcard_id, answer);
     } else if (type == "jitsi_meet") {
       api.dispose();
-    }
-    else if (type == "contact_form") {
-      answer = {};
-      $('#flashcard_'+(current_slide-1)).find('form').serializeArray().forEach(entry=>{
-        answer[entry.name] = entry.value;
-      });
-      console.log(answer);
-      sendResponse(flashcard_id, JSON.stringify(answer));
     }
 
     if (
@@ -623,11 +615,7 @@ function init() {
   $("#gps-modal").load("gps/index.html");
   $("#progress-section").hide();
   var lesson_id = getParam("lesson_id");
-  const params = new Proxy(new URLSearchParams(window.location.search), {
-    get: (searchParams, prop) => searchParams.get(prop),
-  });
-  if(params.iFrame == 1)
-    $("#carouselNav").hide();
+
   get_session();
   $.get(
     SERVER + "courses_api/slide/read/" + lesson_id,
@@ -639,10 +627,7 @@ function init() {
         : "Lesson - " + lesson_id;
       total_slides = response.flashcards.length;
       $("#progress-section").show();
-      if(params.iFrame == 1){
-        $("#carouselNav").hide();
-        $("#progress-section").hide();
-      }
+
       $("#progress").html(current_slide + 1 + " out of " + total_slides);
       var flashcards = response.flashcards;
       console.log("🚀 ~ file: slide.js ~ line 343 ~ flashcards", flashcards);
@@ -862,8 +847,10 @@ function init() {
             i == 0 ? "active" : ""
           }" id="flahscard_${i}" id="verify_phone">
               <div alt="verify_phone">
-                <input type="text" hidden name="verify_phone_${i}" id="verifyPhone">
+                <input type="text" placehoder="Enter your answer here" name="verify_phone_${i}" id="verifyPhone">
+                <div>
                 <button class="btn btn-primary" type="button" onclick="verifyPhone(event)"> Click To Verify Phone Number</button>
+                </div>
                 <p id="phone_verification_status">${
                   phone_verification_status ? "verified" : "not verified"
                 }</p>
@@ -876,85 +863,34 @@ function init() {
           $("#theSlide").append(`
             <div class="${className}" id="flahscard_${i}" id="stripe_payment">
                 <h3>Pay to stripe</h3>
-                 <form id='stripe-payment-form_${i}'>
-                 <div style='margin-top: 2rem;'>
-                   <h4>Amount: $${flashcard.stripe_item?.price} ${flashcard.stripe_item?.stripe_recurring_price ? " <small>(Recurring)</small>" : ""}</h4>
-                 </div>
-
-                  <div style='margin-top: 1rem;'>
-                    <label for='full_name'  >Full Name: </label>
-                    <br>
-                    <input type='text' name='full_name' id='full_name' placeholder='eg. Jane Doe' />
-                  </div>
-                  <div style='margin-top: 1rem;'>
-                    <label for='email'  style='margin-bottom:0'>Email: </label>
-                    <br>
-                    <input type='email' name='email' id='email' placeholder='eg. janedoe@example.com' />
-                  </div>
-                  <div style='margin-top: 1rem;'>
-                    <label for='card_number'  style='margin-bottom:0'>Card Number: </label>
-                    <br>
-                    <input type='number' name='card_number' id='card_number' placeholder='eg.4242424242424242' />
-                  </div>
-                  <div style='margin-top: 1rem;'>
-                    <label for='exp_month' style='margin-bottom:0' >Expiry Date</label>
-                    <br>
-                    <input type='month' name='exp_mth' id='exp_month' placeholder='eg. Mar 2021' />
-                  </div>
-                  <div style='margin-top: 1rem;'>
-                    <label for='cvc' style='margin-bottom:0' >CVC: </label>
-                    <br>
-                    <input type='number' max=999 name='cvc' id='cvc' placeholder='eg. 444' />
-                  </div>
-                 <button type="submit" id='stripe_submit' class="btn btn-primary" style='margin-top: 1rem'>Checkout</button>
-                 </form>
+                <form id='stripe-payment-form_${i}'>
+                <div class="form-group">
+                    <label for='price'>Price ($)</label>
+                    <input type="text" class="form-control" id="price" name="price" placeholder="eg. 100">
+                </div>
+                <div class="form-group">
+                    <label for='description'>Description (optional)</label>
+                    <input type="text" class="form-control" id="description" name="description" placeholder="eg. Tuition fees">
+                </div>
+                <button type="submit" id='stripe_submit' class="btn btn-primary">Checkout</button>
+                </form>
             </div>
           `);
 
           $(`#stripe-payment-form_${i}`).submit(function (event) {
             event.preventDefault();
-            $('#stripe_submit').attr('disabled', true);
 
-            const formData =$(this).serializeArray()
-            const data = {};
-            formData.forEach(({name, value}) => {
-              if(name=== 'exp_mth') {
-                const yearMth = value.split('-');
-                data['expiry_year'] = yearMth[0];
-                data['expiry_month'] = yearMth[1];
-              } else {
-                data[name] = value;
-              }
-            })
+            let price = $(`#price`).val();
+            let description = $(`#description`).val();
 
-             console.log({data});
-
-          //   $.ajax({
-          //     url: SERVER + "store_stripe/checkout/",
-          //     type: "POST",
-          //     data: data,
-          //     headers: {
-          //         Authorization: `${localStorage.getItem("user-token")}`,
-          //     },
-          //     success: (res) => {
-          //       if (res) {
-          //         console.log('redirecting');
-          //         $('#stripe_submit').attr('disabled', true);
-          //         window.open(res.redirect, '_blank');
-          //       }
-          //     },
-          //     error: (err) => {
-          //       console.log(err)
-          //       swal({
-          //         title: "Error!",
-          //         text: "Payment is failed!",
-          //         icon: "warning",
-          //       }); console.log(err);
-          //     },
-          // });
+            const data = {
+              price,
+              description,
+              lesson_id
+            }
 
             $.ajax({
-              url: SERVER + "store_stripe/pay_stripe/" + flashcard.id + "/",
+              url: SERVER + "store_stripe/checkout/",
               type: "POST",
               data: data,
               headers: {
@@ -962,12 +898,9 @@ function init() {
               },
               success: (res) => {
                 if (res) {
-                  console.log(res);
-                  swal({
-                    title: "Success!",
-                    text: "Payment is successful!",
-                    icon: "success",
-                  })
+                  console.log('redirecting');
+                  $('#stripe_submit').attr('disabled', true);
+                  window.open(res.redirect, '_blank');
                 }
               },
               error: (err) => {
@@ -976,7 +909,7 @@ function init() {
                   title: "Error!",
                   text: "Payment is failed!",
                   icon: "warning",
-                }); 
+                }); console.log(err);
               },
           });
           })
@@ -1100,7 +1033,7 @@ function init() {
             <div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${
             flashcard.id
           }">
-              <h4>Recording Webcam Testing</h4>
+              <h4>Recording Webcam</h4>
               <div class="btn-group btn-toggle" id="recording"> 
                 <button class="btn btn-default" id="start_recording">ON</button>
                 <button class="btn btn-primary active" id="stop_recording">OFF</button>
@@ -1118,27 +1051,11 @@ function init() {
           let chunks = [];
           let stream, mediaRecorder;
 
-           function startRecordingWebCam() {
-
-            start.onclick = function() {
-              navigator.mediaDevices.getUserMedia({
-               audio: true,
-               video: true
-             })
-             .then(stream => {
-               window.localStream = stream;
-               video.srcObject = stream;
-               audio.srcObject = stream;
-             })
-             .catch((err) => {
-               console.log(err);
-             });
-           };
-
-            // stream = await navigator.mediaDevices.getUserMedia({
-            //   video: true,
-            //   audio: true,
-            // });
+          async function startRecordingWebCam() {
+            stream = await navigator.mediaDevices.getUserMedia({
+              video: true,
+              audio: true,
+            });
             mediaRecorder = new MediaRecorder(stream, options);
             mediaRecorder.start();
             mediaRecorder.ondataavailable = function (ev) {
@@ -1220,13 +1137,19 @@ function init() {
             // stop.classList.add("btn-default");
             console.log("start recording video", mediaRecorder.state);
           });
-          stop.onclick = function() {
-            localStream.getVideoTracks()[0].stop();
-            video.src = '';
-            
-            localStream.getAudioTracks()[0].stop();
-            audio.src = '';
-          };
+          stop.addEventListener("click", (ev) => {
+            mediaRecorder.stop();
+            stop.classList.remove("btn-default");
+            stop.classList.add("btn-primary");
+            stop.classList.add("active");
+            start.classList.remove("active");
+            start.classList.remove("btn-primary");
+            start.classList.add("btn-default");
+            stream.getTracks().forEach(function (track) {
+              track.stop();
+            });
+            console.log("stop recording video", mediaRecorder.state);
+          });
         }
 
         if (flashcard.lesson_type == "record_screen") {
@@ -1497,11 +1420,7 @@ function init() {
                       valu +
                       "`)' name='choices_" +
                       i +
-                      "'> <label style='font-weight: normal;' for='" +
-                      valu +
-                      "'>" +
-                      valu +
-                      "</lable>"
+                      "'> <input/>"
                   );
                 }
               });
@@ -1721,9 +1640,9 @@ function init() {
           $("#theSlide").append(
             '<div class="' +
               className +
-              '"><div class="name_type"><div alt="name_type" style=""><h1> Enter your name: </h1><input name ="name_type_' +
+              '"><div class="name_type"><div alt="name_type" style=""><h1> Enter your name ? </h1><input name ="name_type_' +
               i +
-              '" class="form-control" placeholder="Enter you name here"></div></div></div>'
+              '" class="form-control" placeholder="What your name"></div></div></div>'
           );
         }
 
@@ -1741,41 +1660,10 @@ function init() {
             </div>
           `);
         }
-        else if (flashcard.lesson_type == "contact_form") {
-          $("#theSlide").append(`
-            <div class="${className} p-4" id="flashcard_${i}">
-              <div class="" alt="contact_form">
-                <h3 class="center-block text-center"> ${flashcard.question?flashcard.question:'Get Started'} </h3>
-                <form method="POST">
-                  <div class="form-group">
-                    <label for="fullName">FULL NAME</label>
-                    <input type="text" class="form-control" id="fullName" name="name" placeholder="You Name">
-                  </div>
-                  <div class="form-group">
-                    <label for="InputEmail1">EMAIL</label>
-                    <input type="email" class="form-control" name="email" id="InputEmail1" placeholder="Email">
-                  </div>
-                  <div class="form-group">
-                    <label for="InputPhone">PHONE NUMBER</label>
-                    <input type="text" class="form-control" name="phone" id="InputPhone" placeholder="1234567890">
-                  </div>
-                  <div class="form-group">
-                    <label for="InputWEBSITE">WEBSITE</label>
-                    <input type="text" class="form-control" name="website" id="InputWebsite" placeholder="https://dreampotential.org">
-                  </div>  
-                  <button onclick="nextSlide();nextSlide()" type="button" class="btn btn-primary center-block"><b>SUBMIT</b></button>
-                </form>
-              </div>
-            </div>
-          `);
-          $('#theSlide')[0].style.padding = '2rem';
-        }
         i++;
       });
       $("#theSlide").append(
-        `<div class="item"><div alt="quick_read" style="background: #d3d3d361;padding: 20%;text-align: center;box-shadow: 2px 2px 9px 3px #958a8ab5;height: 300px;width: 100%;"><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1>
-          <button type="button" onclick="current_slide=0;$('#myCarousel').carousel('prev');"> Submit another response </button>
-        </div></div>`
+        '<div class="item"><div alt="quick_read" style="background: #d3d3d361;padding: 20%;text-align: center;box-shadow: 2px 2px 9px 3px #958a8ab5;height: 300px;width: 100%;"><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1></div></div>'
       );
 
       if (session_id) {

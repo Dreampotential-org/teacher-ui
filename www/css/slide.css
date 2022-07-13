@@ -458,6 +458,7 @@
 .quick-read-container .btm-options .speak-btn.btn-success {
     color: #fff;
     background-color: #1e7e34;
+    width: 100%;
 }
 
 .quick-read-container .sound-select .drop-list {
@@ -581,6 +582,8 @@ input:checked+.slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
+
 
 
 /* End Speed Reader Style 
