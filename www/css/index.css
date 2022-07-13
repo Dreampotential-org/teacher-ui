@@ -2,6 +2,9 @@
     height: 275px;
     margin: 30px 10PX;
 }
+.modal-header{
+  border-bottom: none;
+}
 .left-div{
     display: flex;
     justify-content: space-evenly;
@@ -15,6 +18,12 @@
     font-weight: 400;
     font-size: 14px;
 }
+.verifydec{
+    font-weight: bold;
+    font-size: 13px;
+    width: 270px;
+}
+
 .outer-div{
     display: flex;
     margin-top: 50px;
@@ -81,3 +90,14 @@
     color: #255EEA; 
     font-weight: 700;
 }
+.verifydiv{
+    align-self: center;
+}
+/* .svg{
+    background-image: url("../../www/img/Sending Code New.svg");
+    background-repeat: no-repeat;
+    height: 350px;
+    position: relative;
+    bottom: 56px;
+    left: 40px; 
+} */
