@@ -862,15 +862,42 @@ function init() {
             i == 0 ? "active" : ""
           }" id="flahscard_${i}" id="verify_phone">
               <div alt="verify_phone">
-                <input type="text" hidden name="verify_phone_${i}" id="verifyPhone">
-                <button class="btn btn-primary" type="button" onclick="verifyPhone(event)"> Click To Verify Phone Number</button>
-                <p id="phone_verification_status">${
-                  phone_verification_status ? "verified" : "not verified"
-                }</p>
+            
+                <input id="phone" placeholder="Enter your phone number" class="form-control" name="verify_phone_${i}" type="tel"></br>
+                <button type="submit" onclick="verifyPhone(event)" id="send_sms" >Verify Phone</button>
+ 
+              
+              <!-- <script src="build/js/intlTelInput.js"></script> -->
+              <script src="../www/css/build/js/intlTelInput.js"></script>
+              <script>
+              // Vanilla Javascript
+              var input = document.querySelector("#phone");
+              window.intlTelInput(input,({
+                // options here
+              }));
+          
+              $(document).ready(function() {
+                  $('.iti__flag-container').click(function() { 
+                    var countryCode = $('.iti__selected-flag').attr('title');
+                    var countryCode = countryCode.replace(/[^0-9]/g,'')
+                    $('#phone').val("");
+                    $('#phone').val("+"+countryCode+" "+ $('#phone').val());
+                 });
+              });
+            </script>
               </div>
             </div>
           `);
         }
+
+
+        // <div alt="verify_phone">
+        // <input type="text" hidden name="verify_phone_${i}" id="verifyPhone">
+        // <button class="btn btn-primary" type="button" onclick="verifyPhone(event)"> Click To Verify Phone Number</button>
+        // <p id="phone_verification_status">${
+        //   phone_verification_status ? "verified" : "not verified"
+        // }</p>
+        // </div>
 
         if (flashcard.lesson_type == 'stripe_Config') {
           $("#theSlide").append(`

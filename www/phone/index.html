@@ -3,6 +3,7 @@
   <head>
     <script src="js/main.js"></script>
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/slide.css">
   </head>
   <body id="phone-verification-body">
     <div
@@ -26,14 +27,6 @@
           </div>
           <div class="modal-body modalbody" >
             <div id="step_one">
-              <!-- <div class="verify_phone_illustration" style="display:flex;">
-                                <img src="https://teacher.dreampotential.org/img/Confirm.svg" style="height:250px;margin:0 auto;"/>
-                            </div>
-                            <div id="phone_block">
-                                <label>Phone Number:</label>
-                                <input class="form-control" type="text" id="phone_number" placeholder="Enter your phone number">
-                            </div> -->
-              <!-- UPDATED DESIGN STARTS-->
 
               <div class="left-div">
                 <div class="col-lg-6 col-sm-12 col-md-12">
@@ -79,16 +72,16 @@
                       <div
                       class="'otpinp otpbox" id="2fa_code">
                       <input
-                        type="number"  class="inputbox" />
+                        type="text"  class="inputbox" />
     
                       <input
-                        type="number" class="inputbox"/>
+                        type="text" class="inputbox"/>
     
                       <input
-                        type="number" class="inputbox"/>
+                        type="text" class="inputbox"/>
     
                       <input
-                        type="number" class="inputbox" />
+                        type="text" class="inputbox" />
                     </div>
                     <div class="bottomtext" > 
                       Didn't receive OTP ? <span class="link" >RESEND</span>
@@ -101,8 +94,7 @@
                     </button>
                   </div>
                 </div>
-                <div
-                  class="col-lg-6 col-sm-12 col-md-12 phone-img ">
+                <div class="col-lg-6 col-sm-12 col-md-12 phone-img ">
                   <img src="../www/img/Frame (1).png" style="width: 100%" />
                 </div>
 
@@ -123,7 +115,10 @@
 
                     <button
                       type="button"
-                      class="btn otp-btn">
+                      class="btn otp-btn"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                      >
                        Verified
                     </button>
                   </div>
@@ -166,7 +161,7 @@
         $("#step_one").hide();
         $("#step_two").show();
         $("#step_three").hide();
-        $("#send_sms").hide();
+        $("#send_sms").show();
         $("#submit_code").show();
       }
       function Three() {
