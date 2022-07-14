@@ -152,16 +152,7 @@ function checkEmptyResponse(slideIndex, flashCardType) {
       answer = $("input[name= text_" + (slideIndex) + "]").val();
       break;
     case "question_checkboxes":
-      answer = $("input[name= choices_" + (slideIndex) + "]:checked").val();
-      // let question_checkboxes = [];
-      // $("input[name= checkboxes_" + (slideIndex) + "]:checked").each(
-      //   (j, k) => {
-      //     question_checkboxes.push(k.value);
-      //   }
-      // );
-      // if (question_checkboxes.length == 0) {
-      //   return true
-      // }
+      answer = $("input[name= checkboxes_" + (slideIndex) + "]:checked").val();
       break;
     case "title_input":
       answer = $(
