@@ -141,6 +141,7 @@ function updateMeta(type, answer) {
 }
 
 function checkEmptyResponse(slideIndex, flashCardType) {
+  console.log({flashCardType})
   switch (flashCardType) {
     case "question_choices":
       answer = $("input[name= choices_" + (slideIndex) + "]:checked").val();
@@ -195,6 +196,9 @@ function checkEmptyResponse(slideIndex, flashCardType) {
       break;
     case "jitsi_meet":
       break;
+    case "stripe_Config":
+      answer = 'Payment success'
+      break;
     default:
       return true;
   }
@@ -208,11 +212,14 @@ function checkEmptyResponse(slideIndex, flashCardType) {
 function nextSlide() {
   var lesson_id = getParam("lesson_id");
   const this_slide = getParam("this_slide");
+  console.log('nextSlideLoading...', current_slide < total_slides);
   if (current_slide < total_slides) {
     var current_flashcard = loaded_flashcards[current_slide];
     document.getElementById("theSlide").style.color = null;
     if (current_flashcard.is_required == true) {
+      console.log('flashcard required')
       if (checkEmptyResponse(current_slide, current_flashcard.lesson_type)){
+        console.log('empty response')
         return
       }
     }
@@ -950,6 +957,7 @@ function init() {
                     text: "Payment is successful!",
                     icon: "success",
                   })
+                  nextSlide();
                 }
               },
               error: (err) => {

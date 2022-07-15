@@ -962,6 +962,17 @@
 
                                 <input type="checkbox" name="recurring" id="stripe_recurring_price">
                                 <label for="">Recurring price</label>
+
+                                <h4>Include Payment Methods</h4>
+                                <!-- <input type="checkbox" name="cards" id="cards" checked> <label>Credit/Debit Card</label> <br> -->
+                                <input type="checkbox" name="expressPay" id="expressPay"> <label>Express Pay <small>(Apple, Google Pay)</small></label>
+
+                                <h4>Recurring Duration</h4>
+                                <select class="w-100">
+                                    <option value="week">Weekly</option>
+                                    <option value="month">Monthly</option>
+                                    <option value="year">Yearly</option>
+                                </select>
                             </div>
                             <a href="userProfile.html" class="btn btn-primary" id="form-stripe-connect">Connect to stripe</a>
                         </div>

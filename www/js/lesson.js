@@ -1546,10 +1546,10 @@ function sendUpdates() {
         current_flashcard_elements.push(flashcard_element);
       }
     });
-    console.log("currrent....");
-    console.log(current_flashcard_elements);
-
+    
     current_flashcard_elements.shift();
+    // console.log("currrent....");
+    console.log({current_flashcard_elements});
     flashcard_type = flashcard.getAttribute("data-type");
     position_me += 1;
     let choices_array = [];
@@ -1557,7 +1557,7 @@ function sendUpdates() {
 
     if (
       current_flashcard_elements.length < 4 &&
-      flashcard_type != "user_tour"
+      flashcard_type == "user_tour"
     ) {
       console.log("user tour length");
       current_flashcard_elements.forEach((current_flashcard) => {
@@ -1602,31 +1602,58 @@ function sendUpdates() {
       console.log("stripe_Config");
       current_flashcard_elements.forEach((current_flashcard) => {
         console.log({current_flashcard})
-        this_element = current_flashcard.firstElementChild;
-        if (this_element) {
-          console.log("this_element=", this_element);
-          if (this_element.type == "text") {
-            attr_value = current_flashcard.firstElementChild.value;
+        // this_element = current_flashcard.firstElementChild;
+        // // console.log({this_element})
+        // if (this_element) {
+        //   console.log("this_element=", this_element);
+        //   if (this_element.type == "text") {
+        //     attr_value = current_flashcard.firstElementChild.value;
             
-            if (!attr_value)  {
-                isValid = false;
-                swal({
-                  title: "Error Stripe payment",
-                  text: "Please fill all fields",
-                  icon: "error",
-                })
-            }
-            attr_array.push(attr_value);
+        //     if (!attr_value)  {
+        //         isValid = false;
+        //         swal({
+        //           title: "Error Stripe payment",
+        //           text: "Please fill all fields",
+        //           icon: "error",
+        //         })
+        //     }
+        //     attr_array.push(attr_value);
+        //   }
+        //   else {
+        //     console.log('else statement')
+        //     this_element = current_flashcard.lastElementChild;
+        //     console.log("this_element last=", this_element);
+        //     if (this_element.type == "text") {
+        //       attr_value = current_flashcard.lastElementChild.value;
+        //       attr_array.push(attr_value);
+        //     }
+        //   }
+        // }
+
+        function getValueFromElement(element) {
+          if (element.type === 'text') {
+            return element.value;
           }
-          else {
-            this_element = current_flashcard.lastElementChild;
-            console.log("this_element last=", this_element);
-            if (this_element.type == "text") {
-              attr_value = current_flashcard.lastElementChild.value;
-              attr_array.push(attr_value);
-            }
+          
+          if (element.type === 'checkbox') {
+            return element.checked;
           }
+
+          return null;
         }
+
+        let curr_el = current_flashcard.firstElementChild;
+
+        while (curr_el) {
+          if(curr_el.localName == 'input') {
+            let value = getValueFromElement(curr_el);
+            if (value) {
+              attr_array.push(value);
+            }
+          }
+          curr_el = curr_el.nextElementSibling;
+        }
+
       });
     }
     else if (flashcard_type == "user_tour") {
@@ -1687,7 +1714,7 @@ function sendUpdates() {
 
       //working on choices
       console.log(real_flashcard_elements);
-      real_flashcard_elements[1].childNodes.forEach((choice) => {
+      real_flashcard_elements[0].childNodes.forEach((choice) => {
         choice.childNodes.forEach((choice_unit) => {
           if (choice_unit.type == "text") {
             choices_array.push(choice_unit.value);
@@ -1952,7 +1979,7 @@ function sendUpdates() {
           lesson_type: "stripe_Config",
           position: position_me,
           stripe_product_price: attr_array[0],
-          stripe_recurring_price: document.getElementById('stripe_recurring_price').checked,
+          stripe_recurring_price: attr_array[1],
           is_required: document.getElementById("required_stripe_Config").checked
         }
         console.log('received')
