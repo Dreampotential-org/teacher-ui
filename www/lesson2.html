@@ -1192,7 +1192,8 @@
                 $(document).ready(function () {
                     const params = new URLSearchParams(window.location.search);
                     var qs = params.get('lesson_id');
-                    if(qs == null){
+                    console.log(qs);
+                    if(qs == null || qs == 0){
                        $('#create-new-lesson-modal').addClass('show');
                     }
                     $.ajax({
