@@ -893,39 +893,46 @@ function init() {
         if (flashcard.lesson_type == 'stripe_Config') {
           $("#theSlide").append(`
             <div class="${className}" id="flahscard_${i}" id="stripe_payment">
-                <h3>Pay to stripe</h3>
-                 <form id='stripe-payment-form_${i}'>
-                 <div style='margin-top: 2rem;'>
-                   <h4>Amount: $${flashcard.stripe_item?.price} ${flashcard.stripe_item?.stripe_recurring_price ? " <small>(Recurring)</small>" : ""}</h4>
-                 </div>
+               
+    
 
-                  <div style='margin-top: 1rem;'>
-                    <label for='full_name'  >Full Name: </label>
-                    <br>
-                    <input type='text' name='full_name' id='full_name' placeholder='eg. Jane Doe' />
-                  </div>
-                  <div style='margin-top: 1rem;'>
-                    <label for='email'  style='margin-bottom:0'>Email: </label>
-                    <br>
-                    <input type='email' name='email' id='email' placeholder='eg. janedoe@example.com' />
-                  </div>
-                  <div style='margin-top: 1rem;'>
-                    <label for='card_number'  style='margin-bottom:0'>Card Number: </label>
-                    <br>
-                    <input type='number' name='card_number' id='card_number' placeholder='eg.4242424242424242' />
-                  </div>
-                  <div style='margin-top: 1rem;'>
-                    <label for='exp_month' style='margin-bottom:0' >Expiry Date</label>
-                    <br>
-                    <input type='month' name='exp_mth' id='exp_month' placeholder='eg. Mar 2021' />
-                  </div>
-                  <div style='margin-top: 1rem;'>
-                    <label for='cvc' style='margin-bottom:0' >CVC: </label>
-                    <br>
-                    <input type='number' max=999 name='cvc' id='cvc' placeholder='eg. 444' />
-                  </div>
-                 <button type="submit" id='stripe_submit' class="btn btn-primary" style='margin-top: 1rem'>Checkout</button>
-                 </form>
+                   <div class="row welcome">
+                   <div class="col-md-6 first-col">
+                    <h3 class="wl-title">Pay to stripe</h3>
+                   <h4 class="wl-title">Amount: $${flashcard.stripe_item?.price} ${flashcard.stripe_item?.stripe_recurring_price ? " <small>(Recurring)</small>" : ""}</h4>
+                     <form method="POST">
+                       <div class="form-group">
+                         <label for="fullName">FULL NAME</label>
+                         <input type="text" class="form-control" id="fullName" name="name" placeholder='eg. Jane Doe'>
+                       </div>
+                       <div class="form-group">
+                         <label for="InputEmail1">EMAIL</label>
+                         <input type="email" class="form-control" name="email" id="InputEmail1" placeholder='eg. janedoe@example.com'>
+                       </div>
+                       <div class="form-group">
+                         <label for="InputPhone">CARD NUMBER</label>
+                         <input type="number" class="form-control" name="phone" id="InputPhone" placeholder="1234567890">
+                       </div>
+                       <div class="form-group">
+                         <label for="InputWEBSITE">WEBSITE</label>
+                         <input type='month' class="form-control"  name='exp_mth' id='exp_month' placeholder='eg.4242424242424242'>
+                       </div>  
+       
+                       <div class="form-group">
+                         <label for="InputWEBSITE">CVC</label>
+                         <input class="form-control" type='number' max=999 name='cvc' id='cvc' placeholder='eg. 444'>
+                       </div>  
+       
+                       <button type="submit" id='stripe_submit' class="btn btn-primary contact-submit" style='margin-top: 1rem'><b>CHECKOUT</b></button>
+                     </form>
+                   </div>
+                     <div class="col-md-6 second-col">
+                       <div>
+                         <img src="../www/img/Welcome.png" alt="welcome" />
+                       </div>
+                     </div>
+                 </div>
+       
             </div>
           `);
 
@@ -1118,6 +1125,10 @@ function init() {
             <div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${
             flashcard.id
           }">
+          <div class="row welcome">
+          <div class="col-md-6 first-col-img">
+            
+            <div>
               <h4>Recording Webcam Testing</h4>
               <div class="btn-group btn-toggle" id="recording"> 
                 <button class="btn btn-default" id="start_recording">ON</button>
@@ -1125,6 +1136,14 @@ function init() {
               </div>
               <hr>
               <video controls autoplay id="record_webcam"></video>
+            </div>
+        </div>
+          <div class="col-md-6 second-col">
+            <div>
+              <img src="../www/img/Welcome.png" alt="welcome" />
+            </div>
+          </div>
+        </div>  
             </div>
           `);
           // let recording = document.getElementById("start_recording");
@@ -1252,13 +1271,25 @@ function init() {
             <div class="${className} ${i == 0 ? "active" : ""}" id="flashcard_${
             flashcard.id
           }">
+              
+          <div class="row welcome">
+          <div class="col-md-6 first-col-img">
+            <div>
               <h4>Recording Screen</h4>
               <div class="btn-group btn-toggle"> 
                 <button class="btn btn-default" id="start_recording_screen">ON</button>
                 <button class="btn btn-primary active" id="stop_recording_screen">OFF</button>
               </div>
               <hr>
-              <video controls autoplay id="record_screen"></video>
+                <video controls autoplay id="record_webcam"></video>
+              </div>
+          </div>
+          <div class="col-md-6 second-col">
+            <div>
+              <img src="../www/img/Welcome.png" alt="welcome" />
+            </div>
+          </div>
+        </div> 
             </div>
           `);
           var video = document.querySelector("#record_screen");
@@ -1705,8 +1736,19 @@ function init() {
             <div class="${className}">
               <div alt="title_text" style="">
                 <p> ${flashcard.question}</p>
-                <input type="file" class="form-control" value="Choose File" id="image_upload_${flashcard.id}" onchange="handleImageUpload('user_image_upload',${flashcard.id})"/> 
-                <img style="width:auto; margin:auto; display:none;" id="user-image-display_${flashcard.id}">
+                <div class="row welcome">
+                <div class="col-md-6 first-col-img">
+                  <div>
+                    <input type="file" class="form-control" value="Choose File" id="image_upload_${flashcard.id}" onchange="handleImageUpload('user_image_upload',${flashcard.id})"/> 
+                    <img style="width:auto; margin:auto; display:none;" id="user-image-display_${flashcard.id}">
+                  </div>
+              </div>
+                <div class="col-md-6 second-col">
+                  <div>
+                    <img src="../www/img/Welcome.png" alt="welcome" />
+                  </div>
+                </div>
+              </div>
               </div>
             </div>
           `);
@@ -1763,26 +1805,36 @@ function init() {
           $("#theSlide").append(`
             <div class="${className} p-4" id="flashcard_${i}">
               <div class="" alt="contact_form">
-                <h3 class="center-block text-center"> ${flashcard.question?flashcard.question:'Get Started'} </h3>
-                <form method="POST">
-                  <div class="form-group">
-                    <label for="fullName">FULL NAME</label>
-                    <input type="text" class="form-control" id="fullName" name="name" placeholder="You Name">
+                
+                <div class="row welcome">
+                <div class="col-md-6 first-col">
+                <h3 class="wl-title"> ${flashcard.question?flashcard.question:'Get Started'} </h3>
+                  <form method="POST">
+                    <div class="form-group">
+                      <label for="fullName">FULL NAME</label>
+                      <input type="text" class="form-control" id="fullName" name="name" placeholder="You Name">
+                    </div>
+                    <div class="form-group">
+                      <label for="InputEmail1">EMAIL</label>
+                      <input type="email" class="form-control" name="email" id="InputEmail1" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                      <label for="InputPhone">PHONE NUMBER</label>
+                      <input type="text" class="form-control" name="phone" id="InputPhone" placeholder="1234567890">
+                    </div>
+                    <div class="form-group">
+                      <label for="InputWEBSITE">WEBSITE</label>
+                      <input type="text" class="form-control" name="website" id="InputWebsite" placeholder="https://dreampotential.org">
+                    </div>  
+                    <button onclick="nextSlide();" type="button" class="btn btn-primary contact-submit"><b>SUBMIT</b></button>
+                  </form>
+                </div>
+                  <div class="col-md-6 second-col">
+                    <div>
+                      <img src="../www/img/Welcome.png" alt="welcome" />
+                    </div>
                   </div>
-                  <div class="form-group">
-                    <label for="InputEmail1">EMAIL</label>
-                    <input type="email" class="form-control" name="email" id="InputEmail1" placeholder="Email">
-                  </div>
-                  <div class="form-group">
-                    <label for="InputPhone">PHONE NUMBER</label>
-                    <input type="text" class="form-control" name="phone" id="InputPhone" placeholder="1234567890">
-                  </div>
-                  <div class="form-group">
-                    <label for="InputWEBSITE">WEBSITE</label>
-                    <input type="text" class="form-control" name="website" id="InputWebsite" placeholder="https://dreampotential.org">
-                  </div>  
-                  <button onclick="nextSlide();nextSlide()" type="button" class="btn btn-primary center-block"><b>SUBMIT</b></button>
-                </form>
+              </div>
               </div>
             </div>
           `);
@@ -1791,9 +1843,21 @@ function init() {
         i++;
       });
       $("#theSlide").append(
-        `<div class="item"><div alt="quick_read" style="background: #d3d3d361;padding: 20%;text-align: center;box-shadow: 2px 2px 9px 3px #958a8ab5;height: 300px;width: 100%;"><h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1>
-          <button type="button" onclick="current_slide=0;$('#myCarousel').carousel('prev');"> Submit another response </button>
-        </div></div>`
+        `<div class="item">
+        <div class="row welcome">
+        <div class="col-md-6 first-col-img">
+          <div alt="quick_read">
+            <h1>Completed <img height="30px" src="https://www.clipartmax.com/png/full/301-3011315_icon-check-green-tick-transparent-background.png"></h1>
+            <button type="button" onclick="current_slide=0;$('#myCarousel').carousel('prev');"> Submit another response </button>
+          </div>
+        </div>
+        <div class="col-md-6 second-col">
+          <div>
+            <img src="../www/img/Welcome.png" alt="welcome" />
+          </div>
+        </div>
+      </div> 
+        </div>`
       );
 
       if (session_id) {
