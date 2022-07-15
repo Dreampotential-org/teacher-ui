@@ -10,6 +10,7 @@
 
 .carousel-inner {
     overflow-y: auto;
+    padding: 0px!important;
 }
 
 .grid-2 {
@@ -600,3 +601,64 @@ input:checked+.slider:before {
 /* .phone-img{
     background-image: url("../www/img/Sending.svg");
 } */
+
+#theSlide{
+    background-color: #FFF;
+}
+
+.first-col{
+    background: #407BFF;
+    padding: 30px 50px;
+}
+
+.first-col-file{
+    display: flex;
+    align-items: center;
+    height: 440px;
+    background: #407BFF;
+}
+
+.first-col-img{
+    height: 440px;
+    display: flex;
+    align-items: center;
+    background: #407BFF;
+    justify-content: center;
+}
+
+.second-col{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.welcome{
+    /* justify-content: space-between; */
+    display: flex;
+    align-items: center;
+}
+
+.wl-title{
+    color: #fff;
+}
+
+label{
+    color: #fff;
+}
+
+.contact-form-submit{
+    margin-bottom: 25px;
+    background: #33579C;
+    border-radius: 4px;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.contact-submit{
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    background: #33579C;
+}
+
