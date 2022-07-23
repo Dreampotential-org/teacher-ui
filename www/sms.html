@@ -42,11 +42,11 @@
         <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
 
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-        
+
         <!-- Country flags and code -->
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
           <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-        
+
         <!-- user.html JS, CSS end -->
 
         <link rel="stylesheet" href="css/dashboard.css" />
@@ -58,6 +58,8 @@
 
         <script src="js/main.js"></script>
         <script src="js/web_api.js"></script>
+        <script src="js/notifications.js"></script>
+
 
         <style>
             .p-0 .container-fluid {
@@ -70,7 +72,7 @@
             .message-datatable .row{
                 margin-right:0px!important;
                 margin-left:0px!important;
-                
+
             }
             .user-box{
                 margin-bottom:15px;
@@ -442,9 +444,9 @@
              
             
         });
-            });
-            const destNumSmsInputField = document.querySelector("#dest_num_sms");
-      const destNumSmsInput = window.intlTelInput(destNumSmsInputField, {
+        });
+        const destNumSmsInputField = document.querySelector("#dest_num_sms");
+        const destNumSmsInput = window.intlTelInput(destNumSmsInputField, {
         utilsScript:
         "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
       });
@@ -560,6 +562,7 @@
 
             /*ON CLICKING USER CHAT*/
             function open_chat(chat, phonenum, user_name) {
+                console.log("🚀 ~ file: sms.html ~ line 563 ~ open_chat ~ phonenum", phonenum)
                 //using chat id extract messages here.
                 var loader = `<div id="message_loader" class="d-flex justify-content-center">
                             <svg style="height: auto; width: 100px;" version="1.1"
@@ -605,18 +608,20 @@
                 var html = "";
                 get_sms_to_number(phonenum, function (res) {
                     $(document).ready(function(){
-                        get_all_active_numbers(function(response){
+                
                             
-                            for (var numbers of response){
-                                $('#filter_twilio').append('<option value='+numbers+'>'+numbers+'</option>' )
-                            }
-                        });
+                        $('#filter_twilio').append('<option selected="selected" value='+phonenum+'>'+phonenum+'</option>' )
+                            
+                       
                     });
-                    $("#message-box").empty();
-                    var filtered_data = res.filter(
-                                (item) =>
-                            (item.to == phonenum || item.from == phonenum)
+                    console.log(res)
+
+                    //$("#message-box").empty();
+
+                    var filtered_data = res.messages.filter((item) => (item.to == phonenum || item.from == phonenum)        
                     );
+
+                    console.log(filtered_data)
 
                     filtered_data.sort(function (a, b) {
                         // Turn your strings into dates, and then subtract them
@@ -627,6 +632,7 @@
                             return 1;
                         return 0;
                     });
+                    console.log(filtered_data)
 
                     for (var msg of filtered_data) {
                         
@@ -642,7 +648,7 @@
                                         </div>`;
                         }
                     }
-                    
+                    console.log(html)
                     $("#message-box").empty();
                     $("#message-box").append(html);
                     scroll_to_bottom();
@@ -652,7 +658,6 @@
                         $("#message-box").empty();
                         $('#message-box').append(loader);
                         var item1=$(this).val()
-                        console.log("itemm selected twilio number is",item1)
 
                         $.ajax({
 
@@ -667,9 +672,15 @@
                             },
                             headers: { "Authorization": `${localStorage.getItem('user-token')}` }
                         }).done( function (response) {
-                                $("#message-box").empty();
+                                //$("#message-box").empty();
+                                for (var msg of response.messages) {
+                                    console.log(msg);
+                                }
+
                                 var filtered_data = response.messages.filter((item) => (item.to == phonenum || item.from == phonenum)        
                                 );
+                                console.log(filtered_data)
+
                                 filtered_data.sort(function (a, b) {
                         // Turn your strings into dates, and then subtract them
                         // to get a value that is either negative, positive, or zero.
@@ -679,6 +690,7 @@
                                         return 1;
                                     return 0;
                                 });
+                                console.log(filtered_data)
 
                                 for (var msg of filtered_data) {
                                     if (msg.to == phonenum) {
@@ -693,7 +705,8 @@
                                                     </div>`;
                                     }
                                 }
-                    
+                                console.log(html)
+                                
                                 $("#message-box").empty();
                                 $("#message-box").append(html);
                                 scroll_to_bottom();

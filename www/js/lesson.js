@@ -39,6 +39,7 @@ var lng_dataid = "";
 var qr_url_count = 0;
 var qr_data_count = 0;
 var email_verify_count = 0;
+var contact_form_count = 0;
 var classList = [];
 
 window.addEventListener("DOMContentLoaded", init, false);
@@ -1052,6 +1053,31 @@ function addAudioFile(isNew, id, question, choices, image, posU) {
   sortablePositionFunction(isNew, posU);
 }
 
+function addContactForm(isNew, id, question, posU) {
+  console.log("addContactForm ==> ");
+  console.log("isNew, id, question, posU ");
+  console.log(isNew, " , ", id, " , ", question, posU);
+  if (!isNew) {
+    $("#contact_form").find("input").first().attr("value", question);
+    $("#contact_form").find("input").last().attr("value", question);
+
+    $("#contact_form").find("input").first().attr("data-id", id);
+    $("#contact_form").find("input").last().attr("data-id", id);
+  } else {
+    $("#contact_form").find("input").first().attr("value", "");
+    $("#contact_form").find("input").last().attr("value", "");
+  }
+
+  $("#contact_form")
+    .find("input")
+    .first()
+    .attr("name", "contact_form_question" + contact_form_count);
+
+    $("#sortable").append($("#contact_form").html());
+  audio_file_count++;
+  sortablePositionFunction(isNew, posU);
+}
+
 function addUserTour(
   isNew,
   id,
@@ -1506,11 +1532,6 @@ function sendUpdates() {
   var attr_array = [];
   position_me = 0;
 
-  // tour_array.push({title: 'here is title1', description: 'here is description', image: 'url1',
-  // latitude: '18.94722755', longitude: '72.8207752'});
-  // tour_array.push({title: 'here is title3', description: 'here is description', image: 'url1',
-  // latitude: '18.922064', longitude: '72.834641'});
-
   if (document.querySelector("#name:checked")) {
     meta_attributes.push("name");
   }
@@ -1531,6 +1552,8 @@ function sendUpdates() {
         flashcard_div.getAttribute &&
         flashcard_div.getAttribute("data-position")
       ) {
+        console.log("PUSH NEW FLASCARD_DIV")
+        console.log(flashcard_div)
         flashcards_div.push(flashcard_div);
       }
     } catch (e) {
@@ -1555,10 +1578,7 @@ function sendUpdates() {
     let choices_array = [];
     let tour_array = [];
 
-    if (
-      current_flashcard_elements.length < 4 &&
-      flashcard_type == "user_tour"
-    ) {
+    if (current_flashcard_elements.length < 4 && flashcard_type != "user_tour") {
       console.log("user tour length");
       current_flashcard_elements.forEach((current_flashcard) => {
         this_element = current_flashcard.firstElementChild;
@@ -1597,42 +1617,26 @@ function sendUpdates() {
           }
         }
       });
-      
+
     } else if (flashcard_type == 'stripe_Config') {
       console.log("stripe_Config");
       current_flashcard_elements.forEach((current_flashcard) => {
         console.log({current_flashcard})
-        // this_element = current_flashcard.firstElementChild;
-        // // console.log({this_element})
-        // if (this_element) {
-        //   console.log("this_element=", this_element);
-        //   if (this_element.type == "text") {
-        //     attr_value = current_flashcard.firstElementChild.value;
-            
-        //     if (!attr_value)  {
-        //         isValid = false;
-        //         swal({
-        //           title: "Error Stripe payment",
-        //           text: "Please fill all fields",
-        //           icon: "error",
-        //         })
-        //     }
-        //     attr_array.push(attr_value);
-        //   }
-        //   else {
-        //     console.log('else statement')
-        //     this_element = current_flashcard.lastElementChild;
-        //     console.log("this_element last=", this_element);
-        //     if (this_element.type == "text") {
-        //       attr_value = current_flashcard.lastElementChild.value;
-        //       attr_array.push(attr_value);
-        //     }
-        //   }
-        // }
+        this_element = current_flashcard.firstElementChild;
+        if (this_element) {
+          console.log("this_element=", this_element);
+          if (this_element.type == "text") {
+            attr_value = current_flashcard.firstElementChild.value;
 
-        function getValueFromElement(element) {
-          if (element.type === 'text') {
-            return element.value;
+            if (!attr_value)  {
+                isValid = false;
+                swal({
+                  title: "Error Stripe payment",
+                  text: "Please fill all fields",
+                  icon: "error",
+                })
+            }
+            attr_array.push(attr_value);
           }
           
           if (element.type === 'checkbox') {
@@ -1914,6 +1918,8 @@ function sendUpdates() {
         flashcards.push(temp);
         break;
       case "name_type":
+        console.log("HERE IS PARSING NAME TYPE")
+        console.log(attr_array)
         temp = {
           lesson_type: "name_type",
           question: attr_array[0],
@@ -2055,6 +2061,17 @@ function sendUpdates() {
         };
         flashcards.push(temp);
         break;
+
+      case "contact_form":
+        console.log(attr_array);
+        temp = {
+          lesson_type: "contact_form",
+          question: attr_array[0],
+          position: position_me,
+          is_required: document.getElementById("required_contact_form").checked,
+        };
+        flashcards.push(temp);
+        break;
     }
     console.log("====== flashcards", flashcards);
     attr_array = [];
@@ -2129,6 +2146,10 @@ function sendUpdates() {
       },
     });
   } else {
+    let btn = $('#lesson_submit_btn').first();
+    btn.attr('disabled',true);
+    console.log(btn)
+    btn.text('Saving...');
     $.ajax({
       url: SERVER + "courses_api/lesson/update/" + lesson_id + "/",
       data: JSON.stringify(data_),
@@ -2136,6 +2157,8 @@ function sendUpdates() {
       headers: { Authorization: `${localStorage.getItem("user-token")}` },
       contentType: "application/json",
       success: function (data) {
+        btn.attr('disabled',false);
+        btn.text('Save');
         swal({
           title: "Lesson Updated",
           text: "You have updated created a lesson",
@@ -2148,8 +2171,10 @@ function sendUpdates() {
           "🚀 ~ file: lesson.js ~ line 1739 ~ sendUpdates ~ err",
           err
         );
+        btn.attr('disabled',false);
+        btn.text('Save');
         swal({
-          title: "Error Creating Lesson",
+          title: "Error Updating Lesson",
           text: err.responseJSON,
           icon: "error",
         });
@@ -2517,6 +2542,9 @@ $(document).ready(function () {
           if (flashcard.lesson_type == "email_verify") {
             addVerifyEmail(false, flashcard.id, null, flashcard.position + 1);
           }
+          if (flashcard.lesson_type == "contact_form") {
+            addContactForm(false, flashcard.id, flashcard.question, flashcard.position + 1);
+          }
           toggleCheckedWhenMarkIsRequired(
             flashcard.lesson_type,
             flashcard.is_required
@@ -2763,6 +2791,10 @@ $(document).ready(function () {
 
     if ($("#selectsegment").val() == "email_verify") {
       addVerifyEmail(true);
+    }
+
+    if ($("#selectsegment").val() == "contact_form") {
+      addContactForm(true);
     }
   });
 });
