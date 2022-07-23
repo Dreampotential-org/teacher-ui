@@ -32,11 +32,12 @@ $(document).ready(() => {
                 Authorization: `${localStorage.getItem("user-token")}`,
             },
             success: (res) => {
+                console.log({res})
                 if (res.redirect) {
                     console.log("redirecting.");
                     window.location.href = res.redirect;
                 }
-                window.location.reload();
+                // window.location.reload();
                 if (res.message) {
                     swal({
                         title: "Success",
