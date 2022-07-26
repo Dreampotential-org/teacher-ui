@@ -634,7 +634,7 @@ input:checked + .slider:before {
 }
 
 label {
-  /* color: #fff; */
+  color: black !important;
 }
 
 .contact-form-submit {

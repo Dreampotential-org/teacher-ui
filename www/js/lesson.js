@@ -2853,7 +2853,9 @@ function addToSelectedClass() {
     class_id: $("#add-to-class-modal #classlist-select").val(),
     lesson_id: $("#add-to-class-modal #add_class_id").val(),
   };
-
+  const value = $("#add-to-class-modal #classlist-select").val();
+  console.log(value);
+  // window.location.href = `/id=${value}`;
   $.ajax({
     async: true,
     crossDomain: true,
