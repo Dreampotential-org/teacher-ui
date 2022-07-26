@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Settings</title>
+    <title>Lesson Settings</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -42,6 +42,7 @@
     <script src="js/main.js"></script>
     <style>
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -137,15 +138,23 @@
             </div>
             <div class="row m-4" id="send-email-response" style="display: block">
                 <div class="col-xs-12">
-                    <h1> Send Lesson Response Notifications</h1>
+                    <h1>Lesson Settings</h1>
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" id="email-tab" data-toggle="tab" href="#email" role="tab"
                                 aria-controls="email" aria-selected="true">Email Notification</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" onclick="fetchAllSlackNotifications()">
                             <a class="nav-link" id="slack-tab" data-toggle="tab" href="#slack" role="tab"
                                 aria-controls="slack" aria-selected="false">Slack Notification</a>
+                        </li>
+                        <li class="nav-item" onclick="fetchLessonStyles()">
+                            <a class="nav-link" id="styles-tab" data-toggle="tab" href="#styles" role="tab"
+                                aria-controls="styles" aria-selected="false">Styles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="analytics-tab" data-toggle="tab" href="#analytics" role="tab"
+                                aria-controls="analytics" aria-selected="false">Analytics</a>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
@@ -209,6 +218,34 @@
                                 <br>
                                 <br>
                             </form>
+                        </div>
+
+                        <div class="tab-pane fade" id="styles" role="tabpanel" aria-labelledby="styles-tab">
+                            <form class="mt-5" name="stylesForm" onsubmit="setLessonCSS(event)">
+                                <div style="margin-bottom: 1em;">
+                                    <label for="styles">Lesson CSS</label>
+                                    <a href="#" style="font-size: 17px; float: right;"
+                                        onclick="fetchLessonStyles(event)">
+                                        <span class="glyphicon glyphicon-refresh"></span>
+                                    </a>
+                                </div>
+                                <div id="styleForm_content">
+                                    <div class="form-group">
+                                        <div class="form-row">
+                                            <textarea row="10" class="form-control" value="${response}" name="style" placeholder="h1 {color: red}..." required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                                <button type="submit" onclick="" class="btn btn-primary ml-auto">Submit</button>
+                                <br>
+                                <br>
+                            </form>
+                        </div>
+
+                        <div class="tab-pane fade" id="analytics" role="tabpanel" aria-labelledby="analytics-tab">
+                            <canvas id="myChart" width="600" height="600"></canvas>
                         </div>
                     </div>
 
@@ -316,6 +353,41 @@
                         });
                     })
                 }
+
+                function setLessonCSS(event) {
+                    event.preventDefault();
+                    const formSerialized = $('form[name="stylesForm"]').serializeArray();
+                    const formVal = formSerialized[0].value;
+                    data = {
+                        "css": formVal
+                    }
+                    $.ajax({
+                        url: SERVER + "courses_api/lesson/set_style/" + lesson_id,
+                        async: true,
+                        crossDomain: true,
+                        crossOrigin: true,
+                        type: 'POST',
+                        data: JSON.stringify(data),
+                        headers: { "Authorization": `Token ${localStorage.getItem('user-token')}`, 'Content-Type': 'application/json' }
+                    }).done((response) => {
+                        console.log("🚀 ~ file: settings.html ~ line 202 ~ response", response)
+                        swal({
+                            title: 'Submitted',
+                            text: 'Lesson style updated.',
+                            icon: 'success',
+                            timer: 2000,
+                        });
+                    }).fail((err) => {
+                        console.log("errorss...", err)
+                        swal({
+                            title: 'Fail',
+                            text: 'Couldn\'t updated styles, try again!',
+                            icon: 'error',
+                            timer: 2000,
+                        });
+                    })
+                }
+
 
                 function sendMail(data) {
                     $(document).ready(function () {
@@ -595,9 +667,81 @@
                 })
             }
 
+            function fetchLessonStyles() {
+                if(window.stylesLoading) return;
+                window.stylesLoading = true;
+                $.ajax({
+                    url: SERVER + "courses_api/lesson/get_style/" + lesson_id,
+                    async: true,
+                    crossDomain: true,
+                    crossOrigin: true,
+                    type: 'GET',
+                    headers: { "Authorization": `Token ${localStorage.getItem('user-token')}`, 'Content-Type': 'application/json' },
+                }).done((response) => {
+                    console.log(response)
+                    let formGroups = [];
+                    const formGroup = `<div class="form-group">
+                                    <div class="form-row">
+                                        <textarea row="10" class="form-control" value="${response.css}" name="style" placeholder="h1 {color: red}..." required></textarea>
+                                    </div>
+                                </div>`
+                    formGroups.push(formGroup);
+                    $("#emailForm_content").empty();
+                    $("#emailForm_content").append(formGroups);
+                }).fail((err) => {
+                    console.log("errorss...", err)
+                    swal({
+                        title: 'fail',
+                        text: 'Could not fetch your notifications.',
+                        icon: 'error',
+                        timer: 2000,
+                    });
+                }).always(()=>{
+                    window.emailLoading = false;
+                })
+            }
+
+            function displayChart(params) {
+                ctx = document.getElementById('myChart').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Lesson 1', 'Lesson 2', 'Lesson 3', 'Lesson 4', 'Lesson 5', 'Lesson 6'],
+                        datasets: [{
+                            label: 'No of Submissions',
+                            data: [12, 19, 3, 5, 2, 3],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options:{
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
             $(document).ready(function () {
                 if (localStorage.getItem('user-token')) {
-                    $(document).ready(fetchAllEmailNotifications())
+                    $(document).ready(fetchAllEmailNotifications());
+                    displayChart();
                 }
             });
         </script>

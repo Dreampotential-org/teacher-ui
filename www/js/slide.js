@@ -226,6 +226,7 @@ function nextSlide() {
     }
   } else {
     completed = true;
+    const data = {session_id};
     $(document).ready(function () {
       $.ajax({
         url: SERVER + "lesson_notifications/lesson/notify/" + lesson_id,
@@ -233,7 +234,8 @@ function nextSlide() {
         crossDomain: true,
         crossOrigin: true,
         type: "POST",
-        // headers: { Authorization: `Token ${localStorage.getItem("user-token")}` },
+        data: JSON.stringify(data),
+        headers: { contentType:'application/json' }
       })
         .done((response) => {
           console.log(

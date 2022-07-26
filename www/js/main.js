@@ -13,7 +13,13 @@ function set_server() {
         SERVER = 'http://localhost:8040/';
         HOST = 'http://localhost:8040';
         WEBSOCKET_HOST = 'wss://localhost:8040';
-    } else {
+    }
+    else if (window.location.origin.includes("127.0.0.1:8887")) {
+        SERVER = 'http://localhost:8000/';
+        HOST = 'http://localhost:8040';
+        WEBSOCKET_HOST = 'wss://localhost:8040';
+    }
+    else {
         SERVER = 'https://api.dreampotential.org/';
         HOST = 'api.dreampotential.org';
         WEBSOCKET_HOST = 'wss://api.dreampotential.org';
