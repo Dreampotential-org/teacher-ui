@@ -1443,6 +1443,7 @@ function addStripePayment(
   isNew,
   id,
   price,
+  checked,
   posU
 ) {
   if (!isNew) {
@@ -1450,20 +1451,31 @@ function addStripePayment(
       isNew,
       id,
       price,
+      checked,
       posU
     );
 
     $("#stripe_payment").find("#stripe_price").attr("value", price);
-    
+    $('#stripe_payment')
+      .find('#stripe_recurring_price')
+      .attr('checked', checked);
+
   } else {
     console.log("empty values");
     $("#stripe_payment")
       .find("#stripe_price")
       .attr("value", '');
+      $('#stripe_payment')
+      .find('#stripe_recurring_price')
+      .attr('checked', false);
   }
 
   $("#stripe_payment")
     .find("#stripe_price")
+    .attr("name", "stripe_price_" + stripe_payment_count);
+  
+  $('#stripe_payment')
+    .find('#stripe_recurring_price')
     .attr("name", "stripe_price_" + stripe_payment_count);
   // $("#stripe_payment")
   //   .find("#braintree_public_key")
@@ -1520,11 +1532,6 @@ function sendUpdates() {
   var attr_array = [];
   position_me = 0;
 
-  // tour_array.push({title: 'here is title1', description: 'here is description', image: 'url1',
-  // latitude: '18.94722755', longitude: '72.8207752'});
-  // tour_array.push({title: 'here is title3', description: 'here is description', image: 'url1',
-  // latitude: '18.922064', longitude: '72.834641'});
-
   if (document.querySelector("#name:checked")) {
     meta_attributes.push("name");
   }
@@ -1545,6 +1552,8 @@ function sendUpdates() {
         flashcard_div.getAttribute &&
         flashcard_div.getAttribute("data-position")
       ) {
+        console.log("PUSH NEW FLASCARD_DIV")
+        console.log(flashcard_div)
         flashcards_div.push(flashcard_div);
       }
     } catch (e) {
@@ -1560,10 +1569,10 @@ function sendUpdates() {
         current_flashcard_elements.push(flashcard_element);
       }
     });
-    console.log("currrent....");
-    console.log(current_flashcard_elements);
-
+    
     current_flashcard_elements.shift();
+    // console.log("currrent....");
+    console.log({current_flashcard_elements});
     flashcard_type = flashcard.getAttribute("data-type");
     position_me += 1;
     let choices_array = [];
@@ -1608,16 +1617,17 @@ function sendUpdates() {
           }
         }
       });
-      
+
     } else if (flashcard_type == 'stripe_Config') {
       console.log("stripe_Config");
       current_flashcard_elements.forEach((current_flashcard) => {
+        console.log({current_flashcard})
         this_element = current_flashcard.firstElementChild;
         if (this_element) {
           console.log("this_element=", this_element);
-          if (this_element.type == "text" || this_element.type == 'email') {
+          if (this_element.type == "text") {
             attr_value = current_flashcard.firstElementChild.value;
-            
+
             if (!attr_value)  {
                 isValid = false;
                 swal({
@@ -1627,15 +1637,27 @@ function sendUpdates() {
                 })
             }
             attr_array.push(attr_value);
-          } else {
-            this_element = current_flashcard.lastElementChild;
-            console.log("this_element last=", this_element);
-            if (this_element.type == "text") {
-              attr_value = current_flashcard.lastElementChild.value;
-              attr_array.push(attr_value);
+          }
+          
+          if (element.type === 'checkbox') {
+            return element.checked;
+          }
+
+          return null;
+        }
+
+        let curr_el = current_flashcard.firstElementChild;
+
+        while (curr_el) {
+          if(curr_el.localName == 'input') {
+            let value = getValueFromElement(curr_el);
+            if (value) {
+              attr_array.push(value);
             }
           }
+          curr_el = curr_el.nextElementSibling;
         }
+
       });
     }
     else if (flashcard_type == "user_tour") {
@@ -1696,7 +1718,7 @@ function sendUpdates() {
 
       //working on choices
       console.log(real_flashcard_elements);
-      real_flashcard_elements[1].childNodes.forEach((choice) => {
+      real_flashcard_elements[0].childNodes.forEach((choice) => {
         choice.childNodes.forEach((choice_unit) => {
           if (choice_unit.type == "text") {
             choices_array.push(choice_unit.value);
@@ -1896,6 +1918,8 @@ function sendUpdates() {
         flashcards.push(temp);
         break;
       case "name_type":
+        console.log("HERE IS PARSING NAME TYPE")
+        console.log(attr_array)
         temp = {
           lesson_type: "name_type",
           question: attr_array[0],
@@ -1957,11 +1981,11 @@ function sendUpdates() {
         flashcards.push(temp);
         break;
       case "stripe_Config":
-        console.log('stripe', attr_array[0])
         temp = {
           lesson_type: "stripe_Config",
           position: position_me,
           stripe_product_price: attr_array[0],
+          stripe_recurring_price: attr_array[1],
           is_required: document.getElementById("required_stripe_Config").checked
         }
         console.log('received')
@@ -2277,7 +2301,8 @@ $(document).ready(function () {
             addStripePayment(
               false,
               flashcard.id,
-              flashcard?.stripe_item?.price
+              flashcard?.stripe_item?.price,
+              flashcard?.stripe_item?.stripe_recurring_price,
             )
           }
 

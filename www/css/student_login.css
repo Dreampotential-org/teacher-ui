@@ -1,3 +1,7 @@
+body{
+  background: #172642!important;
+}
+
 .login-main {
   transform: translate(-50%, -50%);
   position: absolute;
@@ -25,6 +29,19 @@ img {
   border: 0;
 }
 
+.form-control{
+  height: 45px!important;
+}
+
+.login-button{
+  font-weight: 700!important;
+  font-size: 16px!important;
+  line-height: 24px!important;
+  color: #FFFFFF!important;
+  width: 100%;
+  padding: 12px 12px!important;
+}
+
 .modal-body {
   position: relative;
   padding: 15px;
@@ -42,6 +59,7 @@ img {
 
 .textCenter {
   text-align: center;
+  font-weight: 700;
 }
 .singup-input {
   padding: 15px 0px;
@@ -56,6 +74,7 @@ p {
 }
 
 .login-form {
+  background-color: #FFFFFF!important;
   padding: 15px;
   width: 90%;
   max-width: 500px;

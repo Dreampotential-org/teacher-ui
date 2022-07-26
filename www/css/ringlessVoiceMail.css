@@ -1,0 +1,25 @@
+.p-0 .container-fluid {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+.contacts-box {
+    height:800px;
+}
+.message-datatable .row{
+    margin-right:0px!important;
+    margin-left:0px!important;
+    
+}
+.user-box{
+    margin-bottom:15px;
+}
+.d-dflex .iti {
+    display:flex!important;
+}
+#filter-message{
+    text-align: right!important;
+    padding-right: 43px!important;
+}
+#select-filter{
+    margin-left: 870px;
+}
