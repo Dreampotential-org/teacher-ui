@@ -682,12 +682,12 @@
                     let formGroups = [];
                     const formGroup = `<div class="form-group">
                                     <div class="form-row">
-                                        <textarea row="10" class="form-control" value="${response.css}" name="style" placeholder="h1 {color: red}..." required></textarea>
+                                        <textarea row="10" class="form-control" value="${response.css}" name="style" placeholder="h1 {color: red}..." required>${response.css}</textarea>
                                     </div>
                                 </div>`
                     formGroups.push(formGroup);
-                    $("#emailForm_content").empty();
-                    $("#emailForm_content").append(formGroups);
+                    $("#styleForm_content").empty();
+                    $("#styleForm_content").append(formGroups);
                 }).fail((err) => {
                     console.log("errorss...", err)
                     swal({
@@ -697,7 +697,7 @@
                         timer: 2000,
                     });
                 }).always(()=>{
-                    window.emailLoading = false;
+                    window.stylesLoading = false;
                 })
             }
 

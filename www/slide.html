@@ -89,6 +89,12 @@
                 // 2. Create and attach internal css from query params [higher priority]
                 let style = document.createElement('style');
                 style.innerHTML = css;
+                css+= `.first-col{
+                    width: 100% !important;
+                }
+                .second-col{
+                    display: none !important;
+                }`
                 style.type = 'text/css';
                 document.getElementsByTagName('head')[0].appendChild(style);
             }

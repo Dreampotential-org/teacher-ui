@@ -643,6 +643,10 @@ function init() {
         $("#carouselNav").hide();
         $("#progress-section").hide();
       }
+      let style = document.createElement('style');
+      style.innerHTML = response.css_text;
+      style.type = 'text/css';
+      document.getElementsByTagName('head')[0].appendChild(style);
       $("#progress").html(current_slide + 1 + " out of " + total_slides);
       var flashcards = response.flashcards;
       console.log("🚀 ~ file: slide.js ~ line 343 ~ flashcards", flashcards);
@@ -937,7 +941,7 @@ function init() {
                    </div>
                      <div class="col-md-6 second-col">
                        <div>
-                         <img src="../www/img/Welcome.png" alt="welcome" />
+                         <img src="/img/Welcome.png" alt="welcome" />
                        </div>
                      </div>
                  </div>
@@ -1150,7 +1154,7 @@ function init() {
         </div>
           <div class="col-md-6 second-col">
             <div>
-              <img src="../www/img/Welcome.png" alt="welcome" />
+              <img src="/img/Welcome.png" alt="welcome" />
             </div>
           </div>
         </div>  
@@ -1296,7 +1300,7 @@ function init() {
           </div>
           <div class="col-md-6 second-col">
             <div>
-              <img src="../www/img/Welcome.png" alt="welcome" />
+              <img src="/img/Welcome.png" alt="welcome" />
             </div>
           </div>
         </div> 
@@ -1755,7 +1759,7 @@ function init() {
               </div>
                 <div class="col-md-6 second-col">
                   <div>
-                    <img src="../www/img/Welcome.png" alt="welcome" />
+                    <img src="/img/Welcome.png" alt="welcome" />
                   </div>
                 </div>
               </div>
@@ -1841,7 +1845,7 @@ function init() {
                 </div>
                   <div class="col-md-6 second-col">
                     <div>
-                      <img src="../www/img/Welcome.png" alt="welcome" />
+                      <img src="/img/Welcome.png" alt="welcome" />
                     </div>
                   </div>
               </div>
@@ -1863,7 +1867,7 @@ function init() {
         </div>
         <div class="col-md-6 second-col">
           <div>
-            <img src="../www/img/Welcome.png" alt="welcome" />
+            <img src="/img/Welcome.png" alt="welcome" />
           </div>
         </div>
       </div> 
