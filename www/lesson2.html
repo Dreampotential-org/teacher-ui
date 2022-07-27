@@ -29,6 +29,12 @@
         <!-- firebase -->
         <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
+        <script>
+            var userToken = localStorage.getItem("user-token");
+            if (userToken === null) {
+                window.location.replace("student_login.html");
+            }
+        </script>
         <style>
             .h1 {
                 font-size: 18px;
@@ -145,6 +151,9 @@
             }
             html {
                 scroll-behavior: smooth;
+            }
+            div#create-new-lesson-modal {
+                background-color: #222222f7;
             }
             @media screen and (min-width: 768px) {
                 .lesson_content_area{
@@ -1144,29 +1153,18 @@
                 </div>
             </div>
             <div class="sweet-overlay modal" id="create-new-lesson-modal" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog" role="document">
+                <div class="modal-dialog" role="document" style="width: 30%;">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Create New Lesson</h5>
-
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            <h4 class="modal-title"><b>Create New Lesson</b></h4>
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="add_class_id">Lesson Name</label>
                                 <input type="text" class="form-control" name="lesson_name" id="lesson_name" placeholder="Lesson Name">
                             </div>
-                            <!-- <div class="form-group">
-                                <label for="classlist">Select Class:</label>
-                                <select class="form-control" id="classlist-select" placeholder="Select Class">
-                                </select>
-                            </div> -->
-
                             <div class="add-student float-right">
-                                <button type="button" onclick="addToSelectedClass()" class="btn btn-success"
-                                        id="AddLessonToClassBtn">
+                                <button type="button" id="addNewLesson" class="btn btn-success">
                                     <i class=""></i> Submit
                                 </button>
                             </div>
@@ -1189,12 +1187,49 @@
                 }
             </script>
             <script>
+                $("#addNewLesson").click(function (e) {
+                    var lesson_name = $("#lesson_name").val();
+                    var lesson_visiblity = $("#lesson_is_public").prop("checked");
+                    var meta_attributes = [];
+                    var flashcards = [];
+
+                    data_ = {
+                        lesson_name: lesson_name,
+                        lesson_is_public: lesson_visiblity,
+                    };
+                    data_.meta_attributes = meta_attributes.join(",");
+                    data_.flashcards = flashcards;
+                    $.ajax({
+                        url: SERVER + "courses_api/lesson/create",
+                        data: JSON.stringify(data_),
+                        type: "POST",
+                        contentType: "application/json",
+                        headers: {Authorization: `${localStorage.getItem("user-token")}`},
+                        success: function (data) {
+                            var currentPathName = window.location.pathname;
+                            window.location.replace(currentPathName + "?lesson_id=" + data.id);
+                            swal({
+                                title: "Lesson Created",
+                                text: "You have successfully created a lesson",
+                                icon: "success",
+                                timer: 2000,
+                            });
+                        },
+                        error: (err) => {
+                            swal({
+                                title: "Error Creating Lesson",
+                                text: err,
+                                icon: "error",
+                            });
+                        }
+                    });
+                });
                 $(document).ready(function () {
                     const params = new URLSearchParams(window.location.search);
                     var qs = params.get('lesson_id');
                     console.log(qs);
-                    if(qs == null || qs == 0){
-                       $('#create-new-lesson-modal').addClass('show');
+                    if (qs == null || qs == 0) {
+                        $('#create-new-lesson-modal').addClass('show');
                     }
                     $.ajax({
                         url: SERVER + "courses_api/lesson/all",
