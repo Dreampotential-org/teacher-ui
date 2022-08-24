@@ -435,7 +435,7 @@
                 crossOrigin: true,  
                 url: SERVER + "students_list/student/classes",
                 type: "GET",
-                headers: { "Authorization": `Token ${localStorage.getItem('user-token')}` }
+                headers: { "Authorization": `Bearer ${localStorage.getItem('user-token')}` }
             }).done((c) => {
                 if(c) {
                     student_classes = c
@@ -504,7 +504,7 @@
                         url: SERVER + "students_list/get/students/",
                         type: "GET",
                         headers: {
-                            "Authorization": `${localStorage.getItem('user-token')}`
+                            "Authorization": `Bearer ${localStorage.getItem('user-token')}`
                         }
                     }).done((student) => {
                         studentList = student;

@@ -233,7 +233,7 @@ function nextSlide() {
         crossDomain: true,
         crossOrigin: true,
         type: "GET",
-        headers: { Authorization: `${localStorage.getItem("user-token")}` },
+        headers: { Authorization: Bearer `${localStorage.getItem("user-token")}` },
       })
         .done((response) => {
           console.log(
@@ -718,7 +718,7 @@ function init() {
             contentType: false,
             data: braintree_form_data,
             headers: {
-              Authorization: localStorage.getItem("user-token"),
+              Authorization: Bearer localStorage.getItem("user-token"),
             },
           };
           $.ajax(segment_settings_buy_item)
@@ -783,7 +783,7 @@ function init() {
                         mimeType: "multipart/form-data",
                         data: order_form,
                         headers: {
-                          Authorization: localStorage.getItem("user-token"),
+                          Authorization: Bearer localStorage.getItem("user-token"),
                         },
                       };
                       $.ajax(settings_add_order)
@@ -894,7 +894,7 @@ function init() {
               type: "POST",
               data: data,
               headers: {
-                  Authorization: `${localStorage.getItem("user-token")}`,
+                  Authorization: Bearer `${localStorage.getItem("user-token")}`,
               },
               success: (res) => {
                 if (res) {
@@ -1083,7 +1083,7 @@ function init() {
                 mimeType: "multipart/form-data",
                 data: form,
                 headers: {
-                  Authorization: localStorage.getItem("token"),
+                  Authorization: Bearer localStorage.getItem("token"),
                 },
               };
               $.ajax(settings)
@@ -1213,7 +1213,7 @@ function init() {
                 mimeType: "multipart/form-data",
                 data: form,
                 headers: {
-                  Authorization: localStorage.getItem("token"),
+                  Authorization: Bearer localStorage.getItem("token"),
                 },
               };
               $.ajax(settings)
@@ -1798,7 +1798,7 @@ async function responsePromise(braintree_item_id, braintree_form_data) {
       url: SERVER + "store/segment_client_token/" + braintree_item_id,
       type: "POST",
       headers: {
-        Authorization: localStorage.getItem("user-token"),
+        Authorization: Bearer localStorage.getItem("user-token"),
       },
       async: false,
       crossDomain: true,
@@ -1839,7 +1839,7 @@ function handleVideoUpload(key) {
     enctype: "multipart/form-data",
     data: form,
     headers: {
-      Authorization: localStorage.getItem("token"),
+      Authorization: Bearer localStorage.getItem("token"),
     },
   };
 
@@ -1930,7 +1930,7 @@ function handleImageUpload(key, id) {
     enctype: "multipart/form-data",
     data: form,
     headers: {
-      Authorization: localStorage.getItem("token"),
+      Authorization: Bearer localStorage.getItem("token"),
     },
   };
 
@@ -2098,7 +2098,7 @@ function start() {
         contentType: "application/json; charset=utf-8",
         processData: false,
         headers: {
-          Authorization: localStorage.getItem("user-token"),
+          Authorization: Bearer localStorage.getItem("user-token"),
         },
         success: function (response) {
           console.log(
@@ -2129,7 +2129,7 @@ function start() {
         contentType: "application/json; charset=utf-8",
         processData: false,
         headers: {
-          Authorization: localStorage.getItem("user-token"),
+          Authorization: Bearer localStorage.getItem("user-token"),
         },
         success: function (response) {
           console.log(

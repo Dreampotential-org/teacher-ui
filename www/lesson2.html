@@ -1204,7 +1204,7 @@
                         data: JSON.stringify(data_),
                         type: "POST",
                         contentType: "application/json",
-                        headers: {Authorization: `${localStorage.getItem("user-token")}`},
+                        headers: {Authorization: Bearer `${localStorage.getItem("user-token")}`},
                         success: function (data) {
                             var currentPathName = window.location.pathname;
                             window.location.replace(currentPathName + "?lesson_id=" + data.id);
@@ -1237,7 +1237,7 @@
                         crossDomain: true,
                         crossOrigin: true,
                         type: "GET",
-                        headers: {Authorization: `${localStorage.getItem("user-token")}`},
+                        headers: {Authorization: Bearer `${localStorage.getItem("user-token")}`},
                     }).done((response2) => {
                         for (var lesson of response2) {
                             if (lesson.lesson_name === "") {
@@ -1253,7 +1253,7 @@
                         type: "GET",
                         crossDomain: true,
                         contentType: "application/json",
-                        headers: {Authorization: `Token ${localStorage.getItem("user-token")}`},
+                        headers: {Authorization: `Bearer ${localStorage.getItem("user-token")}`},
                         success: function (response) {
                             var flashcards = response.flashcards;
                             var i = 0;

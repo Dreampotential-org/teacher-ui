@@ -12,7 +12,7 @@ $(document).ready(function () {
                 crossDomain: true,
                 crossOrigin: true,
                 type: 'GET',
-              //   headers: { Authorization: `${localStorage.getItem('user-token')}` },
+              //   headers: { Authorization: Bearer `${localStorage.getItem('user-token')}` },
               }).done((response2) => {
                 console.log("response => ",response2);
                

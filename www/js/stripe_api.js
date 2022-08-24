@@ -7,7 +7,7 @@ $(document).ready(() => {
         url: SERVER + "store_stripe/check_connection/",
         type: "GET",
         headers: {
-            Authorization: `${localStorage.getItem("user-token")}`,
+            Authorization: Bearer `${localStorage.getItem("user-token")}`,
         },
         success: function (res) {
             console.log(res);
@@ -29,7 +29,7 @@ $(document).ready(() => {
             url: SERVER + "store_stripe/connect/",
             type: "GET",
             headers: {
-                Authorization: `${localStorage.getItem("user-token")}`,
+                Authorization: Bearer `${localStorage.getItem("user-token")}`,
             },
             success: (res) => {
                 console.log({res})
@@ -64,7 +64,7 @@ $(document).ready(() => {
             url: SERVER + "store_stripe/disconnect/",
             type: "POST",
             headers: {
-                Authorization: `${localStorage.getItem("user-token")}`,
+                Authorization: Bearer `${localStorage.getItem("user-token")}`,
             },
             success: (res) => {
                 console.log(res);
@@ -90,7 +90,7 @@ $(document).ready(() => {
             url: SERVER + "store_stripe/onboarding_complete/",
             type: "POST",
             headers: {
-                Authorization: `${localStorage.getItem("user-token")}`,
+                Authorization: Bearer `${localStorage.getItem("user-token")}`,
             },
             success: (res) => {
                 window.location.href = "userProfile.html";

@@ -227,7 +227,7 @@ function Submit(){
       crossDomain: true,
       crossOrigin: true,
       type: "GET",
-      headers: { Authorization: `${localStorage.getItem("user-token")}` },
+      headers: { Authorization: Bearer `${localStorage.getItem("user-token")}` },
     })
     .done((response) => {
         console.log("🚀 ~ file: settings.html ~ line 229 ~ response", response);
@@ -654,7 +654,7 @@ function init() {
                 mimeType: "multipart/form-data",
                 data: form,
                 headers: {
-                  Authorization: localStorage.getItem("token"),
+                  Authorization: Bearer localStorage.getItem("token"),
                 },
               };
               $.ajax(settings)
@@ -777,7 +777,7 @@ function init() {
                 mimeType: "multipart/form-data",
                 data: form,
                 headers: {
-                  Authorization: localStorage.getItem("token"),
+                  Authorization: Bearer localStorage.getItem("token"),
                 },
               };
               $.ajax(settings)
@@ -1351,7 +1351,7 @@ function handleVideoUpload(key, data) {
     enctype: "multipart/form-data",
     data: form,
     headers: {
-      Authorization: localStorage.getItem("token"),
+      Authorization: Bearer localStorage.getItem("token"),
     },
   };
 
@@ -1440,7 +1440,7 @@ function handleImageUpload(key, id, data) {
     enctype: "multipart/form-data",
     data: form,
     headers: {
-      Authorization: localStorage.getItem("token"),
+      Authorization: Bearer localStorage.getItem("token"),
     },
   };
 
@@ -1595,7 +1595,7 @@ function start() {
         contentType: "application/json; charset=utf-8",
         processData: false,
         headers: {
-          Authorization: localStorage.getItem('user-token'),
+          Authorization: Bearer localStorage.getItem('user-token'),
         },
         success: function (response) {
           console.log("🚀 ~ file: gps_session.html ~ line 1856 ~ response", response.status);
@@ -1624,7 +1624,7 @@ function start() {
         contentType: "application/json; charset=utf-8",
         processData: false,
         headers: {
-          Authorization: localStorage.getItem('user-token'),
+          Authorization: Bearer localStorage.getItem('user-token'),
         },
         success: function (response) {
           console.log("🚀 ~ file: gps_session.html ~ line 1884 ~ response", response);

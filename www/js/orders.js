@@ -35,7 +35,7 @@ $(document).ready(function () {
     // "mimeType": "multipart/form-data",
     // "data": form,
     headers: {
-      Authorization: localStorage.getItem('user-token'),
+      Authorization: Bearer localStorage.getItem('user-token'),
     },
   };
   $.ajax(settings)

@@ -65,7 +65,7 @@ function getAllLessons() {
     crossDomain: true,
     crossOrigin: true,
     type: "GET",
-    headers: { Authorization: `${localStorage.getItem("user-token")}` },
+    headers: { Authorization: Bearer `${localStorage.getItem("user-token")}` },
   }).done((response2) => {
     for (var lesson of response2) {
       $("#select_lesson").append(
@@ -446,7 +446,7 @@ function uploadFile(fileType) {
     mimeType: "multipart/form-data",
     data: form,
     headers: {
-      Authorization: localStorage.getItem("token"),
+      Authorization: Bearer localStorage.getItem("token"),
     },
   };
 
@@ -485,7 +485,7 @@ function uploadFile(fileType) {
       mimeType: "multipart/form-data",
       data: form,
       headers: {
-        Authorization: localStorage.getItem("token"),
+        Authorization: Bearer localStorage.getItem("token"),
       },
     };
 
@@ -1482,7 +1482,7 @@ function addStripePayment(isNew, id, price, checked, posU) {
     url: SERVER + "store_stripe/check_connection/",
     type: "GET",
     headers: {
-      Authorization: `${localStorage.getItem("user-token")}`,
+      Authorization: Bearer `${localStorage.getItem("user-token")}`,
     },
     success: function (res) {
       $("#form-stripe-connect").hide();
@@ -2126,7 +2126,7 @@ function sendUpdates() {
         data: JSON.stringify(data_),
         type: "POST",
         contentType: "application/json",
-        headers: { Authorization: `${localStorage.getItem("user-token")}` },
+        headers: { Authorization: Bearer `${localStorage.getItem("user-token")}` },
         success: function (data) {
           var currentPathName = window.location.pathname;
           window.location.replace(currentPathName + "?lesson_id=" + data.id);
@@ -2154,7 +2154,7 @@ function sendUpdates() {
         url: SERVER + "courses_api/lesson/update/" + lesson_id + "/",
         data: JSON.stringify(data_),
         type: "POST",
-        headers: { Authorization: `${localStorage.getItem("user-token")}` },
+        headers: { Authorization: Bearer `${localStorage.getItem("user-token")}` },
         contentType: "application/json",
         success: function (data) {
           btn.attr("disabled", false);
@@ -2208,7 +2208,7 @@ $(document).ready(function () {
       type: "GET",
       crossDomain: true,
       contentType: "application/json",
-      headers: { Authorization: `Token ${localStorage.getItem("user-token")}` },
+      headers: { Authorization: `Bearer ${localStorage.getItem("user-token")}` },
       success: function (response) {
         console.log(response);
         if (params) {
@@ -2590,7 +2590,7 @@ $(document).ready(function () {
         url: SERVER + "/courses_api/invite/response",
         type: "POST",
         headers: {
-          Authorization: `${localStorage.getItem("user-token")}`,
+          Authorization: Bearer `${localStorage.getItem("user-token")}`,
         },
         data: {
           params: params,
@@ -2816,7 +2816,7 @@ function openAddToClassModal() {
     url: SERVER + "students_list/get/class/",
     type: "GET",
     headers: {
-      Authorization: `${localStorage.getItem("user-token")}`,
+      Authorization: Bearer `${localStorage.getItem("user-token")}`,
     },
   })
     .done((cls) => {
@@ -2864,7 +2864,7 @@ function addToSelectedClass() {
     data: data,
     type: "POST",
     headers: {
-      Authorization: `Token ${localStorage.getItem("user-token")}`,
+      Authorization: `Bearer ${localStorage.getItem("user-token")}`,
     },
   })
     .done((res) => {

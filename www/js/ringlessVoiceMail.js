@@ -253,7 +253,8 @@ const createDownloadLink = (blob) => {
 			processData: false,
 			method: 'POST',
 			type: 'POST', // For jQuery < 1.9
-			headers: { "Authorization": "Token "+`${localStorage.getItem('user-token')}` }
+			headers: { "Authorization": "Bearer "+`${localStorage.getItem('user-token')}` }
+
 			
 			
 		}).done( function (response) {
@@ -328,7 +329,7 @@ $(document).on("click","#remove_voice_msgs_btn",function(){
 		data : {
 			"voice_id" : voice_id
 		},
-		headers: { "Authorization": "Token "+`${localStorage.getItem('user-token')}` }
+		headers: { "Authorization": "Bearer "+`${localStorage.getItem('user-token')}` }
    }).done( (response)=> {
 
 		getVoicemailList();
@@ -367,7 +368,7 @@ const getVoicemailList = () => {
 		crossOrigin: true,
 		type: "GET",
 		contentType : 'json',
-		headers: { "Authorization": "Token "+`${localStorage.getItem('user-token')}` }
+		headers: { "Authorization": "Bearer "+`${localStorage.getItem('user-token')}` }
 	  }).done( (response) => {
 		  console.log(response)
 		  if(response.message == "success")
@@ -420,7 +421,7 @@ $(document).on("click", "#sendVoiceMail", function(){
 			voice_id : voice_id,
 			receiver : receiver
 		},
-		headers: { "Authorization": "Token "+`${localStorage.getItem('user-token')}` }
+		headers: { "Authorization": "Bearer "+`${localStorage.getItem('user-token')}` }
 	  }).done( (response) => {
 		  console.log(response)
 		  swal({	

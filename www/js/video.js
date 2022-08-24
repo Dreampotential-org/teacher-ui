@@ -19,7 +19,7 @@ function handleVideoUpload() {
       enctype: 'multipart/form-data',
       data: form,
       headers: {
-        Authorization: localStorage.getItem('token'),
+        Authorization: Bearer localStorage.getItem('token'),
       },
     }
 
