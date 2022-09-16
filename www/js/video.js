@@ -11,7 +11,7 @@ function handleVideoUpload() {
     var settings = {
       async: true,
                  "crossDomain": true,
-      url: SERVER + '/s3_uploader/upload',
+      url: SERVER + '/profile/upload',
       method: 'POST',
       type: 'POST',
       processData: false,

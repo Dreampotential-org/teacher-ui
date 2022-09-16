@@ -34,7 +34,7 @@ $(document).ready(function() {
         ev.preventDefault();
 
         $.ajax({
-            url: SERVER + "s3_uploader/user/register/",
+            url: SERVER + "profile/user/register/",
             type: "post",
             data: $(this).serialize(),
             success: function(response) {
@@ -73,7 +73,7 @@ $(document).ready(function() {
         });
 
         $.ajax({
-            url: SERVER + "s3_uploader/user/login",
+            url: SERVER + "profile/user/login",
             type: "post",
             async: true,
             crossDomain: true,
@@ -113,7 +113,7 @@ $(document).ready(function() {
         ev.preventDefault();
 
         $.ajax({
-            url: SERVER + "s3_uploader/user/password_reset/",
+            url: SERVER + "profile/user/password_reset/",
             type: "post",
             data: $(this).serialize(),
             success: function(response) {
@@ -142,7 +142,7 @@ $(document).ready(function() {
         console.log("passwordResetConfirmForm submit");
 
         $.ajax({
-            url: SERVER + "s3_uploader/user/password_reset/confirm/",
+            url: SERVER + "profile/user/password_reset/confirm/",
             type: "post",
             data: $(this).serialize(),
             success: function(response) {
@@ -298,7 +298,7 @@ function signup_api(params) {
     var settings = {
         async: true,
         crossDomain: true,
-        url: SERVER + "s3_uploader/user/register",
+        url: SERVER + "profile/user/register",
         method: "POST",
         processData: false,
         contentType: false,
