@@ -431,9 +431,9 @@ function get_all_active_numbers(callback) {
 
 
 
-document.addEventListener("DOMContentLoaded",filterTable);
+// document.addEventListener("DOMContentLoaded", filterTable);
 
-function filterTable(){
+function filterTable() {
 	var inputFilter = document.getElementById("txtFind"); // get input type of text
 	var bodyRow 	= document.getElementById("lead_table").getElementsByTagName("tbody")[0];  // find Body Row Table
 	var rowTable    = bodyRow.getElementsByTagName("tr");	// get all of the rows
