@@ -20,9 +20,9 @@ function set_server() {
         WEBSOCKET_HOST = 'wss://localhost:8040';
     }
     else {
-        SERVER = 'https://api.dreampotential.org/';
-        HOST = 'api.dreampotential.org';
-        WEBSOCKET_HOST = 'wss://api.dreampotential.org';
+        SERVER = 'https://py-api.dreampotential.org/';
+        HOST = 'py-api.dreampotential.org';
+        WEBSOCKET_HOST = 'wss://py-api.dreampotential.org';
     }
 };
 set_server()
