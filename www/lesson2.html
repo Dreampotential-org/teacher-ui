@@ -1234,7 +1234,7 @@
                         crossDomain: true,
                         crossOrigin: true,
                         type: "GET",
-                        headers: {"Authorization": "Bearer" + localStorage.getItem("user-token")},
+                        headers: {"Authorization": "Bearer " + localStorage.getItem("user-token")},
                     }).done((response2) => {
                         for (var lesson of response2) {
                             if (lesson.lesson_name === "") {
@@ -1250,7 +1250,7 @@
                         type: "GET",
                         crossDomain: true,
                         contentType: "application/json",
-                        headers: {Authorization: `Bearer ${localStorage.getItem("user-token")}`},
+                        headers: {"Authorization": "Bearer " + localStorage.getItem("user-token")},
                         success: function (response) {
                             var flashcards = response.flashcards;
                             var i = 0;
