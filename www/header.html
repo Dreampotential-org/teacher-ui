@@ -194,133 +194,6 @@
     </ul>
 </div>
 
-<!-- firebase -->
-<!-- <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script> -->
-<script>
-    //fcm message
-    var messageOnPageStatus = false;
-    var currentMsgconversation = "";
-    var firebaseConfig = {
-                apiKey: "AIzaSyAsotQdxTiETNT94d-EUyjueGGAyM-aRFw",
-                authDomain: "aarondemo-b213d.firebaseapp.com",
-                projectId: "aarondemo-b213d",
-                storageBucket: "aarondemo-b213d.appspot.com",
-                messagingSenderId: "1013731266865",
-                appId: "1:1013731266865:web:f8bacd1cbdd272b672a010",
-                measurementId: "G-DX5BTFPW0D"
-            };
-            firebase.initializeApp(firebaseConfig);
-            const messaging=firebase.messaging();
-
-            async function IntitalizeFireBaseMessaging() {
-                await messaging
-                    .requestPermission()
-                    .then(function () {
-                        console.log("Notification Permission");
-                        return messaging.getToken();
-                    })
-                    .then(async function (token) {
-                        console.log("Token : "+token);
-                        // await StoreFCMToken(token);
-                        if(messageOnPageStatus == true){
-                            setMessages(); 
-                        }
-                        // document.getElementById("token").innerHTML=token;
-                    })
-                    .catch(function (reason) {
-                        console.log(reason);
-                    });
-            }
-
-            messaging.onMessage(function (payload) {
-                console.log(payload);
-                // console.log(payload['data'].conversation_id);
-                console.log("payload",messageOnPageStatus);
-                if(messageOnPageStatus == true){
-                    console.log("payload11111",currentMsgconversation,"-----",payload['data'].conversation_id);
-                    if(payload['data'].conversation_id == currentMsgconversation){
-                        console.log("payload222222",payload['data'].conversation_id,payload['data'].recipient_id,payload['data'].user_id);
-                        getAllMessages(payload['data'].conversation_id,payload['data'].recipient_id,payload['data'].user_id)
-                        
-                    }
-                }
-                // const notificationOption={
-                //     // body:payload.notification.body,
-                //     body:"onMessage",
-                //     // icon:payload.notification.icon
-                // };
-
-                // if(Notification.permission==="granted"){
-                //     var notification=new Notification(payload.notification.title,notificationOption);
-
-                //     notification.onclick=function (ev) {
-                //         ev.preventDefault();
-                //         window.open(payload.notification.click_action,'_blank');
-                //         notification.close();
-                //     }
-                // }
-
-            });
-            messaging.onTokenRefresh(function () {
-                messaging.getToken()
-                    .then(function (newtoken) {
-                        console.log("New Token : "+ newtoken);
-                    })
-                    .catch(function (reason) {
-                        console.log(reason);
-                    })
-            })
-            IntitalizeFireBaseMessaging();
-
-            // async pasrseStringPromise(str){
-            // return new Promise((resolve,reject)=>{
-            //     parseString(str, function (err, result) {
-            //         if (err) reject(err);
-            //         // resolve(result['soapenv:Envelope']['env:Body'][0]['tns:GetPersonImageSecondResponse'][0]['tns:portrait'][0]);
-            //         resolve(result['soapenv:Envelope']['env:Body'][0]['tns:personProfile'][0]['tns:portrait'][0]);
-            //     });
-            //     });
-            // }
-
-            async function StoreFCMToken(token){
-                return new Promise((resolve,reject)=>{
-                    var formData_StoreFCMToken = new FormData();
-                    formData_StoreFCMToken.append("FCMtoken", token)
-                    var settings_StoreFCMToken = {
-                        "async": true,
-                        "crossDomain": true,
-                        "url": SERVER + 'store/StoreFCMToken',
-                        "method": "POST",
-                        "type": "POST",
-                        "processData": false,
-                        "contentType": false,
-                        // "mimeType": "multipart/form-data",
-                        "data": formData_StoreFCMToken,
-                        "headers": {
-                            "Authorization": localStorage.getItem("user-token")
-                        }
-                    };
-                $.ajax(settings_StoreFCMToken).done(function (resp) {
-                        // alert("fcm token store pass");
-                        console.log("fcm token store pass");
-                        console.log("response=",resp);
-                        resolve(resp)
-                    }).fail(function (resp) {
-                        reject(resp)
-                        console.log("fcm token store fail");
-                        swal({
-                            title: "Error!",
-                            text: "Store FCM Token is failed!",
-                            icon: "warning",
-                        });
-                        // StoreFCMToken(token);
-                    });
-                });
-                
-                }
-</script>
-
 <script>
 
     $(document).ready(function(){
@@ -330,15 +203,10 @@
             location.reload();
         });
 
-//            if (typeof (history.pushState) != "undefined") {
-//                var obj = { Page: $(this).attr('page'), Url: $(this).attr('page') + ".html" };
-//                history.pushState(obj, obj.Page, obj.Page);
-//            }
-
-            var page = $(this).attr('page') + ".html";
-            $("#page-container").load(page);
-            $(".sidebar").find(".active").removeClass("active");
-            $(this).parent().addClass("active");
+        var page = $(this).attr('page') + ".html";
+        $("#page-container").load(page);
+        $(".sidebar").find(".active").removeClass("active");
+        $(this).parent().addClass("active");
 
            
         });
