@@ -138,7 +138,7 @@ function gps_checkin() {
     mimeType: "multipart/form-data",
     data: form,
     headers: {
-      Authorization: Bearer localStorage.getItem("token"),
+      "Authorization": "Bearer " + localStorage.getItem("token"),
     },
   };
   $.ajax(settings)
@@ -208,7 +208,7 @@ function get_journal_list(callback) {
     contentType: false,
     mimeType: "multipart/form-data",
     headers: {
-      Authorization: Bearer localStorage.getItem("token"),
+      "Authorization": "Bearer " + localStorage.getItem("token"),
     },
   };
   $.ajax(settings)

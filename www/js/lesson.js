@@ -65,7 +65,7 @@ function getAllLessons() {
     crossDomain: true,
     crossOrigin: true,
     type: "GET",
-    headers: { Authorization: Bearer `${localStorage.getItem("user-token")}` },
+    headers: {"Authorization": "Bearer " + localStorage.getItem("user-token")},
   }).done((response2) => {
     for (var lesson of response2) {
       $("#select_lesson").append(
@@ -446,7 +446,7 @@ function uploadFile(fileType) {
     mimeType: "multipart/form-data",
     data: form,
     headers: {
-      Authorization: Bearer localStorage.getItem("token"),
+      "Authorization": "Bearer " + localStorage.getItem("token"),
     },
   };
 
@@ -485,7 +485,7 @@ function uploadFile(fileType) {
       mimeType: "multipart/form-data",
       data: form,
       headers: {
-        Authorization: Bearer localStorage.getItem("token"),
+        "Authorization": "Bearer " + localStorage.getItem("token"),
       },
     };
 
