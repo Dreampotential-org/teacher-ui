@@ -3,8 +3,8 @@
 ```
 How to start dev env
 
-./script/start-dev.sh
-start webservice - localhost:8087
+./script/start.sh
+start webservice - localhost:8086
 
 ```
 
