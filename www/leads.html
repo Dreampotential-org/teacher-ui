@@ -152,7 +152,7 @@
                                         </section>
                                         
 
-                                        <div class="table-div">     
+                                        <div class="table-div">
                                              <table id="lead_table">
                                                   <thead>
                                                   <tr>
@@ -687,7 +687,7 @@
                          crossDomain : true,
                          crossOrigin : true,
                          type : 'GET',
-                         headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+                         headers: { "Authorization": "Bearer " + localStorage.getItem('user-token')}
                     }).done( (response)=> {
                          document.getElementById("lead_loader").remove();
                          response = (response).replaceAll(NaN,'""')
@@ -720,9 +720,9 @@
                                              $('#table_filter').detach().show()
                                         );
                                         $('#table_filter select').on('change', function(){
-                                             table.search(this.value).draw();   
+                                             table.search(this.value).draw(); 
                                         });
-                                   }, 
+                                   },
                               columnDefs: [{
                                    orderable: false,
                                    className: 'select-checkbox',
@@ -764,8 +764,8 @@
                          "contentType": false,
                          "mimeType": "multipart/form-data",
                          "data": form,
-                         "headers": {	
-                              "Authorization": `${localStorage.getItem('user-token')}`	
+                         "headers": {
+                              "Authorization": "Bearer " + localStorage.getItem('user-token')
                          },
                     };
                     $.ajax(settings).done(function (response) {
@@ -816,7 +816,7 @@
                     // SERVER = "http://127.0.0.1:8000/"
                     pk = $('#deleteLead').val()
                     $.ajax({
-                         url : SERVER + "voip/api_voip/getlead",
+                         url : SERVER + "voip/api_voip/getlead/",
                          async : true,
                          crossDomain : true,
                          crossOrigin : true,
@@ -824,7 +824,7 @@
                          data : {
                               'pk' : pk,
                          },
-                         headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+                         headers: { "Authorization": "Bearer " + localStorage.getItem('user-token')}
                     }).done( () => {
                          swal({	
                               title: " lead Deleted",
@@ -861,19 +861,19 @@
                               'pk' : pk,
                               'first_name' : first_name,
                               'last_name' : last_name,
-                              'phone' : phone, 
-                              'email' : email, 
-                              'state' : state, 
-                              'ask' : ask, 
+                              'phone' : phone,
+                              'email' : email,
+                              'state' : state,
+                              'ask' : ask,
                               'notes' : notes,
                               'url' : url,
                               'status' : status,
                          },
-                         headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+                         headers: { "Authorization": "Bearer " + localStorage.getItem('user-token') }
                     }).done( () => {
-                         swal({	
+                         swal({
                               title: "edit saved",
-                              text: "You have successfully edited lead",	
+                              text: "You have successfully edited lead",
                               icon: "success",
                               timer: 2000
                          })
@@ -916,7 +916,7 @@
                                         crossDomain : true,
                                         crossOrigin : true,
                                         type : "DELETE",
-                                        headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+                                        headers: { "Authorization": "Bearer " + localStorage.getItem('user-token')}
                                    }).done( () => {
                                         swal({	
                                              title: "multiple leads Deleted",
@@ -986,11 +986,11 @@
                               'notes' : notes,
                               'new_url' : new_url,
                          },
-                         headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+                         headers: { "Authorization": "Bearer " + localStorage.getItem('user-token')}
                     }).done( () => {
-                         swal({	
+                         swal({
                               title: "leads saved",
-                              text: "You have successfully saved leads",	
+                              text: "You have successfully saved leads",
                               icon: "success",
                               timer: 2000
                          })
@@ -1263,7 +1263,7 @@
                               "status" : status,
                               "last_dial_number" : your_num
                          },
-                         headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+                         headers: { "Authorization": "Bearer " + localStorage.getItem('user-token')}
                     }).done( () => {
                          console.log("done")
                          swal({	
