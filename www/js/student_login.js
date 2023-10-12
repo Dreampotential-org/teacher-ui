@@ -32,7 +32,6 @@ $(document).ready(function() {
 
     $("#signUpForm").on("submit", function(ev) {
         ev.preventDefault();
-
         $.ajax({
             url: SERVER + "profile/user/register/",
             type: "post",
@@ -40,6 +39,7 @@ $(document).ready(function() {
             success: function(response) {
                 // Whatever you want to do after the form is successfully submitted
                 console.log(response);  
+                console.log(response, 'this is LOGIN response');
                 loginResponse = response;
                 localStorage.setItem("user-token", response.token);
 
@@ -82,8 +82,10 @@ $(document).ready(function() {
             success: function(response) {
                 // Whatever you want to do after the form is successfully submitted
                 loginResponse = response;
-                localStorage.setItem("user-token", response.token);
-
+                // console.log(response.response.token, 'this is LOGIN response');
+                var token = response.token;
+                console.log(token, 'babu');
+                localStorage.setItem("user-token", token);
                 swal({
                     title: "Welcome " + response.user.name + "!",
                     text: "You are logged in.",
@@ -92,10 +94,10 @@ $(document).ready(function() {
                     timer: 1000,
                 });
 
-                // displayPage("dashboard");
+                displayPage("dashboard");
                 window.curr_user = response.user;
                 if(response.is_teacher)
-                    window.location.replace("student_dashboard.html"); //replace with teacher dashboard when designed
+                    window.location.replace("student_dashboard.html");
                 else
                     window.location.replace("student/dashboard.html"); 
             },
@@ -111,7 +113,6 @@ $(document).ready(function() {
 
     $("#passwordResetForm").on("submit", function(ev) {
         ev.preventDefault();
-
         $.ajax({
             url: SERVER + "profile/user/password_reset/",
             type: "post",

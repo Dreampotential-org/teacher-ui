@@ -7,26 +7,26 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"
-    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
     <!-- user.html JS, CSS start -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
     <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
     <!-- user.html JS, CSS end -->
-    
+
     <link rel="stylesheet" href="../css/dashboard.css" />
     <link rel="stylesheet" href="../css/sidebar.css" />
     <link rel="stylesheet" href="../css/setting.css" />
@@ -35,17 +35,17 @@
     <link rel="stylesheet" href="../css/administration.css" />
     <link rel="stylesheet" href="../css/student_list.css" />
     <link rel="stylesheet" href="../css/lesson_list.css" />
-    
+
     <script src="../js/main.js"></script>
     <!--<script src="js/student_lesson.js"></script>-->
-    
+
     <style>
         .p-0 .container-fluid {
             padding-left: 0px !important;
             padding-right: 0px !important;
         }
     </style>
-    
+
     <script>
         function myFunction() {
             var x = document.getElementById("myLinks");
@@ -72,36 +72,36 @@
                                 <div class="col-md-12">
                                     <p class="list-of-students">Lesson Pannel</p>
                                     <div class="col-sm-12 d-flex justify-content-between align-items-center">
-                                        <a href="#" data-toggle="modal" data-target="#userModal" class="text-2xl font-extrabold text-cblue-500 cursor-pointer">
+                                        <a href="#" data-toggle="modal" data-target="#userModal"
+                                            class="text-2xl font-extrabold text-cblue-500 cursor-pointer">
                                             <!-- <i class="fa fa-plus-circle mr-2"></i> -->
                                             <!-- Lessons -->
                                         </a>
-                                        <a href="#" id="class-id"  class="text-2xl font-extrabold text-cblue-500 cursor-pointer ml-auto"><i class="fa fa-plus-circle mr-2"></i>
-                                            Class id: 
+                                        <a href="#" id="class-id"
+                                            class="text-2xl font-extrabold text-cblue-500 cursor-pointer ml-auto"><i
+                                                class="fa fa-plus-circle mr-2"></i>
+                                            Class id:
                                         </a>
                                     </div>
                                     <hr>
                                     <div id="lessonLoader" class="d-flex justify-content-center">
                                         <svg style="height: auto; width: 120px;" version="1.1"
-                                             xmlns="http://www.w3.org/2000/svg"
-                                             xmlns:xlink="http://www.w3.org/1999/xlink"
-                                             viewBox="25 25 50 50">
-                                        <circle cx="50" cy="50" r="20" fill="none" stroke-width="5"
-                                                stroke="#132644" stroke-linecap="round"
-                                                stroke-dashoffset="0" stroke-dasharray="100, 200">
-                                        <animateTransform attributeName="transform"
-                                                          attributeType="XML" type="rotate" from="0 50 50"
-                                                          to="360 50 50" dur="2.5s" repeatCount="indefinite" />
-                                        <animate attributeName="stroke-dashoffset"
-                                                 values="0;-30;-124" dur="1.25s"
-                                                 repeatCount="indefinite" />
-                                        <animate attributeName="stroke-dasharray"
-                                                 values="0,200;110,200;110,200" dur="1.25s"
-                                                 repeatCount="indefinite" />
-                                        </circle>
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="25 25 50 50">
+                                            <circle cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke="#132644"
+                                                stroke-linecap="round" stroke-dashoffset="0"
+                                                stroke-dasharray="100, 200">
+                                                <animateTransform attributeName="transform" attributeType="XML"
+                                                    type="rotate" from="0 50 50" to="360 50 50" dur="2.5s"
+                                                    repeatCount="indefinite" />
+                                                <animate attributeName="stroke-dashoffset" values="0;-30;-124"
+                                                    dur="1.25s" repeatCount="indefinite" />
+                                                <animate attributeName="stroke-dasharray" values="0,200;110,200;110,200"
+                                                    dur="1.25s" repeatCount="indefinite" />
+                                            </circle>
                                         </svg>
                                     </div>
-                                </div>                                
+                                </div>
                                 <!-- <div class="col-md-3" id="lesson_listing">
                                     <div class="lesson_box">
                                         <p>Lesson 1</p>
@@ -123,7 +123,8 @@
                                             </li>
                                             <li class="page-item active"><a class="page-link" href="#">1</a></li>
                                             <li class="page-item">
-                                                <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+                                                <a class="page-link" href="#">2 <span
+                                                        class="sr-only">(current)</span></a>
                                             </li>
                                             <li class="page-item"><a class="page-link" href="#">3</a></li>
                                             <li class="page-item">
@@ -142,147 +143,147 @@
                                         <i class="fa fa-trash"></i> Delete
                                     </button>
                                 </div>
-                                
+
                                 <h2 class="text-center">
                                     <b id="userTitle">Update Lesson</b>
                                 </h2>
-                                
+
                                 <form class="pt-2 pt-3" id="upadetLesson">
                                     <div class="form-group">
                                         <label for="courseid">Couse Id</label>
                                         <input type="text" class="form-control" id="courseid" placeholder="Course Id"
-                                        disabled />
+                                            disabled />
                                     </div>
-                                    
+
                                     <div class="form-group">
                                         <label for="coursename">Course Name</label>
                                         <input type="text" class="form-control" id="coursename"
-                                        placeholder="Course Name" />
+                                            placeholder="Course Name" />
                                     </div>
                                     <button type="submit" class="btn btn-primary">
                                         Update
                                     </button>
                                 </form>
                             </div>
-                            
-                        </section>
-                        
-                        <div class="div-go-back">
-                            <button onclick="goBack()" class="btn">
-                                <i class="fa fa-chevron-left"></i> Back
-                            </button>
-                        </div>
-                        
-                        <!-- student builder -->
-                        <div class="div-student-builder">
-                        </div>
-                        <!-- End student builder -->
+
+                    </section>
+
+                    <div class="div-go-back">
+                        <button onclick="goBack()" class="btn">
+                            <i class="fa fa-chevron-left"></i> Back
+                        </button>
                     </div>
-                    
-                    
-                    <!-- Add User Modal -->
-                    <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Add Lesson</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form class="px-2">
-                                        <div class="form-group">
-                                            <label for="coursename">Course Name</label>
-                                            <input type="text" class="form-control" id="coursename"
-                                            placeholder="Course Name" />
-                                        </div>
-                                        <button type="button" onclick="addUser()" class="btn btn-primary float-right">
-                                            Submit
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+
+                    <!-- student builder -->
+                    <div class="div-student-builder">
                     </div>
-                    
-                    <!-- Add Phone number Modal -->
-                    <div class="modal fade" id="phoneModal" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Add Phone Number</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form class="px-2">
-                                        <div class="form-group">
-                                            <label for="phone">Phone</label>
-                                            <input type="number" class="form-control" id="phone" placeholder="Phone" />
-                                        </div>
-                                        
-                                        <button type="button" onclick="addPhone()" class="btn btn-primary float-right">
-                                            Submit
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End phone number modal -->
-                    
-                    <!-- Add Group Modal -->
-                    <div class="modal fade" id="groupModal" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 id="groupTitle" class="modal-title"></h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form class="px-2">
-                                        <div class="form-group">
-                                            <label for="grouplist">Select Group:</label>
-                                            <select class="form-control" id="grouplist">
-                                                <option>group1</option>
-                                                <option>group2</option>
-                                                <option>group3</option>
-                                            </select>
-                                        </div>
-                                        
-                                        <button type="button" onclick="addGroup()" class="btn btn-primary float-right">
-                                            Submit
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Group modal -->
-                    
-                    <form id="imageUploadForm" enctype="multipart/form-data" name="imageUploadForm">
-                        <input type="file" name="imageUpload" id="imageUpload" style="display: none"
-                        onchange="handleImageSelect(this)" required />
-                    </form>
-                    
-                    <form id="videoUploadForm" enctype="multipart/form-data" name="videoUploadForm">
-                        <input type="file" name="videoUpload" id="videoUpload" style="display: none"
-                        onchange="handleVideoSelect(this)" required />
-                    </form>
-                    
-                    <div id="sign-modal"></div>
+                    <!-- End student builder -->
                 </div>
+
+
+                <!-- Add User Modal -->
+                <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Add Lesson</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="px-2">
+                                    <div class="form-group">
+                                        <label for="coursename">Course Name</label>
+                                        <input type="text" class="form-control" id="coursename"
+                                            placeholder="Course Name" />
+                                    </div>
+                                    <button type="button" onclick="addUser()" class="btn btn-primary float-right">
+                                        Submit
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Phone number Modal -->
+                <div class="modal fade" id="phoneModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Add Phone Number</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="px-2">
+                                    <div class="form-group">
+                                        <label for="phone">Phone</label>
+                                        <input type="number" class="form-control" id="phone" placeholder="Phone" />
+                                    </div>
+
+                                    <button type="button" onclick="addPhone()" class="btn btn-primary float-right">
+                                        Submit
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End phone number modal -->
+
+                <!-- Add Group Modal -->
+                <div class="modal fade" id="groupModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 id="groupTitle" class="modal-title"></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="px-2">
+                                    <div class="form-group">
+                                        <label for="grouplist">Select Group:</label>
+                                        <select class="form-control" id="grouplist">
+                                            <option>group1</option>
+                                            <option>group2</option>
+                                            <option>group3</option>
+                                        </select>
+                                    </div>
+
+                                    <button type="button" onclick="addGroup()" class="btn btn-primary float-right">
+                                        Submit
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Group modal -->
+
+                <form id="imageUploadForm" enctype="multipart/form-data" name="imageUploadForm">
+                    <input type="file" name="imageUpload" id="imageUpload" style="display: none"
+                        onchange="handleImageSelect(this)" required />
+                </form>
+
+                <form id="videoUploadForm" enctype="multipart/form-data" name="videoUploadForm">
+                    <input type="file" name="videoUpload" id="videoUpload" style="display: none"
+                        onchange="handleVideoSelect(this)" required />
+                </form>
+
+                <div id="sign-modal"></div>
             </div>
         </div>
     </div>
-    
+    </div>
+
     <script>
         $("#sign-modal").load("../signature/index.html");
-        
+
         function signLesson(event, imgId, signInput) {
             if ($("#signature")) {
                 $("#signature").modal("show");
@@ -296,40 +297,41 @@
             });
         }
     </script>
-    
+
     <script>
         var userToken = localStorage.getItem("user-token");
         var user_lessons = [];
         var classList;
         var studentList;
-        
+
         if (userToken == null) {
             window.location.replace("../student_login.html");
         }
-        var classId = new URL(window.location.href).searchParams.get('classId'); 
+        var classId = new URL(window.location.href).searchParams.get('classId');
         function getParam(sParam) {
             return new URL(window.location.href).searchParams.get(sParam);
         }
-        
-        
+
+
         $("#body-row .collapse").collapse("hide");
-        
+
         // Collapse/Expand icon
         //$('#collapse-icon').addClass('fa-angle-double-left');
-        
+
         // Collapse click
         function left_sidebar() {
             SidebarCollapse();
+            $('.logoimg').toggleClass("d-none");
+            $('#cross').toggleClass("d-none");
         }
-        
         function SidebarCollapse() {
             $(".menu-collapsed").toggleClass("d-none");
             $(".sidebar-submenu").toggleClass("d-none");
             $(".submenu-icon").toggleClass("d-none");
+            $('#bar').toggleClass("d-block");
             $("#sidebar-container").toggleClass(
-            "sidebar-expanded sidebar-collapsed"
+                "sidebar-expanded sidebar-collapsed"
             );
-            
             // Treating d-flex/d-none on separators with title
             var SeparatorTitle = $(".sidebar-separator-title");
             if (SeparatorTitle.hasClass("d-flex")) {
@@ -337,30 +339,29 @@
             } else {
                 SeparatorTitle.addClass("d-flex");
             }
-            
             // Collapse/Expand icon
             //$('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
         }
-        
+
         function on(i) {
             // ${system_users[i].coursename}-
             $("#course").val(user_lessons[i].courseid)
             document.getElementById("overlay").style.display = "block";
         }
-        
+
         function off() {
             document.getElementById("overlay").style.display = "none";
         }
-        
+
         function editSystemUser(i) {
             location.href = 'lesson.html?lesson_id=' + i;
             // $("#tabDiv").hide();
             // $("#systemUserDetail").show();
-            
+
             // $("#courseid").val(user_lessons[i].courseid);
             // $("#coursename").val(user_lessons[i].coursename);
         }
-        
+
         function goBack() {
             $("#tabDiv").show();
             $("#systemUserDetail").hide();
@@ -368,7 +369,7 @@
             $(".div-go-back").hide();
             $("#tabs").show();
         }
-        
+
         function openModal(i) {
             if (i != -1) {
                 $("#groupTitle").text("Update Group");
@@ -377,42 +378,42 @@
                 $("#groupTitle").text("Add Group");
                 $("#grouplist").val("group1");
             }
-            
+
             $("#groupModal").modal();
         }
-        
-        
+
+
         function openStudentLesson(i) {
             // window.location.replace("student_lesson.html");
             // $(".div-student-builder").show();
             // $(".div-go-back").show();
             // $("#tabDiv").hide();
-            
+
             $(".div-student-builder").show();
             $(".div-student-builder").load("student_lesson.html");
             $(".div-go-back").show();
             $("#tabDiv").hide();
             $("#tabs").hide();
         }
-        
+
         function addLesson() {
         }
-        
+
         $(document).ready(function () {
             $("#left-sidebar").load("../sidebar.html");
             $("#page-header").load("../header.html");
-            if(classId)
-                $('#class-id').text('Class id: ' + classId);  
+            if (classId)
+                $('#class-id').text('Class id: ' + classId);
             else
                 $('#class-id').hide();
             $.ajax({
-                url: SERVER + "courses_api/class/lessons?class_id="+classId,
+                url: SERVER + "courses_api/class/lessons?class_id=" + classId,
                 // async: true,
                 crossDomain: true,
                 crossOrigin: true,
                 type: "GET",
-                headers: {"Authorization": `Token ${userToken}`}
-                
+                headers: { "Authorization": `Token ${userToken}` }
+
             }).done((questions) => {
                 // questions.forEach((q) => {
                 //     let tempArray = [];
@@ -428,9 +429,9 @@
                     let html = `<div class="col-md-3">
                         <div class="lesson_box">
                             <p>Lesson id: ${item.id}</p>
-                            <p>${!classId?'Class: '+item.classInfo.id + ' ('+item.classInfo.class_name+')':''}</p>
-                            <div class="lesson_name">${item.name||'No Name'}</div>
-                            <div class="fc_count">Flashcards: ${item.fc_count||0}</div>
+                            <p>${!classId ? 'Class: ' + item.classInfo.id + ' (' + item.classInfo.class_name + ')' : ''}</p>
+                            <div class="lesson_name">${item.name || 'No Name'}</div>
+                            <div class="fc_count">Flashcards: ${item.fc_count || 0}</div>
                             <div class="fcr_count">Flashcards answered: ${item.fcr_count}</div>
                             <div class="percent">Percent Completed: ${item.percent_completed}</div>
                             <div class="progress" style="margin-top:16px;">
@@ -449,256 +450,256 @@
                         </div>`;
                     $('#tabDiv').append(html);
 
-                    });
+                });
+
+                $.ajax({
+                    async: true,
+                    crossDomain: true,
+                    crossOrigin: true,
+                    url: SERVER + "students_list/get/class/",
+                    type: "GET",
+                    headers: {
+                        "Authorization": `${localStorage.getItem('user-token')}`
+                    }
+
+                }).done((cls) => {
+                    classList = cls;
+                    $.ajax({
+                        async: true,
+                        crossDomain: true,
+                        crossOrigin: true,
+                        url: SERVER + "students_list/get/students/",
+                        type: "GET",
+                        headers: {
+                            "Authorization": `${localStorage.getItem('user-token')}`
+                        }
+                    }).done((student) => {
+                        studentList = student;
+                    }).fail((err) => {
+                        alert('ERROR1')
+                    })
+                }).fail((fail) => {
+                    console.log(fail);
+                    alert('ERROR2');
+                })
+            }).fail((err) => {
+                alert('ERROR')
+            });
+
+            $("#tabDiv").show();
+            $(".div-student-builder").hide();
+            $(".div-go-back").hide();
+            $("#systemUserDetail").hide();
+        });
+
+        $("#upadetLesson").submit((event) => {
+            event.preventDefault()
+            $.ajax({
+                url: SERVER + "courses_api/lesson/all",
+                async: true,
+                crossDomain: true,
+                crossOrigin: true,
+                type: "PUT",
+                data: { lesson_id: $("#courseid").val(), lesson_name: $("#coursename").val() },
+                headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+
+            }).done(() => {
+                swal({
+                    title: "Updated",
+                    text: "You have successfully updated lesson name",
+                    icon: "success",
+                    timer: 2000
+                })
+                location.reload()
+            }).fail((err) => {
+                swal({
+                    title: "Not Exist",
+                    text: "somthing went wrong.",
+                    icon: "error",
+                    timer: 2000
+                });
+            })
+        })
+
+        $("#lessonDelete").click(() => {
+            $.ajax({
+                url: SERVER + "courses_api/lesson/all",
+                async: true,
+                crossDomain: true,
+                crossOrigin: true,
+                type: "DELETE",
+                data: { lesson_id: $("#courseid").val() },
+                headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+
+            }).done(() => {
+                swal({
+                    title: "Deleted",
+                    text: "You have successfully deleted lesson name",
+                    icon: "success",
+                    timer: 2000
+                })
+                location.reload()
+            }).fail((err) => {
+                swal({
+                    title: "Not Exist",
+                    text: "somthing went wrong.",
+                    icon: "error",
+                    timer: 2000
+                });
+                console.log(err)
+            })
+        })
+
+        $("#list").change(() => {
+            initValue = $("#list option:selected").val()
+            showContact(initValue)
+            if (initValue === 'Class') {
+                $("#classList").show();
+                $("#studentList").hide();
+                if ($("#classOption option").length === 1) {
+                    classList.forEach((item) => {
+                        $("#classOption").append($('<option>').val(item.id).text(item.class_name))
+                    })
+                }
+            } else if (initValue === 'Student') {
+                $("#studentList").show();
+                $("#classList").hide();
+                if ($("#studentOption option").length === 1) {
+                    studentList.forEach((item) => {
+                        $("#studentOption").append($('<option>').val(item.id).text(item.name))
+                    })
+                }
+            } else if (initValue === 'Select') {
+                $("#classList").hide();
+                $("#studentList").hide();
+                $("#send").hide();
+            }
+        })
+
+        function addUser() {
+            console.log("Add User");
+        }
+
+        function addPhone() {
+            console.log("Add Phone");
+        }
+
+        function addGroup() {
+            console.log("Add Group ", $("#grouplist").val());
+        }
+
+        function showContact(type) {
+            if (type !== 'Select') {
+                $("#contactList").show();
+                $("#send").show();
+            } else {
+                $("#contactList").hide();
+            }
+        }
+        $("#classOption").change(() => {
+            initClassValue = $("#classOption option:selected").val()
+            showContact(initClassValue)
+        })
+
+        $("#studentOption").change(() => {
+            initClassValue = $("#studentOption option:selected").val()
+            showContact(initClassValue)
+        })
+
+        $("#sendMailText").submit((event) => {
+            event.preventDefault()
+
+            if (document.getElementById("studentList").style.display === 'none') {
+                var classValue = $("#classOption option:selected").val()
+            }
+            if (document.getElementById("classList").style.display === 'none') {
+                var studentValue = $("#studentOption option:selected").val()
+            }
+            // var courseValue = $("#course").val()	
+            var courseURL = `https://teacher.dreampotential.org/slide.html?lesson_id=${$("#course").val()}`
+            var typeValue = $("#contactList option:selected").val()
+            if (classValue === 'Select' || studentValue === 'Select' || typeValue === 'Select') {
+                swal({
+                    title: "Warning",
+                    text: 'You must have to select Type,Class/Student and Send Email/Text',
+                    icon: "warning"
+                });
+            } else {
+
+
+                if (typeValue === 'Email') {
+                    $.ajax({
+                        async: true,
+                        crossDomain: true,
+                        crossOrigin: true,
+                        url: SERVER + "courses_api/invite/email",
+                        type: "POST",
+                        headers: {
+                            "Authorization": `${localStorage.getItem('user-token')}`
+                        },
+                        data: {
+                            "class": classValue,
+                            "student": studentValue,
+                            "lesson": $("#course").val(),
+                            "type": typeValue,
+                            "body": courseURL
+                        },
+                        success: () => {
+                            swal({
+                                title: "Sent Inivation",
+                                text: "You have sent successfully invitaion through Email",
+                                icon: "success"
+                            })
+
+                        },
+                        error: (err) => {
+                            swal({
+                                title: "Not Exist",
+                                text: err.responseJSON.msg,
+                                icon: "error"
+                            });
+                        }
+                    })
+
+                }
+                if (typeValue === 'Text') {
 
                     $.ajax({
                         async: true,
                         crossDomain: true,
                         crossOrigin: true,
-                        url: SERVER + "students_list/get/class/",
-                        type: "GET",
+                        url: SERVER + "courses_api/invite/text",
+                        type: "POST",
                         headers: {
                             "Authorization": `${localStorage.getItem('user-token')}`
-                        }
-                        
-                    }).done((cls) => {
-                        classList = cls;
-                        $.ajax({
-                            async: true,
-                            crossDomain: true,
-                            crossOrigin: true,
-                            url: SERVER + "students_list/get/students/",
-                            type: "GET",
-                            headers: {
-                                "Authorization": `${localStorage.getItem('user-token')}`
-                            }
-                        }).done((student) => {
-                            studentList = student;
-                        }).fail((err) => {
-                            alert('ERROR1')
-                        })
-                    }).fail((fail) => {
-                        console.log(fail);
-                        alert('ERROR2');
-                    })
-                }).fail((err) => {
-                    alert('ERROR')
-                });
-                
-                $("#tabDiv").show();
-                $(".div-student-builder").hide();
-                $(".div-go-back").hide();
-                $("#systemUserDetail").hide();
-            });
-            
-            $("#upadetLesson").submit((event) => {
-                event.preventDefault()
-                $.ajax({
-                    url: SERVER + "courses_api/lesson/all",
-                    async: true,
-                    crossDomain: true,
-                    crossOrigin: true,
-                    type: "PUT",
-                    data: {lesson_id: $("#courseid").val(), lesson_name: $("#coursename").val()},
-                    headers: {"Authorization": `${localStorage.getItem('user-token')}`}
-                    
-                }).done(() => {
-                    swal({
-                        title: "Updated",
-                        text: "You have successfully updated lesson name",
-                        icon: "success",
-                        timer: 2000
-                    })
-                    location.reload()
-                }).fail((err) => {
-                    swal({
-                        title: "Not Exist",
-                        text: "somthing went wrong.",
-                        icon: "error",
-                        timer: 2000
-                    });
-                })
-            })
-            
-            $("#lessonDelete").click(() => {
-                $.ajax({
-                    url: SERVER + "courses_api/lesson/all",
-                    async: true,
-                    crossDomain: true,
-                    crossOrigin: true,
-                    type: "DELETE",
-                    data: {lesson_id: $("#courseid").val()},
-                    headers: {"Authorization": `${localStorage.getItem('user-token')}`}
-                    
-                }).done(() => {
-                    swal({
-                        title: "Deleted",
-                        text: "You have successfully deleted lesson name",
-                        icon: "success",
-                        timer: 2000
-                    })
-                    location.reload()
-                }).fail((err) => {
-                    swal({
-                        title: "Not Exist",
-                        text: "somthing went wrong.",
-                        icon: "error",
-                        timer: 2000
-                    });
-                    console.log(err)
-                })
-            })
-            
-            $("#list").change(() => {
-                initValue = $("#list option:selected").val()
-                showContact(initValue)
-                if (initValue === 'Class') {
-                    $("#classList").show();
-                    $("#studentList").hide();
-                    if ($("#classOption option").length === 1) {
-                        classList.forEach((item) => {
-                            $("#classOption").append($('<option>').val(item.id).text(item.class_name))
-                            })
-                        }
-                    } else if (initValue === 'Student') {
-                        $("#studentList").show();
-                        $("#classList").hide();
-                        if ($("#studentOption option").length === 1) {
-                            studentList.forEach((item) => {
-                                $("#studentOption").append($('<option>').val(item.id).text(item.name))
-                                })
-                            }
-                        } else if (initValue === 'Select') {
-                            $("#classList").hide();
-                            $("#studentList").hide();
-                            $("#send").hide();
-                        }
-                    })
-                    
-                    function addUser() {
-                        console.log("Add User");
-                    }
-                    
-                    function addPhone() {
-                        console.log("Add Phone");
-                    }
-                    
-                    function addGroup() {
-                        console.log("Add Group ", $("#grouplist").val());
-                    }
-                    
-                    function showContact(type) {
-                        if (type !== 'Select') {
-                            $("#contactList").show();
-                            $("#send").show();
-                        } else {
-                            $("#contactList").hide();
-                        }
-                    }
-                    $("#classOption").change(() => {
-                        initClassValue = $("#classOption option:selected").val()
-                        showContact(initClassValue)
-                    })
-                    
-                    $("#studentOption").change(() => {
-                        initClassValue = $("#studentOption option:selected").val()
-                        showContact(initClassValue)
-                    })
-                    
-                    $("#sendMailText").submit((event) => {
-                        event.preventDefault()
-                        
-                        if (document.getElementById("studentList").style.display === 'none') {
-                            var classValue = $("#classOption option:selected").val()
-                        }
-                        if (document.getElementById("classList").style.display === 'none') {
-                            var studentValue = $("#studentOption option:selected").val()
-                        }
-                        // var courseValue = $("#course").val()	
-                        var courseURL = `https://teacher.dreampotential.org/slide.html?lesson_id=${$("#course").val()}`
-                        var typeValue = $("#contactList option:selected").val()
-                        if (classValue === 'Select' || studentValue === 'Select' || typeValue === 'Select') {
+                        },
+                        data: {
+                            "class": classValue,
+                            "student": studentValue,
+                            "lesson": $("#course").val(),
+                            "type": typeValue,
+                            "body": courseURL
+                        },
+                        success: () => {
                             swal({
-                                title: "Warning",
-                                text: 'You must have to select Type,Class/Student and Send Email/Text',
-                                icon: "warning"
+                                title: "Sent Inivation",
+                                text: "You have sent successfully invitaion through Text Message",
+                                icon: "success"
+                            })
+                        },
+                        error: (err) => {
+                            swal({
+                                title: "Not Exist",
+                                text: err.responseJSON.msg,
+                                icon: "error"
                             });
-                        } else {
-                            
-                            
-                            if (typeValue === 'Email') {
-                                $.ajax({
-                                    async: true,
-                                    crossDomain: true,
-                                    crossOrigin: true,
-                                    url: SERVER + "courses_api/invite/email",
-                                    type: "POST",
-                                    headers: {
-                                        "Authorization": `${localStorage.getItem('user-token')}`
-                                    },
-                                    data: {
-                                        "class": classValue,
-                                        "student": studentValue,
-                                        "lesson": $("#course").val(),
-                                        "type": typeValue,
-                                        "body": courseURL
-                                    },
-                                    success: () => {
-                                        swal({
-                                            title: "Sent Inivation",
-                                            text: "You have sent successfully invitaion through Email",
-                                            icon: "success"
-                                        })
-                                        
-                                    },
-                                    error: (err) => {
-                                        swal({
-                                            title: "Not Exist",
-                                            text: err.responseJSON.msg,
-                                            icon: "error"
-                                        });
-                                    }
-                                })
-                                
-                            }
-                            if (typeValue === 'Text') {
-                                
-                                $.ajax({
-                                    async: true,
-                                    crossDomain: true,
-                                    crossOrigin: true,
-                                    url: SERVER + "courses_api/invite/text",
-                                    type: "POST",
-                                    headers: {
-                                        "Authorization": `${localStorage.getItem('user-token')}`
-                                    },
-                                    data: {
-                                        "class": classValue,
-                                        "student": studentValue,
-                                        "lesson": $("#course").val(),
-                                        "type": typeValue,
-                                        "body": courseURL
-                                    },
-                                    success: () => {
-                                        swal({
-                                            title: "Sent Inivation",
-                                            text: "You have sent successfully invitaion through Text Message",
-                                            icon: "success"
-                                        })
-                                    },
-                                    error: (err) => {
-                                        swal({
-                                            title: "Not Exist",
-                                            text: err.responseJSON.msg,
-                                            icon: "error"
-                                        });
-                                    }
-                                })
-                            }
                         }
                     })
-                    
-                </script>
-            </body>
-            </html>
-            
+                }
+            }
+        })
+
+    </script>
+</body>
+
+</html>

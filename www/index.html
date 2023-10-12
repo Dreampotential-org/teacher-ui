@@ -1,91 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <title>Teacher Portal</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
-        <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.css">
-        <script src="node_modules/jquery/dist/jquery.js"/>
-        <script src="js/popper.min.js"/>
-        <script src="node_modules/bootstrap/dist/js/bootstrap.js"/>
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
-        <link rel="stylesheet" href="css/dashboard.css">
-        <link rel="stylesheet" href="css/sidebar.css">
-        <link rel="stylesheet" href="css/setting.css">
-        <link rel="stylesheet" href="css/sms.css">
-        <link rel="stylesheet" href="css/header.css">
-        <link rel="stylesheet" href="css/administration.css">
-        <link rel="stylesheet" href="css/student_login.css">
+<head>
+    <title>Teacher Portal</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.css">
+    <script src="node_modules/jquery/dist/jquery.js" />
+    <script src="js/popper.min.js" />
+    <script src="node_modules/bootstrap/dist/js/bootstrap.js" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/setting.css">
+    <link rel="stylesheet" href="css/sms.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/administration.css">
+    <link rel="stylesheet" href="css/student_login.css">
 
-        <script src="js/main.js"></script>
-        <script src="js/web_api.js"></script>
-        <script src="node_modules/chart.js/dist/Chart.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/web_api.js"></script>
+    <script src="node_modules/chart.js/dist/Chart.min.js"></script>
 
-      // <script>
-      //    google.maps.event.addDomListener(window, 'load', initialize);
-      // </script>
+    //
+    <script>
+        //    google.maps.event.addDomListener(window, 'load', initialize);
+        // </script>
 
-        <style>
-            .p-0 .container-fluid {
-                padding-left: 0px !important;
-                padding-right: 0px !important;
+    <style>
+        .p-0 .container-fluid {
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+        }
+    </style>
+
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myLinks");
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "block";
             }
-        </style>
+        }
+    </script>
 
-        <script>
-            function myFunction() {
-                var x = document.getElementById("myLinks");
-                if (x.style.display === "block") {
-                    x.style.display = "none";
-                } else {
-                    x.style.display = "block";
-                }
-            }
-        </script>
+</head>
 
-    </head>
-    <body>
-        <div id="page-container">
+<body>
+    <div id="page-container">
 
-        </div>
+    </div>
 
     </div>
     <!-- container -->
     <script>
 
-            $(document).ready(function () {
-                // $("#page-container").load('dashboard.html');
-                $("#page-container").load('student_login.html');
+        $(document).ready(function () {
+            // $("#page-container").load('dashboard.html');
+            $("#page-container").load('student_login.html');
 
-            });
+        });
 
-            // $('#body-row .collapse').collapse('hide');
+        // $('#body-row .collapse').collapse('hide');
 
+        // Collapse/Expand icon
+        //$('#collapse-icon').addClass('fa-angle-double-left');
+
+        // Collapse click
+        function left_sidebar() {
+            SidebarCollapse();
+            $('.logoimg').toggleClass("d-none");
+            $('#cross').toggleClass("d-none");
+        }
+        function SidebarCollapse() {
+            $(".menu-collapsed").toggleClass("d-none");
+            $(".sidebar-submenu").toggleClass("d-none");
+            $(".submenu-icon").toggleClass("d-none");
+            $('#bar').toggleClass("d-block");
+            $("#sidebar-container").toggleClass(
+                "sidebar-expanded sidebar-collapsed"
+            );
+            // Treating d-flex/d-none on separators with title
+            var SeparatorTitle = $(".sidebar-separator-title");
+            if (SeparatorTitle.hasClass("d-flex")) {
+                SeparatorTitle.removeClass("d-flex");
+            } else {
+                SeparatorTitle.addClass("d-flex");
+            }
             // Collapse/Expand icon
-            //$('#collapse-icon').addClass('fa-angle-double-left');
-
-            // Collapse click
-            function left_sidebar() {
-                SidebarCollapse();
-            }
-            function SidebarCollapse() {
-                $('.menu-collapsed').toggleClass('d-none');
-                $('.sidebar-submenu').toggleClass('d-none');
-                $('.submenu-icon').toggleClass('d-none');
-                $('#sidebar-container').toggleClass('sidebar-expanded sidebar-collapsed');
-
-                // Treating d-flex/d-none on separators with title
-                var SeparatorTitle = $('.sidebar-separator-title');
-                if (SeparatorTitle.hasClass('d-flex')) {
-                    SeparatorTitle.removeClass('d-flex');
-                } else {
-                    SeparatorTitle.addClass('d-flex');
-                }
-                // Collapse/Expand icon
-                //$('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
-            }
+            //$('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
+        }
     </script>
 
 </body>

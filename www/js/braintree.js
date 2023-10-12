@@ -17,17 +17,15 @@ function getParam(sParam) {
   }
 }
 
-
-
 $(document).ready(function () {
 
-$("#left-sidebar").load("sidebar.html");
-$("#page-header").load("header.html");
-$("#braintreeDiv").show();
-// $("#systemUserDetail").hide();
-// $("#buyItem").hide();
-// console.log("ajax call started");
-// var SERVER = 'http://127.0.0.1:8000/';
+  $("#left-sidebar").load("sidebar.html");
+  $("#page-header").load("header.html");
+  $("#braintreeDiv").show();
+  // $("#systemUserDetail").hide();
+  // $("#buyItem").hide();
+  // console.log("ajax call started");
+  // var SERVER = 'http://127.0.0.1:8000/';
 
   $("#braintree").submit((event) => {
     event.preventDefault()
@@ -49,7 +47,7 @@ $("#braintreeDiv").show();
       // "mimeType": "multipart/form-data",
       "data": braintree_form,
       "headers": {
-          "Authorization": localStorage.getItem("user-token")
+        "Authorization": localStorage.getItem("user-token")
       }
     };
     $.ajax(settings_add_braintree).done(function (response) {
@@ -59,14 +57,14 @@ $("#braintreeDiv").show();
         title: "success!",
         text: "Add Braintree Config is done!",
         icon: "success",
-        });
+      });
       location.reload()
     }).fail(function (response) {
-      console.log(response,"add Braintree Config Failed!");
+      console.log(response, "add Braintree Config Failed!");
       swal({
-          title: "Error!",
-          text: "Add Braintree Config is failed!",
-          icon: "warning",
+        title: "Error!",
+        text: "Add Braintree Config is failed!",
+        icon: "warning",
       });
     });
 
@@ -81,25 +79,27 @@ $("#body-row .collapse").collapse("hide");
 
 // Collapse/Expand icon
 //$('#collapse-icon').addClass('fa-angle-double-left');
-
 // Collapse click
 function left_sidebar() {
-SidebarCollapse();
+  SidebarCollapse();
+  $('.logoimg').toggleClass("d-none");
+  $('#cross').toggleClass("d-none");
 }
 function SidebarCollapse() {
-    $(".menu-collapsed").toggleClass("d-none");
-    $(".sidebar-submenu").toggleClass("d-none");
-    $(".submenu-icon").toggleClass("d-none");
-    $("#sidebar-container").toggleClass(
+  $(".menu-collapsed").toggleClass("d-none");
+  $(".sidebar-submenu").toggleClass("d-none");
+  $(".submenu-icon").toggleClass("d-none");
+  $('#bar').toggleClass("d-block");
+  $("#sidebar-container").toggleClass(
     "sidebar-expanded sidebar-collapsed"
-);
-
-// Treating d-flex/d-none on separators with title
-var SeparatorTitle = $(".sidebar-separator-title");
-if (SeparatorTitle.hasClass("d-flex")) {
+  );
+  // Treating d-flex/d-none on separators with title
+  var SeparatorTitle = $(".sidebar-separator-title");
+  if (SeparatorTitle.hasClass("d-flex")) {
     SeparatorTitle.removeClass("d-flex");
-} else {
+  } else {
     SeparatorTitle.addClass("d-flex");
-}
-
+  }
+  // Collapse/Expand icon
+  //$('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
 }

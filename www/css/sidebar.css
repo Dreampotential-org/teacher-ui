@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 
 /*-------------------------------- END ----*/
@@ -12,6 +11,7 @@
     min-height: 100%;
     background-color: #132644;
     padding: 0;
+    transition: width 0.8s;
     /* flex: unset; */
 }
 
@@ -20,14 +20,14 @@
 }
 
 .sidebar-collapsed {
-    /*width: 60px;*/
-    width: 100px;
+    /* width: 60px; */
+    width: 60px;
 }
 
 /* ----------| Menu item*/
 
 #sidebar-container .list-group a {
-    height: 50px;
+    /* height: 50px; */
     color: white;
 }
 
@@ -65,4 +65,9 @@
 
 a.bg-dark {
     background-color: #132644 !important;
+}
+
+.logoimg {
+    border-radius: 5px;
+    height: 40px;
 }
