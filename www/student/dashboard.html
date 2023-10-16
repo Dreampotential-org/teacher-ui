@@ -37,7 +37,7 @@
         <link rel="stylesheet" href="../css/lesson_list.css" />
 
         <script src="../js/main.js"></script>
-        <!--<script src="js/student_lesson.js"></script>-->
+        <!-- <script src="js/student_lesson.js"></script> -->
 
         <style>
             .p-0 .container-fluid {
@@ -541,7 +541,7 @@
                 crossOrigin: true,
                 type: "PUT",
                 data: {lesson_id: $("#courseid").val(), lesson_name: $("#coursename").val()},
-                                headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
+                headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
 
 
             }).done(() => {

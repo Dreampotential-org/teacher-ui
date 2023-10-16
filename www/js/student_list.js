@@ -88,7 +88,7 @@ $(document).ready(function() {
             <td>${item.name}</td>
             <td>${item.email}</td>
             <td>${item.phone}</td>
-            <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
+            <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit" style="background: #007bff"><i class="fa fa-pencil-square-o"></i></button></td>
             </tr>`);
         })
         table = $("#student-details-table").DataTable( {

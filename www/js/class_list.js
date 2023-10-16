@@ -119,15 +119,15 @@ function left_sidebar() {
                 $("#users-data").append(`<tr>
                 <td>${item.id}</td>
                 <td>${item.class_name}</td>
-                <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
+                <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit" style="background: #007bff"><i class="fa fa-pencil-square-o"></i></button>
                 &nbsp
-                <button onclick="editSystemStudent('${i}','${item.id}')" class="btn btn-primary btn-edit"><i class="fa fa-list"></i></button>
+                <button onclick="editSystemStudent('${i}','${item.id}')" class="btn btn-primary btn-edit" style="background: #007bff"><i class="fa fa-list"></i></button>
                 &nbsp
-                <button class="btn btn-primary btn-edit" onclick="showEmail('${i}')"><i class="fa fa-envelope"></i></button>
+                <button class="btn btn-primary btn-edit" onclick="showEmail('${i}')" style="background: #007bff"><i class="fa fa-envelope"></i></button>
                 &nbsp
-                <button class="btn btn-primary btn-edit" onclick="showText('${i}')"><i class="fa fa-comment"></i></button>
+                <button class="btn btn-primary btn-edit" onclick="showText('${i}')" style="background: #007bff"><i class="fa fa-comment"></i></button>
                 &nbsp
-                <button class="btn btn-primary btn-edit" onclick="showClassLink('${i}')"><i class="fa fa-link"></i></button>
+                <button class="btn btn-primary btn-edit" onclick="showClassLink('${i}')" style="background: #007bff"><i class="fa fa-link"></i></button>
                 </td>
                 </tr>`);
             })
@@ -262,6 +262,7 @@ function left_sidebar() {
     })
     
     $("#updateClass").on('click', () => {
+        console.log('----------------');
         data_ = {
             "id" : $("#classid").val(),
             "class_name" : $("#classname").val(),
@@ -271,7 +272,7 @@ function left_sidebar() {
             data: JSON.stringify(data_),
             contentType: 'application/json',
             type: 'PUT',
-            url: SERVER + 'students_list/get/class/',
+            url: SERVER + 'students_list/get/class/' + '?' + $.param({ 'id': $('#classid').val() }),
             headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
             success: () => {
                 location.reload()
@@ -323,7 +324,7 @@ function left_sidebar() {
                 crossOrigin: true,
                 url: SERVER + "students_list/invitation_link?class_id="+item.id,
                 type: "GET",
-                headers: { "Authorization": `Token ${localStorage.getItem('user-token')}` }
+                headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
             }).done((data) => {
                 system_users[i].classLink = `https://teacher.dreampotential.org/class_invitation.html?invitationId=${data.uuid}&class_id=${data.class_id}`;
                 $('#classLinkLoader').remove();
@@ -396,7 +397,7 @@ function left_sidebar() {
                     "student": student,
                     "class": class_,
                 },
-                headers: { "Authorization": `Token ${localStorage.getItem('user-token')}` },
+                headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
                 success: () => {
                     location.reload()
                 }

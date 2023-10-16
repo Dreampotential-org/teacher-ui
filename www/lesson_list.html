@@ -78,7 +78,7 @@
                                         <div class="col-md-6 p-0"><p class="list-of-students">List of Lessons</p></div>
                                         <div class="col-md-6 p-0 text-right mt-2">
                                             <button type="button" onclick="addLesson()"
-                                                            class="btn btn-primary">
+                                                            class="btn btn-primary" style="background: #007bff;">
                                                         <i class="fa fa-plus"></i> Add
                                                     </button>
                                         </div>
@@ -428,7 +428,7 @@
                                     </div>
                                     
                                     <div class="add-student float-right">
-                                        <button type="button" onclick="addToSelectedClass()" class="btn btn-primary" id="AddLessonToClassBtn" disabled>
+                                        <button type="button" onclick="addToSelectedClass()" class="btn btn-primary" style="background: #007bff;" id="AddLessonToClassBtn" disabled>
                                             <i class=""></i> Add To Class
                                         </button>
                                     </div>
@@ -617,7 +617,7 @@
                 if(item._class)
                     return item._class.class_name;
                 else{
-                    return `<button onclick="openAddToClassModal('${item.courseid}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i>Add To Class</button>`
+                    return `<button onclick="openAddToClassModal('${item.courseid}')" class="btn btn-primary btn-edit" style="background: #007bff"><i class="fa fa-pencil-square-o"></i>Add To Class</button>`
                 }
             }
 
@@ -650,9 +650,9 @@
                             <td>${item.courseid}</td>
                             <td>${item.coursename}</td>
                             <td>${getBtnOrClassName(item,item.courseid)}</td>
-                            <td><button onclick="editSystemUser('${item.courseid}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
-                              <button onclick="openStudentLesson('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-eye"></i></button>
-                              <button onclick="on('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-user-plus"></i></button></td>
+                            <td><button onclick="editSystemUser('${item.courseid}')" class="btn btn-primary btn-edit" style="background: #007bff"><i class="fa fa-pencil-square-o"></i></button>
+                              <button onclick="openStudentLesson('${i}')" class="btn btn-primary btn-edit" style="background: #007bff"><i class="fa fa-eye"></i></button>
+                              <button onclick="on('${i}')" class="btn btn-primary btn-edit" style="background: #007bff"><i class="fa fa-user-plus"></i></button></td>
                             </tr>`);
                     });
                     table = $("#course-table").DataTable( {

@@ -76,7 +76,7 @@ $(document).ready(function() {
         system_users.forEach((item, i) => {
             $("#teachers-data-pg").append(`<tr>
             <td>${item.username}</td>
-            <td><button onclick="editSystemStudent('${item.id}','${i}')" class="btn btn-primary btn-edit"><i class="fa fa-list"></i></button></td>
+            <td><button onclick="editSystemStudent('${item.id}','${i}')" class="btn btn-primary btn-edit" style="background: #007bff"><i class="fa fa-list"></i></button></td>
             </tr>`);
         })
         table = $("#teachers-data-pg").DataTable( {

@@ -366,7 +366,7 @@
                 crossOrigin: true,
                 url: SERVER + "students_list/get/classenrolled/",
                 type: "GET",
-                headers: { "Authorization": `Token ${localStorage.getItem('user-token')}` }
+                headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") }
             }).done((c) => {
                 if(c) {
                     student_classes = c

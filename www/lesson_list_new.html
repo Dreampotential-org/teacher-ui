@@ -482,9 +482,9 @@
                     $("#users-data").append(`<tr>
                         <td>${item.courseid}</td>
                         <td>${item.coursename}</td>
-                        <td><button onclick="editSystemUser('${item.courseid}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
-                          <button onclick="openStudentLesson('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-eye"></i></button>
-                          <button onclick="on('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-user-plus"></i></button></td>
+                        <td><button onclick="editSystemUser('${item.courseid}')" class="btn btn-primary btn-edit" style="background: #007bff"><i class="fa fa-pencil-square-o"></i></button>
+                          <button onclick="openStudentLesson('${i}')" class="btn btn-primary btn-edit" style="background: #007bff"><i class="fa fa-eye"></i></button>
+                          <button onclick="on('${i}')" class="btn btn-primary btn-edit" style="background: #007bff"><i class="fa fa-user-plus"></i></button></td>
                         </tr>`);
                 });
                 $.ajax({
