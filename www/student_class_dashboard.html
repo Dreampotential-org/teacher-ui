@@ -396,9 +396,8 @@
                     crossOrigin: true,
                     url: SERVER + "students_list/get/class/",
                     type: "GET",
-                    headers: {
-                        "Authorization": `${localStorage.getItem('user-token')}`
-                    }
+                    headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") }
+
 
                 }).done((cls) => {
                     classList = cls;
@@ -408,9 +407,7 @@
                         crossOrigin: true,
                         url: SERVER + "students_list/get/students/",
                         type: "GET",
-                        headers: {
-                            "Authorization": `${localStorage.getItem('user-token')}`
-                        }
+                        headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
                     }).done((student) => {
                         studentList = student;
                     }).fail((err) => {
@@ -439,7 +436,7 @@
                 crossOrigin: true,
                 type: "PUT",
                 data: {lesson_id: $("#courseid").val(), lesson_name: $("#coursename").val()},
-                headers: {"Authorization": `${localStorage.getItem('user-token')}`}
+                headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
 
             }).done(() => {
                 swal({
@@ -467,7 +464,8 @@
                 crossOrigin: true,
                 type: "DELETE",
                 data: {lesson_id: $("#courseid").val()},
-                headers: {"Authorization": `${localStorage.getItem('user-token')}`}
+                                headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
+
 
             }).done(() => {
                 swal({

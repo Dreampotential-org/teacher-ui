@@ -141,7 +141,7 @@ $("#addStudent").submit((event) => {
     $.ajax({
         type: 'POST',
         url: SERVER + 'students_list/get/students/',
-        headers: { "Authorization": `${localStorage.getItem('user-token')}` },
+        headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
         data: {
             "name": $("#uname").val(),
             "phone": $("#phone").val(),
@@ -160,7 +160,6 @@ $("#showDelete").on('click', () => {
         headers: { "Authorization": `${localStorage.getItem('user-token')}` },
         success: () => {
             location.reload();
-
         }
     })
 })
@@ -169,7 +168,7 @@ $("#updateStudent").on('click', () => {
     $.ajax({
         type: 'PUT',
         url: SERVER + 'students_list/get/students/',
-        headers: { "Authorization": `${localStorage.getItem('user-token')}` },
+        headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
         data: {
             "id": $("#eid").val(),
             "name": $("#ename").val(),

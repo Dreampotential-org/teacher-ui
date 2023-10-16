@@ -111,7 +111,7 @@ function left_sidebar() {
             crossOrigin: true,
             url: SERVER + "students_list/get/class/",
             type: "GET",
-            headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+            headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") }
         }).done((classess) => {
             $('#classLoader').remove();
             system_users = classess
@@ -156,7 +156,9 @@ function left_sidebar() {
                 crossOrigin: true,
                 url: SERVER + "students_list/get/classenrolled/",
                 type: "GET",
-                headers: { "Authorization": `Token ${localStorage.getItem('user-token')}` }
+                // headers: { "Authorization": `Token ${localStorage.getItem('user-token')}` }
+
+                headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
             }).done((enroll) => {
                 system_students = enroll
                 
@@ -166,13 +168,20 @@ function left_sidebar() {
                     crossOrigin: true,
                     url: SERVER + "students_list/get/students/",
                     type: "GET",
-                    headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+                    headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
                 }).done((students) => {
                     all_students = students
                     
-                }).fail(function(err) { alert(err) })
+                }).fail(function(err) { 
+                    console.log("ye wala")
+                    alert(err);
+                     })
                 
-            }).fail(function(err) { alert(err) })
+            }).fail(function(err) {
+                console.log("err:::::", err)
+                console.log("nhi ye wala")
+                 alert(err);
+                })
         }).fail(function(err) {
             alert(err);
             $('#classLoader').remove();
@@ -234,7 +243,7 @@ function left_sidebar() {
             contentType: 'application/json',
             type: 'POST',
             url: SERVER + 'students_list/get/class/',
-            headers: { "Authorization": `${localStorage.getItem('user-token')}` },
+            headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
             success: () => {
                 location.reload()
             }
@@ -245,7 +254,7 @@ function left_sidebar() {
         $.ajax({
             type: 'DELETE',
             url: SERVER + 'students_list/get/class/' + '?' + $.param({ 'id': $('#classid').val() }),
-            headers: { "Authorization": `${localStorage.getItem('user-token')}` },
+            headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
             success: () => {
                 location.reload();
             }
@@ -263,7 +272,7 @@ function left_sidebar() {
             contentType: 'application/json',
             type: 'PUT',
             url: SERVER + 'students_list/get/class/',
-            headers: { "Authorization": `${localStorage.getItem('user-token')}` },
+            headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
             success: () => {
                 location.reload()
             }

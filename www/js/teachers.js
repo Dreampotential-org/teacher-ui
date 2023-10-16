@@ -106,7 +106,7 @@ $(document).ready(function() {
             processData: false,
             contentType: false,
             mimeType: "multipart/form-data",
-            headers: { "Authorization": `${localStorage.getItem('user-token')}` }
+            headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
 
         }).done((student) => {
             all_students = JSON.parse(student)

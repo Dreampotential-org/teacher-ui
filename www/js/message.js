@@ -156,9 +156,7 @@ function setMessages(){
     "contentType": false,
     // "mimeType": "multipart/form-data",
     // "data": form,
-    "headers": {
-        "Authorization": localStorage.getItem("user-token")
-    },
+    headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
     success: function(response) {
         $("#inbox_chat").empty();
         // response = JSON.parse(response);
