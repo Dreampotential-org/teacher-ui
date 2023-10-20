@@ -173,13 +173,11 @@ function left_sidebar() {
                     all_students = students
                     
                 }).fail(function(err) { 
-                    console.log("ye wala")
                     alert(err);
                      })
                 
             }).fail(function(err) {
                 console.log("err:::::", err)
-                console.log("nhi ye wala")
                  alert(err);
                 })
         }).fail(function(err) {

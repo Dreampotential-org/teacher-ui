@@ -67,13 +67,13 @@ function getAllLessons() {
     type: "GET",
     headers: {"Authorization": "Bearer " + localStorage.getItem("user-token")},
   }).done((response2) => {
-    for (var lesson of response2) {
+    console.log("-----",response2);
+    for (let i = 0; i < response2.length; i++) {
       $("#select_lesson").append(
-        "<option value='" + lesson.id + "'>" + lesson.lesson_name + "</option>"
+        `<option value="${response2[i].id}"> ${response2[i].lesson_name} </option>`
       );
-      console.log(lesson);
-      console.log(lesson.flashcards[0].question);
-      document.getElementById("question").value = lesson.flashcards[0].question;
+      console.log(response2[i]?.flashcards[0]?.question);
+      document.getElementById("question").value = response2[i]?.flashcards[0]?.question;
     }
   });
 }
@@ -2142,7 +2142,7 @@ function sendUpdates() {
             title: "Error Creating Lesson",
             text: err,
             icon: "error",
-          });
+          }); 
         },
       });
     } else {
@@ -2212,6 +2212,7 @@ $(document).ready(function () {
       success: function (response) {
         console.log(response);
         if (params) {
+
           $("#lesson_page").attr(
             "href",
             `/page.html?lesson_id=${lesson_id}&params=${params}`
@@ -2221,10 +2222,17 @@ $(document).ready(function () {
             `/slide.html?lesson_id=${lesson_id}&params=${params}`
           );
         } else {
+
           $("#lesson_page").attr("href", "/page.html?lesson_id=" + lesson_id);
           $("#lesson_slide").attr("href", "/slide.html?lesson_id=" + lesson_id);
+          $("#lesson_page_2").attr("href", "/page.html?lesson_id=" + lesson_id);
+          $("#lesson_slide_2").attr("href", "/slide.html?lesson_id=" + lesson_id);
         }
         $("#lesson_responses").attr(
+          "href",
+          "/lesson_responses.html?lesson_id=" + lesson_id
+        );
+        $("#lesson_responses_2").attr(
           "href",
           "/lesson_responses.html?lesson_id=" + lesson_id
         );
@@ -2560,6 +2568,7 @@ $(document).ready(function () {
         getAllLessons();
       },
       error: (error) => {
+        console.log('error.responseJSON', error.responseJSON);
         swal({
           title: "Access Denied!",
           text: error.responseJSON.msg,
@@ -2574,7 +2583,6 @@ $(document).ready(function () {
   $("#lesson_form").submit((e) => {
     e.preventDefault();
     sendUpdates();
-
     var lesson_name = $("#lesson_name").val();
     var lesson_type = $("#selectsegment").val();
     const param = new URL(window.location.href);
@@ -2863,9 +2871,7 @@ function addToSelectedClass() {
     url: SERVER + "courses_api/lesson/add_to_class",
     data: data,
     type: "POST",
-    headers: {
-      "Authorization": "Bearer " + localStorage.getItem("user-token"),
-    },
+    headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
   })
     .done((res) => {
       swal({

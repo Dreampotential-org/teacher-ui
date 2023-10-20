@@ -596,9 +596,7 @@
                         crossOrigin: true,
                         url: SERVER + "courses_api/lesson/add_to_class",
                         type: "POST",
-                        headers: {
-                            "Authorization": `Token ${localStorage.getItem('user-token')}`
-                        },
+                        headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
                         data:data
                     }).done((res) => {
                         swal({

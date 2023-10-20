@@ -138,6 +138,9 @@
         .dropdown-menu>li>a:hover {
             background-color: #F2F7FF;
         }
+        .dropdown-menu{
+            overflow: scroll;
+        }
 
         .btn-default:hover {
             background-color: #F2F7FF;
@@ -172,7 +175,7 @@
             }
 
             .make_public_css {
-                /*margin-left: -50px;*/
+                /* margin-left: -50px; */
             }
 
             .static_section {
@@ -225,6 +228,8 @@
 </head>
 
 <body>
+
+
     <div class="container-fluid">
         <div class="static_section">
             <div class="row">
@@ -252,16 +257,19 @@
                                 <button type="submit" form="lesson_form" class="form-control btn btn-success"
                                     style="margin-top: 0px;">Save</button>
                             </div>
-                            <div class="col-xs-6 col-sm-2">
+
+                        <!-- button for add_class at http://localhost:8086/lesson2.html -->
+                            <!-- <div class="col-xs-6 col-sm-2">
                                 <button type="button" class="form-control btn btn-success"
                                     onclick="openAddToClassModal()">Add to Class</button>
-                            </div>
+                            </div> -->
                         </div>
                     </span>
                 </div>
             </div>
-            <hr style="margin-bottom: 8px;">
+            <hr style="margin-bottom: 8px;">    
             <div class="row" style="padding-bottom: 10px;">
+                
                 <div class="col-sm-2 padding_btm">
                     <select class="form-control " id="selectsegment">
                         <option selected value="select_type">Select Segment Type</option>
@@ -312,6 +320,7 @@
                         </ul>
                     </div>
                 </div>
+
                 <div class="col-sm-3 float-sm-right">
                     <span class="make_public_css">
                         <span>Make Public</span>
@@ -326,7 +335,16 @@
                     </a>
                 </div>
             </div>
+            <div class="row view_lesson_response">
+                <a id="lesson_slide_2" class="col-lg-6">Lesson Slide View</a>
+                <a id="lesson_page_2" class="col-lg-6">Lesson Page View</a>
+                <a id="lesson_responses_2" class="col-lg-6">View Responses</a>
+                <a id="lesson_responses_v2" class="col-lg-6">Responses V2</a>
+                <a id="payments" class="col-lg-6">Lesson Payments V2</a>
+            </div>
         </div>
+
+
         <div class="row" style="margin-top: 12%;">
             <div class="col-xs-12 col-sm-3">
                 <div id="question_list"></div>
@@ -1267,10 +1285,11 @@
                     }
                 });
             });
+            
             $(document).ready(function () {
                 const params = new URLSearchParams(window.location.search);
                 var qs = params.get('lesson_id');
-                console.log(qs);
+                // console.log(qs);
                 if (qs == null || qs == 0) {
                     $('#create-new-lesson-modal').addClass('show');
                 }
@@ -1282,7 +1301,8 @@
                     type: "GET",
                     headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
                 }).done((response2) => {
-                    for (var lesson of response2) {
+                    let wwww = [response2]
+                    for (var lesson of wwww) {
                         if (lesson.lesson_name === "") {
                             lesson.lesson_name = 'No Title';
                         }
