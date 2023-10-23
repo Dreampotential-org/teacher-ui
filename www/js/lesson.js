@@ -2581,6 +2581,7 @@ $(document).ready(function () {
   }
 
   $("#lesson_form").submit((e) => {
+    $('#create-new-lesson-modal').addClass('hide');
     e.preventDefault();
     sendUpdates();
     var lesson_name = $("#lesson_name").val();
