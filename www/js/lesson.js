@@ -2165,6 +2165,7 @@ function sendUpdates() {
             icon: "success",
             timer: 2000,
           });
+          location.reload();
         },
         error: function (err) {
           console.log(
