@@ -50,6 +50,7 @@ imported.src =
   "https://maps.googleapis.com/maps/api/js?key=AIzaSyCEYIL86ek3icvHx6F-55qSFCfhe2fynfg&libraries=places";
 document.head.appendChild(imported);
 
+
 function getTotalFlashcardsNumber() {
   return $("#sortable").children().length;
 }
@@ -2920,7 +2921,6 @@ $(document).on("click", ".audio_upload_button", function (e) {
   audio_data_id_value = $(this).siblings("input[type=text]").attr("data-id");
   audio_type = "audio_file";
 });
-
 
 // sidebar functions
 $(document).ready(function () {
