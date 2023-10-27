@@ -15,3 +15,24 @@ services:
             - web
         ports:
             - 8086:8085
+
+# version: '3.3'
+
+# services:
+#     db:
+#         image: postgis/postgis
+#         ports:
+#             - 5433:5432
+#         volumes:
+#             - /opt/postgres-python-base:/var/lib/postgresql/data
+#         environment:
+#             POSTGRES_DB: postgresdb
+#             POSTGRES_USER: postgresuser
+#             POSTGRES_PASSWORD: postgrespassword
+#         networks:
+#             - backend
+
+# networks:
+#     backend:
+#         external: true
+#         name: chiroposture_network

@@ -70,8 +70,8 @@
         .switch {
             position: relative;
             display: inline-block;
-            width: 60px;
-            height: 34px;
+            width: 47px;
+            /* height: 34px; */
         }
 
         /* Hide default HTML checkbox */
@@ -131,7 +131,18 @@
 
         .segment_heading {
             position: relative;
-            top: -40px;
+            top: -70px;
+        }
+
+        .slider::before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 2px;
+            bottom: 1px;
+            background-color: white;
+            transition: .4s;
         }
     </style>
 </head>
@@ -152,17 +163,19 @@
                                         id="settingshtml" class="" style="font-size: 25px;color: black;">
                                         <i class="fa fa-gear"></i></a>
                                 </div>
-                                
+
+                                <hr class="col-12">
                                 <div class="col-xs-6 col-sm-6">
                                     <div class="segment_heading"><span class="page_header"><a href="/index.html"><i
                                                     class="fa fa-home" style="font-size: 30px;"></i></a>
                                             &nbsp;&nbsp;Segment
-                                            Builder</span> 
-                                            <!-- <a style="width: 50%" type="button" class="btn btn-default"
+                                            Builder</span>
+                                        <!-- <a style="width: 50%" type="button" class="btn btn-default"
                                             id="lesson_responses">Responses</a> -->
-                                        </div>
-                                           
-                                    <select class="form-control" id="select_lesson" style="margin-top: -20px;" onchange="selectLesson()">
+                                    </div>
+
+                                    <select class="form-control" id="select_lesson" style="margin-top: -12px;"
+                                        onchange="selectLesson()">
                                     </select>
                                     <div class="row view_lesson_response">
                                         <a id="lesson_slide" class="col-lg-6">Lesson Slide View</a>
@@ -173,13 +186,20 @@
                                     </div>
 
                                     <div id="is_public_contanier">
-                                        <input type="checkbox" id="lesson_is_public" class="">
+                                        <!-- <input type="checkbox" id="lesson_is_public" class="">
                                         Make Public
-                                        </input>
+                                        </input> -->
+
+                                        <span class="make_public_css">
+                                            <label class="switch" id="is_public_contanier" style="height: 20px;">
+                                                <input type="checkbox" id="lesson_is_public">
+                                                <span class="slider round"></span>
+                                            </label>
+                                            <span>Make Public</span>
+                                        </span>
                                     </div>
                                     <br>
                                 </div>
-
 
                                 <div class="col-xs-6 col-sm-6" style="margin-top: 20px;margin-bottom: 10px;">
                                     <select class="form-control " id="selectsegment">
@@ -225,8 +245,8 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-xs-12" id="sortable">
-
+                                <div class="col-xs-12" id="sortable"
+                                    style="width: 100%; overflow-y: scroll; max-height: 45vh;">
                                 </div>
                             </div>
                             <div class="row">
@@ -662,15 +682,15 @@
                                                         placeholder="Question">
                                                 </div>
                                                 <div class="form-group chkbox-cls" id="choices">
-                                                    <div>
+                                                    <!-- <div>
                                                         <input type="text" class="form-control" rows="7"
                                                             placeholder="Choices">
                                                         <button onclick="$(this).parent().remove()"
                                                             class="btn btn-danger">Rem--ove
                                                             Choi--ce</button>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
-                                                <button class="btn btn-success">Ad--99-d Choice</button>
+                                                <button class="btn btn-success">Add Choice</button>
                                                 <div class="form-group">
                                                     <hr>
                                                     <input type="button" class="upload_image_button btn btn-info"
@@ -707,13 +727,13 @@
                                                     <input type="text" class="form-control" placeholder="Question">
                                                 </div>
                                                 <div class="form-group chkbox-cls" id="checkboxes">
-                                                    <div>
+                                                    <!-- <div>
                                                         <input type="text" class="form-control" rows="7"
                                                             placeholder="Choices">
                                                         <button onclick="$(this).parent().remove()"
                                                             class="btn btn-danger">Remove
                                                             Choice</button>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                                 <button class="btn btn-success">Add Choice</button>
                                                 <div class="form-group">
@@ -725,9 +745,7 @@
                                                         id="image-question-checkboxes" placeholder="Image Link" />
                                                     <div id="output-question-checkboxes"></div>
                                                 </div>
-
                                             </div>
-
                                         </div>
 
                                         <div class="speed_read" id="video_file"
@@ -1127,7 +1145,16 @@
                                         </div>
 
                                         <button id="lesson_submit_btn" type="submit"
-                                            class="form-control btn btn-primary" style="margin-top: 50px;">Save</button>
+                                            class="form-control btn btn-success" style="margin-top: 50px;
+                                            position: absolute;
+                                            top: 6.4%;
+                                            width: 6%;
+                                            border-radius: 5px;
+                                            right: 7%;
+                                            font-size: 17px;
+                                            height: 30px;
+                                            align-items: center;
+                                            display: flex;">Save</button>
                                     </form>
                                 </div>
                             </div>
@@ -1203,7 +1230,6 @@
     </script>
     <script>
         $(document).ready(function () {
-
             function sortEventHandler() {
                 var i = 0;
                 var childrenList = $("#sortable").children();
@@ -1213,7 +1239,6 @@
                 })
             }
         });
-
     </script>
 </body>
 </html>
