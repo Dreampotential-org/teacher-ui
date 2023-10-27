@@ -56,7 +56,7 @@ function getTotalFlashcardsNumber() {
 }
 function selectLesson() {
   var thelesson_id = $("#select_lesson :selected").val();
-  window.location.href = "/lesson.html?lesson_id=" + thelesson_id;
+  window.location.href = "/lesson2.html?lesson_id=" + thelesson_id;
 }
 
 function getAllLessons() {
