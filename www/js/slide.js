@@ -141,7 +141,8 @@ function updateMeta(type, answer) {
 }
 
 function checkEmptyResponse(slideIndex, flashCardType) {
-  console.log({flashCardType})
+  console.log({flashCardType},'testing-1')
+  console.log({slideIndex},'testing-2')
   switch (flashCardType) {
     case "question_choices":
       answer = $("input[name= choices_" + (slideIndex) + "]:checked").val();
@@ -204,9 +205,11 @@ function checkEmptyResponse(slideIndex, flashCardType) {
 }
 
 function nextSlide() {
+  console.log('test-functioncall');
   var lesson_id = getParam("lesson_id");
   const this_slide = getParam("this_slide");
   console.log('nextSlideLoading...', current_slide < total_slides);
+  console.log('testing-3...', current_slide);
   if (current_slide < total_slides) {
     var current_flashcard = loaded_flashcards[current_slide];
     document.getElementById("theSlide").style.color = null;
