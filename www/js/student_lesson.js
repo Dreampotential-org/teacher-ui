@@ -233,7 +233,7 @@ function uploadFile(fileType) {
     mimeType: "multipart/form-data",
     data: form,
     headers: {
-      Authorization: Bearer localStorage.getItem("token"),
+      headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
     },
   };
 
@@ -274,7 +274,7 @@ function uploadFile(fileType) {
       mimeType: "multipart/form-data",
       data: form,
       headers: {
-        Authorization: Bearer localStorage.getItem("token"),
+        headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
       },
     };
 
@@ -618,7 +618,7 @@ function sendUpdates() {
       data: JSON.stringify(data_),
       type: "POST",
       contentType: "application/json",
-      headers: { "Authorization": `${localStorage.getItem('user-token')}` },
+      headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
       success: function (data) {
         //console.log(data.id)
         var currentPathName = window.location.pathname;
@@ -632,6 +632,7 @@ function sendUpdates() {
       data: JSON.stringify(data_),
       type: "POST",
       contentType: "application/json",
+      headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
       success: function (data) {
         alert("FlashCard Updated!");
       },

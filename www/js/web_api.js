@@ -24,9 +24,8 @@ function list_question_counters(callback) {
         "processData": false,
         "contentType": false,
         "mimeType": "multipart/form-data",
-        "headers": {
-            "Authorization": 'Token ' + localStorage.getItem("user-token"),
-        }
+        headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
+
     }
     $.ajax(settings).done(function (response) {
         callback(JSON.parse(response))

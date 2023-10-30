@@ -153,9 +153,7 @@ $("#additem").submit((event) => {
     "contentType": false,
     // "mimeType": "multipart/form-data",
     "data": item_form,
-    "headers": {
-        "Authorization": localStorage.getItem("user-token")
-    }
+    headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") }
   };
   console.log(images.length);
   $.ajax(settings_add_item).done(function (response) {
@@ -216,9 +214,7 @@ $("#edititem").submit((event) => {
     "contentType": false,
     "mimeType": "multipart/form-data",
     "data": item_form,
-    "headers": {
-        "Authorization": localStorage.getItem("user-token")
-    }
+    headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") }
   };
   $.ajax(settings_add_item_update).done(function (response) {
     // response = JSON.parse(response);
@@ -254,9 +250,7 @@ function deleteImage(imageURL,id,countNum){
     "contentType": false,
     "mimeType": "multipart/form-data",
     "data": item_form,
-    "headers": {
-        "Authorization": localStorage.getItem("user-token")
-    }
+    headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") }
   };
   $.ajax(settings_delete_item_image).done(function (response) {
     // response = JSON.parse(response);
@@ -364,9 +358,7 @@ function neighbourhoodItems(){
     "contentType": false,
     // "mimeType": "multipart/form-data",
     // "data": form,
-    "headers": {
-        "Authorization": localStorage.getItem("user-token")
-    }
+    headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") }
   };
   $.ajax(settings).done(function (response) {
     // response = JSON.parse(response);
@@ -459,9 +451,7 @@ $("#messageItemform").submit((event) => {
     "contentType": false,
     // "mimeType": "multipart/form-data",
     "data": messageItem_form,
-    "headers": {
-        "Authorization": localStorage.getItem("user-token")
-    }
+    headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") }
   };
   $.ajax(settings_sendMessage_item).done(function (response) {
     // response = JSON.parse(response);
@@ -495,9 +485,7 @@ function buyItem(id){
     "contentType": false,
     // "mimeType": "multipart/form-data",
     // "data": item_form,
-    "headers": {
-        "Authorization": localStorage.getItem("user-token")
-    }
+    headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") }
   };
   $.ajax(settings_buy_item).done(function (response) {
     $("#buyItem").show();

@@ -88,7 +88,7 @@ $(document).ready(function() {
             <td>${item.name}</td>
             <td>${item.email}</td>
             <td>${item.phone}</td>
-            <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button></td>
+            <td><button onclick="editSystemUser('${i}')" class="btn btn-primary btn-edit" style="background: #007bff"><i class="fa fa-pencil-square-o"></i></button></td>
             </tr>`);
         })
         table = $("#student-details-table").DataTable( {
@@ -141,7 +141,7 @@ $("#addStudent").submit((event) => {
     $.ajax({
         type: 'POST',
         url: SERVER + 'students_list/get/students/',
-        headers: { "Authorization": `${localStorage.getItem('user-token')}` },
+        headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
         data: {
             "name": $("#uname").val(),
             "phone": $("#phone").val(),
@@ -160,7 +160,6 @@ $("#showDelete").on('click', () => {
         headers: { "Authorization": `${localStorage.getItem('user-token')}` },
         success: () => {
             location.reload();
-
         }
     })
 })
@@ -169,7 +168,7 @@ $("#updateStudent").on('click', () => {
     $.ajax({
         type: 'PUT',
         url: SERVER + 'students_list/get/students/',
-        headers: { "Authorization": `${localStorage.getItem('user-token')}` },
+        headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
         data: {
             "id": $("#eid").val(),
             "name": $("#ename").val(),

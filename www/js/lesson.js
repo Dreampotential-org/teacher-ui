@@ -50,12 +50,13 @@ imported.src =
   "https://maps.googleapis.com/maps/api/js?key=AIzaSyCEYIL86ek3icvHx6F-55qSFCfhe2fynfg&libraries=places";
 document.head.appendChild(imported);
 
+
 function getTotalFlashcardsNumber() {
   return $("#sortable").children().length;
 }
 function selectLesson() {
   var thelesson_id = $("#select_lesson :selected").val();
-  window.location.href = "/lesson.html?lesson_id=" + thelesson_id;
+  window.location.href = "/lesson2.html?lesson_id=" + thelesson_id;
 }
 
 function getAllLessons() {
@@ -65,15 +66,15 @@ function getAllLessons() {
     crossDomain: true,
     crossOrigin: true,
     type: "GET",
-    headers: {"Authorization": "Bearer " + localStorage.getItem("user-token")},
+    headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
   }).done((response2) => {
-    for (var lesson of response2) {
+    console.log("-----", response2);
+    for (let i = 0; i < response2.length; i++) {
       $("#select_lesson").append(
-        "<option value='" + lesson.id + "'>" + lesson.lesson_name + "</option>"
+        `<option value="${response2[i].id}"> ${response2[i].lesson_name} </option>`
       );
-      console.log(lesson);
-      console.log(lesson.flashcards[0].question);
-      document.getElementById("question").value = lesson.flashcards[0].question;
+      console.log(response2[i]?.flashcards[0]?.question);
+      document.getElementById("question").value = response2[i]?.flashcards[0]?.question;
     }
   });
 }
@@ -89,10 +90,10 @@ function addChoices(id, value) {
       .data("id") + 1;
   $("#choices_" + id).append(
     '<div><input type="text" id="choices" class="form-control" data-id="' +
-      next_id +
-      '"rows="7" placeholder="Choices" value="' +
-      value +
-      '"><button onclick="$(this).parent().remove()" class="btn btn-danger">Remove Choice</button></div>'
+    next_id +
+    '"rows="7" placeholder="Choices" value="' +
+    value +
+    '"><button onclick="$(this).parent().remove()" class="btn btn-danger">Remove Choice</button></div>'
   );
 }
 
@@ -108,10 +109,10 @@ function addCheckboxes(id, value) {
 
   $("#checkboxes_" + id).append(
     '<div><input type="text" class="form-control" data-id="' +
-      next_id +
-      '"rows="7" placeholder="Choices" value="' +
-      value +
-      '"><button onclick="$(this).parent().remove()" class="btn btn-danger">Remove Choice</button></div>'
+    next_id +
+    '"rows="7" placeholder="Choices" value="' +
+    value +
+    '"><button onclick="$(this).parent().remove()" class="btn btn-danger">Remove Choice</button></div>'
   );
 }
 
@@ -586,11 +587,11 @@ function displayVideo(file_url, video_data_id) {
         $(".videoplayer").css("display", "block");
         $(".videoplayer").html(
           '<source src="' +
-            file_url +
-            "#t=0.1" +
-            '" type="' +
-            strTYPE +
-            '"></source>'
+          file_url +
+          "#t=0.1" +
+          '" type="' +
+          strTYPE +
+          '"></source>'
         );
         $(".video-output").css("display", "block");
         $(".videoplayer")[0].load();
@@ -601,13 +602,13 @@ function displayVideo(file_url, video_data_id) {
           .siblings(".video-output")
           .html(
             ' <video class="videoplayer" controls height="360" style="width: 100%;" preload="metadata"><source src="' +
-              file_url +
-              "#t=0.1" +
-              '" type="' +
-              strTYPE +
-              '" id="' +
-              video_data_id +
-              '"></source></video>'
+            file_url +
+            "#t=0.1" +
+            '" type="' +
+            strTYPE +
+            '" id="' +
+            video_data_id +
+            '"></source></video>'
           );
         $(".video-output").css("display", "block");
         $(".videoplayer")[0].load();
@@ -642,11 +643,11 @@ function displayAudio(file_url, audio_data_id) {
         $(".audioplayer").css("display", "block");
         $(".audioplayer").html(
           '<source src="' +
-            file_url +
-            "#t=0.1" +
-            '" type="' +
-            strTYPE +
-            '"></source>'
+          file_url +
+          "#t=0.1" +
+          '" type="' +
+          strTYPE +
+          '"></source>'
         );
         $(".audio-output").css("display", "block");
         $(".audioplayer")[0].load();
@@ -657,13 +658,13 @@ function displayAudio(file_url, audio_data_id) {
           .siblings(".audio-output")
           .html(
             ' <audio class="audioplayer" controls height="360" style="width: 100%;" preload="metadata"><source src="' +
-              file_url +
-              "#t=0.1" +
-              '" type="' +
-              strTYPE +
-              '" id="' +
-              audio_data_id +
-              '"></source></audio>'
+            file_url +
+            "#t=0.1" +
+            '" type="' +
+            strTYPE +
+            '" id="' +
+            audio_data_id +
+            '"></source></audio>'
           );
         $(".audio-output").css("display", "block");
         $(".audioplayer")[0].load();
@@ -921,8 +922,8 @@ function addVideoFile(isNew, id, question, choices, image, posU) {
     .attr(
       "data-id",
       $("#video_file").find("input").first().attr("data-id") +
-        "_" +
-        video_file_count
+      "_" +
+      video_file_count
     );
 
   /*if(video_file_count > 0)
@@ -984,8 +985,8 @@ function addImageFile(isNew, id, question, image, posU) {
     .attr(
       "data-id",
       $("#image_file").find("input").first().attr("data-id") +
-        "_" +
-        image_file_count
+      "_" +
+      image_file_count
     );
 
   $("#sortable").append($("#image_file").html());
@@ -1029,8 +1030,8 @@ function addAudioFile(isNew, id, question, choices, image, posU) {
     .attr(
       "data-id",
       $("#audio_file").find("input").first().attr("data-id") +
-        "_" +
-        audio_file_count
+      "_" +
+      audio_file_count
     );
 
   /*if(video_file_count > 0)
@@ -1175,8 +1176,8 @@ function addUserTour(
     .attr(
       "data-id",
       $("#image_file").find("input").first().attr("data-id") +
-        "_" +
-        image_file_count
+      "_" +
+      image_file_count
     );
 
   $("#sortable").append($("#user_tour").html());
@@ -1201,49 +1202,49 @@ function addTour(id, value) {
 
   $("#tourinfo_" + id).append(
     '<div>  <div class="form-group">' +
-      '<input type="text" class="form-control" placeholder="Place Title" name="place-title-' +
-      img_tour +
-      '" data-id="' +
-      Math.random() +
-      '"value="' +
-      title +
-      '"></div>' +
-      '<div class="form-group"><textarea class="form-control" alt="speed_read_textarea" data-id="' +
-      Math.random() +
-      '"rows="7"' +
-      'placeholder="Place Description">' +
-      description +
-      "</textarea></div>" +
-      '<div class="form-group">' +
-      '<button type="button" class="btn btn-info map-place-cls" id="btn-map-place-' +
-      img_tour +
-      '" data-toggle="modal"' +
-      'data-target="#exampleModalCenter">' +
-      "Map Location</button>" +
-      '<input type="text" class="form-control input-cls" id="latitude-' +
-      image_id +
-      '"' +
-      ' placeholder="Latitude" value="' +
-      latitude +
-      '">' +
-      '<input type="text" class="form-control input-cls" id="longitude-' +
-      image_id +
-      '"' +
-      ' placeholder="Longitude" value="' +
-      longitude +
-      '"> </div>' +
-      '<div class="form-group"> <input type="button" class="image_upload_tour_button btn btn-info"' +
-      'value="Upload Image" /> <input type="text" class="form-control" data-id="image-file-' +
-      image_id +
-      '"placeholder="Image Link" />' +
-      '<img data-id="image-tour-' +
-      image_id +
-      '" src="' +
-      image_url +
-      '" style="width:400px"/>' +
-      "</div>" +
-      '<button onclick="$(this).parent().remove()" class="btn btn-danger">Remove Tour</button>' +
-      "</div> <br/><br/>"
+    '<input type="text" class="form-control" placeholder="Place Title" name="place-title-' +
+    img_tour +
+    '" data-id="' +
+    Math.random() +
+    '"value="' +
+    title +
+    '"></div>' +
+    '<div class="form-group"><textarea class="form-control" alt="speed_read_textarea" data-id="' +
+    Math.random() +
+    '"rows="7"' +
+    'placeholder="Place Description">' +
+    description +
+    "</textarea></div>" +
+    '<div class="form-group">' +
+    '<button type="button" class="btn btn-info map-place-cls" id="btn-map-place-' +
+    img_tour +
+    '" data-toggle="modal"' +
+    'data-target="#exampleModalCenter">' +
+    "Map Location</button>" +
+    '<input type="text" class="form-control input-cls" id="latitude-' +
+    image_id +
+    '"' +
+    ' placeholder="Latitude" value="' +
+    latitude +
+    '">' +
+    '<input type="text" class="form-control input-cls" id="longitude-' +
+    image_id +
+    '"' +
+    ' placeholder="Longitude" value="' +
+    longitude +
+    '"> </div>' +
+    '<div class="form-group"> <input type="button" class="image_upload_tour_button btn btn-info"' +
+    'value="Upload Image" /> <input type="text" class="form-control" data-id="image-file-' +
+    image_id +
+    '"placeholder="Image Link" />' +
+    '<img data-id="image-tour-' +
+    image_id +
+    '" src="' +
+    image_url +
+    '" style="width:400px"/>' +
+    "</div>" +
+    '<button onclick="$(this).parent().remove()" class="btn btn-danger">Remove Tour</button>' +
+    "</div> <br/><br/>"
   );
 
   image_type = "tour-image-file";
@@ -2126,7 +2127,7 @@ function sendUpdates() {
         data: JSON.stringify(data_),
         type: "POST",
         contentType: "application/json",
-        headers: { "Authorization": "Bearer " + localStorage.getItem("user-token")},
+        headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
         success: function (data) {
           var currentPathName = window.location.pathname;
           window.location.replace(currentPathName + "?lesson_id=" + data.id);
@@ -2154,7 +2155,7 @@ function sendUpdates() {
         url: SERVER + "courses_api/lesson/update/" + lesson_id + "/",
         data: JSON.stringify(data_),
         type: "POST",
-        headers: { "Authorization": "Bearer " + localStorage.getItem("user-token")},
+        headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
         contentType: "application/json",
         success: function (data) {
           btn.attr("disabled", false);
@@ -2165,6 +2166,7 @@ function sendUpdates() {
             icon: "success",
             timer: 2000,
           });
+          location.reload();
         },
         error: function (err) {
           console.log(
@@ -2208,10 +2210,11 @@ $(document).ready(function () {
       type: "GET",
       crossDomain: true,
       contentType: "application/json",
-      headers: { "Authorization" : "Bearer " + localStorage.getItem("user-token")},
+      headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
       success: function (response) {
         console.log(response);
         if (params) {
+
           $("#lesson_page").attr(
             "href",
             `/page.html?lesson_id=${lesson_id}&params=${params}`
@@ -2221,10 +2224,17 @@ $(document).ready(function () {
             `/slide.html?lesson_id=${lesson_id}&params=${params}`
           );
         } else {
+
           $("#lesson_page").attr("href", "/page.html?lesson_id=" + lesson_id);
           $("#lesson_slide").attr("href", "/slide.html?lesson_id=" + lesson_id);
+          $("#lesson_page_2").attr("href", "/page.html?lesson_id=" + lesson_id);
+          $("#lesson_slide_2").attr("href", "/slide.html?lesson_id=" + lesson_id);
         }
         $("#lesson_responses").attr(
+          "href",
+          "/lesson_responses.html?lesson_id=" + lesson_id
+        );
+        $("#lesson_responses_2").attr(
           "href",
           "/lesson_responses.html?lesson_id=" + lesson_id
         );
@@ -2560,6 +2570,7 @@ $(document).ready(function () {
         getAllLessons();
       },
       error: (error) => {
+        console.log('error.responseJSON', error.responseJSON);
         swal({
           title: "Access Denied!",
           text: error.responseJSON.msg,
@@ -2572,9 +2583,9 @@ $(document).ready(function () {
   }
 
   $("#lesson_form").submit((e) => {
+    $('#create-new-lesson-modal').addClass('hide');
     e.preventDefault();
     sendUpdates();
-
     var lesson_name = $("#lesson_name").val();
     var lesson_type = $("#selectsegment").val();
     const param = new URL(window.location.href);
@@ -2863,9 +2874,7 @@ function addToSelectedClass() {
     url: SERVER + "courses_api/lesson/add_to_class",
     data: data,
     type: "POST",
-    headers: {
-      "Authorization": "Bearer " + localStorage.getItem("user-token"),
-    },
+    headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
   })
     .done((res) => {
       swal({
@@ -2912,3 +2921,34 @@ $(document).on("click", ".audio_upload_button", function (e) {
   audio_data_id_value = $(this).siblings("input[type=text]").attr("data-id");
   audio_type = "audio_file";
 });
+
+// sidebar functions
+$(document).ready(function () {
+  $("#left-sidebar").load("sidebar.html");
+  $("#page-header").load("header.html");
+  $("#profileDiv").show();
+});
+("#body-row .collapse").collapse("hide");
+
+// Collapse click
+function left_sidebar() {
+  SidebarCollapse();
+  $('.logoimg').toggleClass("d-none");
+  $('#cross').toggleClass("d-none");
+}
+function SidebarCollapse() {
+  $(".menu-collapsed").toggleClass("d-none");
+  $(".sidebar-submenu").toggleClass("d-none");
+  $(".submenu-icon").toggleClass("d-none");
+  $('#bar').toggleClass("d-block");
+  $("#sidebar-container").toggleClass(
+    "sidebar-expanded sidebar-collapsed"
+  );
+  // Treating d-flex/d-none on separators with title
+  var SeparatorTitle = $(".sidebar-separator-title");
+  if (SeparatorTitle.hasClass("d-flex")) {
+    SeparatorTitle.removeClass("d-flex");
+  } else {
+    SeparatorTitle.addClass("d-flex");
+  }
+}

@@ -466,7 +466,7 @@
                 crossDomain: true,
                 crossOrigin: true,
                 type: "GET",
-                headers: {"Authorization": `${localStorage.getItem('user-token')}`}
+                headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
 
             }).done((questions) => {
                 questions.forEach((q) => {
@@ -482,9 +482,9 @@
                     $("#users-data").append(`<tr>
                         <td>${item.courseid}</td>
                         <td>${item.coursename}</td>
-                        <td><button onclick="editSystemUser('${item.courseid}')" class="btn btn-primary btn-edit"><i class="fa fa-pencil-square-o"></i></button>
-                          <button onclick="openStudentLesson('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-eye"></i></button>
-                          <button onclick="on('${i}')" class="btn btn-primary btn-edit"><i class="fa fa-user-plus"></i></button></td>
+                        <td><button onclick="editSystemUser('${item.courseid}')" class="btn btn-primary btn-edit" style="background: #007bff"><i class="fa fa-pencil-square-o"></i></button>
+                          <button onclick="openStudentLesson('${i}')" class="btn btn-primary btn-edit" style="background: #007bff"><i class="fa fa-eye"></i></button>
+                          <button onclick="on('${i}')" class="btn btn-primary btn-edit" style="background: #007bff"><i class="fa fa-user-plus"></i></button></td>
                         </tr>`);
                 });
                 $.ajax({
@@ -493,9 +493,8 @@
                     crossOrigin: true,
                     url: SERVER + "students_list/get/class/",
                     type: "GET",
-                    headers: {
-                        "Authorization": `${localStorage.getItem('user-token')}`
-                    }
+                    headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") }
+
 
                 }).done((cls) => {
                     classList = cls;
@@ -505,9 +504,7 @@
                         crossOrigin: true,
                         url: SERVER + "students_list/get/students/",
                         type: "GET",
-                        headers: {
-                            "Authorization": `${localStorage.getItem('user-token')}`
-                        }
+                        headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
                     }).done((student) => {
                         studentList = student;
                     }).fail((err) => {
@@ -536,7 +533,7 @@
                 crossOrigin: true,
                 type: "PUT",
                 data: {lesson_id: $("#courseid").val(), lesson_name: $("#coursename").val()},
-                headers: {"Authorization": `${localStorage.getItem('user-token')}`}
+                headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
 
             }).done(() => {
                 swal({
@@ -564,7 +561,8 @@
                 crossOrigin: true,
                 type: "DELETE",
                 data: {lesson_id: $("#courseid").val()},
-                headers: {"Authorization": `${localStorage.getItem('user-token')}`}
+                headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
+
 
             }).done(() => {
                 swal({
