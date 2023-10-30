@@ -678,7 +678,6 @@ function displayAudio(file_url, audio_data_id) {
 function displayImage(file_url, data_id, image_id) {
   // Clear existing image
   // $('#output').html('');
-  //
 
   if (file_url != "") {
     if (image_type == "questionChoices") {
