@@ -26,12 +26,13 @@
           crossorigin="anonymous"></script>
 
      <!-- user.html JS, CSS start -->
-     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
+     <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" /> -->
      <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
-     <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+     <!-- <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script> -->
      <script async defer
           src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWJ2UbLhFeu3jVgd4ZwWMMNyGl4Kqx7V4"></script>
      <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+
      <!-- user.html JS, CSS end -->
 
      <link rel="stylesheet" href="css/dashboard.css" />
@@ -116,7 +117,10 @@
           }
 
           .csv-format {
-               text-align: right;
+               <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script><script type="text/javascript"
+               src="https://cdn.datatables.net/v/dt/dt-1.13.1/datatables.min.js"></script><link rel="stylesheet" type="text/css"
+               href="https://cdn.datatables.net/v/dt/dt-1.13.1/datatables.min.css" /><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script><link rel="stylesheet"
+               href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />text-align: right;
                text-decoration: underline;
           }
      </style>
@@ -134,7 +138,7 @@
 </head>
 
 <body>
-     <div class="container-fluid p-0">
+     <div class="container">
           <!-- Bootstrap row -->
           <div class="row body-row" style="flex-wrap: initial;">
                <div id="left_sidebar">
@@ -142,7 +146,7 @@
                <div class="col p-0 content-div">
                     <div id="page_header">
                     </div>
-                    <div class="container" style="margin:10px !important;">
+                    <div class="container">
                          <div id="userLeadData">
                               <div class="row">
                                    <div class="col-xxl-6">
@@ -165,6 +169,7 @@
 
 
                               <section class="dataTable">
+
                                    <section class="search">
                                         <form class="form-inline search">
                                              <input class="form-control mr-sm-2" id="txtFind" type="search"
@@ -172,9 +177,13 @@
                                         </form>
                                    </section>
 
+                                   <div>
 
-                                   <div class="table-div">
-                                        <table id="lead_table">
+                                   </div>
+                                   <!-- <div class="table-div"> -->
+
+                                   <div>
+                                        <table id="lead_table_main">
                                              <thead>
                                                   <tr>
                                                        <th>Action</th>
@@ -196,96 +205,10 @@
                                              </thead>
                                              <tbody id="lead_data">
                                              </tbody>
-                                             <!-- <tbody class="bodyTable">
-                                                  <tr>
-                                                       <td>1</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                  </tr>
-                                                  <tr>
-                                                       <td>2</td>
-                                                       <td>David</td>
-                                                       <td>Keri</td>
-                                                       <td>Back-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                  </tr>
-                                                  <tr>
-                                                       <td>3</td>
-                                                       <td>Jack</td>
-                                                       <td>Cook</td>
-                                                       <td>Designer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                  </tr>
-                                                  <tr>
-                                                       <td>4</td>
-                                                       <td>Stive</td>
-                                                       <td>Jobs</td>
-                                                       <td>Co-Founder</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                  </tr>
-                                                  <tr>
-                                                       <td>5</td>
-                                                       <td>Jany</td>
-                                                       <td>Anderson</td>
-                                                       <td>Web Designer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                  </tr>
-                                             </tbody> -->
                                         </table>
+                                   </div>
 
-                                        <!-- <div id="lead_loader" class="d-flex justify-content-center">
+                                   <!-- <div id="lead_loader" class="d-flex justify-content-center">
                                                   <svg style="height: auto; width: 120px;" version="1.1"
                                                        xmlns="http://www.w3.org/2000/svg"
                                                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="25 25 50 50">
@@ -297,7 +220,7 @@
                                                   </svg>
                                              </div> -->
 
-                                   </div>
+                                   <!-- </div> -->
                               </section>
 
 
@@ -691,6 +614,8 @@
           </p>
 
           <script>
+
+
                var passwordResetToken = getParam("token");
                var userToken = localStorage.getItem("user-token");
 
@@ -766,7 +691,7 @@
                          user_leads.forEach((item, index) => {
                               $("#lead_data").append(`
                                    <tr>
-                                   <td id="editLead" (${index})>${item.First_Name}</td>
+                                   <td ></td>
                                    <td id="editLead" onClick=editLead(${index})>${item.last_name}</td>
                                    <td id="phoneCall" onclick="selectNum('${index}')">${item.First_Name}</td>
                                    <td id="phoneCall" onclick="selectNum('${index}')">${item.Last_Name}</td>
@@ -776,15 +701,16 @@
                                    <td id="phoneCall" onclick="selectNum('${index}')">${item.sf}</td>
                                    <td id="phoneCall" onclick="selectNum('${index}')">${item.Notes}</td>
                                    <td id="phoneCall" onclick="selectNum('${index}')">${item.tax_overdue}</td>
-                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.Contact_id}</td>
+                                 <td id="phoneCall" onclick="selectNum('${index}')" > ${item.Contact_id}</td>
                                    <td id="phoneCall" onclick="selectNum('${index}')">${item.Last_Call}</td>
                                    <td id="phoneCall" onclick="selectNum('${index}')">${item.Last_Dial_Number}</td>
                                    <td id="phoneCall" onclick="selectNum('${index}')">${item.Member_Last_Name}</td>
                                    <td id="phoneCall" onclick="selectNum('${index}')">${item.Total_Calls}</td>
                                    </tr>`);
                          })
+
                          // DataTable and modification
-                         table = $("#lead_table").DataTable({
+                         table = $("#lead_table_main").DataTable({
                               dom: 'lr<"table-filter-container">tip',
                               initComplete: function (settings) {
                                    var api = new $.fn.dataTable.Api(settings);
@@ -816,6 +742,8 @@
                          console.log("error-----ss...", err)
                     })
                });
+
+
 
                // open csvUploder model
                $('#importCsv').click(() => {
