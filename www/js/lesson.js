@@ -2788,6 +2788,7 @@ $(document).ready(function () {
         icon: "error",
         timer: 2000,
       });
+      
     }
     if ($("#selectsegment").val() == "user_qr_url") {
       addUserQRUrl(true);

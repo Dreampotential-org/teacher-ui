@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
         integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
@@ -143,18 +143,66 @@
             background-color: white;
             transition: .4s;
         }
+
+        /* #create_modal {
+            position: fixed;
+            top: 20%;
+            left: 40%;
+            width: 30%;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: .3rem;
+            box-shadow: 0 0 10px rgb(46, 46, 46);
+        }
+
+        .add_class_modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.792);
+            z-index: 1;
+        } */
     </style>
 </head>
 
 <body>
 
     <div class="container-fluid p-0">
+
         <!-- Bootstrap row -->
         <div class="row" id="body-row">
             <div id="left-sidebar"></div>
             <div class="col p-0 content-div">
                 <div id="page-header"></div>
                 <div class="container my-2">
+                    <!-- add lession modal -->
+                    <!-- 
+                    <div class="add_class_modal">
+                        <div class="" role="document" id="create_modal">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title"><b>Create New Lesson</b></h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="add_class_id">Lesson Name</label>
+                                        <input type="text" class="form-control" name="lesson_name" id="lesson_name"
+                                            placeholder="Lesson Name">
+                                    </div>
+                                    <div class="add-student float-right">
+                                        <button type="button" id="addNewLesson" class="btn btn-success">
+                                            <i class=""></i> Submit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!-- add lession modal -->
                     <div>
                         <div class="container start-container">
                             <div class="row">
@@ -1208,6 +1256,8 @@
                                 onchange="handleAudioSelect(this)" required />
                         </form>
                         <div id="sign-modal"></div>
+
+
                     </div>
                 </div>
             </div>
@@ -1228,16 +1278,103 @@
         }
     </script>
     <script>
-        $(document).ready(function () {
-            function sortEventHandler() {
-                var i = 0;
-                var childrenList = $("#sortable").children();
-                childrenList.each(function (e) {
-                    $(this).attr("data-position", i)
-                    i++;
-                })
-            }
-        });
+        // $("#addNewLesson").click(function (e) {
+        //     var lesson_name = $("#lesson_name").val();
+        //     var lesson_visiblity = $("#lesson_is_public").prop("checked");
+        //     var meta_attributes = [];
+        //     var flashcards = [];
+
+        //     data_ = {
+        //         lesson_name: lesson_name,
+        //         lesson_is_public: lesson_visiblity,
+        //     };
+        //     data_.meta_attributes = meta_attributes.join(",");
+        //     data_.flashcards = flashcards;
+        //     $.ajax({
+        //         url: SERVER + "courses_api/lesson/create",
+        //         data: JSON.stringify(data_),
+        //         type: "POST",
+        //         contentType: "application/json",
+        //         headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
+        //         success: function (data) {
+        //             var currentPathName = window.location.pathname;
+        //             window.location.replace(currentPathName + "?lesson_id=" + data.id);
+        //             swal({
+        //                 title: "Lesson Created",
+        //                 text: "You have successfully created a lesson",
+        //                 icon: "success",
+        //                 timer: 2000,
+        //             });
+        //         },
+        //         error: (err) => {
+        //             swal({
+        //                 title: "Error Creating Lesson",
+        //                 text: err,
+        //                 icon: "error",
+        //             });
+        //         }
+        //     });
+        // });
+
+        // $(document).ready(function () {
+        //     const params = new URLSearchParams(window.location.search);
+        //     var qs = params.get('lesson_id');
+        //     // console.log(qs);
+        //     if (qs == null || qs == 0) {
+        //         $('#create_modal').show();
+        //     } else {
+        //         $('#create_modal').hide();
+        //         $('.add_class_modal').css('position', 'relative');
+        //     }
+        //     $.ajax({
+        //         url: SERVER + "courses_api/lesson/all",
+        //         async: true,
+        //         crossDomain: true,
+        //         crossOrigin: true,
+        //         type: "GET",
+        //         headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
+        //     }).done((response2) => {
+        //         let wwww = [response2]
+        //         for (var lesson of wwww) {
+        //             if (lesson.lesson_name === "") {
+        //                 lesson.lesson_name = 'No Title';
+        //             }
+        //             $("#select_lesson_new").append(
+        //                 "<li style='padding: 5px 10px;border-bottom: 1px solid;' value='" + lesson.id + "'><a href = /lesson.html?lesson_id=" + lesson.id + ">" + lesson.lesson_name + "</a><li>"
+        //             );
+        //         }
+        //     });
+        //     $.ajax({
+        //         url: SERVER + "courses_api/lesson/read/" + lesson_id,
+        //         type: "GET",
+        //         crossDomain: true,
+        //         contentType: "application/json",
+        //         headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
+        //         success: function (response) {
+        //             var flashcards = response.flashcards;
+        //             var i = 0;
+        //             flashcards.forEach((flashcard) => {
+        //                 i++;
+        //                 const lssn_qustion = flashcard.question;
+        //                 const qustion_nbr = flashcard.question;
+        //                 const lssn_type = flashcard.lesson_type;
+        //                 let lssn_name = lssn_type.replace("_", " ");
+        //                 $('#question_list').append("<a href=#" + lssn_type + " class='qustion_number'> <span>" + i + "</span> <span style='text-transform: capitalize;margin-left: 10px;'>" + lssn_name + "</span></a>");
+        //             });
+
+        //         }
+        //     });
+        function sortEventHandler() {
+            var i = 0;
+            var childrenList = $("#sortable").children();
+            childrenList.each(function (e) {
+                $(this).attr("data-position", i)
+                i++;
+            })
+        }
+        // });
+
     </script>
 </body>
+
 </html>

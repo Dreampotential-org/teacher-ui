@@ -136,13 +136,13 @@
 <body>
      <div class="container-fluid p-0">
           <!-- Bootstrap row -->
-          <div class="row body-row">
+          <div class="row body-row" style="flex-wrap: initial;">
                <div id="left_sidebar">
                </div>
                <div class="col p-0 content-div">
                     <div id="page_header">
                     </div>
-                    <div class="container" style="margin:70px !important;">
+                    <div class="container" style="margin:10px !important;">
                          <div id="userLeadData">
                               <div class="row">
                                    <div class="col-xxl-6">
@@ -194,7 +194,9 @@
                                                        <th>Message Member</th>
                                                   </tr>
                                              </thead>
-                                             <tbody class="bodyTable">
+                                             <tbody id="lead_data">
+                                             </tbody>
+                                             <!-- <tbody class="bodyTable">
                                                   <tr>
                                                        <td>1</td>
                                                        <td>Mekaeil</td>
@@ -280,7 +282,7 @@
                                                        <td>Mekaeil</td>
                                                        <td>Andisheh</td>
                                                   </tr>
-                                             </tbody>
+                                             </tbody> -->
                                         </table>
 
                                         <!-- <div id="lead_loader" class="d-flex justify-content-center">
@@ -711,7 +713,7 @@
                $(document).ready(function () {
 
 
-                    window.location.replace(`http://52.15.140.136:7778?token=${localStorage.getItem('user-token')}`);
+                    // window.location.replace(`http://52.15.140.136:7778?token=${localStorage.getItem('user-token')}`);
 
                     $("#left_sidebar").load("sidebar.html");
                     $("#page_header").load("header.html");
@@ -747,7 +749,7 @@
                var call_data;
                var table;
                $(document).ready(function () {
-                    // SERVER = "http://127.0.0.1:8000/"
+                    SERVER = "http://127.0.0.1:8040/"
                     $.ajax({
                          url: SERVER + "voip/api_voip/getlead",
                          async: true,
@@ -756,26 +758,29 @@
                          type: 'GET',
                          headers: { "Authorization": "Bearer " + localStorage.getItem('user-token') }
                     }).done((response) => {
-                         document.getElementById("lead_loader").remove();
+                         console.log(response, ' upload a csv file ----------------------');
+                         // document.getElementById("lead_loader").remove();
                          response = (response).replaceAll(NaN, '""')
                          user_leads = JSON.parse(response)
+                         console.log(user_leads, 'upload a csv file -----5-----------------');
                          user_leads.forEach((item, index) => {
-                              $("#lead_data").append(`<tr>
-                                   <td onclick=check_box(${item.pk})></td>
-                                   <td><audio src="${item.fields.recording_url ? item.fields.recording_url : ""}" controls> </audio></td>
-                                   <td id="editLead" onClick=editLead(${index})>${item.fields.first_name}</td>
-                                   <td id="editLead" onClick=editLead(${index})>${item.fields.last_name}</td>
-                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.fields.phone}</td>
-                                   <td>${item.fields.state}</td>
-                                   <td>${item.fields.status}</td>
-                                   <td>${item.fields.ask}</td>
-                                   <td>${item.fields.notes}</td>
-                                   <td>${item.fields.tax_overdue}</td>
-                                   <td>${item.fields.contact_id}</td>
-                                   <td>${item.fields.last_call || "-"}</td>
-                                   <td>${item.fields.last_dial_number || "-"}</td>
-                                   <td><button onclick="selectNum('${index}')" class="btn btn-primary btn-edit" type="button"><i class="fa fa-phone-square"></i></button></td>
-                                   <td><button onclick="textNum('${index}')"  class="btn btn-primary btn-edit" type="button"><i class="fa fa-envelope-square"  style="font-size:20px;"></i></button></td>
+                              $("#lead_data").append(`
+                                   <tr>
+                                   <td id="editLead" (${index})>${item.First_Name}</td>
+                                   <td id="editLead" onClick=editLead(${index})>${item.last_name}</td>
+                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.First_Name}</td>
+                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.Last_Name}</td>
+                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.Phone}</td>
+                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.State}</td>
+                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.Status}</td>
+                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.sf}</td>
+                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.Notes}</td>
+                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.tax_overdue}</td>
+                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.Contact_id}</td>
+                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.Last_Call}</td>
+                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.Last_Dial_Number}</td>
+                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.Member_Last_Name}</td>
+                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.Total_Calls}</td>
                                    </tr>`);
                          })
                          // DataTable and modification
@@ -808,7 +813,7 @@
                          var select = table.column(0).checkboxes;
                     }).fail((err) => {
                          console.log("🚀 ~ file: leads.html ~ line 522 ~ err", err)
-                         console.log("errorss...", err)
+                         console.log("error-----ss...", err)
                     })
                });
 
@@ -820,7 +825,7 @@
                // submit csvFile
                $("#uplodCsv").click(function () {
                     var form = new FormData();
-                    // SERVER = "http://127.0.0.1:8000/"
+                    SERVER = "http://127.0.0.1:8040/"
                     form.append("csvFile", document.getElementById("csvFile").files[0])
                     var settings = {
                          "async": true,
@@ -843,7 +848,7 @@
                               text: JSON.parse(response).message,
                               timer: 3000,
                          });
-                         setTimeout(function () { location.reload() }, 3000);
+                         // setTimeout(function () { location.reload() }, 3000);
                     }).fail(function (err) {
                          swal({
                               title: "Error!",
