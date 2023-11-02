@@ -2113,7 +2113,12 @@ function sendUpdates() {
     question_choices.push(element.value);
   });
 
-  data_.flashcards[0].options = question_choices;
+  // data_.flashcards[1].options = question_choices;
+  
+  data_.flashcards.forEach((flashcard, index) => {
+    flashcard.options = question_choices;
+  });
+
   console.log("data after....");
   console.log(data_);
 
@@ -2163,9 +2168,9 @@ function sendUpdates() {
             title: "Lesson Updated",
             text: "You have updated created a lesson",
             icon: "success",
-            timer: 2000,
+            // timer: 2000,
           });
-          location.reload();
+          // location.reload();
         },
         error: function (err) {
           console.log(
