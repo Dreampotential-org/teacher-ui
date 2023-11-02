@@ -35,3 +35,5 @@ function setup_click_events() {
 }
 
 window.addEventListener('DOMContentLoaded', init, false);
+
+

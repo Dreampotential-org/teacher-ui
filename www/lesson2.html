@@ -5,9 +5,24 @@
     <title>Teacher Portal</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
@@ -15,6 +30,15 @@
         integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script> -->
+
     <link rel="stylesheet" href="css/dashboard.css" />
     <link rel="stylesheet" href="css/sidebar.css" />
     <link rel="stylesheet" href="css/setting.css" />
@@ -27,27 +51,26 @@
     <script src="js/main.js"></script>
     <script src="js/lesson.js"></script>
     <script src="js/gps.js"></script>
-    <script>
-        var userToken = localStorage.getItem("user-token");
-        if (userToken === null) {
-            window.location.replace("student_login.html");
-        }
-    </script>
     <style>
         .h1 {
             font-size: 18px;
         }
 
+        .page_header {
+            font-weight: 700;
+            font-size: 21px;
+        }
+
         .start-container {
-            border: 1px solid lightgray;
-            padding: 25px;
+            /* border: 1px solid lightgray;
+            padding: 25px; */
         }
 
         .switch {
             position: relative;
             display: inline-block;
-            width: 60px;
-            height: 34px;
+            width: 47px;
+            /* height: 34px; */
         }
 
         /* Hide default HTML checkbox */
@@ -105,1248 +128,1267 @@
             border-radius: 50%;
         }
 
-        .sweet-alert {
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-            border: solid #80808059;
+        .segment_heading {
+            position: relative;
+            top: -70px;
         }
 
-        .page_header {
-            font-style: normal;
-            font-weight: 700;
-            font-size: 20px;
-            line-height: 24px;
-            margin-top: 20px;
-            display: block;
-            padding: 0px 15px;
+        .slider::before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 2px;
+            bottom: 1px;
+            background-color: white;
+            transition: .4s;
         }
 
-        button.btn {
-            border-radius: 4px !important;
+        /* #create_modal {
+            position: fixed;
+            top: 20%;
+            left: 40%;
+            width: 30%;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: .3rem;
+            box-shadow: 0 0 10px rgb(46, 46, 46);
         }
 
-        span.slider.round {
-            height: 20px;
-            width: 80px;
-        }
-
-        .slider:before {
-            height: 23px;
-            width: 23px;
-            left: 0px;
-            bottom: -1px;
-        }
-
-        input:checked+.slider:before {
-            transform: translateX(56px);
-        }
-
-        .dropdown-menu>li>a:hover {
-            background-color: #F2F7FF;
-        }
-        .dropdown-menu{
-            overflow: scroll;
-        }
-
-        .btn-default:hover {
-            background-color: #F2F7FF;
-        }
-
-        .form-control,
-        .btn {
-            border-radius: 5px;
-            font-weight: 500;
-        }
-
-        .qustion_number {
-            background: whitesmoke;
-            padding: 10px 12px;
-            border: 1px solid lightgray;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        div#create-new-lesson-modal {
-            background-color: #222222f7;
-        }
-
-        @media screen and (min-width: 768px) {
-            .lesson_content_area {
-                padding: 0px 80px 50px 80px;
-            }
-
-            .make_public_css {
-                /* margin-left: -50px; */
-            }
-
-            .static_section {
-                position: fixed;
-                width: 100%;
-                z-index: 999;
-                background: white;
-                padding-left: 0px;
-                padding-right: 40px;
-            }
-
-            div#question_list {
-                margin: 5px;
-                padding: 5px;
-                max-height: 450px;
-                overflow: auto;
-                text-align: justify;
-                position: fixed;
-                min-width: 23%;
-            }
-        }
-
-        @media screen and (max-width: 768px) {
-            .padding_btm {
-                padding-bottom: 10px;
-            }
-
-            .lesson_content_area {
-                padding: 15px;
-            }
-
-            .make_public_css {
-                margin-left: 0px;
-            }
-
-            .all_lesson_mob {
-                display: grid;
-                margin: 10px 0px;
-            }
-
-            div#question_list {
-                margin: 5px;
-                padding: 5px;
-                max-height: 200px;
-                overflow: auto;
-                text-align: justify;
-            }
-        }
+        .add_class_modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.792);
+            z-index: 1;
+        } */
     </style>
 </head>
 
 <body>
 
-
-    <div class="container-fluid">
-        <div class="static_section">
-            <div class="row">
-                <div class="col-sm-3"><span class="page_header"><a href="/index.html"><i class="fa fa-home"
-                                style="font-size: 30px;"></i></a> &nbsp;&nbsp;Segment Builder</span></div>
-                <div class="col-sm-9 float-sm-right">
-                    <span style="margin-top: 20px;display: block;">
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-5 col-sm-offset-3 padding_btm" align="right">
-                                <a style="width: 50%" type="button" class="btn btn-default"
-                                    id="lesson_responses">Responses</a>
-                                <div class="dropdown">
-                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                        Preview Lesson &nbsp;|&nbsp;
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                        <li><a id="lesson_slide">Preview Lesson Slide</a></li>
-                                        <li><a id="lesson_page">Preview Lesson Page</a></li>
-                                    </ul>
+    <div class="container-fluid p-0">
+        <!-- Bootstrap row -->
+        <div class="row" id="body-row">
+            <div id="left-sidebar"></div>
+            <div class="col p-0 content-div">
+                <div id="page-header"></div>
+                <div class="container my-2">
+                    <!-- add lession modal -->
+                    <!-- 
+                    <div class="add_class_modal">
+                        <div class="" role="document" id="create_modal">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title"><b>Create New Lesson</b></h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="add_class_id">Lesson Name</label>
+                                        <input type="text" class="form-control" name="lesson_name" id="lesson_name"
+                                            placeholder="Lesson Name">
+                                    </div>
+                                    <div class="add-student float-right">
+                                        <button type="button" id="addNewLesson" class="btn btn-success">
+                                            <i class=""></i> Submit
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-xs-6 col-sm-2" align="right">
-                                <button type="submit" form="lesson_form" class="form-control btn btn-success"
-                                    style="margin-top: 0px;">Save</button>
-                            </div>
-
-                        <!-- button for add_class at http://localhost:8086/lesson2.html -->
-                            <!-- <div class="col-xs-6 col-sm-2">
-                                <button type="button" class="form-control btn btn-success"
-                                    onclick="openAddToClassModal()">Add to Class</button>
-                            </div> -->
                         </div>
-                    </span>
-                </div>
-            </div>
-            <hr style="margin-bottom: 8px;">    
-            <div class="row" style="padding-bottom: 10px;">
-                
-                <div class="col-sm-2 padding_btm">
-                    <select class="form-control " id="selectsegment">
-                        <option selected value="select_type">Select Segment Type</option>
-                        <option value="name_type">Name Type</option>
-                        <option value="speed_read">Speed Read</option>
-                        <option value="title_text">Title Text</option>
-                        <option value="title_input">Prompt Text Input</option>
-                        <option value="question_choices">Question Choices</option>
-                        <option value="question_checkboxes">Question Checkboxes</option>
-                        <option value="iframe_link">Iframe Link</option>
-                        <option value="video_file">Video File</option>
-                        <option value="image_file">Image File</option>
-                        <option value="audio_file">Audio File</option>
-                        <option value="title_textarea">Title Textarea</option>
-                        <option value="verify_phone">Verify Phone</option>
-                        <option value="signature">Signature Image</option>
-                        <option value="brain_tree">BrainTree</option>
-                        <option value="user_video_upload">User Video Upload</option>
-                        <option value="user_image_upload">User Image Upload</option>
-                        <option value="user_audio_upload">User Audio Upload</option>
-                        <option value="user_gps">User Gps</option>
-                        <option value="user_tour">User Tour</option>
-                        <option value="jitsi_meet">Jitsi Meet</option>
-                        <option value="record_webcam">Record WebCam</option>
-                        <option value="record_screen">Record Screen</option>
-                        <option value="chiro_front">Chiroposture Front</option>
-                        <option value="chiro_side">Chiroposture Side</option>
-                        <option value="user_qr_url">QR URL</option>
-                        <option value="user_qr_data">QR Data</option>
-                        <option value="gps_session">Gps Session</option>
-                        <option value="email_verify">Email Verify</option>
-                        <option value="datepicker">Date Picker</option>
-                        <option value="stripe_payment">Stripe payment</option>
-                    </select>
-                </div>
-                <div class="col-sm-2">
-                    <button class="btn form-control btn-success" id="add">Add</button>
-                </div>
-                <div class="col-sm-4 col-sm-offset-1">
-                    <div class="dropdown all_lesson_mob">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            <i class="glyphicon glyphicon-file"></i> All Lessons &nbsp;&nbsp;
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" id="select_lesson_new">
-
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="col-sm-3 float-sm-right">
-                    <span class="make_public_css">
-                        <span>Make Public</span>
-                        <label class="switch" id="is_public_contanier">
-                            <input type="checkbox" id="lesson_is_public">
-                            <span class="slider round"></span>
-                        </label>
-                    </span>
-                    &nbsp;&nbsp;
-                    <a href="#" id="settingshtml" style="float: right;margin-top: 3px;font-size: 25px;color: black;">
-                        <i class="fa fa-gear"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="row view_lesson_response">
-                <a id="lesson_slide_2" class="col-lg-6">Lesson Slide View</a>
-                <a id="lesson_page_2" class="col-lg-6">Lesson Page View</a>
-                <a id="lesson_responses_2" class="col-lg-6">View Responses</a>
-                <a id="lesson_responses_v2" class="col-lg-6">Responses V2</a>
-                <a id="payments" class="col-lg-6">Lesson Payments V2</a>
-            </div>
-        </div>
-
-
-        <div class="row" style="margin-top: 12%;">
-            <div class="col-xs-12 col-sm-3">
-                <div id="question_list"></div>
-            </div>
-            <div class="col-xs-12 col-sm-9 lesson_content_area" style="background: #f5f5f5;">
-                <div class="row">
-                    <div class="col-xs-12" id="sortable">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <form id="lesson_form">
-                            <div class="speed_read" id="user_qr_url" style="display: none; padding-top: 15px">
-                                <div data-type="user_qr_url" id="user_qr_url"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">QR URL</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_qr_url">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="url_text" class="form-control" placeholder="Enter your url here">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="speed_read" id="user_qr_data" style="display: none; padding-top: 15px">
-                                <div data-type="user_qr_data" id="user_qr_data"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid; background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">QR Data</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_user_qr_data">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-                                    </div>
-                                    <div class="form-group">
-                                        <textarea class="form-control" rows="7"
-                                            placeholder="Enter your Data here"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="speed_read" id="gps_session" style="display: none; padding-top: 15px">
-                                <div data-type="gps_session" id="gps_session"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Gps Session</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_gps_session">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:16px;text-align:right;"> x </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="speed_read" id="datepicker" style="display: none; padding-top: 15px">
-                                <div data-type="datepicker" id="datepicker"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Date Picker</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_datepicker">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:16px;text-align:right;"> x </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="speed_read" id="email_verify" style="display: none; padding-top: 15px">
-                                <div data-type="email_verify" id="email_verify"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Email Verify</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_email_verify">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:16px;text-align:right;"> x </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="speed_read" id="jitsi_meet" style="display: none; padding-top: 15px">
-                                <div data-type="jitsi_meet" id="jitsi_meet"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Jitsi Meet</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_jitsi_meet">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="room_name" placeholder="Room Name">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="speed_read" id="record_webcam" style="display: none; padding-top: 15px">
-                                <div data-type="record_webcam" id="record_webcam"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Record Webcam</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_record_webcam">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="speed_read" id="record_screen" style="display: none; padding-top: 15px">
-                                <div data-type="record_screen" id="record_screen"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Record Screen</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_record_screen">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="speed_read" id="speed_read" style="display: none; padding-top: 15px">
-                                <div data-type="speed_read" id="speed_read"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Speed Read</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_quick_read">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <textarea class="form-control" alt="speed_read_textarea" rows="7"
-                                            placeholder=""></textarea>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="speed_read" id="title_textarea" style="display: none; padding-top: 15px">
-                                <div data-type="title_textarea" id="title_textarea"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Question Text</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_title_textarea">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <textarea class="form-control" name="speed_read" rows="7"
-                                            placeholder=""></textarea>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="speed_read" id="title_text" style="display: none; padding-top: 15px">
-                                <div data-type="title_text" id="title_text"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Title Text</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_title_text">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="title" placeholder="Title">
-                                    </div>
-                                    <div class="form-group">
-                                        <textarea class="form-control" rows="7" placeholder=""></textarea>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="speed_read" id="title_input" style="display: none; padding-top: 15px">
-                                <div data-type="title_input" id="title_input"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Prompt Text Input</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_title_input">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-                                    </div>
-                                    <div class="form-group">
-                                        <textarea class="form-control" rows="7"
-                                            placeholder="Enter your title here"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="speed_read" id="name_type" style="display: none; padding-top: 15px">
-                                <div data-type="name_type" id="name_type"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Name Type</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_name_type">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:16px;text-align:right;"> X </a>
-                                    </div>
-                                    <div class="form-group">
-                                        <textarea class="form-control" rows="7"
-                                            placeholder="Enter your title here"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="speed_read" id="user_video_upload" style="display: none; padding-top: 15px">
-                                <div data-type="user_video_upload" id="user_video_upload"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">User Video Upload</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_user_video_upload">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:16px;text-align:right;"> X </a>
-                                    </div>
-                                    <div id="user-video-output">
-                                        <input type="text" id="txt-user-video" class="form-control"
-                                            placeholder="Title" />
-                                    </div>
-                                    <!-- <div class="form-group">
-                                                <button onclick="handleVideoUpload('user_video_upload')" class="btn btn-info">Upload video</button>
-                                            </div>
-                                            <div id="user-video-output">
-                                                <input type="text" id="txt-user-video" class="form-control" placeholder="Video Link" />
-                                                <video id="userVideoplayer" controls height="360" style="width: 100%;" preload="metadata"
-                                                >
-                                                </video>
-                                            </div> -->
-                                </div>
-                            </div>
-
-                            <div class="speed_read" id="user_image_upload" style="display: none; padding-top: 15px">
-                                <div data-type="user_image_upload" id="user_image_upload"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">User Image Upload</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_user_image_upload">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:16px;text-align:right;"> X </a>
-                                    </div>
-                                    <div id="user-image-output">
-                                        <input type="text" id="user-image-question" class="form-control"
-                                            placeholder="Title" />
-                                    </div>
-                                    <!-- <div class="form-group">
-                                                <button onclick="handleVideoUpload('user_image_upload')" class="btn btn-info">Upload video</button>
-                                            </div>
-                                            <div id="user-video-output">
-                                                <input type="text" id="txt-user-video" class="form-control" placeholder="Video Link" />
-                                                <video id="userVideoplayer" controls height="360" style="width: 100%;" preload="metadata"
-                                                >
-                                                </video>
-                                            </div> -->
-                                </div>
-                            </div>
-                            <div class="speed_read" id="user_audio_upload" style="display: none; padding-top: 15px">
-                                <div data-type="user_audio_upload" id="user_audio_upload"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">User Audio Upload</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_user_audio_upload">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:16px;text-align:right;"> X </a>
-                                    </div>
-                                    <div id="user-audio-output">
-                                        <input type="text" id="txt-user-audio" class="form-control"
-                                            placeholder="Title" />
-                                    </div>
-                                    <!-- <div class="form-group">
-                                                <button onclick="handleVideoUpload('user_audio_upload')" class="btn btn-info">Upload video</button>
-                                            </div>
-                                            <div id="user-video-output">
-                                                <input type="text" id="txt-user-video" class="form-control" placeholder="Video Link" />
-                                                <video id="userVideoplayer" controls height="360" style="width: 100%;" preload="metadata"
-                                                >
-                                                </video>
-                                            </div> -->
-                                </div>
-                            </div>
-
-                            <div class="speed_read" id="user_gps" style="display: none; padding-top: 15px">
-                                <div data-type="user_gps" id="user_gps"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">User GPS</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_user_gps">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:16px;text-align:right;"> X </a>
-                                    </div>
-                                    <!-- <div class="form-group">
-                                                <textarea class="form-control" rows="10" name="note" placeholder="note"></textarea>
-                                            </div> -->
-                                </div>
-                            </div>
-
-                            <div class="speed_read" id="question_choices" style="display: none; padding-top: 15px">
-                                <div data-type="question_choices" id="question_choices"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Question Choices</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_question_choices">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="question" placeholder="Question">
-                                    </div>
-                                    <div class="form-group chkbox-cls" id="choices">
-                                        <div>
-                                            <input type="text" class="form-control" rows="7" placeholder="Choices">
-                                            <button onclick="$(this).parent().remove()" class="btn btn-danger">Remove
-                                                Choice</button>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-success">Add Choice</button>
-                                    <div class="form-group">
-                                        <hr>
-                                        <input type="button" class="upload_image_button btn btn-info"
-                                            id="upload-img-btn-question-choices"
-                                            onclick="handleImageUpload('questionChoices')" value="Upload Image" />
-                                        <input type="text" class="form-control" id="image-question-choices"
-                                            placeholder="Image Link" />
-                                        <div id="output-question-choices"></div>
-                                    </div>
-
+                    </div> -->
+                    <!-- add lession modal -->
+                    <div>
+                        <div class="container start-container">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12" align="right" style="margin-bottom: 30px;"><a href="#"
+                                        id="settingshtml" class="" style="font-size: 25px;color: black;">
+                                        <i class="fa fa-gear"></i></a>
                                 </div>
 
-                            </div>
-
-                            <div class="speed_read" id="question_checkboxes" style="display: none; padding-top: 15px">
-                                <div data-type="question_checkboxes" id="question_checkboxes"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Question Checkboxes</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_question_checkboxes">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Question">
-                                    </div>
-                                    <div class="form-group chkbox-cls" id="checkboxes">
-                                        <div>
-                                            <input type="text" class="form-control" rows="7" placeholder="Choices">
-                                            <button onclick="$(this).parent().remove()" class="btn btn-danger">Remove
-                                                Choice</button>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-success">Add Choice</button>
-                                    <div class="form-group">
-                                        <hr>
-                                        <input type="button" id="upload-img-btn-question-checkboxes"
-                                            onclick="handleImageUpload('questionCheckboxes')" value="Upload Image"
-                                            class="btn btn-info" />
-                                        <input type="text" class="form-control" id="image-question-checkboxes"
-                                            placeholder="Image Link" />
-                                        <div id="output-question-checkboxes"></div>
+                                <hr class="col-12">
+                                <div class="col-xs-6 col-sm-6">
+                                    <div class="segment_heading"><span class="page_header"><a href="/index.html"><i
+                                                    class="fa fa-home" style="font-size: 30px;"></i></a>
+                                            &nbsp;&nbsp;Segment
+                                            Builder</span>
+                                        <!-- <a style="width: 50%" type="button" class="btn btn-default"
+                                            id="lesson_responses">Responses</a> -->
                                     </div>
 
-                                </div>
-
-                            </div>
-
-                            <div class="speed_read" id="video_file" style="display: none; padding-top: 15px">
-                                <div data-type="video_file" id="video_file"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Video File</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_video_file">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Title">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <!-- <input type="button" id="upload-vid-btn" onclick="handleVideoUpload('video_file')" value="Upload Video"/> -->
-                                        <input type="button" class="upload_vid_btn btn btn-info" value="Upload Video" />
-                                        <input type="text" id="video" class="form-control" placeholder="Video Link" />
-                                    </div>
-                                    <!-- <div id="video-output"> -->
-                                    <div class="video-output">
-                                        <!-- <video class="videoplayer" controls height="360" style="width: 100%;"
-                                                preload="metadata">
-                                            </video> -->
-                                        <video class="videoplayer" controls height="360"
-                                            style="width: 100%;display:none" preload="metadata">
-                                        </video>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="speed_read" id="image_file" style="display: none; padding-top: 15px">
-                                <div data-type="image_file" id="image_file"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Image File</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_image_file">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Title">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <!-- <input type="button" class="image_upload_button btn btn-info" onclick="handleImageUpload('imageFile')" value="Upload Image"/> -->
-                                        <input type="button" class="image_upload_button btn btn-info"
-                                            value="Upload Image" />
-                                        <input type="text" class="form-control" id="image-file"
-                                            placeholder="Image Link" />
-                                    </div>
-                                    <!-- <div id="output-image-file"></div> -->
-                                    <div class="output-image-file"></div>
-                                </div>
-                            </div>
-
-
-                            <div class="speed_read" id="audio_file" style="display: none; padding-top: 15px">
-                                <div data-type="audio_file" id="audio_file"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Audio File</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_audio_file">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Title">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <!-- <input type="button" id="upload-vid-btn" onclick="handleVideoUpload('video_file')" value="Upload Video"/> -->
-                                        <input type="button" class="audio_upload_button btn btn-info"
-                                            value="Upload Audio" />
-                                        <input type="text" id="audio" class="form-control" placeholder="Audio Link" />
-                                    </div>
-                                    <!-- <div id="video-output"> -->
-                                    <div class="audio-output">
-                                        <!-- <video class="videoplayer" controls height="360" style="width: 100%;"
-                                                preload="metadata">
-                                            </video> -->
-                                        <video class="audioplayer" controls height="360"
-                                            style="width: 100%;display:none" preload="metadata">
-                                        </video>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="speed_read" id="user_tour" style="display: none; padding-top: 15px">
-                                <div data-type="user_tour" id="user_tour"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">User Tour</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="user_tour">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-                                    </div>
-                                    <div class="form-group info-cls" id="tourinfo" name="tour-name">
-
-                                    </div>
-                                    <button class="btn btn-success">Add Tour</button>
-
-                                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-                                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLongTitle">Select Place</h5>
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-
-                                                    <div id="map"></div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-primary btn-save-place"
-                                                        data-dismiss="modal" onclick="setLatLng()">Save changes</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <!-- </div> -->
-
-                            <div class="speed_read" id="iframe_link" style="display: none; padding-top: 15px">
-                                <div data-type="iframe_link" id="iframe_link"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Iframe Link</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_iframe_link">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="title_iframe" placeholder="Title">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="iframe" placeholder="IFrame Link" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="speed_read" id="signature" style="display: none; padding-top: 15px">
-                                <div data-type="signature" id="signature"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Signature</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_signature">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" hidden name="input_signature" id="signInput">
-                                        <img id="lesson_signature" hidden src="">
-                                        <button class="btn btn-primary" type="button"
-                                            onclick="signLesson(event, 'lesson_signature', 'signInput')"> Click To
-                                            Sign</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="speed_read" id="verify_phone" style="display: none; padding-top: 15px">
-                                <div data-type="verify_phone" id="verify_phone"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Verify phone</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_verify_phone">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" hidden name="input_signature" id="verifyPhone">
-                                        <button class="btn btn-primary" type="button"> Click To Verify your
-                                            Phone</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="speed_read" id="chiro_front" style="display: none; padding-top: 15px">
-                                <div data-type="chiro_front" id="chiro_front"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Chiroposture front</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_chiro_front">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="speed_read" id="chiro_side" style="display: none; padding-top: 15px">
-                                <div data-type="chiro_side" id="chiro_side"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Chiroposture Side</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_chiro_side">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="speed_read" id="brain_tree" style="display: none; padding-top: 15px">
-                                <div data-type="braintree_Config" id="braintree_Config"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">BrainTree Info</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_braintree_Config">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="braintree_merchant_ID"
-                                            placeholder="Merchant ID">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="braintree_public_key"
-                                            placeholder="Public Key" />
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="braintree_private_key"
-                                            placeholder="Private Key">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="braintree_item_name"
-                                            placeholder="Item Name" />
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="braintree_item_price"
-                                            placeholder="Item Price" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="speed_read" id="stripe_payment" style="display: none; padding-top: 15px">
-                                <div data-type="stripe_Config" id="stripe_Config"
-                                    style="margin-top:50px; padding:20px; border-radius:6px; border:1px; border-color:#e7e7e7 border-style solid;background: white;">
-                                    <div class="row">
-                                        <h4 class="col-xs-12 col-lg-7">Stripe Payment Block</h4>
-                                        <div class="col-xs-10 col-lg-4">
-                                            <span>Make Required</span>
-                                            <label class="switch">
-                                                <input type="checkbox" id="required_stripe_Config">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                        <a class="remove_flashcard col-xs-2 col-lg-1"
-                                            style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
-                                            x </a>
-
-                                    </div>
-                                    <a href="userProfile.html" class="btn btn-primary" id="form-stripe-connect">Connect
-                                        to stripe</a>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="modal fade" id="add-to-class-modal" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Add To Class</h5>
-
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="add_class_id">Lesson Id</label>
-                                    <input type="text" class="form-control" id="add_class_id" placeholder="Lesson Id"
-                                        disabled />
-                                </div>
-                                <div class="form-group">
-                                    <label for="add_class_id">Lesson Name</label>
-                                    <input type="text" class="form-control" name="lesson_name" id="lesson_name"
-                                        placeholder="Lesson Name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="classlist">Select Class:</label>
-                                    <select class="form-control" id="classlist-select" placeholder="Select Class">
+                                    <select class="form-control" id="select_lesson" style="margin-top: -12px;"
+                                        onchange="selectLesson()">
                                     </select>
+                                    <div class="row view_lesson_response">
+                                        <a id="lesson_slide" class="col-lg-6">Lesson Slide View</a>
+                                        <a id="lesson_page" class="col-lg-6">Lesson Page View</a>
+                                        <a id="lesson_responses" class="col-lg-6">View Responses</a>
+                                        <a id="lesson_responses_v2" class="col-lg-6">Responses V2</a>
+                                        <a id="payments" class="col-lg-6">Lesson Payments V2</a>
+                                    </div>
+
+                                    <div id="is_public_contanier">
+                                        <!-- <input type="checkbox" id="lesson_is_public" class="">
+                                        Make Public
+                                        </input> -->
+
+                                        <span class="make_public_css">
+                                            <label class="switch" id="is_public_contanier" style="height: 20px;">
+                                                <input type="checkbox" id="lesson_is_public">
+                                                <span class="slider round"></span>
+                                            </label>
+                                            <span>Make Public</span>
+                                        </span>
+                                    </div>
+                                    <br>
                                 </div>
 
-                                <div class="add-student float-right">
-                                    <button type="button" onclick="addToSelectedClass()" class="btn btn-primary"
-                                        id="AddLessonToClassBtn" disabled>
-                                        <i class=""></i> Add To Class
-                                    </button>
+                                <div class="col-xs-6 col-sm-6" style="margin-top: 20px;margin-bottom: 10px;">
+                                    <select class="form-control " id="selectsegment">
+                                        <option selected value="select_type">Select Segment Type</option>
+                                        <option value="name_type">Name Type</option>
+                                        <option value="speed_read">Speed Read</option>
+                                        <option value="title_text">Title Text</option>
+                                        <option value="title_input">Prompt Text Input</option>
+                                        <option value="question_choices">Question Choices</option>
+                                        <option value="question_checkboxes">Question Checkboxes</option>
+                                        <option value="iframe_link">Iframe Link</option>
+                                        <option value="video_file">Video File</option>
+                                        <option value="image_file">Image File</option>
+                                        <option value="audio_file">Audio File</option>
+                                        <option value="title_textarea">Title Textarea</option>
+                                        <option value="verify_phone">Verify Phone</option>
+                                        <option value="signature">Signature Image</option>
+                                        <option value="brain_tree">BrainTree</option>
+                                        <option value="user_video_upload">User Video Upload</option>
+                                        <option value="user_image_upload">User Image Upload</option>
+                                        <option value="user_audio_upload">User Audio Upload</option>
+                                        <option value="user_gps">User Gps</option>
+                                        <option value="user_tour">User Tour</option>
+                                        <option value="jitsi_meet">Jitsi Meet</option>
+                                        <option value="record_webcam">Record WebCam</option>
+                                        <option value="record_screen">Record Screen</option>
+                                        <option value="chiro_front">Chiroposture Front</option>
+                                        <option value="chiro_side">Chiroposture Side</option>
+                                        <option value="user_qr_url">QR URL</option>
+                                        <option value="user_qr_data">QR Data</option>
+                                        <option value="gps_session">Gps Session</option>
+                                        <option value="email_verify">Email Verify</option>
+                                        <option value="datepicker">Date Picker</option>
+                                        <option value="stripe_payment">Stripe payment</option>
+                                        <option value="contact_form">Contact Form</option>
+                                    </select>
+                                    <button class="btn form-control btn-success" style="margin-top: 15px"
+                                        id="add">Add</button>
+                                    <input type="text" class="form-control" name="lesson_name" style="margin-top: 15px"
+                                        id="lesson_name" placeholder="Lesson Name">
+                                    <button onclick="openAddToClassModal()" style="margin-top: 15px"
+                                        class="btn form-control btn-success">Add To Class</button>
                                 </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12" id="sortable"
+                                    style="width: 100%; overflow-y: scroll; max-height: 45vh;">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <form id="lesson_form">
+                                        <div class="speed_read" id="user_qr_url"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="user_qr_url"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">QR URL</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_qr_url">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="url_text" class="form-control"
+                                                        placeholder="Enter your url here">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="speed_read" id="user_qr_data"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="user_qr_data"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">QR Data</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_user_qr_data">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
+                                                <div class="form-group">
+                                                    <textarea class="form-control" rows="7"
+                                                        placeholder="Enter your Data here"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="speed_read" id="gps_session"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="gps_session"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Gps Session</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_gps_session">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:16px;text-align:right;">
+                                                        x </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="speed_read" id="datepicker"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="datepicker"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Date Picker</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_datepicker">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:16px;text-align:right;">
+                                                        x </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="speed_read" id="email_verify"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="email_verify"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Email Verify</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_email_verify">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:16px;text-align:right;">
+                                                        x </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="speed_read" id="jitsi_meet"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="jitsi_meet"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Jitsi Meet</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_jitsi_meet">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="room_name"
+                                                        placeholder="Room Name">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="speed_read" id="record_webcam"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="record_webcam"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Record Webcam</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_record_webcam">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="speed_read" id="record_screen"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="record_screen"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Record Screen</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_record_screen">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="speed_read" id="speed_read"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="speed_read"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Speed Read</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Requi--red</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_quick_read">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
 
+                                                <div class="form-group">
+                                                    <textarea class="form-control" alt="speed_read_textarea" rows="7"
+                                                        placeholder=""></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="speed_read" id="title_textarea"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="title_textarea"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Question Text</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_title_textarea">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <textarea class="form-control" name="speed_read" rows="7"
+                                                        placeholder=""></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="speed_read" id="title_text"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="title_text"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Title Text</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_title_text">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="title"
+                                                        placeholder="Title">
+                                                </div>
+                                                <div class="form-group">
+                                                    <textarea class="form-control" rows="7" placeholder=""></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="speed_read" id="title_input"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="title_input"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Prompt Text Input</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_title_input">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
+                                                <div class="form-group">
+                                                    <textarea class="form-control" rows="7"
+                                                        placeholder="Enter your title here"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="speed_read" id="name_type" style="display: none; padding-top: 15px">
+                                            <div data-type="name_type"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Name Type</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_name_type">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:16px;text-align:right;">
+                                                        X </a>
+                                                </div>
+                                                <div class="form-group">
+                                                    <textarea class="form-control" rows="7"
+                                                        placeholder="Enter your title here"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="speed_read" id="user_video_upload"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="user_video_upload"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">User Video Upload</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_user_video_upload">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:16px;text-align:right;">
+                                                        X </a>
+                                                </div>
+                                                <div id="user-video-output">
+                                                    <input type="text" id="txt-user-video" class="form-control"
+                                                        placeholder="Title" />
+                                                </div>
+                                                <!-- <div class="form-group">
+                                                        <button onclick="handleVideoUpload('user_video_upload')" class="btn btn-info">Upload video</button>
+                                                    </div>
+                                                    <div id="user-video-output">
+                                                        <input type="text" id="txt-user-video" class="form-control" placeholder="Video Link" />
+                                                        <video id="userVideoplayer" controls height="360" style="width: 100%;" preload="metadata"
+                                                        >
+                                                        </video>
+                                                    </div> -->
+                                            </div>
+                                        </div>
+
+                                        <div class="speed_read" id="user_image_upload"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="user_image_upload"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">User Image Upload</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_user_image_upload">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:16px;text-align:right;">
+                                                        X </a>
+                                                </div>
+                                                <div id="user-image-output">
+                                                    <input type="text" id="user-image-question" class="form-control"
+                                                        placeholder="Title" />
+                                                </div>
+                                                <!-- <div class="form-group">
+                                                        <button onclick="handleVideoUpload('user_image_upload')" class="btn btn-info">Upload video</button>
+                                                    </div>
+                                                    <div id="user-video-output">
+                                                        <input type="text" id="txt-user-video" class="form-control" placeholder="Video Link" />
+                                                        <video id="userVideoplayer" controls height="360" style="width: 100%;" preload="metadata"
+                                                        >
+                                                        </video>
+                                                    </div> -->
+                                            </div>
+                                        </div>
+                                        <div class="speed_read" id="user_audio_upload"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="user_audio_upload"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">User Audio Upload</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_user_audio_upload">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:16px;text-align:right;">
+                                                        X </a>
+                                                </div>
+                                                <div id="user-audio-output">
+                                                    <input type="text" id="txt-user-audio" class="form-control"
+                                                        placeholder="Title" />
+                                                </div>
+                                                <!-- <div class="form-group">
+                                                        <button onclick="handleVideoUpload('user_audio_upload')" class="btn btn-info">Upload video</button>
+                                                    </div>
+                                                    <div id="user-video-output">
+                                                        <input type="text" id="txt-user-video" class="form-control" placeholder="Video Link" />
+                                                        <video id="userVideoplayer" controls height="360" style="width: 100%;" preload="metadata"
+                                                        >
+                                                        </video>
+                                                    </div> -->
+                                            </div>
+                                        </div>
+
+                                        <div class="speed_read" id="user_gps" style="display: none; padding-top: 15px">
+                                            <div data-type="user_gps"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">User GPS</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_user_gps">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:16px;text-align:right;">
+                                                        X </a>
+                                                </div>
+                                                <!-- <div class="form-group">
+                                                        <textarea class="form-control" rows="10" name="note" placeholder="note"></textarea>
+                                                    </div> -->
+                                            </div>
+                                        </div>
+
+                                        <div class="speed_read" id="question_choices"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="question_choices"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Question Cho--ices</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_question_choices">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="question"
+                                                        placeholder="Question">
+                                                </div>
+                                                <div class="form-group chkbox-cls" id="choices">
+                                                    <!-- <div>
+                                                        <input type="text" class="form-control" rows="7"
+                                                            placeholder="Choices">
+                                                        <button onclick="$(this).parent().remove()"
+                                                            class="btn btn-danger">Rem--ove
+                                                            Choi--ce</button>
+                                                    </div> -->
+                                                </div>
+                                                <button class="btn btn-success">Add Choice</button>
+                                                <div class="form-group">
+                                                    <hr>
+                                                    <input type="button" class="upload_image_button btn btn-info"
+                                                        id="upload-img-btn-question-choices"
+                                                        onclick="handleImageUpload('questionChoices')"
+                                                        value="Upload Image" />
+                                                    <input type="text" class="form-control" id="image-question-choices"
+                                                        placeholder="Image Link" />
+                                                    <div id="output-question-choices"></div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        <div class="speed_read" id="question_checkboxes"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="question_checkboxes"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Question Checkboxes</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_question_checkboxes">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" placeholder="Question">
+                                                </div>
+                                                <div class="form-group chkbox-cls" id="checkboxes">
+                                                    <!-- <div>
+                                                        <input type="text" class="form-control" rows="7"
+                                                            placeholder="Choices">
+                                                        <button onclick="$(this).parent().remove()"
+                                                            class="btn btn-danger">Remove
+                                                            Choice</button>
+                                                    </div> -->
+                                                </div>
+                                                <button class="btn btn-success">Add Choice</button>
+                                                <div class="form-group">
+                                                    <hr>
+                                                    <input type="button" id="upload-img-btn-question-checkboxes"
+                                                        onclick="handleImageUpload('questionCheckboxes')"
+                                                        value="Upload Image" class="btn btn-info" />
+                                                    <input type="text" class="form-control"
+                                                        id="image-question-checkboxes" placeholder="Image Link" />
+                                                    <div id="output-question-checkboxes"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="speed_read" id="video_file"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="video_file"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Video File</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_video_file">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" placeholder="Title">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <!-- <input type="button" id="upload-vid-btn" onclick="handleVideoUpload('video_file')" value="Upload Video"/> -->
+                                                    <input type="button" class="upload_vid_btn btn btn-info"
+                                                        value="Upload Video" />
+                                                    <input type="text" id="video" class="form-control"
+                                                        placeholder="Video Link" />
+                                                </div>
+                                                <!-- <div id="video-output"> -->
+                                                <div class="video-output">
+                                                    <!-- <video class="videoplayer" controls height="360" style="width: 100%;"
+                                                        preload="metadata">
+                                                    </video> -->
+                                                    <video class="videoplayer" controls height="360"
+                                                        style="width: 100%;display:none" preload="metadata">
+                                                    </video>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="speed_read" id="image_file"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="image_file"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Image File</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_image_file">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" placeholder="Title">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <!-- <input type="button" class="image_upload_button btn btn-info" onclick="handleImageUpload('imageFile')" value="Upload Image"/> -->
+                                                    <input type="button" class="image_upload_button btn btn-info"
+                                                        value="Upload Image" />
+                                                    <input type="text" class="form-control" id="image-file"
+                                                        placeholder="Image Link" />
+                                                </div>
+                                                <!-- <div id="output-image-file"></div> -->
+                                                <div class="output-image-file"></div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="speed_read" id="audio_file"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="audio_file"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Audio File</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_audio_file">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" placeholder="Title">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <!-- <input type="button" id="upload-vid-btn" onclick="handleVideoUpload('video_file')" value="Upload Video"/> -->
+                                                    <input type="button" class="audio_upload_button btn btn-info"
+                                                        value="Upload Audio" />
+                                                    <input type="text" id="audio" class="form-control"
+                                                        placeholder="Audio Link" />
+                                                </div>
+                                                <!-- <div id="video-output"> -->
+                                                <div class="audio-output">
+                                                    <!-- <video class="videoplayer" controls height="360" style="width: 100%;"
+                                                        preload="metadata">
+                                                    </video> -->
+                                                    <video class="audioplayer" controls height="360"
+                                                        style="width: 100%;display:none" preload="metadata">
+                                                    </video>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="speed_read" id="user_tour" style="display: none; padding-top: 15px">
+                                            <div data-type="user_tour"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">User Tour</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="user_tour">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
+                                                <div class="form-group info-cls" id="tourinfo" name="tour-name">
+
+                                                </div>
+                                                <button class="btn btn-success">Add Tour</button>
+
+                                                <div class="modal fade" id="exampleModalCenter" tabindex="-1"
+                                                    role="dialog" aria-labelledby="exampleModalCenterTitle"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLongTitle">
+                                                                    Select Place</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+
+                                                                <div id="map"></div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close</button>
+                                                                <button type="button"
+                                                                    class="btn btn-primary btn-save-place"
+                                                                    data-dismiss="modal" onclick="setLatLng()">Save
+                                                                    changes</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <!-- </div> -->
+
+                                        <div class="speed_read" id="iframe_link"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="iframe_link"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Iframe Link</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_iframe_link">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="title_iframe"
+                                                        placeholder="Title">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="iframe"
+                                                        placeholder="IFrame Link" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="speed_read" id="signature" style="display: none; padding-top: 15px">
+                                            <div data-type="signature"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Signature</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_signature">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" hidden name="input_signature" id="signInput">
+                                                    <img id="lesson_signature" hidden src="">
+                                                    <button class="btn btn-primary" type="button"
+                                                        onclick="signLesson(event, 'lesson_signature', 'signInput')">
+                                                        Click To
+                                                        Sign</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="speed_read" id="verify_phone"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="verify_phone"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Verify phone</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_verify_phone">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" hidden name="input_signature" id="verifyPhone">
+                                                    <button class="btn btn-primary" type="button"> Click To Verify your
+                                                        Phone</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="speed_read" id="chiro_front"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="chiro_front"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Chiroposture front</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_chiro_front">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="speed_read" id="chiro_side"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="chiro_side"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Chiroposture Side</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_chiro_side">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="speed_read" id="contact_form"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="contact_form"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Contact Form</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_contact_form">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
+                                                <div class="form-group">
+                                                    <h4 class="">Form Title</h4>
+                                                    <input type="text" class="form-control" id="title_contact_form"
+                                                        placeholder="Title">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="speed_read" id="brain_tree"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="braintree_Config"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">BrainTree Info</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_braintree_Config">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="braintree_merchant_ID"
+                                                        placeholder="Merchant ID">
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="braintree_public_key"
+                                                        placeholder="Public Key" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="braintree_private_key"
+                                                        placeholder="Private Key">
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="braintree_item_name"
+                                                        placeholder="Item Name" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="braintree_item_price"
+                                                        placeholder="Item Price" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="speed_read" id="stripe_payment"
+                                            style="display: none; padding-top: 15px">
+                                            <div data-type="stripe_Config"
+                                                style="margin-top:50px; padding:20px; border-radius:10px; border:1px; border-color:#888; border-style:solid;">
+                                                <div class="row">
+                                                    <h4 class="col-xs-7 col-lg-7">Stripe Payment Block</h4>
+                                                    <div class="col-xs-3 col-lg-3">
+                                                        <span>Make Required</span>
+                                                        <label class="switch">
+                                                            <input type="checkbox" id="required_stripe_Config">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <a class="remove_flashcard col-xs-2 col-lg-2"
+                                                        style="color:rgb(46, 46, 46);font-size:26px;text-align:right;cursor:pointer;text-decoration: none;">
+                                                        x </a>
+
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="stripe_price"
+                                                        placeholder="Price">
+
+                                                    <input type="checkbox" name="recurring" id="stripe_recurring_price">
+                                                    <label for="">Recurring price</label>
+
+                                                    <!-- <h4>Include Payment Methods</h4> -->
+                                                    <!-- <input type="checkbox" name="cards" id="cards" checked> <label>Credit/Debit Card</label> <br> -->
+                                                    <!-- <input type="checkbox" name="stripe_express_pay" id="expressPay"> <label>Express Pay <small>(Apple, Google Pay)</small></label> -->
+
+                                                    <!-- <h4>Recurring Duration</h4>
+                                                    <select class="w-100" id="recurrence" name="stripe_recurring_duration">
+                                                        <option value="week">Weekly</option>
+                                                        <option value="month">Monthly</option>
+                                                        <option value="year">Yearly</option>
+                                                    </select> -->
+                                                </div>
+                                                <a href="userProfile.html" class="btn btn-primary"
+                                                    id="form-stripe-connect">Connect to
+                                                    stripe</a>
+                                            </div>
+                                        </div>
+
+                                        <button id="lesson_submit_btn" type="submit"
+                                            class="form-control btn btn-success" style="margin-top: 50px;
+                                            position: absolute;
+                                            top: 6.4%;
+                                            width: 6%;
+                                            border-radius: 5px;
+                                            right: 7%;
+                                            font-size: 17px;
+                                            height: 30px;
+                                            align-items: center;
+                                            display: flex;">Sa--ve</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
+
+                        <div class="modal fade" id="add-to-class-modal" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Add To Class</h5>
+
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="add_class_id">Lesson Id</label>
+                                            <input type="text" class="form-control" id="add_class_id"
+                                                placeholder="Lesson Id" disabled />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="classlist">Select Class:</label>
+                                            <select class="form-control" id="classlist-select"
+                                                placeholder="Select Class">
+                                            </select>
+                                        </div>
+
+                                        <div class="add-student float-right">
+                                            <button type="button" onclick="addToSelectedClass()" class="btn btn-primary"
+                                                id="AddLessonToClassBtn" disabled>
+                                                <i class=""></i> Add To Class
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form id="imageUploadForm" enctype="multipart/form-data" name="imageUploadForm">
+                            <input type="file" name="imageUpload" id="imageUpload" style='display:none;'
+                                onchange="handleImageSelect(this)" required />
+                        </form>
+
+                        <form id="videoUploadForm" enctype="multipart/form-data" name="videoUploadForm">
+                            <input type="file" name="videoUpload" id="videoUpload" style='display:none;'
+                                onchange="handleVideoSelect(this)" required />
+                        </form>
+
+                        <form id="audioUploadForm" enctype="multipart/form-data" name="audioUploadForm">
+                            <input type="file" name="audioUpload" id="audioUpload" style='display:none;'
+                                onchange="handleAudioSelect(this)" required />
+                        </form>
+                        <div id="sign-modal"></div>
+
+
                     </div>
                 </div>
-
-                <form id="imageUploadForm" enctype="multipart/form-data" name="imageUploadForm">
-                    <input type="file" name="imageUpload" id="imageUpload" style='display:none;'
-                        onchange="handleImageSelect(this)" required />
-                </form>
-
-                <form id="videoUploadForm" enctype="multipart/form-data" name="videoUploadForm">
-                    <input type="file" name="videoUpload" id="videoUpload" style='display:none;'
-                        onchange="handleVideoSelect(this)" required />
-                </form>
-
-                <form id="audioUploadForm" enctype="multipart/form-data" name="audioUploadForm">
-                    <input type="file" name="audioUpload" id="audioUpload" style='display:none;'
-                        onchange="handleAudioSelect(this)" required />
-                </form>
-                <div id="sign-modal"></div>
             </div>
         </div>
-        <div class="sweet-overlay modal" id="create-new-lesson-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" role="document" style="width: 30%;">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title"><b>Create New Lesson</b></h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="add_class_id">Lesson Name</label>
-                            <input type="text" class="form-control" name="lesson_name" id="lesson_name"
-                                placeholder="Lesson Name">
-                        </div>
-                        <div class="add-student float-right">
-                            <button type="button" id="addNewLesson" class="btn btn-success">
-                                <i class=""></i> Submit
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <script>
-            $('#sign-modal').load("signature/index.html");
-            function signLesson(event, imgId, signInput) {
-                if ($('#signature')) {
-                    $('#signature').modal('show');
-                }
-                document.addEventListener('signatureSubmitted', function (e) {
-                    $('#' + signInput).val(window.currentSignature.data);
-                    $('#' + imgId).attr('src', window.currentSignature.data);
-                    $('#' + imgId).removeAttr('hidden');
-                    event.target.innerHTML = 'Redraw Signature';
-                });
+    </div>
+    <script>
+        $('#sign-modal').load("signature/index.html");
+        function signLesson(event, imgId, signInput) {
+            if ($('#signature')) {
+                $('#signature').modal('show');
             }
-        </script>
-        <script>
-            $("#addNewLesson").click(function (e) {
-                var lesson_name = $("#lesson_name").val();
-                var lesson_visiblity = $("#lesson_is_public").prop("checked");
-                var meta_attributes = [];
-                var flashcards = [];
-
-                data_ = {
-                    lesson_name: lesson_name,
-                    lesson_is_public: lesson_visiblity,
-                };
-                data_.meta_attributes = meta_attributes.join(",");
-                data_.flashcards = flashcards;
-                $.ajax({
-                    url: SERVER + "courses_api/lesson/create",
-                    data: JSON.stringify(data_),
-                    type: "POST",
-                    contentType: "application/json",
-                    headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
-                    success: function (data) {
-                        var currentPathName = window.location.pathname;
-                        window.location.replace(currentPathName + "?lesson_id=" + data.id);
-                        swal({
-                            title: "Lesson Created",
-                            text: "You have successfully created a lesson",
-                            icon: "success",
-                            timer: 2000,
-                        });
-                    },
-                    error: (err) => {
-                        swal({
-                            title: "Error Creating Lesson",
-                            text: err,
-                            icon: "error",
-                        });
-                    }
-                });
+            document.addEventListener('signatureSubmitted', function (e) {
+                $('#' + signInput).val(window.currentSignature.data);
+                $('#' + imgId).attr('src', window.currentSignature.data);
+                $('#' + imgId).removeAttr('hidden');
+                event.target.innerHTML = 'Redraw Signature';
             });
-            
-            $(document).ready(function () {
-                const params = new URLSearchParams(window.location.search);
-                var qs = params.get('lesson_id');
-                // console.log(qs);
-                if (qs == null || qs == 0) {
-                    $('#create-new-lesson-modal').addClass('show');
-                }
-                $.ajax({
-                    url: SERVER + "courses_api/lesson/all",
-                    async: true,
-                    crossDomain: true,
-                    crossOrigin: true,
-                    type: "GET",
-                    headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
-                }).done((response2) => {
-                    let wwww = [response2]
-                    for (var lesson of wwww) {
-                        if (lesson.lesson_name === "") {
-                            lesson.lesson_name = 'No Title';
-                        }
-                        $("#select_lesson_new").append(
-                            "<li style='padding: 5px 10px;border-bottom: 1px solid;' value='" + lesson.id + "'><a href = /lesson.html?lesson_id=" + lesson.id + ">" + lesson.lesson_name + "</a><li>"
-                        );
-                    }
-                });
-                $.ajax({
-                    url: SERVER + "courses_api/lesson/read/" + lesson_id,
-                    type: "GET",
-                    crossDomain: true,
-                    contentType: "application/json",
-                    headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
-                    success: function (response) {
-                        var flashcards = response.flashcards;
-                        var i = 0;
-                        flashcards.forEach((flashcard) => {
-                            i++;
-                            const lssn_qustion = flashcard.question;
-                            const qustion_nbr = flashcard.question;
-                            const lssn_type = flashcard.lesson_type;
-                            let lssn_name = lssn_type.replace("_", " ");
-                            $('#question_list').append("<a href=#" + lssn_type + " class='qustion_number'> <span>" + i + "</span> <span style='text-transform: capitalize;margin-left: 10px;'>" + lssn_name + "</span></a>");
-                        });
+        }
+    </script>
+    <script>
+        // $("#addNewLesson").click(function (e) {
+        //     var lesson_name = $("#lesson_name").val();
+        //     var lesson_visiblity = $("#lesson_is_public").prop("checked");
+        //     var meta_attributes = [];
+        //     var flashcards = [];
 
-                    }
-                });
-                function sortEventHandler() {
-                    var i = 0;
-                    var childrenList = $("#sortable").children();
-                    childrenList.each(function (e) {
-                        $(this).attr("data-position", i)
-                        i++;
-                    })
-                }
-            });
+        //     data_ = {
+        //         lesson_name: lesson_name,
+        //         lesson_is_public: lesson_visiblity,
+        //     };
+        //     data_.meta_attributes = meta_attributes.join(",");
+        //     data_.flashcards = flashcards;
+        //     $.ajax({
+        //         url: SERVER + "courses_api/lesson/create",
+        //         data: JSON.stringify(data_),
+        //         type: "POST",
+        //         contentType: "application/json",
+        //         headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
+        //         success: function (data) {
+        //             var currentPathName = window.location.pathname;
+        //             window.location.replace(currentPathName + "?lesson_id=" + data.id);
+        //             swal({
+        //                 title: "Lesson Created",
+        //                 text: "You have successfully created a lesson",
+        //                 icon: "success",
+        //                 timer: 2000,
+        //             });
+        //         },
+        //         error: (err) => {
+        //             swal({
+        //                 title: "Error Creating Lesson",
+        //                 text: err,
+        //                 icon: "error",
+        //             });
+        //         }
+        //     });
+        // });
 
-        </script>
+        // $(document).ready(function () {
+        //     const params = new URLSearchParams(window.location.search);
+        //     var qs = params.get('lesson_id');
+        //     // console.log(qs);
+        //     if (qs == null || qs == 0) {
+        //         $('#create_modal').show();
+        //     } else {
+        //         $('#create_modal').hide();
+        //         $('.add_class_modal').css('position', 'relative');
+        //     }
+        //     $.ajax({
+        //         url: SERVER + "courses_api/lesson/all",
+        //         async: true,
+        //         crossDomain: true,
+        //         crossOrigin: true,
+        //         type: "GET",
+        //         headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
+        //     }).done((response2) => {
+        //         let wwww = [response2]
+        //         for (var lesson of wwww) {
+        //             if (lesson.lesson_name === "") {
+        //                 lesson.lesson_name = 'No Title';
+        //             }
+        //             $("#select_lesson_new").append(
+        //                 "<li style='padding: 5px 10px;border-bottom: 1px solid;' value='" + lesson.id + "'><a href = /lesson.html?lesson_id=" + lesson.id + ">" + lesson.lesson_name + "</a><li>"
+        //             );
+        //         }
+        //     });
+        //     $.ajax({
+        //         url: SERVER + "courses_api/lesson/read/" + lesson_id,
+        //         type: "GET",
+        //         crossDomain: true,
+        //         contentType: "application/json",
+        //         headers: { "Authorization": "Bearer " + localStorage.getItem("user-token") },
+        //         success: function (response) {
+        //             var flashcards = response.flashcards;
+        //             var i = 0;
+        //             flashcards.forEach((flashcard) => {
+        //                 i++;
+        //                 const lssn_qustion = flashcard.question;
+        //                 const qustion_nbr = flashcard.question;
+        //                 const lssn_type = flashcard.lesson_type;
+        //                 let lssn_name = lssn_type.replace("_", " ");
+        //                 $('#question_list').append("<a href=#" + lssn_type + " class='qustion_number'> <span>" + i + "</span> <span style='text-transform: capitalize;margin-left: 10px;'>" + lssn_name + "</span></a>");
+        //             });
+
+        //         }
+        //     });
+        function sortEventHandler() {
+            var i = 0;
+            var childrenList = $("#sortable").children();
+            childrenList.each(function (e) {
+                $(this).attr("data-position", i)
+                i++;
+            })
+        }
+        // });
+
+    </script>
 </body>
 
 </html>

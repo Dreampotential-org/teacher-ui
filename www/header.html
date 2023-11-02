@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark mobile_navigation_navbar_sec">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mobile_navigation_navbar_sec" style="border-radius: 0;">
     <!-- <a class="navbar-brand" href="#">Navbar</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
@@ -20,9 +20,9 @@
                     </div>
                 </li> -->
 
-                <li class="nav-item dropdown down-arrow ">
-                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
+                <li class="nav-item dropdown down-arrow">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-user-circle fa-fw"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" id="dropdown" aria-labelledby="userDropdown">
@@ -30,7 +30,8 @@
                         <a class="dropdown-item" href="#">Activity Log</a>
                         <a class="dropdown-item" href="message.html">Messages</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item logoutid" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>bn
+                        <a class="dropdown-item logoutid" href="#" data-toggle="modal"
+                            data-target="#logoutModal">Logout</a>bn
                     </div>
                 </li>
                 <li>
@@ -104,13 +105,12 @@
                                 <span class="menu-collapsed">Users</span>
                             </div>
                         </a>
-                        <a href="student_login.html"
-                        class="bg-dark list-group-item list-group-item-action">
-                        <div class="d-flex w-100 justify-content-start align-items-center">
-                          <span class="fa fa-graduation-cap fa-fw mr-3"></span>
-                          <span class="menu-collapsed">Students</span>
-                        </div>
-                      </a>
+                        <a href="student_login.html" class="bg-dark list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-start align-items-center">
+                                <span class="fa fa-graduation-cap fa-fw mr-3"></span>
+                                <span class="menu-collapsed">Students</span>
+                            </div>
+                        </a>
                         <a href="calls.html" class="bg-dark list-group-item list-group-item-action">
                             <div class="d-flex w-100 justify-content-start align-items-center">
                                 <span class="fa fa-phone fa-fw mr-3"></span>
@@ -179,8 +179,8 @@
 <div class="user_icon_header">
     <ul class="navbar-nav mr-auto r">
         <li class="nav-item dropdown down-arrow userIcon">
-            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#---" id="userDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-user-circle fa-fw"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-right" id="dropdown" aria-labelledby="userDropdown">
@@ -188,26 +188,22 @@
                 <a class="dropdown-item" href="#">Activity Log</a>
                 <a class="dropdown-item" href="message.html">Messages</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item logoutid" href="javascript:void(0)" data-toggle="modal" data-target="#logoutModal">Logout</a>
+                <a class="dropdown-item logoutid" href="javascript:void(0)" data-toggle="modal"
+                    data-target="#logoutModal">Logout</a>
             </div>
         </li>
     </ul>
 </div>
 
 <script>
-
-    $(document).ready(function(){
-
+    $(document).ready(function () {
         $(".logoutid").on("click touch", function (e) {
             localStorage.removeItem("user-token");
             location.reload();
         });
-
         var page = $(this).attr('page') + ".html";
         $("#page-container").load(page);
         $(".sidebar").find(".active").removeClass("active");
         $(this).parent().addClass("active");
-
-           
-        });
+    });
 </script>

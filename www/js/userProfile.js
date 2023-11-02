@@ -90,10 +90,6 @@ document.getElementById('profileImageFile').onchange = function (event) {
     });
 
   })
-
-
-
-
 });
 
 $("#body-row .collapse").collapse("hide");

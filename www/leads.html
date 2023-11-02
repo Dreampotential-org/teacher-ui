@@ -10,8 +10,6 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
-     <link rel="stylesheet" type="text/css"
-          href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css" />
 
      <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
      <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -26,12 +24,20 @@
           crossorigin="anonymous"></script>
 
      <!-- user.html JS, CSS start -->
-     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
-     <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
-     <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+     <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" /> -->
+     <!-- <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script> -->
      <script async defer
           src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWJ2UbLhFeu3jVgd4ZwWMMNyGl4Kqx7V4"></script>
+
+
+     <!-- datatable -->
+     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.13.1/datatables.min.css" />
+     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.13.1/datatables.min.js"></script>
+     <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
      <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+     <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css" />
+          
      <!-- user.html JS, CSS end -->
 
      <link rel="stylesheet" href="css/dashboard.css" />
@@ -43,12 +49,9 @@
      <link rel="stylesheet" href="css/administration.css" />
      <link rel="stylesheet" href="css/spinner.css" />
      <link rel="stylesheet" href="css/table.css" />
-
      <script src="js/main.js"></script>
      <script src="js/web_api.js"></script>
      <!-- <script src="js/search.js"></script> -->
-
-
      <!-- Country flags and code -->
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
      <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
@@ -63,7 +66,7 @@
 
           .video_entry,
           .gps-entry {
-               background-color: #80808040;
+               background-color: #80808000;
           }
 
           .modal-content {
@@ -80,7 +83,7 @@
                box-shadow: inset 0 0 10px #000000;
           }
 
-          #userLeadData #add_lead {
+          /* #userLeadData #add_lead {
                position: absolute;
                right: 32%;
           }
@@ -93,7 +96,7 @@
           #userLeadData #deleteMultiple {
                position: absolute;
                right: 16%;
-          }
+          } */
 
           .table-filter-container {
                text-align: right;
@@ -115,10 +118,13 @@
                width: 100% !important;
           }
 
-          .csv-format {
-               text-align: right;
+          /* .csv-format {
+               <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script><script type="text/javascript"
+               src="https://cdn.datatables.net/v/dt/dt-1.13.1/datatables.min.js"></script><link rel="stylesheet" type="text/css"
+               href="https://cdn.datatables.net/v/dt/dt-1.13.1/datatables.min.css" /><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script><link rel="stylesheet"
+               href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />text-align: right;
                text-decoration: underline;
-          }
+          } */
      </style>
 
      <script>
@@ -134,23 +140,23 @@
 </head>
 
 <body>
-     <div class="container-fluid p-0">
+     <div class="container">
           <!-- Bootstrap row -->
-          <div class="row body-row">
+          <div class="row body-row" style="flex-wrap: initial;">
                <div id="left_sidebar">
                </div>
                <div class="col p-0 content-div">
                     <div id="page_header">
                     </div>
-                    <div class="container" style="margin:70px !important;">
+                    <div class="container">
                          <div id="userLeadData">
-                              <div class="row">
-                                   <div class="col-xxl-6">
-                                        <h2 style="padding-left:15px;">
+                              <div class="col-12">
+                                   <div class="">
+                                        <h2 style="margin-top: 5%;">
                                              <b>User leads</b>
                                         </h2>
                                    </div>
-                                   <div class="col-xxl-6 m-2">
+                                   <div class="" style="position: absolute; right: 0">
                                         <button class="btn btn-info" type="button" id="add_lead">
                                              ADD
                                         </button>
@@ -164,7 +170,7 @@
                               </div>
 
 
-                              <section class="dataTable">
+                              <div class="dataTable">
                                    <section class="search">
                                         <form class="form-inline search">
                                              <input class="form-control mr-sm-2" id="txtFind" type="search"
@@ -172,11 +178,15 @@
                                         </form>
                                    </section>
 
+                                   <div>
 
-                                   <div class="table-div">
-                                        <table id="lead_table">
-                                             <thead>
-                                                  <tr>
+                                   </div>
+                                   <!-- <div class="table-div"> -->
+
+                                   <div>
+                                        <table id="lead_table_main">
+                                             <thead id="lead_head">
+                                                  <!-- <tr>
                                                        <th>Action</th>
                                                        <th>Recording</th>
                                                        <th>First Name</th>
@@ -191,99 +201,14 @@
                                                        <th>Last call</th>
                                                        <th>Last Dial Number</th>
                                                        <th>Call Member</th>
-                                                       <th>Message Member</th>
-                                                  </tr>
-                                             </thead>
-                                             <tbody class="bodyTable">
-                                                  <tr>
-                                                       <td>1</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                  </tr>
-                                                  <tr>
-                                                       <td>2</td>
-                                                       <td>David</td>
-                                                       <td>Keri</td>
-                                                       <td>Back-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                  </tr>
-                                                  <tr>
-                                                       <td>3</td>
-                                                       <td>Jack</td>
-                                                       <td>Cook</td>
-                                                       <td>Designer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                  </tr>
-                                                  <tr>
-                                                       <td>4</td>
-                                                       <td>Stive</td>
-                                                       <td>Jobs</td>
-                                                       <td>Co-Founder</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                  </tr>
-                                                  <tr>
-                                                       <td>5</td>
-                                                       <td>Jany</td>
-                                                       <td>Anderson</td>
-                                                       <td>Web Designer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                       <td>Front-End Developer</td>
-                                                       <td>Mekaeil</td>
-                                                       <td>Andisheh</td>
-                                                  </tr>
+                                                       <th>Message Member</th> 
+                                                  </tr> -->
+                                             </thead >
+                                             <tbody id="lead_data">
                                              </tbody>
                                         </table>
 
-                                        <!-- <div id="lead_loader" class="d-flex justify-content-center">
+                                   <!-- <div id="lead_loader" class="d-flex justify-content-center">
                                                   <svg style="height: auto; width: 120px;" version="1.1"
                                                        xmlns="http://www.w3.org/2000/svg"
                                                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="25 25 50 50">
@@ -295,8 +220,8 @@
                                                   </svg>
                                              </div> -->
 
-                                   </div>
-                              </section>
+                                   <!-- </div> -->
+                                        </div>
 
 
                               <!-- <div class="table-div">
@@ -678,7 +603,7 @@
           </form>
 
           <!-- DataTable - filter -->
-          <p id="table_filter" style="display:none">
+          <p id="table_filter" >
                filter:
                <select>
                     <option value="">ALL</option>
@@ -710,8 +635,7 @@
 
                $(document).ready(function () {
 
-
-                    window.location.replace(`http://52.15.140.136:7778?token=${localStorage.getItem('user-token')}`);
+                    // window.location.replace(`http://52.15.140.136:7778?token=${localStorage.getItem('user-token')}`);
 
                     $("#left_sidebar").load("sidebar.html");
                     $("#page_header").load("header.html");
@@ -747,7 +671,7 @@
                var call_data;
                var table;
                $(document).ready(function () {
-                    // SERVER = "http://127.0.0.1:8000/"
+                    SERVER = "http://127.0.0.1:8040/"
                     $.ajax({
                          url: SERVER + "voip/api_voip/getlead",
                          async: true,
@@ -756,30 +680,53 @@
                          type: 'GET',
                          headers: { "Authorization": "Bearer " + localStorage.getItem('user-token') }
                     }).done((response) => {
-                         document.getElementById("lead_loader").remove();
-                         response = (response).replaceAll(NaN, '""')
-                         user_leads = JSON.parse(response)
+                         console.log(response, ' upload a csv file ----------------------');
+                         // document.getElementById("lead_loader").remove();
+                         lead_header = JSON.parse(response[0])
+                         console.log(lead_header,'leasheasder---');
+
+                         var headerRowHtml = '<tr> <th>Action</th>';
+                         lead_header.forEach(function (header) {
+                              headerRowHtml += '<th>' + header + '</th>';
+                         });
+                         headerRowHtml += '</tr>';
+                         $("#lead_head").append(headerRowHtml);
+                         response[1] = (response[1]).replaceAll(NaN, '""')
+                         user_leads = JSON.parse(response[1])
+                         console.log(user_leads, 'upload a csv file -----5-----------------');
                          user_leads.forEach((item, index) => {
-                              $("#lead_data").append(`<tr>
-                                   <td onclick=check_box(${item.pk})></td>
-                                   <td><audio src="${item.fields.recording_url ? item.fields.recording_url : ""}" controls> </audio></td>
-                                   <td id="editLead" onClick=editLead(${index})>${item.fields.first_name}</td>
-                                   <td id="editLead" onClick=editLead(${index})>${item.fields.last_name}</td>
-                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.fields.phone}</td>
-                                   <td>${item.fields.state}</td>
-                                   <td>${item.fields.status}</td>
-                                   <td>${item.fields.ask}</td>
-                                   <td>${item.fields.notes}</td>
-                                   <td>${item.fields.tax_overdue}</td>
-                                   <td>${item.fields.contact_id}</td>
-                                   <td>${item.fields.last_call || "-"}</td>
-                                   <td>${item.fields.last_dial_number || "-"}</td>
-                                   <td><button onclick="selectNum('${index}')" class="btn btn-primary btn-edit" type="button"><i class="fa fa-phone-square"></i></button></td>
-                                   <td><button onclick="textNum('${index}')"  class="btn btn-primary btn-edit" type="button"><i class="fa fa-envelope-square"  style="font-size:20px;"></i></button></td>
-                                   </tr>`);
-                         })
+                              // console.log(item);
+                              var RowHtml = '<tr><td></td>';
+                              lead_header.forEach((header) => {
+                                   console.log(header,"-------header");
+                                   RowHtml += '<td id="phoneCall" onclick="selectNum(\'' + header + '\')">' + item[header] + '</td>';
+                              });
+                              RowHtml += '</tr>';
+                              console.log(RowHtml, "------------------------------w3sedtrfgyuh")
+                              $("#lead_data").append(RowHtml);
+                              });
+
+                              // $("#lead_data").append(`
+                              //      <tr>
+                              //      <td ></td>
+                              //      <td id="editLead" onClick=editLead(${index})>${item.last_name}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.First_Name}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.Last_Name}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.Phone}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.State}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.Status}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.sf}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.Notes}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.tax_overdue}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')" > ${item.Contact_id}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.Last_Call}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.Last_Dial_Number}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.Member_Last_Name}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.Total_Calls}</td>
+                              //      </tr>`);
+                         // })
                          // DataTable and modification
-                         table = $("#lead_table").DataTable({
+                         table = $("#lead_table_main").DataTable({
                               dom: 'lr<"table-filter-container">tip',
                               initComplete: function (settings) {
                                    var api = new $.fn.dataTable.Api(settings);
@@ -808,9 +755,11 @@
                          var select = table.column(0).checkboxes;
                     }).fail((err) => {
                          console.log("🚀 ~ file: leads.html ~ line 522 ~ err", err)
-                         console.log("errorss...", err)
+                         console.log("error-----ss...", err)
                     })
                });
+
+
 
                // open csvUploder model
                $('#importCsv').click(() => {
@@ -820,7 +769,7 @@
                // submit csvFile
                $("#uplodCsv").click(function () {
                     var form = new FormData();
-                    // SERVER = "http://127.0.0.1:8000/"
+                    SERVER = "http://127.0.0.1:8040/"
                     form.append("csvFile", document.getElementById("csvFile").files[0])
                     var settings = {
                          "async": true,
@@ -843,7 +792,7 @@
                               text: JSON.parse(response).message,
                               timer: 3000,
                          });
-                         setTimeout(function () { location.reload() }, 3000);
+                         // setTimeout(function () { location.reload() }, 3000);
                     }).fail(function (err) {
                          swal({
                               title: "Error!",
@@ -880,7 +829,7 @@
 
                // delete lead from editPage
                $('#deleteLead').click(() => {
-                    // SERVER = "http://127.0.0.1:8000/"
+                    SERVER = "http://127.0.0.1:8040/"
                     pk = $('#deleteLead').val()
                     $.ajax({
                          url: SERVER + "voip/api_voip/getlead/",
@@ -907,7 +856,7 @@
 
                // submit edited lead
                $("#submitLead").click(() => {
-                    // SERVER = "http://127.0.0.1:8000/"
+                    SERVER = "http://127.0.0.1:8040/"
                     pk = $('#submitLead').val()
                     first_name = $('#edit_first_name').val()
                     last_name = $('#edit_last_name').val()
@@ -953,6 +902,7 @@
                // checkbox - check & uncheck
                var list_delete = []
                function check_box(id) {
+                    console.log('is-ckeck');
                     if (list_delete.indexOf(id) === -1) {
                          list_delete.push(id)
                     }
@@ -966,7 +916,7 @@
 
                //  select and delete multipleLead
                $('#deleteMultiple').click(() => {
-                    // SERVER = "http://127.0.0.1:8000/"
+                    SERVER = "http://127.0.0.1:8040/"
                     if (list_delete.length !== 0) {
                          swal({
                               title: "Are you sure?",
@@ -976,6 +926,7 @@
                               dangerMode: true,
                          })
                               .then((willDelete) => {
+                                   console.log(willDelete, 'willdelete------');
                                    if (willDelete) {
                                         $.ajax({
                                              url: SERVER + "voip/api_voip/getlead" + "?listPk=" + list_delete,
