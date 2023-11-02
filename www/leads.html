@@ -10,8 +10,6 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
-     <link rel="stylesheet" type="text/css"
-          href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css" />
 
      <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
      <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -27,12 +25,19 @@
 
      <!-- user.html JS, CSS start -->
      <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" /> -->
-     <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
      <!-- <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script> -->
      <script async defer
           src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWJ2UbLhFeu3jVgd4ZwWMMNyGl4Kqx7V4"></script>
-     <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
 
+
+     <!-- datatable -->
+     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.13.1/datatables.min.css" />
+     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.13.1/datatables.min.js"></script>
+     <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+     <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+     <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css" />
+          
      <!-- user.html JS, CSS end -->
 
      <link rel="stylesheet" href="css/dashboard.css" />
@@ -44,12 +49,9 @@
      <link rel="stylesheet" href="css/administration.css" />
      <link rel="stylesheet" href="css/spinner.css" />
      <link rel="stylesheet" href="css/table.css" />
-
      <script src="js/main.js"></script>
      <script src="js/web_api.js"></script>
      <!-- <script src="js/search.js"></script> -->
-
-
      <!-- Country flags and code -->
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
      <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
@@ -64,7 +66,7 @@
 
           .video_entry,
           .gps-entry {
-               background-color: #80808040;
+               background-color: #80808000;
           }
 
           .modal-content {
@@ -81,7 +83,7 @@
                box-shadow: inset 0 0 10px #000000;
           }
 
-          #userLeadData #add_lead {
+          /* #userLeadData #add_lead {
                position: absolute;
                right: 32%;
           }
@@ -94,7 +96,7 @@
           #userLeadData #deleteMultiple {
                position: absolute;
                right: 16%;
-          }
+          } */
 
           .table-filter-container {
                text-align: right;
@@ -116,13 +118,13 @@
                width: 100% !important;
           }
 
-          .csv-format {
+          /* .csv-format {
                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script><script type="text/javascript"
                src="https://cdn.datatables.net/v/dt/dt-1.13.1/datatables.min.js"></script><link rel="stylesheet" type="text/css"
                href="https://cdn.datatables.net/v/dt/dt-1.13.1/datatables.min.css" /><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script><link rel="stylesheet"
                href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />text-align: right;
                text-decoration: underline;
-          }
+          } */
      </style>
 
      <script>
@@ -148,13 +150,13 @@
                     </div>
                     <div class="container">
                          <div id="userLeadData">
-                              <div class="row">
-                                   <div class="col-xxl-6">
-                                        <h2 style="padding-left:15px;">
+                              <div class="col-12">
+                                   <div class="">
+                                        <h2 style="margin-top: 5%;">
                                              <b>User leads</b>
                                         </h2>
                                    </div>
-                                   <div class="col-xxl-6 m-2">
+                                   <div class="" style="position: absolute; right: 0">
                                         <button class="btn btn-info" type="button" id="add_lead">
                                              ADD
                                         </button>
@@ -168,8 +170,7 @@
                               </div>
 
 
-                              <section class="dataTable">
-
+                              <div class="dataTable">
                                    <section class="search">
                                         <form class="form-inline search">
                                              <input class="form-control mr-sm-2" id="txtFind" type="search"
@@ -182,8 +183,7 @@
                                    </div>
                                    <!-- <div class="table-div"> -->
 
-                                   <div>
-                                        <table id="lead_table_main">
+                                        <table id="lead_table_main" class="table table-striped table-bordered">
                                              <thead>
                                                   <tr>
                                                        <th>Action</th>
@@ -201,12 +201,13 @@
                                                        <th>Last Dial Number</th>
                                                        <th>Call Member</th>
                                                        <th>Message Member</th>
+                                                       <th> </th>
+                                                       <th> </th>
                                                   </tr>
                                              </thead>
                                              <tbody id="lead_data">
                                              </tbody>
                                         </table>
-                                   </div>
 
                                    <!-- <div id="lead_loader" class="d-flex justify-content-center">
                                                   <svg style="height: auto; width: 120px;" version="1.1"
@@ -221,7 +222,7 @@
                                              </div> -->
 
                                    <!-- </div> -->
-                              </section>
+                                        </div>
 
 
                               <!-- <div class="table-div">
@@ -603,7 +604,7 @@
           </form>
 
           <!-- DataTable - filter -->
-          <p id="table_filter" style="display:none">
+          <p id="table_filter" >
                filter:
                <select>
                     <option value="">ALL</option>
@@ -614,8 +615,6 @@
           </p>
 
           <script>
-
-
                var passwordResetToken = getParam("token");
                var userToken = localStorage.getItem("user-token");
 
@@ -636,7 +635,6 @@
                }
 
                $(document).ready(function () {
-
 
                     // window.location.replace(`http://52.15.140.136:7778?token=${localStorage.getItem('user-token')}`);
 
@@ -691,7 +689,7 @@
                          user_leads.forEach((item, index) => {
                               $("#lead_data").append(`
                                    <tr>
-                                   <td ></td>
+                                   <td onclick=check_box(${item.pk})></td>
                                    <td id="editLead" onClick=editLead(${index})>${item.last_name}</td>
                                    <td id="phoneCall" onclick="selectNum('${index}')">${item.First_Name}</td>
                                    <td id="phoneCall" onclick="selectNum('${index}')">${item.Last_Name}</td>
@@ -706,6 +704,8 @@
                                    <td id="phoneCall" onclick="selectNum('${index}')">${item.Last_Dial_Number}</td>
                                    <td id="phoneCall" onclick="selectNum('${index}')">${item.Member_Last_Name}</td>
                                    <td id="phoneCall" onclick="selectNum('${index}')">${item.Total_Calls}</td>
+                                   <td><button onclick="selectNum('${index}')" class="btn btn-primary btn-edit" type="button"><i class="fa fa-phone-square"></i></button></td>
+                                   <td><button onclick="textNum('${index}')"  class="btn btn-primary btn-edit" type="button"><i class="fa fa-envelope-square"  style="font-size:20px;"></i></button></td>
                                    </tr>`);
                          })
 
@@ -813,7 +813,7 @@
 
                // delete lead from editPage
                $('#deleteLead').click(() => {
-                    // SERVER = "http://127.0.0.1:8000/"
+                    SERVER = "http://127.0.0.1:8040/"
                     pk = $('#deleteLead').val()
                     $.ajax({
                          url: SERVER + "voip/api_voip/getlead/",
@@ -840,7 +840,7 @@
 
                // submit edited lead
                $("#submitLead").click(() => {
-                    // SERVER = "http://127.0.0.1:8000/"
+                    SERVER = "http://127.0.0.1:8040/"
                     pk = $('#submitLead').val()
                     first_name = $('#edit_first_name').val()
                     last_name = $('#edit_last_name').val()
@@ -886,6 +886,7 @@
                // checkbox - check & uncheck
                var list_delete = []
                function check_box(id) {
+                    console.log('is-ckeck');
                     if (list_delete.indexOf(id) === -1) {
                          list_delete.push(id)
                     }
@@ -899,7 +900,7 @@
 
                //  select and delete multipleLead
                $('#deleteMultiple').click(() => {
-                    // SERVER = "http://127.0.0.1:8000/"
+                    SERVER = "http://127.0.0.1:8040/"
                     if (list_delete.length !== 0) {
                          swal({
                               title: "Are you sure?",
@@ -909,6 +910,7 @@
                               dangerMode: true,
                          })
                               .then((willDelete) => {
+                                   console.log(willDelete, 'willdelete------');
                                    if (willDelete) {
                                         $.ajax({
                                              url: SERVER + "voip/api_voip/getlead" + "?listPk=" + list_delete,
