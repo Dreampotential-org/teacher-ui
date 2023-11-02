@@ -183,9 +183,10 @@
                                    </div>
                                    <!-- <div class="table-div"> -->
 
-                                        <table id="lead_table_main" class="table table-striped table-bordered">
-                                             <thead>
-                                                  <tr>
+                                   <div>
+                                        <table id="lead_table_main">
+                                             <thead id="lead_head">
+                                                  <!-- <tr>
                                                        <th>Action</th>
                                                        <th>Recording</th>
                                                        <th>First Name</th>
@@ -200,11 +201,9 @@
                                                        <th>Last call</th>
                                                        <th>Last Dial Number</th>
                                                        <th>Call Member</th>
-                                                       <th>Message Member</th>
-                                                       <th> </th>
-                                                       <th> </th>
-                                                  </tr>
-                                             </thead>
+                                                       <th>Message Member</th> 
+                                                  </tr> -->
+                                             </thead >
                                              <tbody id="lead_data">
                                              </tbody>
                                         </table>
@@ -683,32 +682,49 @@
                     }).done((response) => {
                          console.log(response, ' upload a csv file ----------------------');
                          // document.getElementById("lead_loader").remove();
-                         response = (response).replaceAll(NaN, '""')
-                         user_leads = JSON.parse(response)
+                         lead_header = JSON.parse(response[0])
+                         console.log(lead_header,'leasheasder---');
+
+                         var headerRowHtml = '<tr> <th>Action</th>';
+                         lead_header.forEach(function (header) {
+                              headerRowHtml += '<th>' + header + '</th>';
+                         });
+                         headerRowHtml += '</tr>';
+                         $("#lead_head").append(headerRowHtml);
+                         response[1] = (response[1]).replaceAll(NaN, '""')
+                         user_leads = JSON.parse(response[1])
                          console.log(user_leads, 'upload a csv file -----5-----------------');
                          user_leads.forEach((item, index) => {
-                              $("#lead_data").append(`
-                                   <tr>
-                                   <td onclick=check_box(${item.pk})></td>
-                                   <td id="editLead" onClick=editLead(${index})>${item.last_name}</td>
-                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.First_Name}</td>
-                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.Last_Name}</td>
-                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.Phone}</td>
-                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.State}</td>
-                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.Status}</td>
-                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.sf}</td>
-                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.Notes}</td>
-                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.tax_overdue}</td>
-                                 <td id="phoneCall" onclick="selectNum('${index}')" > ${item.Contact_id}</td>
-                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.Last_Call}</td>
-                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.Last_Dial_Number}</td>
-                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.Member_Last_Name}</td>
-                                   <td id="phoneCall" onclick="selectNum('${index}')">${item.Total_Calls}</td>
-                                   <td><button onclick="selectNum('${index}')" class="btn btn-primary btn-edit" type="button"><i class="fa fa-phone-square"></i></button></td>
-                                   <td><button onclick="textNum('${index}')"  class="btn btn-primary btn-edit" type="button"><i class="fa fa-envelope-square"  style="font-size:20px;"></i></button></td>
-                                   </tr>`);
-                         })
+                              // console.log(item);
+                              var RowHtml = '<tr><td></td>';
+                              lead_header.forEach((header) => {
+                                   console.log(header,"-------header");
+                                   RowHtml += '<td id="phoneCall" onclick="selectNum(\'' + header + '\')">' + item[header] + '</td>';
+                              });
+                              RowHtml += '</tr>';
+                              console.log(RowHtml, "------------------------------w3sedtrfgyuh")
+                              $("#lead_data").append(RowHtml);
+                              });
 
+                              // $("#lead_data").append(`
+                              //      <tr>
+                              //      <td ></td>
+                              //      <td id="editLead" onClick=editLead(${index})>${item.last_name}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.First_Name}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.Last_Name}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.Phone}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.State}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.Status}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.sf}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.Notes}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.tax_overdue}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')" > ${item.Contact_id}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.Last_Call}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.Last_Dial_Number}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.Member_Last_Name}</td>
+                              //      <td id="phoneCall" onclick="selectNum('${index}')">${item.Total_Calls}</td>
+                              //      </tr>`);
+                         // })
                          // DataTable and modification
                          table = $("#lead_table_main").DataTable({
                               dom: 'lr<"table-filter-container">tip',
